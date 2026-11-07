@@ -73,13 +73,13 @@ window.GAME_PACKS=(window.GAME_PACKS||[]).concat([
 window.GAME_PACKS = (window.GAME_PACKS || []).concat([
  // —— ① 游山玩水（链）：退休后 0–3 年首呈；有伴侣/没伴侣两张脸，选项同集 ——
  { "id":"rt_travel_duo", "w":2, "min":55, "max":80, "state":{"workPhase":"retired"}, "stateAll":{"spouse":"partnered"}, "flagAgeWithin":{"flag":"retired_begun","years":3}, "set":"travel_begun",
-   "text":"退下来头一年，家里商量着出去走一趟。年轻时出门是出差，老了出门，图的是自己想看。地图摊在茶几上，两个人拿笔圈了几个地方，圈着圈着就吵起来，吵完又接着圈。",
+   "text":"退下来头一年，家里商量着出去走一趟。年轻时出门是出差，老了出门，就想自己去看看。地图摊在茶几上，两个人拿笔圈了几个地方，圈着圈着就吵起来，吵完又接着圈。",
    "choices":[
      {"label":"跟团走，省心", "set":"travel_group", "effects":{"money":-3,"freedom":3}, "echo":"团里的节奏快，可该看的都看到了。回来之后，手头紧了一阵，买菜开始挑时令的买。"},
      {"label":"就两个人，慢慢走", "set":"travel_pair", "effects":{"money":-2,"freedom":4,"relation":2}, "echo":"不赶时间，走到哪儿算哪儿。在一个小城住了三天，天天去同一家店吃早饭，老板都认识你们了。"},
      {"label":"先在近处转转", "set":"travel_near", "effects":{"freedom":2,"health":1}, "echo":"没走远，就在周边住了两晚，爬了座小山。回来的时候说，近处也有近处的好，腿还受得住。"} ] },
  { "id":"rt_travel_solo", "w":2, "min":55, "max":80, "state":{"workPhase":"retired"}, "stateNot":{"spouse":["partnered"]}, "flagAgeWithin":{"flag":"retired_begun","years":3}, "set":"travel_begun",
-   "text":"退下来头一年，老伙计撺掇你出去走一趟。年轻时出门是出差，这回出门，图的是自己想看。行李收拾了两天，箱子摊在地上，塞了又减，减了又塞。",
+   "text":"退下来头一年，老伙计撺掇你出去走一趟。年轻时出门是出差，这回出门，就想自己去看看。行李收拾了两天，箱子摊在地上，塞了又减，减了又塞。",
    "choices":[
      {"label":"跟团走，省心", "set":"travel_group", "effects":{"money":-3,"freedom":3}, "echo":"团里有几个同龄人，一路聊得来。回来之后手头紧了一阵，买菜开始挑时令的买。"},
      {"label":"约上老朋友，慢慢走", "set":"travel_pair", "effects":{"money":-2,"freedom":4,"relation":2}, "echo":"不赶时间，走到哪儿算哪儿。在一个小城住了三天，天天去同一家店吃早饭，老板都记住了。"},
@@ -91,7 +91,7 @@ window.GAME_PACKS = (window.GAME_PACKS || []).concat([
    "choices":[
      {"label":"还走，换个走法", "set":"travel_kept", "effects":{"freedom":3,"money":-2}, "echo":"这回不赶景点，挑了个地方住下来，慢慢逛。回来的时候说，这样走不累。"},
      {"label":"歇一年再说", "set":"travel_paused", "effects":{"health":1}, "echo":"电话那头也没勉强，说那就明年。这一年你在家把花养好了，也算没闲着。"},
-     {"label":"收箱子了，以后不出远门", "set":"travel_packed", "effects":{"wisdom":1}, "echo":"行李箱推到柜子顶上。想看的时候，翻翻照片，也能想起那几天的风。"} ] },
+     {"label":"收箱子了，以后不出远门", "set":"travel_packed", "effects":{"wisdom":1}, "echo":"行李箱推到柜子顶上。想看的时候，翻翻照片。"} ] },
  { "id":"rt_travel_echo_kept", "min":58, "max":86, "require":"travel_kept", "flagAgeMin":{"flag":"travel_kept","years":1},
    "text":"相册又添了新的一本。晚辈来家里，翻着相册问东问西，你讲得起劲。讲到一半自己先笑了：那时候腿脚还真行。", "effects":{"relation":2,"freedom":1} },
  { "id":"rt_travel_echo_packed", "min":58, "max":86, "require":"travel_packed", "flagAgeMin":{"flag":"travel_packed","years":1},
@@ -104,7 +104,7 @@ window.GAME_PACKS = (window.GAME_PACKS || []).concat([
      {"label":"播做饭", "set":"stream_cook", "effects":{"freedom":2,"relation":1}, "echo":"你把灶台收拾干净，手机架在油烟机旁边。一道菜从洗到出锅，一步不落。有人问盐放多少，你说：尝。"},
      {"label":"就聊天，讲讲老事", "set":"stream_chat", "effects":{"freedom":2,"relation":1}, "echo":"没什么才艺，就坐着聊。讲讲年轻时候的事，讲讲这一行的老规矩。听的人不多，可留下来的，都听得认真。"} ] },
  { "id":"rt_stream_show", "min":56, "max":82, "minYear":2016, "state":{"workPhase":"retired"}, "require":"stream_begun", "flagAgeMin":{"flag":"stream_begun","years":1}, "flagAgeWithin":{"flag":"stream_begun","years":5},
-   "text":"播了一阵，有了些熟脸。有人天天来报到，进来先打一行字：来了。你把人家的名字都记住了。有一回你感冒停了两天，再开播的时候，满屏都在问：好了没？", "effects":{"relation":2,"freedom":1} },
+   "text":"播了一阵，有了些熟脸。有人天天来报到，进来先打一行字：来了。你把人家的名字都记住了。有一回你感冒停了两天，再开播的时候，好多人在问：好了没？", "effects":{"relation":2,"freedom":1} },
  { "id":"rt_stream_decide", "min":57, "max":84, "minYear":2016, "state":{"workPhase":"retired"}, "require":"stream_begun", "flagAgeMin":{"flag":"stream_begun","years":2}, "flagAgeWithin":{"flag":"stream_begun","years":8},
    "text":"有个做买卖的找上门，说你这直播间人气稳，想让你帮着卖点东西，给提成。你听完没马上答应，说回去想想。这事，得想清楚。",
    "choices":[
@@ -119,27 +119,27 @@ window.GAME_PACKS = (window.GAME_PACKS || []).concat([
  { "id":"rt_cruise_world", "min":56, "max":80, "state":{"workPhase":"retired"}, "stats":[{"k":"money","gt":69},{"k":"health","gt":49}], "flagAgeWithin":{"flag":"retired_begun","years":8},
    "text":"攒了这些年，手头头一回宽裕出一个整数。有人提了一句：这辈子还没坐过大船出过远海呢。这话说完，屋里静了一下。这个念头，以前想都不敢想。",
    "choices":[
-     {"label":"去，坐大船走一趟远的", "set":"cruise_world", "effects":{"money":-6,"freedom":5}, "echo":"船离港那天，你站在甲板上看了很久。海大得很，人站在上头，显得很小。这辈子想看一眼的东西，这回看见了。"},
+     {"label":"去，坐大船走一趟远的", "set":"cruise_world", "effects":{"money":-6,"freedom":5}, "echo":"船离港那天，你站在甲板上看了很久。海大得很，人站在上头，显得很小。这片海，总算亲眼见着了。"},
      {"label":"不坐船了，改坐慢火车", "set":"cruise_train", "effects":{"money":-2,"freedom":3}, "echo":"火车慢慢开，窗外的东西一样一样往后退。你说这样也好，看得清楚，还不用晕船。"} ] },
  { "id":"rt_cruise_near", "min":56, "max":80, "state":{"workPhase":"retired"}, "stats":[{"k":"money","gt":57},{"k":"health","gt":39}], "forbid":"cruise_world", "flagAgeWithin":{"flag":"retired_begun","years":8},
    "text":"手头的钱，紧巴一点，也够出去走一趟像样的了。有人说近海就有大船，几天就回来，不折腾。这话听着，心里动了一下。",
    "choices":[
-     {"label":"去，坐船走一趟近的", "set":"cruise_near", "effects":{"money":-4,"freedom":4}, "echo":"船上的日子慢。白天看海，晚上听广播。回来上岸的时候，腿还有点飘，心里是满的。"},
+     {"label":"去，坐船走一趟近的", "set":"cruise_near", "effects":{"money":-4,"freedom":4}, "echo":"船上的日子慢。白天看海，晚上听广播。回来上岸的时候，腿还有点飘，扶着栏杆站了一会儿。"},
      {"label":"不坐船了，改坐慢火车", "set":"cruise_train", "effects":{"money":-2,"freedom":3}, "echo":"火车慢慢开，窗外的东西一样一样往后退。你说这样也好，看得清楚，还不用晕船。"} ] },
  { "id":"rt_cruise_echo", "min":57, "max":84, "ctx":{"anyFlag":["cruise_world","cruise_near"]},
-   "text":"出去那一趟回来，日子紧了一阵。买菜挑时令的，衣服也不添新的了。可谁要问值不值，你都说值。这种事，一辈子就这么一回。", "effects":{"wisdom":1} },
+   "text":"出去那一趟回来，日子紧了一阵。买菜挑时令的，衣服也不添新的了。可谁要问值不值，你都说值。", "effects":{"wisdom":1} },
  // —— ④ 移居过冬：有老家房/租房过冬两张脸；第二年去不去由玩家再经手 ——
  { "id":"rt_winter_home", "min":56, "max":82, "state":{"workPhase":"retired"}, "ctx":{"house":"owned"}, "flagAgeWithin":{"flag":"retired_begun","years":10}, "set":"winter_begun",
    "text":"入冬之前，家里商量：今年冬天，回老家那边的房子住几个月。那边暖和，菜也便宜。老房子空着也是空着，回去住住，顺带收拾收拾。",
    "textState":{"spouse":{"single":"入冬之前，你盘算着：今年冬天，回老家那边的房子住几个月。那边暖和，菜也便宜。老房子空着也是空着，回去住住，顺带收拾收拾。","none":"入冬之前，你盘算着：今年冬天，回老家那边的房子住几个月。那边暖和，菜也便宜。老房子空着也是空着，回去住住，顺带收拾收拾。","divorced":"入冬之前，你盘算着：今年冬天，回老家那边的房子住几个月。那边暖和，菜也便宜。老房子空着也是空着，回去住住，顺带收拾收拾。","widowed":"入冬之前，你盘算着：今年冬天，回老家那边的房子住几个月。那边暖和，菜也便宜。老房子空着也是空着，回去住住，顺带收拾收拾。"}},
    "choices":[
      {"label":"去，过个暖冬", "set":"winter_moved", "effects":{"health":2,"money":-1}, "echo":"到了那边，早上不用穿那么厚。邻居还是老邻居，见了面先问：今年住多久？"},
-     {"label":"不去了，守着这边", "set":"winter_home", "effects":{"relation":1}, "echo":"想想还是没动。这边的冬天冷是冷，可人熟，路熟，心里踏实。"} ] },
+     {"label":"不去了，守着这边", "set":"winter_home", "effects":{"relation":1}, "echo":"想想还是没动。这边的冬天冷是冷，可住惯了，心里踏实。"} ] },
  { "id":"rt_winter_away", "min":56, "max":82, "state":{"workPhase":"retired"}, "forbid":"winter_begun", "flagAgeWithin":{"flag":"retired_begun","years":10}, "set":"winter_begun",
    "text":"入冬之前，老伙计说起他们去南方过冬的事：租个小房子，住几个月，天暖和，菜也新鲜。说的人多了，你也跟着盘算起来。",
    "choices":[
      {"label":"去，租个小房子住一冬", "set":"winter_moved", "effects":{"health":2,"money":-3}, "echo":"到了那边才发现，过冬的人真不少。早上一起去买菜，下午在楼下晒太阳，慢慢都混熟了。"},
-     {"label":"不去了，守着这边", "set":"winter_home", "effects":{"relation":1}, "echo":"想想还是没动。这边的冬天冷是冷，可人熟，路熟，心里踏实。"} ] },
+     {"label":"不去了，守着这边", "set":"winter_home", "effects":{"relation":1}, "echo":"想想还是没动。这边的冬天冷是冷，可住惯了，心里踏实。"} ] },
  { "id":"rt_winter_decide", "min":57, "max":84, "state":{"workPhase":"retired"}, "ctx":{"anyFlag":["winter_moved"]}, "flagAgeMin":{"flag":"winter_moved","years":1}, "flagAgeWithin":{"flag":"winter_moved","years":4},
    "text":"又快入冬了。去过冬的那地方，有人捎话来问：今年还来不来？房东还给你留着那间朝南的屋子。",
    "choices":[
@@ -175,7 +175,7 @@ window.GAME_PACKS = (window.GAME_PACKS || []).concat([
      {"label":"搭把手，管接送和晚饭", "set":"grandkid_help", "effects":{"relation":3,"freedom":-1}, "echo":"你管接送和晚饭。孩子下班回来，饭在锅里，小的洗完手等着开饭。一家人坐下来，热热闹闹。"},
      {"label":"出钱请人带，自己常去看看", "set":"grandkid_paid", "effects":{"money":-3,"relation":2}, "echo":"请的人是熟人介绍的，手脚干净。你隔三差五过去，带点吃的，陪小的玩一会儿。"} ] },
  { "id":"rt_grand_show", "min":56, "max":82, "state":{"kids":"has"}, "kidAgeMax":48, "require":"grandkid_begun", "flagAgeMin":{"flag":"grandkid_begun","years":1}, "flagAgeWithin":{"flag":"grandkid_begun","years":6},
-   "text":"这天孩子单位有急事，一个电话打过来：能不能过去顶几天，住家里，管小的吃住？你挂了电话就开始收拾东西，动作比年轻人还利索。",
+   "text":"这天孩子单位有急事，一个电话打过来：能不能过去顶几天，住家里，管小的吃住？你挂了电话就开始收拾东西，收拾得飞快。",
    "choices":[
      {"label":"去，住下顶一阵", "set":"kin_topup", "effects":{"relation":3,"freedom":-2}, "echo":"那几天你把小的作息摸得门儿清。孩子回来那天，看着收拾得整整齐齐的家，半天没说话。"},
      {"label":"白天去帮忙，晚上回自己家", "effects":{"relation":2,"freedom":-1}, "echo":"你白天过去做饭接送，晚上回自己家睡。两头跑是有点累，可心里踏实。"} ] },
@@ -193,7 +193,7 @@ window.GAME_PACKS = (window.GAME_PACKS || []).concat([
      {"label":"攒钱，过去住一阵", "set":"kin_far_visit", "effects":{"money":-4,"relation":3}, "echo":"签证、机票，一样一样办。落地那天，小的在视频里见惯了你，见了真人，先是躲，后来就往你怀里钻。"},
      {"label":"就视频里看着，多打打电话", "set":"kin_far_video", "effects":{"relation":2}, "echo":"你把视频的时间固定下来，每周那天那个点。那头的作息你都清楚，比闹钟还准。"} ] },
  { "id":"rt_grand_watch", "min":74, "max":92, "state":{"kids":"has"}, "kidAgeMin":42,
-   "text":"孙辈大了，有自己的事要忙，来得不像小时候那么勤了。可逢年过节，屋里一热闹，你坐在当中，看着这一大家子，心里是满的。",
+   "text":"孙辈大了，有自己的事要忙，来得不像小时候那么勤了。可逢年过节，屋里一热闹，你坐在当中，看着这一大家子。",
    "choices":[
      {"label":"把老照片整理出来，一人一份", "effects":{"relation":2}, "echo":"你把照片按年份理好，一人一份。小的们翻着看，问这问那，你讲了一下午。"},
      {"label":"就这么看着，挺好", "effects":{"wisdom":1}, "echo":"你不催他们常来。来了就高高兴兴，不来，就在电话里说说话。"} ] },
@@ -257,7 +257,7 @@ window.GAME_PACKS = (window.GAME_PACKS || []).concat([
      {"label":"接着送，远亲不如近邻", "set":"garden_shared", "effects":{"relation":2}, "echo":"你家的菜，半个楼道都吃过。谁家包饺子，都想着给你端一盘。"},
      {"label":"留着自己吃，偶尔送点", "effects":{"relation":1}, "echo":"你把多的腌起来、晒起来。冬天拿出来吃，味道一点不差。"} ] },
  { "id":"rt_garden_big", "min":57, "max":90, "require":"garden_grown", "flagAgeMin":{"flag":"garden_grown","years":1},
-   "text":"菜种出了规模，吃不完，送不完。有收菜的贩子找上门，说你这菜成色好，往后他包了。你看着这一片绿，心里有点感慨：老了老了，又种出个小营生。", "effects":{"money":2,"relation":1} },
+   "text":"菜种出了规模，吃不完，送不完。有收菜的贩子找上门，说你这菜成色好，往后他包了。你看着这一片绿，半天没吭声：老了老了，又种出个小营生。", "effects":{"money":2,"relation":1} },
  // —— ⑪ 守老屋修缮：门读住房=自有；本拍是「守的决定＋分年修」（p24_038 是
  // 单项改造，主题相邻不重复）；代价写进修完那年的平年 ——
  { "id":"rt_house_open", "w":2, "min":57, "max":88, "state":{"workPhase":"retired"}, "ctx":{"house":"owned"}, "set":"house_begun",
@@ -274,7 +274,7 @@ window.GAME_PACKS = (window.GAME_PACKS || []).concat([
  { "id":"rt_old_friends", "min":77, "max":88,
    "text":"八十岁上下了，老朋友打电话来：出来坐坐吧，就咱们几个。你们约在老地方。你出门前，把衣服换了又换，镜子前站了半天。",
    "choices":[
-     {"label":"去，赴这个约", "set":"old_friends_met", "effects":{"relation":3}, "echo":"一桌人，头发都白了。聊的还是年轻时候的事，谁说了个旧名字，大家都笑。散的时候互相说：保重，明年还聚。"},
+     {"label":"去，赴这个约", "set":"old_friends_met", "effects":{"relation":3}, "echo":"一桌人，头发都白了。聊的还是年轻时候的事，谁说起个老熟人的名字，大家都笑。散的时候互相说：保重，明年还聚。"},
      {"label":"身体不凑手，电话里聊", "set":"old_friends_met", "effects":{"relation":2}, "echo":"你在电话里跟他们聊了半个多小时。挂了电话，心里热乎乎的。人没去，话都说到了。"} ] },
  { "id":"rt_old_neighbors", "min":84, "max":98,
    "text":"能聚的老朋友越来越少了。好在楼下还有几个老邻居，见面点点头，下棋、晒太阳，话不多，可天天见。这天邻居端了碗刚炖的汤过来，敲敲你的门。",
@@ -292,7 +292,7 @@ window.GAME_PACKS = (window.GAME_PACKS || []).concat([
  { "id":"rt_skill_pass", "min":56, "max":82, "state":{"workPhase":"retired"}, "ctx":{"mainLine":["craft_work","factory_work","fab_work","med_work","teach_work","truck_work","med_hosp","nurse_work"]}, "flagAgeWithin":{"flag":"retired_begun","years":10},
    "text":"有个年轻人想跟你学手艺，是熟人托的。年轻人手生，可眼睛里有股认真劲，像你当年。你想了想，把工具箱打开了。",
    "choices":[
-     {"label":"教，把这一手传下去", "set":"skill_passed", "effects":{"relation":2,"growth":1}, "echo":"你教得严，年轻人学得苦。可慢慢的，那双手稳了。你看着，心里有个地方落地了。"},
+     {"label":"教，把这一手传下去", "set":"skill_passed", "effects":{"relation":2,"growth":1}, "echo":"你教得严，年轻人学得苦。可慢慢的，那双手稳了。你看着，点了点头。"},
      {"label":"就指点指点，不正式收", "effects":{"relation":1}, "echo":"你没正式收徒，可年轻人有问题就来问，你都答。这么一来二去，也教出去不少。"} ] },
  // 自加 2：搬到孩子附近——读孩子与住房账，落居住面旗（搬/守两向都不判低）
  { "id":"rt_move_kid", "w":2, "min":58, "max":84, "state":{"kids":"has"}, "stateAll":{"workPhase":"retired"}, "forbid":["kid_abroad"], "flagAgeWithin":{"flag":"retired_begun","years":16},
