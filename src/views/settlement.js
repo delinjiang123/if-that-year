@@ -1788,9 +1788,15 @@
     const tlView = playerFacts();
     const tlLog = tlView ? tlView.mergedLog : IFY.S.log;
     // F7（圆桌决议）：影子结局一句话前置到判词之后——取第八槽同一句（shadowFinalSentence，
-    // 与九槽「另一条路」槽同源同字），完整影子篇章仍留在九槽原位。无不受控 Track 的旧档不出此行。
+    // 与九槽「另一条路」槽同源同字）。2026-11-08 用户批准艾莉预判：结算页展示时收掉第八槽里
+    // 的同句，只保留揭价句；没有揭价句时第八槽不在本页重复出现。settlementSlots() 的原始
+    // 数据不变，典藏仍从槽里取完整终局句。无不受控 Track 的旧档不出前置行、也不收槽。
     const uncF7 = uncontrolledState();
     const shadowFirst = uncF7 ? shadowFinalSentence(uncF7) : "";
+    const displaySlots = settlementSlots().map(([k, t]) => {
+      if (k === "另一条路" && shadowFirst && t.startsWith(shadowFirst)) return [k, t.slice(shadowFirst.length)];
+      return [k, t];
+    }).filter(([k, t]) => !(k === "另一条路" && shadowFirst && !t));
     IFY.app().innerHTML = `<section class="card">${IFY.head(null, true)}
       <div class="rev" style="--d:0s">
       <h2>${IFY.finalAge()} 岁 · 这一局走完了</h2>
@@ -1799,7 +1805,7 @@
       </div>
       <div class="rev" style="--d:.12s">
       <p class="lifetags">${IFY.esc(lifeTags())}</p>
-      ${settlementSlots().map(([k, t]) => `<p class="slotline"><span class="slotk">${IFY.esc(k)}</span>${IFY.esc(t)}</p>`).join("")}
+      ${displaySlots.map(([k, t]) => `<p class="slotline"><span class="slotk">${IFY.esc(k)}</span>${IFY.esc(t)}</p>`).join("")}
       ${houseLine}
       <p class="verdict">${IFY.esc(v.text)}</p>
       ${shadowFirst ? `<p class="shadowfirst">${IFY.esc(shadowFirst)}</p>` : ""}
