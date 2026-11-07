@@ -1,4 +1,4 @@
-// 《如果那年》引擎 v0.55.2 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
+// 《如果那年》引擎 v0.56.0 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
 //      / 判词按数值形状拼装 / 全程自动存档可续玩 / 种子可输入、可复制分享链接 / 在线零 LLM 调用
 // [模块]本引擎自 v0.20.0 起拆为各自独立的模块文件（独立包装器 + window.IFY 共享命名空间），按 index.html 的顺序加载：本文件（建 IFY + 编排）→ src/world/apply.js → src/record.js → src/world/processes/{parents,spouse,work,place,health}.js → src/scheduler.js → src/views/{stream,year,shadow,settlement,share}.js → src/engine-boot.js（收尾，调用 IFY.renderStart()）。跨模块引用一律 IFY.<名>，可变量收编为 IFY 属性。
 window.IFY = window.IFY || {};
@@ -23,6 +23,9 @@ window.IFY = window.IFY || {};
   const hasPrologue = (era) => !!(PRO && typeof PRO.hasPack === "function" && PRO.hasPack(era));
 
   const ANA = window.GAME_ANALYTICS || { track() {}, flush() {} }; // 匿名埋点（v0.13.1，src/analytics.js；默认关闭、关闭时无操作，口径见 docs/ANALYTICS.md）
+  // 统计升级批（2026-11-08）：prologue_done / retire_reached 的本局已发标记——只存内存、
+  // 不进存档、不碰 RNG，新局（newGame / newGamePrologue）重置。口径见 docs/ANALYTICS.md。
+  let anaPrologueDone = false, anaRetireSent = false;
 
   const START_AGE = 22, MAX_AGE = 110; // v0.32.0 片 C：MAX_AGE 只保留机制语义＝保险丝（110 岁仍未掷中死亡才强制终局）；80 不再是任何终点，呈现轴一律按真实终局岁画（settlement 道路图 fix5 已如此），任何文案不许把某个岁数写成终点
 
@@ -849,6 +852,7 @@ window.IFY = window.IFY || {};
   // （出身结算不耗流，initParents 与影子出生仍在首次 step 之前、同序发生）。
   function newGame(seedStr, opts) {
     IFY.S = freshState(seedStr);
+    anaPrologueDone = false; anaRetireSent = false; // 统计升级批：新局重置埋点已发标记
     IFY.session = null; // v0.21 WP1：新局先弃旧会话，Track_B 出生时由 shadow-life 重建 session
     IFY.prevStats = null; IFY.resumeMark = false;
     IFY.streamFollow = true; IFY.streamSeen = 0; IFY.streamTop = 0;
@@ -875,6 +879,7 @@ window.IFY = window.IFY || {};
 
   function newGamePrologue(seedStr, eraId, birth, dailyRoute) {
     IFY.S = freshState(seedStr);
+    anaPrologueDone = false; anaRetireSent = false; // 统计升级批：新局重置埋点已发标记
     IFY.session = null; // v0.21 WP1：序章段会话由 save() 惰性建（tracks.B=null，蓝图 3.3），Track_B 待 22 岁汇入时出生
     IFY.prevStats = null; IFY.resumeMark = false;
     IFY.streamFollow = true; IFY.streamSeen = 0; IFY.streamTop = 0;
@@ -948,6 +953,9 @@ window.IFY = window.IFY || {};
   // 今日一局的待选路线在此预选高亮（.dailymark），仍须玩家点选，不自动落定。
   function renderRouteMerge() {
     IFY.curKind = "fork";
+    // 统计升级批：prologue_done——选路界面出现即序章走完（两条流程共用此拍）；
+    // 与 game_start（点选路线才发）的差就是选路前流失。本局只发一次（内存标记）。
+    if (!anaPrologueDone) { anaPrologueDone = true; ANA.track("prologue_done", { era: IFY.S.era }); }
     const trackName = { study: "念书", work: "打工", craft: "学手艺", home: "守家里" }[IFY.S.state.track] || "";
     app().innerHTML = `<section class="card">${prologueHead(START_AGE, "adult")}${IFY.autoPanelHtml()}
       <h2>22 岁 · 往后的路</h2>
@@ -1006,6 +1014,14 @@ window.IFY = window.IFY || {};
   // ---------- 主推进 ----------
   function step() {
     IFY.clearAutoContext(); // 每进一个新画面，先清掉上一个画面的自动上下文，防串局
+    // 统计升级批：retire_reached——退休只认单一事实源 S.retiredAt（applyState 在 workPhase→retired
+    // 流转时落定，见 world/apply.js）。不把埋点挂进 applyState：影子轨共用 applyState 且其上下文
+    // 禁用埋点（shadow-life.js 卷首注）；step() 是玩家本局的主推进，影子不走这里。本局只发一次
+    // （内存标记）；跨会话续玩已退休存档时可能再报一次，口径见 docs/ANALYTICS.md。
+    if (!anaRetireSent && IFY.S && typeof IFY.S.retiredAt === "number") {
+      anaRetireSent = true;
+      ANA.track("retire_reached", { era: IFY.S.era, route: IFY.S.route ? IFY.S.route.id : undefined, age: IFY.S.retiredAt });
+    }
     if (IFY.S.phase === "prologue") { renderPrologue(); return IFY.mountStream(); } // 序章段有自己的推进循环（v0.17.0）
     if (IFY.S.mergePending && !IFY.S.route && !IFY.S.death) { renderRouteMerge(); return IFY.mountStream(); } // v0.24.0：无序章开局（及待选路存档续玩）先落 22 岁汇入拍；序章汇入走上面 renderPrologue 分支，不经此路
     if (IFY.S.death) return renderDeath();

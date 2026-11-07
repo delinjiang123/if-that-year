@@ -9,6 +9,12 @@ const CFG = window.IFY_KEEPSAKE || {};
 const LS_KEY = "ify-keepsake-v1"; // 本机解锁记录：{unlocked:true, code, at}
 const PENDING_KEY = "ify-keepsake-pending"; // 领码页带回的码（sessionStorage，自动解锁失败时的预填兜底）
 
+// 统计升级批（2026-11-08）：典藏漏斗埋点——只报分类量与成败布尔，码值绝不进事件
+// （收集端白名单里 code_verify / gift_claim 也只有 ok 字段，双保险）。口径见 docs/ANALYTICS.md。
+function anaTrack(name, props) {
+try { if (IFY.ANA && IFY.ANA.track) IFY.ANA.track(name, props || {});} catch (e) {}
+}
+
 // ---------- 本机权益 ----------
 function keepsakeState() {
 try { const v = JSON.parse(localStorage.getItem(LS_KEY)); if (v && v.unlocked) return v;} catch (e) {}
@@ -1000,6 +1006,7 @@ rate_limited: "刚才试得太多次了。过几分钟再输，这个码不会�
 unconfigured: "核验服务还没配好。先把码收好，等通道开通了再输，一样有效。",
 };
 async function verifyCode(code) {
+const done = (r) => { anaTrack("code_verify", { ok:!!r.ok }); return r;}; // 统计升级批：核验返回后只报成败布尔
 let res;
 try {
 res = await fetch(CFG.verifyPath || "/api/verify-code", {
@@ -1008,14 +1015,14 @@ headers: { "content-type": "application/json"},
 body: JSON.stringify({ code}),
 });
 } catch (e) {
-return { ok: false, reason: "network"};
+return done({ ok: false, reason: "network"});
 }
 let data = null;
 try { data = await res.json();} catch (e) {}
-if (data && data.ok) return { ok: true, state: data.state || ""};
-if (res.status === 429) return { ok: false, reason: "rate_limited"};
-if (res.status === 503) return { ok: false, reason: "unconfigured"};
-return { ok: false, reason: (data && data.reason) || "not_found"};
+if (data && data.ok) return done({ ok: true, state: data.state || ""});
+if (res.status === 429) return done({ ok: false, reason: "rate_limited"});
+if (res.status === 503) return done({ ok: false, reason: "unconfigured"});
+return done({ ok: false, reason: (data && data.reason) || "not_found"});
 }
 function reasonText(reason) {
 if (reason === "network") return "现在连不上核验服务。检查一下网络再试，码不会因为这次失败作废。";
@@ -1043,6 +1050,7 @@ unavailable: "现在领不出来。过些时候再试。",
 network: "现在连不上。检查一下网络再试。",
 };
 async function requestGift(code) {
+const done = (r) => { anaTrack("gift_claim", { ok:!!r.ok }); return r;}; // 统计升级批：领取返回后只报成败布尔（领到的码值不进事件）
 let res;
 try {
 res = await fetch(CFG.giftPath || "/api/gift", {
@@ -1051,13 +1059,13 @@ headers: { "content-type": "application/json"},
 body: JSON.stringify({ code}),
 });
 } catch (e) {
-return { ok: false, reason: "network"};
+return done({ ok: false, reason: "network"});
 }
 let data = null;
 try { data = await res.json();} catch (e) {}
-if (data && data.ok && data.code) return { ok: true, code: data.code, again:!!data.again};
-if (res.status === 503 && data && data.reason === "unconfigured") return { ok: false, reason: "unconfigured"};
-return { ok: false, reason: (data && data.reason) || "unavailable"};
+if (data && data.ok && data.code) return done({ ok: true, code: data.code, again:!!data.again});
+if (res.status === 503 && data && data.reason === "unconfigured") return done({ ok: false, reason: "unconfigured"});
+return done({ ok: false, reason: (data && data.reason) || "unavailable"});
 }
 function giftShareText(shown) {
 return `我在《如果那年》里过完了一生，把典藏送你一份。打开 if-that-year.pages.dev 玩一局，到结算页展开「把这一生订成册子带走」，输这个码：${shown}，就能把你那一局的长图和纪录册导出来。`;
@@ -1127,8 +1135,8 @@ const img = renderKeepsakeImage(d, { scale: 1});
 img.className = "card-img";
 const box = IFY.el("ks-prevbox");
 box.innerHTML = ""; box.appendChild(img);
-IFY.el("ks-dl").addEventListener("click", () => downloadImage(img));
-IFY.el("ks-book").addEventListener("click", () => openBook(false));
+IFY.el("ks-dl").addEventListener("click", () => { downloadImage(img); anaTrack("keepsake_export", { kind: "image" }); });
+IFY.el("ks-book").addEventListener("click", () => { openBook(false); anaTrack("keepsake_export", { kind: "booklet" }); });
 wireGift();
 return;
 }
@@ -1153,6 +1161,8 @@ ${factHtml}
 <p class="hint">付完款会跳到领码页，码很大，抄下来也行。码丢了，凭付款订单能补发；换了设备，拿码再输一次就行。</p>
 <p class="hint">订完回到这一页，展开这一行就能导出——这一页先别关。</p>
 </div>`;
+const buyA = panel.querySelector(".ks-buy");
+if (buyA) buyA.addEventListener("click", () => anaTrack("buy_click", {}));
 IFY.el("ks-preview").addEventListener("click", () => {
 const box = IFY.el("ks-prevbox");
 box.innerHTML = "";
@@ -1163,6 +1173,7 @@ const note = document.createElement("p");
 note.className = "hint";
 note.textContent = "这是带水印的预览。订购后是无水印的全尺寸长图，外加能打印的纪录册。";
 box.appendChild(note);
+anaTrack("keepsake_preview", {}); // 统计升级批：水印预览生成完成
 });
 IFY.el("ks-unlock").addEventListener("click", async () => {
 const inp = IFY.el("ks-code");
@@ -1202,7 +1213,7 @@ if (!btn) return;
 btn.addEventListener("click", () => {
 const p = IFY.el("keepsake-panel");
 if (!p) return;
-if (p.hidden) { renderPanel(); p.hidden = false;} else p.hidden = true;
+if (p.hidden) { anaTrack("keepsake_open", { state: keepsakeUnlocked()? "unlocked": "locked" }); renderPanel(); p.hidden = false;} else p.hidden = true;
 });
 refreshDesk();
 }

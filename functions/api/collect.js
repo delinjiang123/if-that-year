@@ -16,6 +16,17 @@ const ALLOWED_FIELDS = {
   game_complete: ["era", "route", "endAge", "death", "ending", "tier"],
   share_click: ["action"],
   lives_view: [],
+  // 统计升级批（2026-11-08）：visit 的 ref 只许 hostname（客户端只发域名，完整 URL 绝不上行）；
+  // code_verify / gift_claim 只许 ok 布尔——码值不在字段表里，白名单自然剔除。
+  visit: ["ref"],
+  prologue_done: ["era"],
+  retire_reached: ["era", "route", "age"],
+  keepsake_open: ["state"],
+  keepsake_preview: [],
+  buy_click: [],
+  code_verify: ["ok"],
+  keepsake_export: ["kind"],
+  gift_claim: ["ok"],
 };
 
 function randomSuffix() {
@@ -70,6 +81,10 @@ export async function onRequestPost(context) {
     if (typeof name !== "string" || !(name in ALLOWED_FIELDS)) continue;
     const ev = { name };
     if (typeof raw.at === "string") ev.at = raw.at;
+    // vid 是全事件通用字段（与 name / at 同级）：客户端生成的随机访客编号，只用来在
+    // 汇总时数人数与回访。格式校验：字符串且长度 ≤64，不合规只丢这个字段、不丢事件。
+    // 服务端不记 IP、不读任何设备信号，vid 永不与码池/订单/账户关联（口径见 ANALYTICS.md）。
+    if (typeof raw.vid === "string" && raw.vid.length > 0 && raw.vid.length <= 64) ev.vid = raw.vid;
     for (const field of ALLOWED_FIELDS[name]) {
       if (Object.prototype.hasOwnProperty.call(raw, field)) {
         ev[field] = raw[field];
