@@ -175,6 +175,8 @@ button:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{o
 /* §3.2 选择留一拍：选中态（借 .segbtn.sel 的视觉语言）与未选变淡 */
 .choice.picked{background:#EAF0EA;border-color:var(--accent);border-left-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .choice.faded{opacity:.45}
+.glimpse #look.picked{box-shadow:inset 0 0 0 2px var(--accent)}
+.glimpse #skip.faded{opacity:.45}
 .pickednote{color:var(--accent);font-size:13px;margin:8px 0 0}
 /* 最近活过的人生（父亲事故热修）：开局屏历史行，一行一局，整行可点回看结算 */
 .histrow{display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:11px;padding:10px 14px;margin:6px 0;font:inherit;font-size:14px;cursor:pointer;color:var(--ink);line-height:1.55}

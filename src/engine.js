@@ -1,4 +1,4 @@
-// 《如果那年》引擎 v0.58.1 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
+// 《如果那年》引擎 v0.58.2 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
 //      / 判词按数值形状拼装 / 全程自动存档可续玩 / 种子可输入、可复制分享链接 / 在线零 LLM 调用
 // [模块]本引擎自 v0.20.0 起拆为各自独立的模块文件（独立包装器 + window.IFY 共享命名空间），按 index.html 的顺序加载：本文件（建 IFY + 编排）→ src/world/apply.js → src/record.js → src/world/processes/{parents,spouse,work,place,health}.js → src/scheduler.js → src/views/{stream,year,shadow,settlement,share}.js → src/engine-boot.js（收尾，调用 IFY.renderStart()）。跨模块引用一律 IFY.<名>，可变量收编为 IFY 属性。
 window.IFY = window.IFY || {};
@@ -425,16 +425,17 @@ window.IFY = window.IFY || {};
   }
 
   // ---------- 自动推进：偏好 (ify-prefs 为权威) + 单一全局计时器 ----------
-  // 三态：off=全手动；plain=只有无抉择年份自动走；full=无抉择年份自动走，普通事件小选项也自动选。
-  // 分岔、危机、稀有选项、影子瞥视在任何模式下都不设自动动作。step() 每次渲染前清旧计时，防串局。
+  // 三态：off=全手动；plain=只有无抉择年份自动走；full=无抉择年份自动走，所有选择点也自动选
+  // （本批扩围：事件/序章/选路/岔口/危机/稀有/进程拍/瞥视，全走与手动同一落定函数）。结算页不设自动动作。
+  // step() 每次渲染前清旧计时，防串局。
   IFY.prefs = loadPrefs();
 
   function loadPrefs() {
     try {
       const p = JSON.parse(localStorage.getItem(PREFS_KEY));
-      if (p && AUTO_MODES.some(([k]) => k === p.mode) && SPEED_CPS[p.speed]) return { mode: p.mode, speed: p.speed, autoHintSeen: !!p.autoHintSeen, foldIntroSeen: !!p.foldIntroSeen };
+      if (p && AUTO_MODES.some(([k]) => k === p.mode) && SPEED_CPS[p.speed]) return { mode: p.mode, speed: p.speed, autoHintSeen: !!p.autoHintSeen, foldIntroSeen: !!p.foldIntroSeen, foldOpen: !!p.foldOpen, foldTouched: !!p.foldTouched, autoPanelOpen: !!p.autoPanelOpen };
     } catch (e) { /* 旧结构或损坏数据不报错，按新默认走 */ }
-    return { mode: DEFAULT_AUTO_MODE, speed: "mid", autoHintSeen: false, foldIntroSeen: false }; // foldIntroSeen（v0.24.0 首页重做）：「设置与对局」折叠区首局后自动展开一次的已见标记；旧 prefs 缺字段按未见过处理，无迁移
+    return { mode: DEFAULT_AUTO_MODE, speed: "mid", autoHintSeen: false, foldIntroSeen: false, foldOpen: false, foldTouched: false, autoPanelOpen: false }; // foldIntroSeen（v0.24.0 首页重做）：「设置与对局」折叠区首局后自动展开一次的已见标记；旧 prefs 缺字段按未见过处理，无迁移。foldOpen/foldTouched/autoPanelOpen（本批）：两处设置面板的开合存进 prefs——foldTouched=玩家手动切换过开始页折叠，之后以存住的状态为准；旧 prefs 缺字段一律按 false 补齐
   }
 
   function savePrefs() {
@@ -450,7 +451,7 @@ window.IFY = window.IFY || {};
   IFY.autoText = null;   // 当前画面若可自动推进，其正文；必停画面恒为 null
   IFY.autoAction = null; // 当前画面可执行的自动动作（advance 或普通事件自动选）
   IFY.autoKind = null;   // "advance" | "choice"
-  IFY.autoPanelOpen = false; // v0.20.4 局内「推进设置」面板展开态（重渲染不自动合上）
+  IFY.autoPanelOpen = !!IFY.prefs.autoPanelOpen; // v0.20.4 局内「推进设置」面板展开态（重渲染不自动合上）；本批起开合存进 prefs，刷新/重开页面也保持上次状态
   IFY.autoTotal = 0;     // 本屏总停留（细线用，choice 模式含最后 400ms 预高亮段）
   // §4.1 倒计时细线：纯计时账（总时长/已耗），不读布局，暂停冻结、恢复续走、切档由 scheduleAuto 干净重启
   IFY.lineTotal = 0;
@@ -486,6 +487,7 @@ window.IFY = window.IFY || {};
     const tog = t.closest("#autosetbtn"); // v0.20.4 局内推进设置面板的展开/收起
     if (tog) {
       IFY.autoPanelOpen = !IFY.autoPanelOpen;
+      IFY.prefs.autoPanelOpen = IFY.autoPanelOpen; savePrefs(); // 本批：开合存进 prefs，与开始页折叠同一规矩
       const p = el("autopanel");
       if (p) p.hidden = !IFY.autoPanelOpen;
       tog.setAttribute("aria-expanded", String(IFY.autoPanelOpen));
@@ -638,8 +640,11 @@ window.IFY = window.IFY || {};
       else if (spx.earlyStep === 0 && !spx.earlyOn) savedAge = 0; // 链已建但一幕未演＝停在出生幕（来历幕物化时就建链，earlyBuilt 出生屏上已是 true）
     }
     const linkDriven = !!(seedParam || cardsParam);
+    // 本批：折叠开合存进 prefs——玩家手动切换过（foldTouched）之后，renderStart 一律读存住的状态，
+    // 重画、点年代卡等任何开始页内交互都不许改它；没切换过时仍走原介绍逻辑（链接带入展开 / 首局后展开一次）。
     let foldOpen = false, foldGuide = false;
-    if (linkDriven) foldOpen = true;
+    if (IFY.prefs.foldTouched) foldOpen = !!IFY.prefs.foldOpen;
+    else if (linkDriven) foldOpen = true;
     else if (livesCount > 0 && !IFY.prefs.foldIntroSeen) { foldOpen = true; foldGuide = true; IFY.prefs.foldIntroSeen = true; savePrefs(); }
     let dailyCtx = null; // 今日一局的待选路线（{eraId, routeId}）：点今日一局时记下，开局时随存档带进局内，22 岁选路拍预选高亮、仍须点选
     app().innerHTML = `
@@ -717,6 +722,7 @@ window.IFY = window.IFY || {};
               <p class="hint" id="dailyline"></p>
               <p class="hint tomorrow-note">明天一局：${tomDaily.era.label} · ${hasPrologue(tomDaily.era.id) ? "从小时候开始" : esc(tomDaily.route.name)}。</p>
             </div>
+            <div class="foldcloserow"><button type="button" class="ghost" id="foldclose">收起</button></div>
           </div>
         </div>
       </section>
@@ -733,12 +739,15 @@ window.IFY = window.IFY || {};
     const llBtn = el("liveslink"); // v0.24.0：首访（无存档、无已完成局）不渲染此入口，取不到时跳过接线
     if (llBtn) llBtn.addEventListener("click", () => { ANA.track("lives_view", {}); IFY.renderLives(); });
     const foldBody = el("foldbody"), foldBlock = el("foldblock");
-    el("foldtoggle").addEventListener("click", () => {
-      const open = foldBody.hidden;
+    const setFold = (open) => { // 本批：折叠头与底部「收起」走同一条切换路径——切换即存 prefs 并置手动标记，此后以存住的状态为准
       foldBody.hidden = !open;
       foldBlock.classList.toggle("open", open);
       el("foldtoggle").setAttribute("aria-expanded", String(open));
-    });
+      IFY.prefs.foldOpen = open; IFY.prefs.foldTouched = true; savePrefs();
+    };
+    el("foldtoggle").addEventListener("click", () => setFold(foldBody.hidden));
+    const foldCloseBtn = el("foldclose");
+    if (foldCloseBtn) foldCloseBtn.addEventListener("click", () => setFold(false));
     // 存档还原（续玩与历史回看共用同一条路，防两处口径漂移）：两形状识别＋逐字段回填＋三股流
     // 复位都在这里做完；坏档（缺 seedStr 且无合法 rngA）返回 null，调用方各自处置。
     const restoreFromSave = (raw) => {
@@ -998,23 +1007,38 @@ window.IFY = window.IFY || {};
       IFY.armAuto(view.text, goNext);
       return;
     }
+    const choosePrologueChoice = (i, autoSelected) => {
+      const c = view.choices[i];
+      IFY.clearAuto();
+      applyEffects(c.effects);
+      if (c.set) IFY.S.flags[c.set] = true;
+      IFY.applyState(c);
+      IFY.rec("prologue", view.id, { choice: c.label, set: c.set || null });
+      if (view.isFork) view.choices.forEach((o, j) => { if (j !== i) IFY.S.unchosen.push({ kind: "track", age: 16, label: o.label }); });
+      if (autoSelected) IFY.S.log.push(`${view.age} 岁 · 自动选：${c.label}`);
+      const r = PRO.choose(IFY.S, i);
+      if (r.gapFx && Object.keys(r.gapFx).length) applyEffects(r.gapFx);
+      const box = document.querySelector(".choices");
+      if (box) box.remove();
+      el("echo").innerHTML = `${IFY.deltaLine()}${autoSelected ? `<p class="autonote">自动推进 · 已选「${esc(c.label)}」</p>` : `<p class="pickednote">已选「${esc(c.label)}」</p>`}${IFY.echoText(c) ? `<p class="echo">${esc(IFY.echoText(c))}</p>` : ""}<button class="primary" id="cont">继续</button>`;
+      save(); el("cont").addEventListener("click", () => step());
+      if (autoSelected) IFY.armAuto(IFY.echoText(c) || c.label, () => step(), "advance"); // 照事件屏：自动选后回响「继续」接着 arm
+    };
     document.querySelectorAll(".choice").forEach((b) => b.addEventListener("click", () => {
       const i = Number(b.dataset.i);
-      const c = view.choices[i];
-      IFY.choiceBeat(b, () => {
-        applyEffects(c.effects);
-        if (c.set) IFY.S.flags[c.set] = true;
-        IFY.applyState(c);
-        IFY.rec("prologue", view.id, { choice: c.label, set: c.set || null });
-        if (view.isFork) view.choices.forEach((o, j) => { if (j !== i) IFY.S.unchosen.push({ kind: "track", age: 16, label: o.label }); });
-        const r = PRO.choose(IFY.S, i);
-        if (r.gapFx && Object.keys(r.gapFx).length) applyEffects(r.gapFx);
-        const box = document.querySelector(".choices");
-        if (box) box.remove();
-        el("echo").innerHTML = `${IFY.deltaLine()}<p class="pickednote">已选「${esc(c.label)}」</p>${IFY.echoText(c) ? `<p class="echo">${esc(IFY.echoText(c))}</p>` : ""}<button class="primary" id="cont">继续</button>`;
-        save(); el("cont").addEventListener("click", () => step());
-      });
+      IFY.choiceBeat(b, () => choosePrologueChoice(i, false));
     }));
+    // 全程自动选扩围（本批）：序章选项与事件屏同一套两段式——主计时到点先预高亮 400ms，再走同一落定函数
+    IFY.armAuto(view.text, () => {
+      const idx = Math.floor(IFY.rng() * view.choices.length);
+      const btns = document.querySelectorAll(".choices .choice");
+      btns.forEach((o, j) => {
+        o.disabled = true;
+        o.classList.toggle("picked", j === idx);
+        o.classList.toggle("faded", j !== idx);
+      });
+      IFY.autoPhase2 = setTimeout(() => { IFY.autoPhase2 = null; choosePrologueChoice(idx, true); }, 400);
+    }, "choice");
   }
 
   // 22 岁汇入：五路线在这里选；出身（家底+性子+时代）同一拍结算，叠加顺序与旧开局一致（初值 → 出身 → 路线）
@@ -1026,16 +1050,33 @@ window.IFY = window.IFY || {};
     // 与 game_start（点选路线才发）的差就是选路前流失。本局只发一次（内存标记）。
     if (!anaPrologueDone) { anaPrologueDone = true; ANA.track("prologue_done", { era: IFY.S.era }); }
     const trackName = { study: "念书", work: "打工", craft: "学手艺", home: "守家里" }[IFY.S.state.track] || "";
+    const mergeText = `${trackName ? `这几年，你是${trackName}过来的。` : ""}到了 22 岁，路一下子宽了。往哪边走，这一回你自己定。没选的那几条也不会消失——往后隔些年，它们还会远远地看你一眼。`;
     app().innerHTML = `<section class="card">${prologueHead(START_AGE, "adult")}${IFY.autoPanelHtml()}
       <h2>22 岁 · 往后的路</h2>
-      <p>${trackName ? `这几年，你是${trackName}过来的。` : ""}到了 22 岁，路一下子宽了。往哪边走，这一回你自己定。没选的那几条也不会消失——往后隔些年，它们还会远远地看你一眼。</p>
+      <p>${mergeText}</p>
       <div class="choices">${D.routes.map((r, i) => `<button class="choice${IFY.S.dailyRoute === r.id ? " dailymark" : ""}" data-i="${i}"><b>${esc(routeNameFork(r))}</b><small>${esc(routeDescFork(r))}</small></button>`).join("")}</div>
       </section>`;
     IFY.finishRender();
+    const chooseRoute = (route, autoSelected) => {
+      IFY.clearAuto();
+      if (autoSelected) IFY.S.log.push(`22 岁 · 自动选：${route.name}`);
+      mergeIntoRoute(route); // 手动与自动走同一条落定路径（出身结算/路线落账/影子出生都在里面，一格不差）
+    };
     document.querySelectorAll(".choice").forEach((b) => b.addEventListener("click", () => {
       const route = D.routes[Number(b.dataset.i)];
-      IFY.choiceBeat(b, () => mergeIntoRoute(route));
+      IFY.choiceBeat(b, () => chooseRoute(route, false));
     }));
+    // 全程自动选扩围（本批）：选路与事件屏同一套两段式——今日一局的 .dailymark 不特殊照顾，纯随机抽
+    IFY.armAuto(mergeText, () => {
+      const idx = Math.floor(IFY.rng() * D.routes.length);
+      const btns = document.querySelectorAll(".choices .choice");
+      btns.forEach((o, j) => {
+        o.disabled = true;
+        o.classList.toggle("picked", j === idx);
+        o.classList.toggle("faded", j !== idx);
+      });
+      IFY.autoPhase2 = setTimeout(() => { IFY.autoPhase2 = null; chooseRoute(D.routes[idx], true); }, 400);
+    }, "choice");
   }
 
   function mergeIntoRoute(route) {
@@ -1182,6 +1223,10 @@ window.IFY = window.IFY || {};
     </section>`;
     IFY.finishRender();
     el("toend").addEventListener("click", IFY.renderEnd);
+    // 本批施工判断（与任务书「死亡屏不许自动点任何按钮」一句有张力，报告里单独标出、给出回退点）：
+    // 死亡屏是无抉择屏，按 advance 规矩自动进结算——否则验收「零点击走到结算页」在最后一屏断掉。
+    // 结算页本身不设任何自动动作（到了结算就停，「再活一次」之类绝不自动点）。plain/full 流过，off 不动。
+    IFY.armAuto(IFY.S.death.text, () => IFY.renderEnd());
   }
 
   const TIER_ORDER = { legendary: 0, epic: 1, rare: 2 };

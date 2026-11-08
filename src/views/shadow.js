@@ -370,9 +370,10 @@ ${firstLook? glimpseIntroHtml(): ""}
 <div class="row"><button class="primary" id="look">看细节</button><button class="ghost" id="skip">不看，继续过日子</button></div>
 <div id="detail"></div></section>`;
 IFY.finishRender();
-IFY.el("skip").addEventListener("click", () => { const mSkip = IFY.playerMeta(); mSkip.glimpsesSkipped += 1; IFY.S.glimpsesSkipped = mSkip.glimpsesSkipped; /* v0.21 WP1：计数权威在 meta，state 同名字段只作同形镜像 */ IFY.ANA.track("glimpse", { age: IFY.S.age, seen: false}); IFY.S.log.push(`${IFY.S.age} 岁 · 没有去看另一条路`); IFY.rec("glimpse", "skip"); IFY.advance();});
+const doSkip = () => { const mSkip = IFY.playerMeta(); mSkip.glimpsesSkipped += 1; IFY.S.glimpsesSkipped = mSkip.glimpsesSkipped; /* v0.21 WP1：计数权威在 meta，state 同名字段只作同形镜像 */ IFY.ANA.track("glimpse", { age: IFY.S.age, seen: false}); IFY.S.log.push(`${IFY.S.age} 岁 · 没有去看另一条路`); IFY.rec("glimpse", "skip"); IFY.advance(); };
+IFY.el("skip").addEventListener("click", doSkip);
 // 注：悼念模式下点「不看」同样只记跳过——memorialShown 不置位，悼念顺延到下一个瞥视点，不许被跳过吃掉（蓝图 6.3）。
-IFY.el("look").addEventListener("click", () => {
+const doLook = (autoSelected) => {
 const mSeen = IFY.playerMeta(); mSeen.glimpsesSeen += 1; IFY.S.glimpsesSeen = mSeen.glimpsesSeen; /* v0.21 WP1：计数权威在 meta，state 同名字段只作同形镜像 */ IFY.ANA.track("glimpse", { age: IFY.S.age, seen: true});
 // shownFacts 记账（蓝图 6.2b）：实际呈现的素材（id+age）与事实行（槽名）落 meta，供二期揭价对着清单选材
 const meta = IFY.playerMeta();
@@ -428,10 +429,21 @@ else console.error("交换提问：handControl 返回失败，提问块保留待
 });
 }
 IFY.save();
-});
+if (autoSelected) IFY.armAuto(mainText || "另一条路上的你", () => IFY.advance(), "advance"); // 全程自动：详情屏按 advance 流过（不写反思、不点交换提问，走 cont2 的路）
+};
+IFY.el("look").addEventListener("click", () => doLook(false));
+// 全程自动选扩围（本批补漏）：瞥视屏无 arm 则零点击整局必卡。full 模式恒自动「看」——不随机抽看/不看：
+// 抽到「不看」的话自动局全程见不到影子，撞产品主旨（活完一生，看见没走的那条路）。不另写「自动选」记账行：
+// 本屏不是选项屏，看/不看的手动记账行（影子：…/没有去看）照旧由 doLook/doSkip 自己落。
+IFY.armAuto(`${routeName}，那条路上的你。`, () => {
+const lookBtn = IFY.el("look"), skipBtn = IFY.el("skip");
+if (lookBtn) lookBtn.classList.add("picked");
+if (skipBtn) skipBtn.classList.add("faded");
+IFY.autoPhase2 = setTimeout(() => { IFY.autoPhase2 = null; doLook(true); }, 400);
+}, "choice");
 }
 
-// ---------- legacy 瞥视（无 Track_B 的旧档局）：现行模板逻辑，一行未动 ----------
+// ---------- legacy 瞥视（无 Track_B 的旧档局）：呈现与落账逻辑照旧，本批仅加全程自动「看」 ----------
 function renderGlimpseLegacy(stage) {
 IFY.curKind = "glimpse";
 IFY.S.flatCarry = null; // 瞥视年不是平年：挂起的平年只留在流水账里
@@ -446,8 +458,9 @@ ${firstLook? glimpseIntroHtml(): ""}
 <div class="row"><button class="primary" id="look">看细节</button><button class="ghost" id="skip">不看，继续过日子</button></div>
 <div id="detail"></div></section>`;
 IFY.finishRender();
-IFY.el("skip").addEventListener("click", () => { const mSkip = IFY.playerMeta(); mSkip.glimpsesSkipped += 1; IFY.S.glimpsesSkipped = mSkip.glimpsesSkipped; /* v0.21 WP1：计数权威在 meta，state 同名字段只作同形镜像 */ IFY.ANA.track("glimpse", { age: IFY.S.age, seen: false}); IFY.S.log.push(`${IFY.S.age} 岁 · 没有去看另一条路`); IFY.rec("glimpse", "skip"); IFY.advance();});
-IFY.el("look").addEventListener("click", () => {
+const doSkip = () => { const mSkip = IFY.playerMeta(); mSkip.glimpsesSkipped += 1; IFY.S.glimpsesSkipped = mSkip.glimpsesSkipped; /* v0.21 WP1：计数权威在 meta，state 同名字段只作同形镜像 */ IFY.ANA.track("glimpse", { age: IFY.S.age, seen: false}); IFY.S.log.push(`${IFY.S.age} 岁 · 没有去看另一条路`); IFY.rec("glimpse", "skip"); IFY.advance(); };
+IFY.el("skip").addEventListener("click", doSkip);
+const doLook = (autoSelected) => {
 const mSeen = IFY.playerMeta(); mSeen.glimpsesSeen += 1; IFY.S.glimpsesSeen = mSeen.glimpsesSeen; /* v0.21 WP1：计数权威在 meta，state 同名字段只作同形镜像 */ IFY.ANA.track("glimpse", { age: IFY.S.age, seen: true});
 (IFY.S.shadowSeenTexts = IFY.S.shadowSeenTexts || []).push(text);
 IFY.rec("glimpse", "seen", { text});
@@ -462,7 +475,16 @@ const done = () => { const v = (IFY.el("refl").value || "").trim(); if (v) IFY.p
 IFY.el("cont").addEventListener("click", done);
 IFY.el("cont2").addEventListener("click", IFY.advance);
 IFY.save();
-});
+if (autoSelected) IFY.armAuto(text, () => IFY.advance(), "advance"); // 全程自动：详情屏按 advance 流过（不写反思，走 cont2 的路）
+};
+IFY.el("look").addEventListener("click", () => doLook(false));
+// 全程自动选扩围（本批补漏）：与真账瞥视同一套——full 模式恒自动「看」，不随机抽看/不看（理由见 renderGlimpseReal 处注）
+IFY.armAuto(`${sh.name}，今年：${sh.teaser[stage]}`, () => {
+const lookBtn = IFY.el("look"), skipBtn = IFY.el("skip");
+if (lookBtn) lookBtn.classList.add("picked");
+if (skipBtn) skipBtn.classList.add("faded");
+IFY.autoPhase2 = setTimeout(() => { IFY.autoPhase2 = null; doLook(true); }, 400);
+}, "choice");
 }
 
 function renderGlimpse(stage) {

@@ -18,20 +18,35 @@
                   : `<button class="primary" id="cont">过一年</button>`}</section>`;
     IFY.finishRender();
     if (!r.choices) { IFY.save(); IFY.el("cont").addEventListener("click", IFY.advance); IFY.armAuto(rtext); return; }
+    const chooseRareChoice = (c, autoSelected) => {
+      IFY.clearAuto();
+      IFY.applyEffects(c.effects);
+      if (c.set) IFY.S.flags[c.set] = true;
+      if (typeof IFY.houseOnBuyFlag === "function") IFY.houseOnBuyFlag(IFY.S, c.set, c);
+      IFY.applyState(c);
+      IFY.rec("rare", r.id, { choice: c.label, set: c.set || null, fx: IFY.S.lastDelta });
+      if (autoSelected) IFY.S.log.push(`${IFY.S.age} 岁 · 自动选：${c.label}`);
+      document.querySelector(".choices").remove();
+      IFY.el("echo").innerHTML = `${IFY.deltaLine()}${autoSelected ? `<p class="autonote">自动推进 · 已选「${IFY.esc(c.label)}」</p>` : `<p class="pickednote">已选「${IFY.esc(c.label)}」</p>`}<p class="echo">${IFY.esc(echoText(c))}</p><button class="primary" id="cont">过一年</button>`;
+      IFY.refreshStatsBar(); // fx-fix：稀有事件选项落账后就地刷条（与事件/危机的 v0.31.2 修复对齐，此前漏了这一处）
+      IFY.save(); IFY.el("cont").addEventListener("click", IFY.advance);
+      if (autoSelected) IFY.armAuto(echoText(c) || c.label, IFY.advance, "advance");
+    };
     document.querySelectorAll(".choice").forEach((b) => b.addEventListener("click", () => {
       const c = r.choices[Number(b.dataset.i)];
-      IFY.choiceBeat(b, () => {
-        IFY.applyEffects(c.effects);
-        if (c.set) IFY.S.flags[c.set] = true;
-        if (typeof IFY.houseOnBuyFlag === "function") IFY.houseOnBuyFlag(IFY.S, c.set, c);
-        IFY.applyState(c);
-        IFY.rec("rare", r.id, { choice: c.label, set: c.set || null, fx: IFY.S.lastDelta });
-        document.querySelector(".choices").remove();
-        IFY.el("echo").innerHTML = `${IFY.deltaLine()}<p class="pickednote">已选「${IFY.esc(c.label)}」</p><p class="echo">${IFY.esc(echoText(c))}</p><button class="primary" id="cont">过一年</button>`;
-        IFY.refreshStatsBar(); // fx-fix：稀有事件选项落账后就地刷条（与事件/危机的 v0.31.2 修复对齐，此前漏了这一处）
-        IFY.save(); IFY.el("cont").addEventListener("click", IFY.advance);
-      });
+      IFY.choiceBeat(b, () => chooseRareChoice(c, false));
     }));
+    // 全程自动选扩围（本批）：稀有选项与事件屏同一套两段式——主计时到点先预高亮 400ms，再走同一落定函数
+    IFY.armAuto(rtext, () => {
+      const idx = Math.floor(IFY.rng() * r.choices.length);
+      const btns = document.querySelectorAll(".choices .choice");
+      btns.forEach((o, j) => {
+        o.disabled = true;
+        o.classList.toggle("picked", j === idx);
+        o.classList.toggle("faded", j !== idx);
+      });
+      IFY.autoPhase2 = setTimeout(() => { IFY.autoPhase2 = null; chooseRareChoice(r.choices[idx], true); }, 400);
+    }, "choice");
   }
 
   // 文本状态变体（v0.19.0 三相，通用形状）：条目可带 textState、选项可带 echoState，形状同为 { 域: { 状态值: 文本 } }——
@@ -199,25 +214,40 @@
     IFY.app().innerHTML = `<section class="card">${IFY.head()}<h2>${IFY.esc(fork.title)}</h2>${covPrefix}<p>${IFY.esc(forkText)}</p>
       <div class="choices">${vis.map(([c, i]) => `<button class="choice" data-i="${i}">${IFY.esc(labelText(c))}</button>`).join("")}</div></section>`;
     IFY.finishRender();
+    const chooseForkChoice = (c, autoSelected) => {
+      IFY.clearAuto();
+      IFY.applyEffects(c.effects);
+      if (c.set) IFY.S.flags[c.set] = true;
+      if (typeof IFY.houseOnBuyFlag === "function") IFY.houseOnBuyFlag(IFY.S, c.set, c);
+      IFY.applyState(c);
+      IFY.applyTempDelta(c.temp); // 温度接点（v0.17.0）：选项可带 temp 增减，只改质地字段
+      if (fork.id === "fork_kid") IFY.kidForkCovenant(c); // 孩子线批次 S4：fork_kid 落点记账（约的登记/再问补旗，旗与状态走上方通用序）
+      fork.choices.forEach((o) => { if (o !== c) IFY.S.unchosen.push({ kind: "fork", age: fork.age, label: labelText(o) }); });
+      if (typeof IFY.noteSplitFork === "function") IFY.noteSplitFork(IFY.S, fork); // 分家记账（丙案第一步）：换轨级岔口覆盖分家点（只记账，不声称影子走了未选支）
+      IFY.S.log.push(`${fork.age} 岁 · ${fork.title.split("·")[1].trim()}：${labelText(c)}`);
+      if (autoSelected) IFY.S.log.push(`${fork.age} 岁 · 自动选：${labelText(c)}`);
+      IFY.rec("fork", fork.id || ("fork" + fork.age), { choice: labelText(c), set: c.set || null, fx: IFY.S.lastDelta });
+      IFY.S.pendingFork = { age: fork.age, label: labelText(c), echo: echoText({ ...c, echo: IFY.spouseText(c, "echo") }) || null }; // §3.3 复述拍：先存下，续玩回到这一拍而不是重选
+      IFY.save();
+      renderForkEcho();
+      IFY.mountStream();
+    };
     document.querySelectorAll(".choice").forEach((b) => b.addEventListener("click", () => {
       const c = fork.choices[Number(b.dataset.i)];
-      IFY.choiceBeat(b, () => {
-        IFY.applyEffects(c.effects);
-        if (c.set) IFY.S.flags[c.set] = true;
-        if (typeof IFY.houseOnBuyFlag === "function") IFY.houseOnBuyFlag(IFY.S, c.set, c);
-        IFY.applyState(c);
-        IFY.applyTempDelta(c.temp); // 温度接点（v0.17.0）：选项可带 temp 增减，只改质地字段
-        if (fork.id === "fork_kid") IFY.kidForkCovenant(c); // 孩子线批次 S4：fork_kid 落点记账（约的登记/再问补旗，旗与状态走上方通用序）
-        fork.choices.forEach((o) => { if (o !== c) IFY.S.unchosen.push({ kind: "fork", age: fork.age, label: labelText(o) }); });
-        if (typeof IFY.noteSplitFork === "function") IFY.noteSplitFork(IFY.S, fork); // 分家记账（丙案第一步）：换轨级岔口覆盖分家点（只记账，不声称影子走了未选支）
-        IFY.S.log.push(`${fork.age} 岁 · ${fork.title.split("·")[1].trim()}：${labelText(c)}`);
-        IFY.rec("fork", fork.id || ("fork" + fork.age), { choice: labelText(c), set: c.set || null, fx: IFY.S.lastDelta });
-        IFY.S.pendingFork = { age: fork.age, label: labelText(c), echo: echoText({ ...c, echo: IFY.spouseText(c, "echo") }) || null }; // §3.3 复述拍：先存下，续玩回到这一拍而不是重选
-        IFY.save();
-        renderForkEcho();
-        IFY.mountStream();
-      });
+      IFY.choiceBeat(b, () => chooseForkChoice(c, false));
     }));
+    // 全程自动选扩围（本批）：大岔口与事件屏同一套两段式——抽选只在玩家看得见的选项（vis）里抽，
+    // 主计时到点先预高亮 400ms，再走同一落定函数；plain 模式 kind 门控照旧不触发、停住等玩家。
+    IFY.armAuto(forkText, () => {
+      const p = Math.floor(IFY.rng() * vis.length);
+      const btns = document.querySelectorAll(".choices .choice");
+      btns.forEach((o, j) => {
+        o.disabled = true;
+        o.classList.toggle("picked", j === p);
+        o.classList.toggle("faded", j !== p);
+      });
+      IFY.autoPhase2 = setTimeout(() => { IFY.autoPhase2 = null; chooseForkChoice(vis[p][0], true); }, 400);
+    }, "choice");
   }
 
   // §3.3 完整版（v0.10.0）：分岔选后不直接进下一年，先留一拍专属回响（文案在 events.js 各分岔选项的 echo 字段；旧存档无 echo 时回落最小版复述）。
@@ -226,7 +256,11 @@
     const pf = IFY.S.pendingFork;
     IFY.app().innerHTML = `<section class="card">${IFY.head()}${IFY.deltaLine()}<p class="echo">${IFY.esc(pf.echo || ("你选了「" + pf.label + "」"))}</p><button class="primary" id="cont">过一年</button></section>`;
     IFY.finishRender();
-    IFY.el("cont").addEventListener("click", () => { IFY.S.pendingFork = null; IFY.save(); IFY.advance(); });
+    const goNext = () => { IFY.S.pendingFork = null; IFY.save(); IFY.advance(); };
+    IFY.el("cont").addEventListener("click", goNext);
+    // 全程自动选扩围（本批）：回响屏是无抉择屏，按 advance 规矩 arm——不然自动选完岔口会卡在这一屏，
+    // 零点击整局断在这里。plain/full 都可流过；手动落选后模式多半已被夺回手势关掉，arm 只是登记、不误触发。
+    IFY.armAuto(pf.echo || ("你选了「" + pf.label + "」"), goNext);
   }
 
   function renderCrisis(c) {
@@ -236,20 +270,35 @@
     IFY.app().innerHTML = `<section class="card crisis">${IFY.head("身体和日子，都得当回事")}<h2>${IFY.S.age} 岁 · ${IFY.esc(c.title)}</h2><p>${IFY.esc(c.text)}</p>
       <div class="choices">${c.choices.map((ch, i) => `<button class="choice" data-i="${i}">${IFY.esc(ch.label)}</button>`).join("")}</div><div id="echo"></div></section>`;
     IFY.finishRender();
+    const chooseCrisisChoice = (ch, autoSelected) => {
+      IFY.clearAuto();
+      IFY.applyEffects(ch.effects); IFY.S.crisisUsed[c.key] = true;
+      if (ch.set) IFY.S.flags[ch.set] = true; IFY.applyState(ch); // v0.12.0：与其它选项路径统一（现行危机数据未用 set/setState，防未来内容轮）
+      if (typeof IFY.houseOnBuyFlag === "function") IFY.houseOnBuyFlag(IFY.S, ch.set, ch);
+      IFY.S.log.push(`${IFY.S.age} 岁 · ${c.title}：${ch.label}`);
+      if (autoSelected) IFY.S.log.push(`${IFY.S.age} 岁 · 自动选：${ch.label}`);
+      IFY.rec("crisis", c.key, { choice: ch.label, set: ch.set || null, fx: IFY.S.lastDelta });
+      document.querySelector(".choices").remove();
+      IFY.el("echo").innerHTML = `${IFY.deltaLine()}${autoSelected ? `<p class="autonote">自动推进 · 已选「${IFY.esc(ch.label)}」</p>` : `<p class="pickednote">已选「${IFY.esc(ch.label)}」</p>`}<p class="echo">${IFY.esc(echoText(ch))}</p><button class="primary" id="cont">过一年</button>`;
+      IFY.refreshStatsBar(); // v0.31.2：效果已落账，头部数值条就地跟上真数
+      IFY.save(); IFY.el("cont").addEventListener("click", IFY.advance);
+      if (autoSelected) IFY.armAuto(echoText(ch) || ch.label, IFY.advance, "advance"); // 照事件屏：自动选落定后回响屏的「过一年」接着 arm，别让整局停在危机回响
+    };
     document.querySelectorAll(".choice").forEach((b) => b.addEventListener("click", () => {
       const ch = c.choices[Number(b.dataset.i)];
-      IFY.choiceBeat(b, () => {
-        IFY.applyEffects(ch.effects); IFY.S.crisisUsed[c.key] = true;
-        if (ch.set) IFY.S.flags[ch.set] = true; IFY.applyState(ch); // v0.12.0：与其它选项路径统一（现行危机数据未用 set/setState，防未来内容轮）
-        if (typeof IFY.houseOnBuyFlag === "function") IFY.houseOnBuyFlag(IFY.S, ch.set, ch);
-        IFY.S.log.push(`${IFY.S.age} 岁 · ${c.title}：${ch.label}`);
-        IFY.rec("crisis", c.key, { choice: ch.label, set: ch.set || null, fx: IFY.S.lastDelta });
-        document.querySelector(".choices").remove();
-        IFY.el("echo").innerHTML = `${IFY.deltaLine()}<p class="pickednote">已选「${IFY.esc(ch.label)}」</p><p class="echo">${IFY.esc(echoText(ch))}</p><button class="primary" id="cont">过一年</button>`;
-        IFY.refreshStatsBar(); // v0.31.2：效果已落账，头部数值条就地跟上真数
-        IFY.save(); IFY.el("cont").addEventListener("click", IFY.advance);
-      });
+      IFY.choiceBeat(b, () => chooseCrisisChoice(ch, false));
     }));
+    // 全程自动选扩围（本批）：危机与事件屏同一套两段式——主计时到点先预高亮 400ms，再走同一落定函数
+    IFY.armAuto(c.text, () => {
+      const idx = Math.floor(IFY.rng() * c.choices.length);
+      const btns = document.querySelectorAll(".choices .choice");
+      btns.forEach((o, j) => {
+        o.disabled = true;
+        o.classList.toggle("picked", j === idx);
+        o.classList.toggle("faded", j !== idx);
+      });
+      IFY.autoPhase2 = setTimeout(() => { IFY.autoPhase2 = null; chooseCrisisChoice(c.choices[idx], true); }, 400);
+    }, "choice");
   }
 
   function renderEventYear(plan) {

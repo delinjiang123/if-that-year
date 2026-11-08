@@ -102,23 +102,45 @@
       ${visChoices ? `<div class="choices">${visChoices.map(([c, i]) => `<button class="choice" data-i="${i}">${IFY.esc(c.label)}</button>`).join("")}</div><div id="echo"></div>`
                   : `<button class="primary" id="cont">继续</button>`}</section>`;
     IFY.finishRender();
-    if (!visChoices) { IFY.save(); IFY.el("cont").addEventListener("click", () => IFY.step()); return; }
+    if (!visChoices) {
+      IFY.save(); IFY.el("cont").addEventListener("click", () => IFY.step());
+      // 全程自动选扩围（本批补漏）：无选项的进程拍也是无抉择屏，按 advance 规矩 arm——
+      // 否则零点击整局会卡在退休/照护这类叙述拍上。plain/full 都可流过。
+      IFY.armAuto(IFY.procText(item), () => IFY.step());
+      return;
+    }
+    const chooseProcChoice = (c, autoSelected) => {
+      IFY.clearAuto();
+      IFY.applyEffects(c.effects);
+      if (c.set) IFY.S.flags[c.set] = true;
+      if (typeof IFY.houseOnBuyFlag === "function") IFY.houseOnBuyFlag(IFY.S, c.set, c);
+      IFY.applyState(c);
+      if (c.deferDating) { IFY.S.datingSince = IFY.S.age - 3; IFY.S.datingDefers = (IFY.S.datingDefers || 0) + 1; } // 推迟：时钟回拨，下次到期在约 4 年后
+      if (c.deferRetire) { if (IFY.S.retirePlan) IFY.S.retirePlan.nodeAge = IFY.S.age + 3; IFY.S.retireDefers = (IFY.S.retireDefers || 0) + 1; } // 退休节点推迟（v0.19.0）：节点后移 3 年，推迟两次后由 proc_retire_auto 收束
+      if (autoSelected) IFY.S.log.push(`${IFY.S.age} 岁 · 自动选：${c.label}`);
+      IFY.rec("proc", item.id, { choice: c.label, set: c.set || null, fx: IFY.S.lastDelta });
+      document.querySelector(".choices").remove();
+      IFY.el("echo").innerHTML = `${IFY.deltaLine()}${autoSelected ? `<p class="autonote">自动推进 · 已选「${IFY.esc(c.label)}」</p>` : `<p class="pickednote">已选「${IFY.esc(c.label)}」</p>`}${IFY.echoText(c) ? `<p class="echo">${IFY.esc(IFY.echoText(c))}</p>` : ""}<button class="primary" id="cont">继续</button>`;
+      IFY.refreshStatsBar(); // fx-fix：进程拍选项落账后就地刷条（与事件/危机的 v0.31.2 修复对齐，此前漏了这一处，账落了条要等下一整屏才跟上）
+      IFY.save(); IFY.el("cont").addEventListener("click", () => IFY.step());
+      if (autoSelected) IFY.armAuto(IFY.echoText(c) || c.label, () => IFY.step(), "advance"); // 照事件屏：自动选后回响「继续」接着 arm
+    };
     document.querySelectorAll(".choice").forEach((b) => b.addEventListener("click", () => {
       const c = item.choices[Number(b.dataset.i)];
-      IFY.choiceBeat(b, () => {
-        IFY.applyEffects(c.effects);
-        if (c.set) IFY.S.flags[c.set] = true;
-        if (typeof IFY.houseOnBuyFlag === "function") IFY.houseOnBuyFlag(IFY.S, c.set, c);
-        IFY.applyState(c);
-        if (c.deferDating) { IFY.S.datingSince = IFY.S.age - 3; IFY.S.datingDefers = (IFY.S.datingDefers || 0) + 1; } // 推迟：时钟回拨，下次到期在约 4 年后
-        if (c.deferRetire) { if (IFY.S.retirePlan) IFY.S.retirePlan.nodeAge = IFY.S.age + 3; IFY.S.retireDefers = (IFY.S.retireDefers || 0) + 1; } // 退休节点推迟（v0.19.0）：节点后移 3 年，推迟两次后由 proc_retire_auto 收束
-        IFY.rec("proc", item.id, { choice: c.label, set: c.set || null, fx: IFY.S.lastDelta });
-        document.querySelector(".choices").remove();
-        IFY.el("echo").innerHTML = `${IFY.deltaLine()}<p class="pickednote">已选「${IFY.esc(c.label)}」</p>${IFY.echoText(c) ? `<p class="echo">${IFY.esc(IFY.echoText(c))}</p>` : ""}<button class="primary" id="cont">继续</button>`;
-        IFY.refreshStatsBar(); // fx-fix：进程拍选项落账后就地刷条（与事件/危机的 v0.31.2 修复对齐，此前漏了这一处，账落了条要等下一整屏才跟上）
-        IFY.save(); IFY.el("cont").addEventListener("click", () => IFY.step());
-      });
+      IFY.choiceBeat(b, () => chooseProcChoice(c, false));
     }));
+    // 全程自动选扩围（本批补漏）：带选项的进程拍（摊牌/退休节点等）与事件屏同一套两段式——
+    // 抽选只在玩家看得见的选项（visChoices）里抽，走同一落定函数；不补则零点击整局必卡在这类拍上。
+    IFY.armAuto(IFY.procText(item), () => {
+      const p = Math.floor(IFY.rng() * visChoices.length);
+      const btns = document.querySelectorAll(".choices .choice");
+      btns.forEach((o, j) => {
+        o.disabled = true;
+        o.classList.toggle("picked", j === p);
+        o.classList.toggle("faded", j !== p);
+      });
+      IFY.autoPhase2 = setTimeout(() => { IFY.autoPhase2 = null; chooseProcChoice(visChoices[p][0], true); }, 400);
+    }, "choice");
   }
   Object.assign(IFY, { PARENT_CAL, triW, signalAgeOf, initParents, parentsDue, renderProcItem, advanceParentStage, parentOne: one, parentFate });
 })(window.IFY);
