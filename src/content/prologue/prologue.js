@@ -538,10 +538,22 @@
         { label: "到点就推车回家，车在楼道里摆得正正的", requiresFamily: "cf_16", effects: { wisdom: 1 }, echo: "车把冲里，车轮冲墙。家里的规矩，你摆车的时候就学会了。" },
       ] },
     { id: "pr_kid8_00", age: 8, log: "奥运那年夏天",
+      // 出生年小片：奥运绑公历年、旧形钉 8 岁只有 2000/2004/2008 出生者对得上。改公历派生
+      // （calendarAge，读者 seqTableFor）：呈现龄取本局第一个实际举办的夏季奥运会年份对应
+      // 的年龄——举办年表按实际举办年记（2008 北京／2012 伦敦／2016 里约／2021 东京——东京
+      // 奥运名义 2020、实际 2021 年夏举办，故末位记 2021）；龄带 [8,12]：下限 8 是本拍骨架
+      // （守着电视看比赛、绑火炬、看决赛到半夜）的合龄起点，上限 12 只为收 2009 出生者——
+      // 其龄带内本无夏奥（2020 延期），顺延到 2021 届落在 12 岁。派生龄表（出生年→呈现龄，
+      // 呈现公历）：2000→8(2008)、2001→11(2012)、2002→10(2012)、2003→9(2012)、2004→8(2012)、
+      // 2005→11(2016)、2006→10(2016)、2007→9(2016)、2008→8(2016)、2009→12(2021)。声明龄 8
+      // 保留为基准龄（2000 出生局），台账与静态枚举口径不变。
+      calendarAge: { years: [2008, 2012, 2016, 2021], band: [8, 12] },
       text: "奥运那年夏天，电视从早开到晚。你拿两根筷子绑成一支火炬，在屋里跑了一圈又一圈。跑到客厅，你还学着电视里，把火炬高高举过头顶。",
       // 扩容第 0 期补款（altTexts，派生流定款，原款未动；2008 奥运骨架照原款）。
+      // 出生年小片：款 1 是北京 2008 专属意象（大脚印烟花），带 calYear 2008——只发呈现公历
+      // 为 2008 的局（即 2000 出生、8 岁呈现），其余年份局只在原款＋款 2 里定款（读者支路）。
       altTexts: [
-        { text: "北京奥运会那年，你天天守着电视看比赛。开幕式那晚，你把家里的凳子摆成一排，说是看台。烟花在天上走出一串大脚印，你跟着数，数到一半，数乱了。" },
+        { calYear: 2008, text: "北京奥运会那年，你天天守着电视看比赛。开幕式那晚，你把家里的凳子摆成一排，说是看台。烟花在天上走出一串大脚印，你跟着数，数到一半，数乱了。" },
         { text: "那年夏天，巷子里的孩子人手一根自制火炬，都是筷子绑的，头上缠着红布。你们排着队在巷子里传递，一本正经，跑到巷口，还要交接，喊一声，到了。" },
       ],
       choices: [
@@ -1056,9 +1068,25 @@
     const P = S.prologue;
     const beatId = wp5BeatFor(P);
     const acts = pack.acts.filter((a) => (!a.wp5Beat || a.id === beatId) && whenStartOk(S, a));
+    // 出生年小片（opt-in）：带 calendarAge 的幕按公历派生呈现龄——声明给事件公历年表 years
+    // （升序）与呈现龄带 band，呈现龄取 years 中第一个使（年 − S.birthYear）落进 band 的值；
+    // 无一年落带则本局不出这幕。派生是（出生年 → 呈现龄）的纯函数查表，不消费任何随机流；
+    // 派生龄与声明龄相同则原幕对象入序，不同则入序的是只改 age 的浅拷贝（包数据不改写、
+    // 旧档重建同走本函数、口径一致）。未声明 calendarAge 的幕行为一字不变。用途：事件绑
+    // 公历年而旧形把呈现龄钉死的拍（非典拍 pr_kid8_95、奥运拍 pr_kid8_00），声明口径见各包。
+    const derived = [];
+    for (const a of acts) {
+      if (!a.calendarAge) { derived.push(a); continue; }
+      let age = null;
+      if (typeof S.birthYear === "number") {
+        for (const y of a.calendarAge.years) { const d = y - S.birthYear; if (d >= a.calendarAge.band[0] && d <= a.calendarAge.band[1]) { age = d; break; } }
+      }
+      if (age == null) continue;
+      derived.push(age === a.age ? a : Object.assign({}, a, { age }));
+    }
     // fix2：处境幕同样过 whenStartOk——带 whenFact/whenState 的处境幕（如按 track 关的 pr_half3）开局不入序，
     // 分岔后由 choose 的延迟补入接回；无 when* 字段的处境幕 whenStartOk 恒真，行为不变。
-    return acts.concat((pack.sitActs[P.situation] || []).filter((a) => whenStartOk(S, a))).slice().sort((a, b) => a.age - b.age);
+    return derived.concat((pack.sitActs[P.situation] || []).filter((a) => whenStartOk(S, a))).slice().sort((a, b) => a.age - b.age);
   }
   // 证据包②（seq=null 旧档回落处置）：v0.17 旧档没有 seq 字段，旧回落直接套现行主幕表会让
   // idx 整体错位。处置＝按 act id 对齐重建：先用档内账本（ledger）里已呈现的序章幕 id 序列
@@ -1608,8 +1636,15 @@
         // 款 0 是幕自带 text/textBySchooling（原文逐字未动），新款各带同结构 schooling 分文（tbsMap 随款取）；
         // 零序章流消费，旧档无 seedStr 回落原款。未声明的幕 tbsMap 即 act.textBySchooling、口径逐字不变。
         if (!v && act.altTexts && act.altTexts.length) {
-          const ti = P.seedStr != null ? actVariantKeyFor(P.seedStr, act.id, act.altTexts.length + 1) : 0;
-          if (ti > 0) { const ent = act.altTexts[ti - 1]; if (ent) { t = ent.text; if (ent.textBySchooling) tbsMap = ent.textBySchooling; } }
+          // 出生年小片（opt-in）：altTexts 款可带 calYear（呈现公历年限定）——只在呈现公历年
+          // （S.birthYear ＋ 呈现龄，全游戏唯一公历定义）与之相等时入选，如奥运拍的北京款
+          // 只发 2008 年呈现的局。入选池保原序、定款仍走派生流（actVariantKeyFor），零序章
+          // 流消费；无任何款声明 calYear 的幕，入选池与原表同序同长、定款逐字不变；
+          // birthYear 非数字（年份不明）时带 calYear 的款一律不入选。
+          const calY = typeof S.birthYear === "number" ? S.birthYear + act.age : null;
+          const pool = act.altTexts.filter((e) => !e || e.calYear == null || e.calYear === calY);
+          const ti = P.seedStr != null ? actVariantKeyFor(P.seedStr, act.id, pool.length + 1) : 0;
+          if (ti > 0) { const ent = pool[ti - 1]; if (ent) { t = ent.text; if (ent.textBySchooling) tbsMap = ent.textBySchooling; } }
         }
         // fix2（opt-in）：schooling 分文——变体级/幕级 textBySchooling 命中当前 schooling 时整段换文
         // （如 never 的童年拍、half 退学后的少年拍不预设在校）；未声明的幕行为不变。
