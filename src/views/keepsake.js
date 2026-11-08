@@ -1152,16 +1152,16 @@ let pending = "";
 try { pending = sessionStorage.getItem(PENDING_KEY) || "";} catch (e) {}
 panel.innerHTML = `<div class="ks-block">
 ${factHtml}
-<p class="ks-intro">把这一生订成一册：一张长图（判词、大事记、六维、另一条路），加一本能打印的纪录册，年表是全的。长图能存下来发给家里人看，册子打印出来能送人。买一次，这台设备以后每一局都能导出。</p>
+<p class="ks-intro">游戏本身免费。走到这里，如果这一局让你想支持作者继续做下去，可以付一次；作为纪念，这台设备以后每一局都能把这一生导出成长图和纪录册。长图能存下来发给家里人看，册子打印出来能送人。</p>
 <div class="row">
 <button type="button" class="ghost" id="ks-preview">先看长图预览（带水印）</button>
 </div>
 <div class="cardpreview" id="ks-prevbox"></div>
 ${buyPending()? `<div class="row">
-<a class="ghost ks-resume" href="${esc(CFG.buyPage || "buy.html")}" target="_blank" rel="noopener">刚才的订购没付完，点这里接着付</a>
+<a class="ghost ks-resume" href="${esc(CFG.buyPage || "buy.html")}" target="_blank" rel="noopener">刚才那笔没付完，点这里接着付</a>
 </div>`: ""}
 <div class="row">
-<a class="ghost ks-buy" href="${esc(CFG.buyPage || "buy.html")}" target="_blank" rel="noopener">去订一册 · ¥${CFG.priceJPY} / ¥${CFG.priceCNY}</a>
+<a class="ghost ks-buy" href="${esc(CFG.buyPage || "buy.html")}" target="_blank" rel="noopener">支持作者 · ¥${CFG.priceJPY} / ¥${CFG.priceCNY}</a>
 </div>
 <p class="picklab">已经有兑换码了？</p>
 <div class="seedrow">
@@ -1184,7 +1184,7 @@ img.className = "card-img";
 box.appendChild(img);
 const note = document.createElement("p");
 note.className = "hint";
-note.textContent = "这是带水印的预览。订购后是无水印的全尺寸长图，外加能打印的纪录册。";
+note.textContent = "这是带水印的预览。支持作者后，拿到的是无水印的全尺寸长图，外加能打印的纪录册。";
 box.appendChild(note);
 anaTrack("keepsake_preview", {}); // 统计升级批：水印预览生成完成
 });
@@ -1211,15 +1211,15 @@ function refreshDesk() {
 const line = IFY.el("keepsake-open");
 if (!line) return;
 line.textContent = keepsakeUnlocked()
-? "这一生订成册子 · 已解锁，导出"
-: `把这一生订成册子带走 · ¥${CFG.priceJPY} / ¥${CFG.priceCNY}`;
+? "这一生的纪念品 · 已解锁，导出"
+: `支持作者 · 把这一生留成纪念 · ¥${CFG.priceJPY} / ¥${CFG.priceCNY}`;
 // 订购回头路（父亲事故热修）：有未完标记且未解锁时，典藏台上方常驻「继续订购」直达订购页，
 // 不用先展开面板才找得到；解锁或标记清除后自动收起（storage/visibilitychange 也走本函数）。
 const rz = IFY.el("ks-resumebox");
 if (rz) {
 const showResume = !keepsakeUnlocked() && buyPending();
 rz.hidden = !showResume;
-if (showResume) rz.innerHTML = `<a class="ghost ks-buy" href="${IFY.esc(CFG.buyPage || "buy.html")}" target="_blank" rel="noopener">刚才的订购没付完，点这里接着付</a>`;
+if (showResume) rz.innerHTML = `<a class="ghost ks-buy" href="${IFY.esc(CFG.buyPage || "buy.html")}" target="_blank" rel="noopener">刚才那笔没付完，点这里接着付</a>`;
 else rz.innerHTML = "";
 }
 const panel = IFY.el("keepsake-panel");
