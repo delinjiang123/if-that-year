@@ -1362,6 +1362,23 @@
     }
     return pool.length ? pool : arr.map((e) => (typeof e === "string" ? e : (e && e.text))).filter((t) => typeof t === "string");
   }
+  // 出生年小片（opt-in）：textByTrack 底文的分段公历门——底文可声明为分段数组：字符串段
+  // 恒拼入，对象段 {text, calWindow} 只在呈现公历（出生年＋幕龄）落窗内拼入，拼接无分隔
+  // 符；窗外局拼出的文本与未分段的现行底文逐字相同，纯字符串底文原样返回。纯按已定版
+  // 事实（出生年/幕龄）算，不消费任何随机流；出生年不可知时带门段不拼入（同 factAltPool
+  // 口径）。未声明分段的幕行为逐字不变。用途：断言绑公历、又只在底文层的句子（如 c1978
+  // 高中线 pr_y21 的扩招句只合 1999–2000 年呈现——该修的是门，不是话，见该包注）。
+  function trackTextOf(S, act, v) {
+    if (!Array.isArray(v)) return v;
+    const calY = typeof S.birthYear === "number" ? S.birthYear + act.age : null;
+    let out = "";
+    for (const e of v) {
+      if (typeof e === "string") { out += e; continue; }
+      if (!e || typeof e.text !== "string") continue;
+      if (e.calWindow == null || (calY != null && calY >= e.calWindow[0] && calY <= e.calWindow[1])) out += e.text;
+    }
+    return out;
+  }
   // pr_child4（c2000 包，12 岁）定款（变体扩容第二轮）：与 early2KeyFor 同法「带内扩轮换」——
   // 掷点 r 先按旧法落四带（floor(r*4) 定记号：0 梧桐 / 1 小卖部 / 2 留言册 / 3 毕业照），
   // 记号逐种子与旧版全等；梧桐带与留言册带的后半带改发同记号新款（shoestand / lastpage），
@@ -1618,7 +1635,7 @@
           const si = P.seedStr != null ? actVariantKeyFor(P.seedStr, act.id, act.altSets.length + 1) : 0;
           if (si > 0) { const set = act.altSets[si - 1]; if (set) { tbt = set.textByTrack || tbt; if (set.tail != null) ttail = set.tail; } }
         }
-        let bt = tbt[S.state.track] || tbt.study;
+        let bt = trackTextOf(S, act, tbt[S.state.track] || tbt.study);
         // factAlt：按枚举事实（如 studyForm）确定性分文，不消费流；优先于 trackAlt。
         let factHit = false;
         if (act.factAlt && act.factAlt.texts) { const fv = factOf(S, act.factAlt.fact); const r = condText(P.seedStr, act.id, "factAlt", fv, factAltPool(S, act, act.factAlt.texts[fv])); if (r) { bt = r; factHit = true; } }
