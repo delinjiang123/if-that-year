@@ -1,7 +1,12 @@
 // 《如果那年》人生纪录典藏 · 领码页（v0.33.0）——同源 Pages Function，路径 /api/claim。
 // 落点：Stripe 支付链接的付款成功回跳 …/api/claim?session_id={CHECKOUT_SESSION_ID}。
-// 流程：拿 session_id 向 Stripe 核验确已付款且金额/币种对得上价格档 → 从 KV 码池发一枚
+// 流程：拿 session_id 向 Stripe 核验确已付款且买的是本店价格档 → 从 KV 码池发一枚
 // 未用码并与 session 绑死（同 session 重复打开本页返回同一码，幂等）→ 渲染领码页：
+// 核验口径（两条任一过即认）：①币种＋金额与价格档分毫不差；②会话行项目里含本店
+// 两个价格 ID 之一。留第②条是因为付款链接的 Adaptive Pricing 在 Stripe 侧固定开启、
+// 关不掉：中文环境玩家在日元链接上会按 Stripe 汇率换算成人民币付款（如 ¥21.74），
+// 会话币种与金额随之变成换算值，与价格档对不上——但买的仍是本店那个价格，按价格
+// ID 认才不会把真买家挡在门外。价格 ID 由 Stripe 绑定在价格对象上，伪造不出。
 // 码大而清楚，「回游戏自动解锁」按钮带码回跳 /?kc=码，码作备用（回跳失败时手输）。
 // 环境变量（用户在 Cloudflare Pages 后台配置，见 REPORT 上线清单）：
 //   STRIPE_SECRET_KEY  Stripe 密钥（只核验会话，不经手卡号）
@@ -15,6 +20,10 @@ const EXPECTED = [
   { currency: "jpy", amount_total: 500 },
   { currency: "cny", amount_total: 2500 },
 ];
+
+// 本店两个价格的 ID（Stripe 侧实查过，与上面价格档一一对应）：
+// price_1UZQcT…BA0orP = 日元 ¥500；price_1UZQcX…wv2uAO = 人民币 ¥25（2500 分）。
+const EXPECTED_PRICE_IDS = ["price_1UZQcTGauekqyAQxcdBA0orP", "price_1UZQcXGauekqyAQxyswv2uAO"];
 
 const PAGE_CSS = `
   body{margin:0;background:#FAF8F4;color:#23211C;font-family:"Hiragino Sans","Noto Sans SC",system-ui,sans-serif;line-height:1.75}
@@ -77,10 +86,10 @@ export async function onRequestGet(context) {
   try { bound = await kv.get(sessionKey(sid)); } catch (e) {}
   if (bound) return codePage(bound);
 
-  // 向 Stripe 核验这笔会话确已付款、且金额对得上价格档
+  // 向 Stripe 核验这笔会话确已付款、且买的是本店价格档（展开行项目，为按价格 ID 认换算付款）
   let session = null;
   try {
-    const r = await fetch(`https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(sid)}`, {
+    const r = await fetch(`https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(sid)}?expand[]=line_items`, {
       headers: { Authorization: `Bearer ${secret}` },
     });
     if (!r.ok) {
@@ -97,7 +106,9 @@ export async function onRequestGet(context) {
       <p class="hint">付完款再回到 Stripe 完成页，点回这里领码。</p>`, 402);
   }
   const amountOk = EXPECTED.some((e) => e.currency === session.currency && session.amount_total === e.amount_total);
-  if (!amountOk) {
+  const lineItems = (session.line_items && session.line_items.data) || [];
+  const priceOk = lineItems.some((li) => li && li.price && EXPECTED_PRICE_IDS.includes(li.price.id));
+  if (!amountOk && !priceOk) {
     return page("金额对不上", `<p class="err">这笔付款的金额和典藏的价格对不上，先不发码。</p>
       <p class="hint">请凭付款订单到 GitHub Issues 留言，人工核对后补发。</p>`, 422);
   }
