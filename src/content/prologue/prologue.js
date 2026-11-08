@@ -950,7 +950,15 @@
         if (placed >= 2 && rankOf(e) === 0) continue;
         if (e.act) { // WP3 形：act 模板＋保底＋替换/插入落位
           let trig = null;
-          for (let a = e.window[0]; a <= e.window[1]; a++) { if (prng(S) < e.weight) { trig = a; break; } }
+          // 出生年小片（opt-in）：WP3 形条目可声明 calendarWindow（与 WP7 支同形同义）——呈现
+          // 公历（出生年＋呈现龄）落在窗外的年份不掷骰、直接跳过。未声明的条目行为一字不变。
+          // 保底口径不动：guaranteeAge 仍无条件落点（保事实被呈现）；声明方须保证各出生年
+          // 的保底公历落在窗内（pr_fam_sentdown65 窗 [1972,1984] 含 1960–1969 出生者 15 岁
+          // 的公历 1975–1984 全段，见 prologue-c1965.js 该条注释）。
+          for (let a = e.window[0]; a <= e.window[1]; a++) {
+            if (e.calendarWindow && ((S.birthYear || 0) + a < e.calendarWindow[0] || (S.birthYear || 0) + a > e.calendarWindow[1])) continue;
+            if (prng(S) < e.weight) { trig = a; break; }
+          }
           if (trig == null && e.guaranteeAge) trig = e.guaranteeAge;
           if (trig == null) continue;
           if (e.act.variants) {

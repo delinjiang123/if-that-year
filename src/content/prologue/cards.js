@@ -90,7 +90,7 @@
     ],
     c1965: [
       { id: "ce65_01", name: "家里买了电视机", needsSchooling: ["school", "half"], text: "你上初中那年，家里咬牙买了台电视机，黑白的。搬回来那天，全楼的人都来看。你负责每天上房顶转天线，手举酸了，画面就稳了。", effects: { relation: 2, growth: 1 } },
-      { id: "ce65_02", name: "考不考大学那阵子", text: "恢复高考没几年，考不考大学是家家都要吵一回的事：考上了是条道，进厂接班也是条道，两边说得都有理。报名的日子一到，学校门口排起长队。", effects: { growth: 2, relation: -2, freedom: 1 } },
+      { id: "ce65_02", name: "考不考大学那阵子", text: "恢复高考以后，考不考大学是家家都要吵一回的事：考上了是条道，进厂接班也是条道，两边说得都有理。报名的日子一到，学校门口排起长队。", effects: { growth: 2, relation: -2, freedom: 1 } },
       { id: "ce65_03", name: "万元户的新闻", needsSchooling: ["school", "half"], text: "你念书那几年，报纸上开始登万元户。老师把那页贴在教室后面。你回家算了算自家的存折，差着十万八千里，可心里有个数字，从此不一样了。", effects: { growth: 1, freedom: 1, relation: -1 } },
       { id: "ce65_04", name: "磁带和喇叭裤", text: "你年轻时攒钱买过一条喇叭裤、一台双卡录音机。磁带转起来，整条街都听得见。你为这个被你爸说了半个月，裤子还是穿出去了。", effects: { freedom: 2, money: -2, relation: 1 }, set: "hook_era_tape" },
       { id: "ce65_05", name: "亲戚下海赔过", needsSchooling: ["school", "half"], text: "你上中学时，有个亲戚辞职下海，头两年风光，后来赔了。过年他坐在角落里不说话，你爸把烟递过去，两个人抽了半宿。", effects: { money: -2, relation: -1, wisdom: 1 } },
