@@ -400,6 +400,14 @@
     const wpd = IFY.workPhaseDue();
     if (wpd) { const wit = D.events.find((e) => e.id === wpd.item); if (wit) resolveProcHeadless(wit); }
     if (typeof IFY.wageDue === "function") IFY.wageDue(); // 工资轮：与受控 step() 同点同规（影子不打折，设计稿 §二.3）
+    // 入行关口（第 1 期 P1-6 激活）：与受控 step() 同位同规——工资轮之后、年龄分岔
+    // 查找之前判定，命中即以政策 F 无头解决本年（resolveForkHeadless，政策本体与
+    // 打分零改动）。gateDue 只读账零随机、组装随机走职业自有流的影子私有腿
+    // （"#shadow#career"），与受控轨互不可见。
+    if (typeof IFY.gateDue === "function" && typeof IFY.gateForkView === "function") {
+      const gk = IFY.gateDue(S, "first") ? "first" : (IFY.gateDue(S, "switch") ? "switch" : null);
+      if (gk) { const gv = IFY.gateForkView(S, gk); if (gv) { resolveForkHeadless(gv); return; } }
+    }
     let fork = D.forks.find((f) => f.age === S.age && !f.procOnly && (!f.route || f.route === S.route.id) && (!f.forbidRoute || f.forbidRoute !== S.route.id) && (!f.forbid || !S.flags[f.forbid]) && (!f.anyParentAlive || S.state.dad === "alive" || S.state.mom === "alive") && (!f.state || IFY.met(f))); // 与 step() 同式（含 fork58 互锁，下行）
     if (fork && fork.age === 58 && typeof IFY.retireDecidedThisYear === "function" && IFY.retireDecidedThisYear()) fork = null;
     if (fork) { resolveForkHeadless(fork); return; }

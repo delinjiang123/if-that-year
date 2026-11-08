@@ -180,6 +180,31 @@ window.GAME_DATA = {
         { label: "不要。两个人的日子也完整", labelBySpouse: { dating: "不要。就我们俩，往下过" }, kidReask: true, effects: { freedom: 3, money: 2, relation: 1 }, setState: { kids: "none" }, set: "late_settle", echo: "这份账在文件夹里压了这些年，今天总算对完了。纸没有扔，收进抽屉底层。话说开的那晚，觉比平时睡得沉。" },
         { label: "再等等，看看身体和钱包", effects: { health: -2, money: 2 }, set: "kid_wait", echo: "你去做了次全面检查，又把存款重新算了一遍，文件夹最上面压了张写着日期的纸。" },
       ] },
+    // 入行关口（第 1 期 P1-6 激活批自 src/content/gates.js 毕业合入）：procOnly 进程分岔——
+    // 只由 career.js 的 gateDue 在 step()/stepYearHeadless() 的进程段判定开门、gateForkView
+    // 按本局账组装正式选项后呈现，本体只写框骨架与兜底选项、永不被改动（与 fork_kid 同纪律）。
+    // gate_first 同一 id 三副框（grad 毕业 / job 头回找工作 / fact 处境推入，裁定 D3）；
+    // gate_switch 两副框（want 想走 / fact 单位没了硬推）。框文案经 P1-6 文案审定稿。
+    // age 是建模登记（gate_first 最早开门岁 22 / gate_switch 登记 26），实际开门岁由 gateDue 按账定。
+    { id: "fork_gate_first", age: 22, procOnly: true, title: "入行的事 · 往后靠什么吃饭",
+      text: "学是上完了。文凭也好、手艺也好，这些年攒下的东西，得换成一份正经活计。往后靠什么吃饭，这阵子得有个说法。",
+      gateFrames: {
+        grad: "学是上完了。文凭也好、手艺也好，这些年攒下的东西，得换成一份正经活计。往后靠什么吃饭，这阵子得有个说法。",
+        job: "没个正经活计，日子总这么飘着也不是事。招人的地方不少，托人打听的也有几处。这回，得正经找一份了。",
+        fact: "考试那条路，走到这儿算是断了。榜上没有名字，家里也没再提。路断了，日子还得过——往后靠什么吃饭，得另找一条。"
+      },
+      choices: [
+        { label: "先不急，手头的事先干着", effects: { freedom: 1 }, gateDefer: true, echo: "你把这事放了放，先干着手头能干的活。找活计的事，没忘，就是往后推了推。" },
+      ] },
+    { id: "fork_gate_switch", age: 26, procOnly: true, title: "换行的事 · 换一行，还是不换",
+      text: "现在这行，干了这些年。说不上多喜欢，也谈不上熬不下去。可这阵子总有个念头往上冒：要不要换一行试试。",
+      gateFrames: {
+        want: "现在这行，干了这些年。说不上多喜欢，也谈不上熬不下去。可这阵子总有个念头往上冒：要不要换一行试试。",
+        fact: "单位没了。干了这些年的地方，说散就散。补偿也好、安置也好，旁人管不了下半程——往后的活计，得自己重新找一条。"
+      },
+      choices: [
+        { label: "先不换，眼下这行再干干", effects: { freedom: 1 }, gateDefer: true, echo: "你想了几天，还是留下了。换行的事没提上日程，手头的活照旧干着。" },
+      ] },
     { age: 44, title: "44 岁 · 中年的岔路", text: "往上看，天花板好像就在头顶；往旁边看，路还很多，就是每条都费劲。",
       textForm: { farm: "往手里看，一年到头就这些进项，好像到了顶；往旁边看，路还很多，就是每条都费劲。", self: "往店里看，一年到头就这个进项，好像到了顶；往旁边看，路还很多，就是每条都费劲。", flex: "往手里看，单子就这么多，好像到了顶；往旁边看，路还很多，就是每条都费劲。" },
       choices: [

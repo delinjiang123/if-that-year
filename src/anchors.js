@@ -24,6 +24,11 @@
     // 只是 D7 最早开门岁的建模登记（anchorInfo 无消费者、不改触发机制），本体以 id 认；
     // 原 38 岁（fork38）与 45 岁（fork45）两行随其提问功能退役删除。
     { age: 33, id: "fork_kid", route: null },
+    // 第 1 期 P1-6：入行关口同为进程分岔（career.js 的 gateDue 开门呈现，无固定呈现
+    // 年龄）——age 22/26 只是建模登记（gate_first 最早开门岁 / gate_switch 本体登记岁，
+    // 与 fork_kid 的 33 同例：anchorInfo 无消费者、不改触发机制），本体以 id 认。
+    { age: 22, id: "fork_gate_first", route: null },
+    { age: 26, id: "fork_gate_switch", route: null },
   ];
   // 进程拍：父母进程 care/hosp/dead 六拍（who/beat 与 parentsDue 的返回同形）、dating 到期拍、
   // 退休节点拍（node/full/auto 三条呈现条目同属一个节点机制）、出国去向拍（abroad 入口拍）。

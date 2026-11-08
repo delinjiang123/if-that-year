@@ -1,4 +1,4 @@
-// 《如果那年》引擎 v0.59.10 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
+// 《如果那年》引擎 v0.60.0 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
 //      / 判词按数值形状拼装 / 全程自动存档可续玩 / 种子可输入、可复制分享链接 / 在线零 LLM 调用
 // [模块]本引擎自 v0.20.0 起拆为各自独立的模块文件（独立包装器 + window.IFY 共享命名空间），按 index.html 的顺序加载：本文件（建 IFY + 编排）→ src/world/apply.js → src/record.js → src/world/processes/{parents,spouse,work,place,health}.js → src/scheduler.js → src/views/{stream,year,shadow,settlement,share}.js → src/engine-boot.js（收尾，调用 IFY.renderStart()）。跨模块引用一律 IFY.<名>，可变量收编为 IFY 属性。
 window.IFY = window.IFY || {};
@@ -1230,6 +1230,14 @@ window.IFY = window.IFY || {};
     const wpd = IFY.workPhaseDue();
     if (wpd) { const wit = D.events.find((e) => e.id === wpd.item); if (wit) { IFY.renderProcItem(wit); return IFY.mountStream(); } }
     if (typeof IFY.wageDue === "function") IFY.wageDue(); // 工资轮：年净额结算（进程层、work 相位拍之后；年龄戳防 step 重入重复结算，影子轨同点同规）
+    // 入行关口（第 1 期 P1-6 激活）：与 workPhaseDue/工资轮相邻同点——进程拍都结完
+    // 之后、年龄分岔查找之前判定（影子轨 stepYearHeadless 同位同规）。与年龄分岔
+    // 同级：呈现独占本年（复述拍后过年）。gateDue 只读账零随机、关口组装的一切
+    // 随机只走职业自有流；first 与 switch 互斥（gateDue 自身已按账判定，先问 first）。
+    if (typeof IFY.gateDue === "function" && typeof IFY.gateForkView === "function") {
+      const gk = IFY.gateDue(IFY.S, "first") ? "first" : (IFY.gateDue(IFY.S, "switch") ? "switch" : null);
+      if (gk) { const gv = IFY.gateForkView(IFY.S, gk); if (gv) { IFY.renderFork(gv); return IFY.mountStream(); } }
+    }
     // 年龄分岔查找：procOnly 分岔（如 fork_kid）只由进程层呈现，不走此查找（S4 起）
     let fork = D.forks.find((f) => f.age === IFY.S.age && !f.procOnly && (!f.route || f.route === IFY.S.route.id) && (!f.forbidRoute || f.forbidRoute !== IFY.S.route.id) && (!f.forbid || !IFY.S.flags[f.forbid]) && (!f.anyParentAlive || IFY.S.state.dad === "alive" || IFY.S.state.mom === "alive") && (!f.state || IFY.met(f))); // v0.18.0 审计急修：分岔门接线补齐 route/forbidRoute/forbid/anyParentAlive（fork28 镜像、fork52 双亲已不在不出）；原 v0.16.0 口径只认 state 门 // v0.16.0：分岔可带状态门（如 fork45 只给 kids 未定且有伴侣的人）；无门分岔行为不变 // v0.20.0 M2 收尾：fork33 的 bought_house 门由分岔级改选项级（已购房者不再整岔口消失，只隐买/租两项，近家人项保留）
     if (fork && fork.age === 58 && typeof IFY.retireDecidedThisYear === "function" && IFY.retireDecidedThisYear()) fork = null; // v0.20.1 W2 互锁：退休进程拍已在当年落过决定（呈现过 node/full/auto 或 workPhase 当年已流转），58 岁分岔当年不再以未退口吻重问（同一年不许双决）；已全退者另由 fork58 自带 workPhase 状态门挡下

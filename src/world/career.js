@@ -3,7 +3,7 @@
 // （backfillCareer）与职业自有派生流（careerRng）。加载顺序见 index.html：
 // src/world/processes/work.js 之后、src/scheduler.js 之前。
 // 第 1 期 P1-4 追加（文件尾段）：入行关口的开门判定 gateDue、菜单组装 gateForkView、
-// 回指句纯函数 gateEchoLine（休眠批：总开关默认关、无现行调用点，详见尾段头注）。
+// 回指句纯函数 gateEchoLine（P1-6 已激活：总开关打开、step/无头两侧已接线，详见尾段头注）。
 //
 // 平行账纪律（本批的命门）：career / seeds 只写不读——现行任何逻辑（工资、退休、
 // scheduler、结算、判词）都不许读这两本账改行为；本文件自身也不读它们做任何裁决，
@@ -72,13 +72,15 @@
   }
   function closeIdle(c, age) { const d = openIdle(c); if (d) d.to = age; }
 
-  // 记账本体（设计 §1.2 的语义表逐行）：age / via 由调用方给——实机走 careerNote
-  // （当岁、via="chain"，关口批落地后才有 seed/inherit/cold 来源），回填走
-  // backfillCareer（历史年龄、via="legacy"）。src 是触发拍的条目/选项本体，只读它
-  // 的 set / id / setState 三个声明字段，不读任何已算出的行为结果。
+  // 记账本体（设计 §1.2 的语义表逐行）：age / via / viaNote / coldKind 由调用方
+  // 给——实机走 careerNote（当岁；P1-6 激活后关口兑现项带 seed/inherit/cold 来源
+  // 与出处注记，余者 chain），回填走 backfillCareer（历史年龄、via="legacy"）。
+  // src 是触发拍的条目/选项本体，只读它的 set / id / setState 三个声明字段（关口
+  // 兑现项另读 via/trade/seedBeat/seedAge/viaFact/coldKind 六个来源字段，careerNote
+  // 先验自洽才透传），不读任何已算出的行为结果。
   // 退休的读法：同一应用点的 src 带 setState.workPhase === "retired" 声明即给当前段
   // 收尾——各挂点 applyState 的先后不一律，以声明为准，不看流转是否已发生。
-  function noteAt(S, src, age, via) {
+  function noteAt(S, src, age, via, viaNote, coldKind) {
     if (!S || typeof S !== "object" || !src || typeof src !== "object") return;
     const byFlag = tradesByFlag();
     if (!byFlag) return; // 注册表不在场：整点 no-op（fail-closed）
@@ -98,7 +100,7 @@
         const cc = getC();
         if (cur) cur.to = age; // 已有当前段又落别旗：旧段当岁收尾、新段当岁起（同岁双段都记）
         closeIdle(cc, age); // 段从 idle 里接上：合上待业段
-        cc.spells.push({ trade: row.trade, flag, form: row.form, from: age, to: null, via, viaNote: null, coldKind: null, fond: false });
+        cc.spells.push({ trade: row.trade, flag, form: row.form, from: age, to: null, via, viaNote: viaNote || null, coldKind: coldKind || null, fond: false });
       }
     }
     if (idleHit) {
@@ -109,9 +111,33 @@
   }
 
   // 唯一写点：挂在立入行旗的应用序同一步（紧贴 houseOnBuyFlag 之后，呈现层与无头
-  // 解决器镜像同位）。本批只记账、无消费者。
+  // 解决器镜像同位）。P1-6 激活后兼三件事：关口推后项只记推后账（gateDefers/
+  // gateDeferAge，gateCooling 读）、关口兑现项按选项上的来源字段落 via/viaNote/
+  // coldKind、其余一律 chain（既有挂点行为一字不变）。
   function careerNote(S, src) {
-    try { noteAt(S, src, S ? S.age : null, "chain"); } catch (e) { /* 记账失败不带崩游玩 */ }
+    try {
+      if (!S || typeof S !== "object" || !src || typeof src !== "object") return;
+      if (src.gateDefer === true) {
+        const c = ensureCareer(S);
+        if (c) {
+          c.gateDefers = (typeof c.gateDefers === "number" ? c.gateDefers : 0) + 1;
+          if (typeof S.age === "number") c.gateDeferAge = S.age;
+        }
+        return;
+      }
+      let via = "chain", viaNote = null, coldKind = null;
+      if (src.via === "seed" || src.via === "inherit" || src.via === "cold") {
+        const TR = (typeof window !== "undefined" && window.GAME_TRADES) || null;
+        const row = TR && typeof src.trade === "string" ? TR[src.trade] : null;
+        if (row && typeof src.set === "string" && row.flag === src.set) {
+          via = src.via;
+          if (via === "seed") viaNote = { beatId: typeof src.seedBeat === "string" ? src.seedBeat : null, age: typeof src.seedAge === "number" ? src.seedAge : null };
+          else if (via === "inherit") viaNote = { factId: typeof src.viaFact === "string" ? src.viaFact : null };
+          if (via === "cold" && typeof src.coldKind === "string" && src.coldKind) coldKind = src.coldKind;
+        }
+      }
+      noteAt(S, src, S.age, via, viaNote, coldKind);
+    } catch (e) { /* 记账失败不带崩游玩 */ }
   }
 
   // 只读派生（设计 §1.1）：当前段（未收尾的那段）；无账/无段/坏账一律 null（fail-closed）。
@@ -273,21 +299,21 @@
     }
   }
 
-  // ================= 第 1 期 P1-4：入行关口（休眠批） =================
-  // 关口 = 进程呈现的 procOnly 分岔（fork_gate_first / fork_gate_switch，本体在
-  // src/content/gates.js 的 GAME_GATES，只写框骨架与兜底选项；本批不合入
-  // GAME_DATA.forks 的理由见该文件头注），照 fork_kid 的全套形状：开门判定
-  // gateDue、呈现定形 gateForkView、回指句纯函数 gateEchoLine，三者都在本文件
-  // （D7：职业代码归 career.js；与 kidGateDue/kidForkView 在 spouse.js 的进程归属同理）。
-  // 本批是休眠批：判定与组装全部落地，但没有任何现行路径调用它们——engine 的
-  // step()、shadow-life 的 stepYearHeadless()、scheduler、呈现主链一律不接；
-  // 且总开关 GAME_GATE_SWITCH（trades.js）默认关，gateDue 先查开关、关时恒假。
-  // 影子轨本批不走关口（政策 F 本体与打分零改动，P1-5 再接无头侧）。
+  // ================= 第 1 期 P1-4：入行关口（P1-6 激活） =================
+  // 关口 = 进程呈现的 procOnly 分岔（fork_gate_first / fork_gate_switch，本体已于
+  // P1-6 毕业进 src/events.js 的 GAME_DATA.forks 并登记锚点，只写框骨架与兜底
+  // 选项、呈现层永不改动本体），照 fork_kid 的全套形状：开门判定 gateDue、呈现
+  // 定形 gateForkView、回指句纯函数 gateEchoLine，三者都在本文件（D7：职业代码
+  // 归 career.js；与 kidGateDue/kidForkView 在 spouse.js 的进程归属同理）。
+  // P1-6 激活接线：engine 的 step() 与 shadow-life 的 stepYearHeadless() 在
+  // workPhaseDue/工资轮之后、年龄分岔之前同点判定（两轨同规，政策 F 本体与打分
+  // 零改动）；总开关 GAME_GATE_SWITCH（trades.js）已打开，gateDue 先查开关、
+  // 关时恒假——回滚只改那一处。careerNote 已接线认选项上的 via/coldKind/指针
+  // 字段与推后账（见 careerNote 本体）。
   // 读账纪律：gateDue 只读账、零随机、fail-closed；gateForkView 的一切随机只走
   // 职业自有流 careerRng（冷门抽取与类型抽取），主流一格不动。seeds 的读取点
   // 只许在本段（关口组装）与 seedsOf/plantSeed 一侧——§2.3.1 白名单，本段之外
-  // 不许新增 seeds 读点。careerNote 的记账语义本批一字不动：组装出的选项带
-  // via/coldKind/指针字段只是数据，唯一写点认不认这几个字段归激活批接线。
+  // 不许新增 seeds 读点。
 
   // 行当与冷门类型的工作文案名（P1-6 文案审定稿后换；机制只消费 trade id，
   // 名字错位不影响任何判定）。冷门类型的 sub 是「平摆」的渠道说明句，无回指。
@@ -299,6 +325,25 @@
     teach: "去教书", acct: "做财会", fin: "去证券营业部", press: "进报社", dev: "做软件开发",
     driver_taxi: "开出租车", grad: "进课题组深造",
   };
+  // 关口选项的六维效果（P1-6 激活批定实，§5.2 硬要求：影子无头轨政策 F 第 3 级
+  // 靠 effects 打分，空对象会让关口选项对影子恒 0 分、政策退化到位置兜底）。
+  // 口径：与存量年龄分岔的选项同量级（±2..5），按行当的真实形状分——挣钱的行
+  // 伤身或费自由、养人的行长关系，代价写在数字里不另贴价签。只在 gateForkView
+  // 组装时消费（经 gateFx 拷贝），工资/调度一概不读本表。
+  const GATE_TRADE_FX = {
+    farm: { health: 2, money: -2, freedom: 3 }, shop: { money: 3, freedom: 2, growth: 2, health: -1 },
+    gig: { freedom: 4, money: 1, health: -1 }, courier: { money: 3, health: -3, freedom: 1 },
+    care: { relation: 3, money: 2, health: -2 }, write: { growth: 3, wisdom: 2, money: 1, freedom: 2 },
+    factory: { money: 3, growth: 1, health: -2, freedom: -1 }, fab: { money: 4, growth: 3, health: -2 },
+    craft: { growth: 4, money: 2, freedom: 1 }, heavy: { money: 3, health: -4, relation: 1 },
+    miner: { money: 4, health: -5, freedom: -1 }, truck: { money: 4, health: -3, freedom: 2, relation: -2 },
+    med_hosp: { money: 3, growth: 3, relation: 1, health: -1 }, med: { growth: 4, wisdom: 3, relation: 2, money: 2, health: -2 },
+    teach: { relation: 3, wisdom: 3, growth: 2, money: 1, freedom: 1 }, acct: { money: 2, growth: 3, wisdom: 1, freedom: -1 },
+    fin: { money: 4, growth: 2, wisdom: 1, health: -1 }, press: { growth: 3, wisdom: 3, relation: 1, money: 1 },
+    dev: { money: 4, growth: 4, health: -2, freedom: 1 }, driver_taxi: { money: 3, freedom: 3, health: -2 },
+    grad: { growth: 5, wisdom: 4, money: 1, freedom: -1 },
+  };
+  function gateFx(trade) { return Object.assign({}, GATE_TRADE_FX[trade] || {}); }
   const GATE_KIND_SUB = {
     assign: "分配下来的名额", recruit: "招工，你去报了名", follow: "有人带着你去",
     near: "离家近，来回方便", wage: "这一行眼下给的钱多",
@@ -426,13 +471,17 @@
     if (typeof S.age !== "number") return false;
     const last = gateLastEntryAge(S);
     if (last == null || S.age - last < 3) return false;
-    const hardPush = factOn(S, "unit_gone");
+    const hardPush = unitGoneRecent(S);
     if (!hardPush && gateCooling(S, 1)) return false;
     if (hardPush) return true;
     const idle = careerIdleOf(S);
     let idleYearPlus = !!(idle && typeof idle.from === "number" && S.age - idle.from >= 1);
     if (!idleYearPlus && S.flags.laid_off && S.flagAges && typeof S.flagAges.laid_off === "number") {
-      idleYearPlus = S.age - S.flagAges.laid_off >= 1; // 履历账缺段时以旗落点为准（§1.1）
+      // 履历账缺段时以旗落点为准（§1.1）——但只认「下岗后还没再入行」：laid_off
+      // 是一次性落旗、永不清除，若只按落旗年龄算待业时长，再入行后每满 3 年
+      // 都会被这面旧旗二次触发转行门（P1-6 差异报告 P12X-c1955-0 实测：49 岁
+      // 下岗、50 岁经关口再入行后，53/56/60/63 仍连环开门）。last 是最近入行岁。
+      idleYearPlus = S.age - S.flagAges.laid_off >= 1 && !(typeof last === "number" && last > S.flagAges.laid_off);
     }
     if (idleYearPlus && (S.flags.switch_wanted || S.flags.laid_off)) return true;
     if (S.flags.switch_wanted && !idle) return true;
@@ -452,8 +501,22 @@
   // 选框（§3.2 + D3 同门两副框）：gate_first 三框——处境推入 fact 优先；刚出
   // 学习窗（study 轨 28–29，或考试链落定一年内）走毕业框 grad；其余 job。
   // gate_switch 两框——unit_gone 走 fact，其余 want。
+  // 处境硬推的「当年」口径（设计 §3.2/§七：unit_gone 落下当年开 gate_switch）：
+  // factOn 是「曾经发生过」，而单位散了是一次性事件——落旗多年后再入行，不许
+  // 隔几年二次硬推（P1-6 差异报告实测：旧口径下转行门在单位散后每满 3 年重开
+  // 一次、且硬推跳冷却，推后也挡不住）。窗口取落旗当年起 2 年：关口判定在
+  // step 里排在内容呈现之前，落旗当年赶不上本年判定，次年起算；同年再被别的
+  // 独占屏占掉一年也还算「这阵子」。落旗年龄以 flagAges 为准（work.js 同步
+  // 保证恒有记录）；无年龄记录时回落 factOn（理论不到达，与 work.js 兜底同口径）。
+  function unitGoneRecent(S) {
+    if (!factOn(S, "unit_gone")) return false;
+    const fa = S.flagAges && typeof S.flagAges.unit_gone === "number" ? S.flagAges.unit_gone : null;
+    if (fa == null || typeof S.age !== "number") return true;
+    return S.age - fa >= 0 && S.age - fa <= 2;
+  }
+
   function gateFrameOf(S, kind) {
-    if (kind === "switch") return factOn(S, "unit_gone") ? "fact" : "want";
+    if (kind === "switch") return unitGoneRecent(S) ? "fact" : "want";
     if (factOn(S, "exam_failed")) return "fact";
     const routeId = S.route && S.route.id;
     if (routeId === "study" && typeof S.age === "number" && S.age <= 29) return "grad";
@@ -595,7 +658,7 @@
     try {
       if (!S || typeof S !== "object" || !S.flags || !S.state) return null;
       const wantId = kind === "switch" ? "fork_gate_switch" : kind === "first" ? "fork_gate_first" : "";
-      // 本体先认 GAME_GATES（本批登记处）；激活批毕业进 GAME_DATA.forks 后自动改走后者。
+      // 本体认 GAME_DATA.forks（P1-6 已毕业合入 events.js；原 GAME_GATES 登记处已撤）。
       const gateDefs = (typeof window !== "undefined" && window.GAME_GATES && window.GAME_GATES.forks) || [];
       const def = gateDefs.find((f) => f.id === wantId) || ((IFY.D && IFY.D.forks) || []).find((f) => f.id === wantId);
       if (!def) return null;
@@ -659,7 +722,7 @@
       const choices = [];
       for (const it of inheritItems) {
         choices.push({
-          label: GATE_TRADE_LABEL[it.trade] || it.trade, effects: {}, set: it.row.flag,
+          label: GATE_TRADE_LABEL[it.trade] || it.trade, effects: gateFx(it.trade), set: it.row.flag,
           via: "inherit", trade: it.trade, viaFact: it.srcId, group: "lit",
           sub: gateEchoLine(S, { via: "inherit", trade: it.trade, factId: it.srcId }),
         });
@@ -667,7 +730,7 @@
       for (const it of seedItems) {
         const echoRec = it.agg.recs.find((r) => typeof r.seedNote === "string" && r.seedNote) || it.agg.recs[0] || null;
         choices.push({
-          label: GATE_TRADE_LABEL[it.trade] || it.trade, effects: {}, set: it.row.flag,
+          label: GATE_TRADE_LABEL[it.trade] || it.trade, effects: gateFx(it.trade), set: it.row.flag,
           via: "seed", trade: it.trade, group: "lit",
           seedBeat: echoRec ? echoRec.beatId : null, seedAge: echoRec ? echoRec.age : null,
           sub: gateEchoLine(S, { via: "seed", trade: it.trade, seed: echoRec, strength: it.strength }),
@@ -675,7 +738,7 @@
       }
       for (const it of coldItems) {
         choices.push({
-          label: GATE_TRADE_LABEL[it.trade] || it.trade, effects: {}, set: it.row.flag,
+          label: GATE_TRADE_LABEL[it.trade] || it.trade, effects: gateFx(it.trade), set: it.row.flag,
           via: "cold", trade: it.trade, coldKind: it.coldKind, group: "cold",
           sub: GATE_KIND_SUB[it.coldKind] || null,
         });

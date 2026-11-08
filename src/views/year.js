@@ -215,8 +215,29 @@
     const GATE_KEYS = ["require", "forbid", "all", "any", "state", "stateAll", "stateNot", "era", "eraIn", "minYear", "route", "routeIn", "forbidRoute", "chain"];
     let vis = fork.choices.map((c, i) => [c, i]).filter(([c]) => !GATE_KEYS.some((k) => k in c) || IFY.met(c)); // 选项级门（v0.18.0）：带门的选项按本局事实显隐（如 fork52 排班选项只给有兄弟姐妹的人）
     if (!vis.length) vis = fork.choices.map((c, i) => [c, i]);
+    // 关口分组呈现（第 1 期 P1-6，裁定 D4/D5）：view 带 gateGroupTitles 时按 group
+    // 分段——种子点亮组（承继＋点亮，按钮内带回指/来处副文案 sub）与冷门组各用真实
+    // 标题元素分隔，推后项不带组题排在最后；学历门说明行（gateNotes）排在选项区
+    // 之外、不进任何按钮。普通分岔无此字段，走原样单列，呈现一字不变。
+    const gateGrouped = !!(fork.gateGroupTitles && typeof fork.gateGroupTitles === "object");
+    const gateBtn = ([c, i]) => `<button class="choice" data-i="${i}">${IFY.esc(labelText(c))}${c.sub ? `<span class="choice-sub">${IFY.esc(c.sub)}</span>` : ""}</button>`;
+    let choicesHtml;
+    if (gateGrouped) {
+      const parts = [];
+      const litPart = vis.filter(([c]) => c.group === "lit");
+      const coldPart = vis.filter(([c]) => c.group === "cold");
+      const deferPart = vis.filter(([c]) => c.group !== "lit" && c.group !== "cold");
+      if (litPart.length && fork.gateGroupTitles.lit) parts.push(`<h3 class="gate-group">${IFY.esc(fork.gateGroupTitles.lit)}</h3>${litPart.map(gateBtn).join("")}`);
+      if (coldPart.length && fork.gateGroupTitles.cold) parts.push(`<h3 class="gate-group">${IFY.esc(fork.gateGroupTitles.cold)}</h3>${coldPart.map(gateBtn).join("")}`);
+      parts.push(deferPart.map(gateBtn).join(""));
+      choicesHtml = parts.join("");
+    } else {
+      choicesHtml = vis.map(([c, i]) => `<button class="choice" data-i="${i}">${IFY.esc(labelText(c))}</button>`).join("");
+    }
+    const gateNotesHtml = gateGrouped && Array.isArray(fork.gateNotes) && fork.gateNotes.length
+      ? fork.gateNotes.map((n) => `<p class="gate-note">${IFY.esc(n)}</p>`).join("") : "";
     IFY.app().innerHTML = `<section class="card">${IFY.head()}<h2>${IFY.esc(fork.title)}</h2>${covPrefix}<p>${IFY.esc(forkText)}</p>
-      <div class="choices">${vis.map(([c, i]) => `<button class="choice" data-i="${i}">${IFY.esc(labelText(c))}</button>`).join("")}</div></section>`;
+      <div class="choices">${choicesHtml}</div>${gateNotesHtml}</section>`;
     IFY.finishRender();
     const chooseForkChoice = (c, autoSelected) => {
       IFY.clearAuto();
