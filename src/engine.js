@@ -1,4 +1,4 @@
-// 《如果那年》引擎 v0.58.0 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
+// 《如果那年》引擎 v0.58.1 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
 //      / 判词按数值形状拼装 / 全程自动存档可续玩 / 种子可输入、可复制分享链接 / 在线零 LLM 调用
 // [模块]本引擎自 v0.20.0 起拆为各自独立的模块文件（独立包装器 + window.IFY 共享命名空间），按 index.html 的顺序加载：本文件（建 IFY + 编排）→ src/world/apply.js → src/record.js → src/world/processes/{parents,spouse,work,place,health}.js → src/scheduler.js → src/views/{stream,year,shadow,settlement,share}.js → src/engine-boot.js（收尾，调用 IFY.renderStart()）。跨模块引用一律 IFY.<名>，可变量收编为 IFY 属性。
 window.IFY = window.IFY || {};
@@ -358,6 +358,44 @@ window.IFY = window.IFY || {};
     try { localStorage.setItem(LASTLIFE_KEY, JSON.stringify(last)); } catch (e) { /* 同上 */ }
   }
 
+  // ---------- 最近活过的人生（父亲事故热修）：ify-history-v1 = { v:1, runs:[entry, ...] } ----------
+  // entry = { at, era, routeName, endAge, verdictLine, endInfo, save }：save 是整局会话快照（与
+  // ify-save-v2 同形状），新局在前、环形保留最近 5 局；开局屏逐局列出，点开按快照重渲染结算页。
+  // 与 ify-lastlife-v1 的分工：lastlife 只剩「列表为空时的旧局一行回看」兜底（见 renderStart），
+  // 首页呈现以本列表为唯一口径，列表首行字段是 lastlife 的超集，不两套并行展示。
+  // 写入带容量兜底：超限依次丢最旧快照重试，至少保住最近一局；一局都写不下就静默放弃——
+  // 留档失败绝不许带崩结算与游戏主流程（全程 try/catch，调用方 renderEnd 亦有兜底）。
+  const HISTORY_KEY = "ify-history-v1";
+  const HISTORY_MAX = 5;
+
+  function loadHistory() {
+    try {
+      const v = JSON.parse(localStorage.getItem(HISTORY_KEY));
+      if (v && Array.isArray(v.runs)) return v.runs.filter((e) => e && e.save && typeof e.endAge === "number");
+    } catch (e) { /* 损坏数据按空列表走 */ }
+    return [];
+  }
+
+  function writeHistory(runs) {
+    let cur = runs.slice(0, HISTORY_MAX);
+    for (;;) {
+      try { localStorage.setItem(HISTORY_KEY, JSON.stringify({ v: 1, runs: cur })); return; }
+      catch (e) { if (cur.length <= 1) return; cur = cur.slice(0, -1); } // 超限丢最旧再试；只剩一局还写不下就放弃
+    }
+  }
+
+  function recordHistory(endInfo, endDisplay) {
+    try {
+      const payload = typeof IFY.serializeSession === "function" ? IFY.serializeSession() : null;
+      const data = payload || { ...IFY.S, rngA: RNG.a, rngW: RNGW.a, rngAmb: RNGA.a };
+      const entry = { ...(endDisplay || {}), endInfo: endInfo || { newEnding: false, newRare: false }, save: JSON.parse(JSON.stringify(data)) };
+      if (!entry.at) entry.at = todayStr();
+      const runs = loadHistory();
+      runs.unshift(entry);
+      writeHistory(runs);
+    } catch (e) { /* 留档失败静默，不阻塞结算 */ }
+  }
+
   // 开局屏的记录行：总天数 + 最近连续天数；连续只在 ≥2 天时提，断档时只报总数、只字不提断不断。
   function streakLine() {
     const days = loadStreak().days;
@@ -549,6 +587,14 @@ window.IFY = window.IFY || {};
     app().classList.remove("playwrap");
     clearSave0();
     const saved = loadSave();
+    // 终局档（父亲事故热修）：走完的局带 ended 标记留在 ify-save-v2 里，但它不是「进行中」——
+    // 续玩入口只认没走完的局（liveSaved）；终局回看走下面的历史列表（最近一局置顶即原「回到
+    // 刚才那一局」，不再单设入口）。
+    const liveSaved = saved && !saved.ended ? saved : null;
+    const histRuns = loadHistory();
+    // 列表为空但手里有一份终局档（列表写入被容量兜底放弃时）：把那一局合成列表首行，点开走同一条回看路
+    if (!histRuns.length && saved && saved.ended && saved.endDisplay) histRuns.push({ ...saved.endDisplay, endInfo: saved.endInfo || null, save: saved });
+    const eraNameOf = (id) => { const e = ERAS.find((x) => x.id === id); return e ? e.label : ""; };
     const sLine = streakLine(), lLine = lastLifeLine(), tomDaily = dailyFor(shiftedDateStr(1)); // 留存三行（v0.15.0）：记录/回看/明日预告，无数据则不出
     // v0.24.0（首页重做，docs 方案 PROPOSAL §2）：回访形态＝有存档或活过至少一局；折叠区「设置与对局」默认收起，
     // 只有三种展开：带 seed/cards 链接打开（让玩家看见链接带来的牌，不写 foldIntroSeen）、打完第一局回来（展开一次
@@ -629,12 +675,17 @@ window.IFY = window.IFY || {};
         </div>
         ${returning ? `<div class="row"><button class="textlink" id="liveslink">活过的人生</button></div>` : ""}
         ${sLine ? `<p class="hint">${sLine}</p>` : ""}
-        ${lLine ? `<p class="hint">${lLine}</p>` : ""}
+        ${lLine && !histRuns.length ? `<p class="hint">${lLine}</p>` : ""}
       </section>
       <div class="actions">
-        ${saved ? `<button class="primary" id="resume">继续上次的人生（${savedAge} 岁 · ${esc(savedLabel)}）</button>` : ""}
-        <button id="startgo" class="${saved ? "ghost" : "primary"}">${saved ? "重新开始一局" : "开始这一生"}</button>
+        ${liveSaved ? `<button class="primary" id="resume">继续上次的人生（${savedAge} 岁 · ${esc(savedLabel)}）</button>` : ""}
+        <button id="startgo" class="${liveSaved ? "ghost" : "primary"}">${liveSaved ? "重新开始一局" : "开始这一生"}</button>
       </div>
+      ${histRuns.length ? `<section class="card histcard">
+        <p class="setlab">最近活过的人生</p>
+        ${histRuns.map((h, i) => `<button type="button" class="histrow" data-hist="${i}"><b>${esc(h.at || "")}</b><span>${esc(eraNameOf(h.era))} · ${esc(h.routeName || "")} · 活到 ${h.endAge} 岁</span><small>${esc(h.verdictLine || "")}</small></button>`).join("")}
+        <p class="hint">点一局，回到那一局的结算页。订册子、导出，都在那一页上。</p>
+      </section>` : ""}
       <section class="card foldcard">
         <div class="foldblock${foldOpen ? " open" : ""}" id="foldblock">
           <button type="button" class="foldhead" id="foldtoggle" aria-expanded="${foldOpen ? "true" : "false"}"><span class="foldtitle">设置与对局</span><small>平时不用打开</small><span class="foldchev" aria-hidden="true">▾</span></button>
@@ -688,14 +739,16 @@ window.IFY = window.IFY || {};
       foldBlock.classList.toggle("open", open);
       el("foldtoggle").setAttribute("aria-expanded", String(open));
     });
-    if (saved) el("resume").addEventListener("click", () => {
-      // v0.13.2：缺 seedStr 且无合法 rngA 的残档会在 seedFromString 处炸——按坏档清掉回开局，不抛错
+    // 存档还原（续玩与历史回看共用同一条路，防两处口径漂移）：两形状识别＋逐字段回填＋三股流
+    // 复位都在这里做完；坏档（缺 seedStr 且无合法 rngA）返回 null，调用方各自处置。
+    const restoreFromSave = (raw) => {
+      // v0.13.2：缺 seedStr 且无合法 rngA 的残档会在 seedFromString 处炸——按坏档处理，不抛错
       // v0.21 WP1（蓝图 3.3）：存档两形状识别——v2（有 tracks）由 shadow-life 接管成 session 并返回受控 Track 的
       // 平铺态；旧平铺档就地包成 session（tracks.B=null、meta 从旧 state 同名字段接管、序章段档同样 B=null）。
       // 下文逐字段回填对两形状同口径作用于受控 Track 的平铺态（flat），后续读流一律读 flat。
-      const ctlSaved = saved.tracks ? (saved.tracks[saved.controlTrack || "A"] || saved.tracks.A || {}) : saved;
-      if (!ctlSaved.seedStr && typeof ctlSaved.rngA !== "number") { clearSave(); renderStart(); return; }
-      const flat = saved.tracks ? IFY.adoptSessionSave(saved) : (typeof IFY.wrapLegacySession === "function" ? IFY.wrapLegacySession(saved) : saved);
+      const ctlSaved = raw.tracks ? (raw.tracks[raw.controlTrack || "A"] || raw.tracks.A || {}) : raw;
+      if (!ctlSaved.seedStr && typeof ctlSaved.rngA !== "number") return null;
+      const flat = raw.tracks ? IFY.adoptSessionSave(raw) : (typeof IFY.wrapLegacySession === "function" ? IFY.wrapLegacySession(raw) : raw);
       IFY.S = flat;
       IFY.S.seedStr = IFY.S.seedStr || String(flat.rngA); // 仅有 rngA 的旧残档：用数字串兜底展示，RNG 仍走 rngA
       IFY.S.usedRare = IFY.S.usedRare || []; IFY.S.era = IFY.S.era || "c2000"; IFY.S.birthYear = IFY.S.birthYear || 2000;
@@ -730,9 +783,25 @@ window.IFY = window.IFY || {};
       RNG.a = typeof flat.rngA === "number" ? flat.rngA : seedFromString(flat.seedStr);
       RNGW.a = typeof flat.rngW === "number" ? flat.rngW : seedFromString(String(flat.rngA) + "#world-legacy"); // 旧存档无进程/环境流存档值：由旧随机态派生续玩（不承诺与旧口径同一局，见 DEVLOG）
       RNGA.a = typeof flat.rngAmb === "number" ? flat.rngAmb : seedFromString(String(flat.rngA) + "#ambient-legacy");
+      return flat;
+    };
+    if (liveSaved) el("resume").addEventListener("click", () => {
+      const flat = restoreFromSave(saved);
+      if (!flat) { clearSave(); renderStart(); return; } // 坏档：清掉回开局（原处置不变）
       IFY.prevStats = null; IFY.resumeMark = true; // §6.2 续玩第一屏给一句定位
       if (IFY.S.death) renderDeath(); else step();
     });
+    // 历史回看（父亲事故热修）：按那一局的快照还原整局，置回放标记后重渲染结算页——回放不写
+    // 存档、不重新留档（renderEnd 侧守口），进行中存档原样保留，看完回来还能接着续玩。
+    document.querySelectorAll("[data-hist]").forEach((b) => b.addEventListener("click", () => {
+      const entry = histRuns[Number(b.dataset.hist)];
+      if (!entry || !entry.save) return;
+      const flat = restoreFromSave(entry.save);
+      if (!flat) return; // 快照坏了就不动，不清任何东西
+      IFY.prevStats = null;
+      IFY._endRerun = true; IFY._endInfo = entry.endInfo || null;
+      IFY.renderEnd();
+    }));
     const pickSeg = (id) => { const box = el(id); if (!box) return; box.querySelectorAll(".segbtn").forEach((b) => b.addEventListener("click", () => { box.querySelectorAll(".segbtn").forEach((o) => o.classList.remove("sel")); b.classList.add("sel"); })); };
     pickSeg("erapick");
     const preSel = (id, attr, val) => { const box = el(id); if (!box || !val) return; const btns = box.querySelectorAll(".segbtn"); btns.forEach((o) => { if (o.dataset[attr] === val) { btns.forEach((p) => p.classList.remove("sel")); o.classList.add("sel"); } }); };
@@ -759,7 +828,7 @@ window.IFY = window.IFY || {};
       if (strip) strip.innerHTML = ys.map((yy) => `<button type="button" class="yearbtn${yy === y ? " sel" : ""}" data-year="${yy}" aria-label="生在${yy}年">${String(yy % 100).padStart(2, "0")}</button>`).join("");
       const bh = el("birthhint");
       if (bh) bh.textContent = birthOverride != null && ys.includes(birthOverride) ? "就定在这一年了。点别的数字，可以再换。" : "这一年，你出生了。点一个数字，就能换一年。";
-      const sg0 = el("startgo"); if (sg0 && !saved) sg0.textContent = `从${y}年开始这一生`;
+      const sg0 = el("startgo"); if (sg0 && !liveSaved) sg0.textContent = `从${y}年开始这一生`;
     };
     const stripEl = el("yearstrip");
     if (stripEl) stripEl.addEventListener("click", (ev) => { const b = ev.target.closest(".yearbtn"); if (!b) return; birthOverride = Number(b.dataset.year); syncBirth(); });
@@ -782,7 +851,7 @@ window.IFY = window.IFY || {};
     syncAutoPick();
     // 年代分流（v0.17.0）：试点年代走序章开局——藏牌面、亮序章入口；其余年代照旧。切换只改呈现，开局函数在点击时按年代走
     // v0.24.0：路线卡已撤出首页（选路回局内 22 岁汇入拍），此处只切标题/介绍/出身子区/序章提示与开始按钮文案
-    const startLabel = () => saved ? "重新开始一局" : `从${shownBirth()}年开始这一生`; // 有存档时主按钮让位给续玩：文案恒为重开（存档优先）
+    const startLabel = () => liveSaved ? "重新开始一局" : `从${shownBirth()}年开始这一生`; // 有进行中存档时主按钮让位给续玩：文案恒为重开（存档优先）；只有终局档时不算占用
     const eraToggle = () => {
       const pro = hasPrologue(selEra());
       const t = el("starttitle"); if (t) t.textContent = "你没走的那条路，过得怎么样？";
@@ -1147,6 +1216,7 @@ window.IFY = window.IFY || {};
     DEFAULT_AUTO_MODE, RNG, RNGW, RNGA, mulberry, rng, rngW, rngA, seedStreams, seedFromString, drawBirthYear, clamp, esc,
     el, app, reducedMotion, freshState, sampleStatsPeak, sampleStatsLate, save, loadSave, clearSave, loadLives, todayStr, recordLives,
     STREAK_KEY, LASTLIFE_KEY, loadStreak, loadLastLife, dateStrOf, shiftedDateStr, recordDayAndLife,
+    HISTORY_KEY, loadHistory, recordHistory,
     streakLine, lastLifeLine, dailyFor, loadPrefs, savePrefs, rhythmOf, rhythmBase, applyTempDelta,
     applyEffects, finalAge, renderStart, clearSave0, newGame, STAGE_LABEL, newGamePrologue, prologueHead,
     renderPrologue, renderRouteMerge, mergeIntoRoute, step, advance, renderDeath, TIER_ORDER, TIER_LABEL,

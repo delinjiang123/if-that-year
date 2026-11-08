@@ -1741,9 +1741,16 @@
   }
 
   function renderEnd() {
-    // 结算快进（v0.22 WP7，蓝图 7.4）：clearSave 之前先把不受控 Track 步进到死亡或保险丝（110）并置 finalized——
-    // 只置内存位、不另行 save：本函数随后即 clearSave() 清档，终局屏之后没有续读路径，落盘无意义
-    // （与蓝图「并 save」的出入及理由记 wp7 日志；若日后出现终局后续读入口，此处须改真 save）。
+    // 回放标记（父亲事故热修）：开局屏「最近活过的人生」列表置 IFY._endRerun/_endInfo 后调本
+    // 函数，按那一局的快照重渲染本页——本页全部取数都是状态的纯函数（本文件不耗随机流），
+    // 重渲染与原页一致；回放时不重复上报 game_complete、不重复落活过记录、也不再留档（看旧局
+    // 不许挤掉新局的档、更不许在列表里重复占位），「第一次」两行按快照 endInfo 还原。
+    const endRerun = !!IFY._endRerun;
+    const endInfo = IFY._endInfo || null;
+    IFY._endRerun = false; IFY._endInfo = null;
+    // 结算快进（v0.22 WP7，蓝图 7.4）：先把不受控 Track 步进到死亡或保险丝（110）并置 finalized。
+    // 终局后续读入口已随父亲事故热修落地（本函数下方「终局留档」）：不再清档，定案整局带
+    // ended 标记留在存档里，开新局时 save() 覆盖、标记随之消失——蓝图当年留的话至此兑现。
     fastForwardUncontrolled();
     // 住房变现落账（v0.30.0）：两条 Track 都已定案——在 verdict/特殊结局/九槽文案等任何读终值的
     // 判定之前，各调一次 houseSettleDue（houseSettled 防重；资产只在此刻进流动金钱）。
@@ -1766,13 +1773,31 @@
     IFY.curKind = "end";
     IFY.clearAutoContext();
     IFY.app().classList.remove("playwrap");
-    IFY.clearSave();
     const v = verdict();
     const sp = specialEnding();
     IFY.S.special = sp;
-    IFY.ANA.track("game_complete", { era: IFY.S.era, route: IFY.S.route.id, endAge: IFY.finalAge(), death: !!IFY.S.death, ending: sp ? sp.id : "none", tier: sp ? sp.tier : "none" });
-    const livesNew = IFY.recordLives(sp ? sp.id : null, IFY.S.usedRare || []); // 活过记录：落盘 + 本局新纪录（§B3）
-    IFY.recordDayAndLife(); // 留存记录（v0.15.0）：日子表 + 最近一局回看，与活过记录同一落点、互不相干
+    if (!endRerun) IFY.ANA.track("game_complete", { era: IFY.S.era, route: IFY.S.route.id, endAge: IFY.finalAge(), death: !!IFY.S.death, ending: sp ? sp.id : "none", tier: sp ? sp.tier : "none" });
+    const livesNew = endRerun ? (endInfo || { newEnding: false, newRare: false }) : IFY.recordLives(sp ? sp.id : null, IFY.S.usedRare || []); // 活过记录：落盘 + 本局新纪录（§B3）；回放按快照 endInfo 还原，不重复落盘
+    if (!endRerun) {
+      IFY.recordDayAndLife(); // 留存记录（v0.15.0）：日子表 + 最近一局回看，与活过记录同一落点、互不相干
+      // 终局留档（父亲事故热修）：定案整局两处落盘——①ify-save-v2 打 ended 标记，保留到下一局
+      // 开局 save() 覆盖为止；②「最近活过的人生」列表（ify-history-v1，环形保留最近 5 局整局
+      // 快照）供开局屏逐局回看。回放时两处都不写（见函数头回放标记注释）。
+      const endInfoObj = { newEnding: !!livesNew.newEnding, newRare: !!livesNew.newRare };
+      const endDisplay = { at: IFY.todayStr(), era: IFY.S.era, routeName: IFY.S.route ? IFY.S.route.name : "", endAge: IFY.finalAge(), verdictLine: v.text.split("。")[0] + "。" };
+      try {
+        IFY.save();
+        const rawEnd = localStorage.getItem(IFY.SAVE_KEY);
+        if (rawEnd) {
+          const dataEnd = JSON.parse(rawEnd);
+          dataEnd.ended = true;
+          dataEnd.endInfo = endInfoObj;
+          dataEnd.endDisplay = endDisplay;
+          localStorage.setItem(IFY.SAVE_KEY, JSON.stringify(dataEnd));
+        }
+      } catch (e) { /* 落不下不阻塞结算呈现 */ }
+      if (typeof IFY.recordHistory === "function") IFY.recordHistory(endInfoObj, endDisplay);
+    }
     const shadowLines = IFY.shadowCompareLines();
     const covLineRaw = IFY.covenantSettleLine(); // fork38 立约的结算对账行（v0.17.0）：没有立过约就不出
     const covLine = (covLineRaw.includes("立的约") && !covenantHadPartner(playerFacts())) ? "" : covLineRaw; // fix4-settle 第 3 条：38 岁前没走过定关系/领证路径的局，对账行不许断言立过约（判法见 covenantHadPartner）

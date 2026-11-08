@@ -8,6 +8,16 @@
 const CFG = window.IFY_KEEPSAKE || {};
 const LS_KEY = "ify-keepsake-v1"; // 本机解锁记录：{unlocked:true, code, at}
 const PENDING_KEY = "ify-keepsake-pending"; // 领码页带回的码（sessionStorage，自动解锁失败时的预填兜底）
+const BUY_PENDING_KEY = "ify-buy-pending-v1"; // 订购未完标记（父亲事故热修）：点过购买（典藏台「去订一册」或订购页付款按钮）即落，输码解锁即清；未清前结算页常驻「继续订购」入口
+function markBuyPending() {
+try { localStorage.setItem(BUY_PENDING_KEY, JSON.stringify({ at: new Date().toISOString()}));} catch (e) {}
+}
+function buyPending() {
+try { return !!localStorage.getItem(BUY_PENDING_KEY);} catch (e) { return false;}
+}
+function clearBuyPending() {
+try { localStorage.removeItem(BUY_PENDING_KEY);} catch (e) {}
+}
 
 // 统计升级批（2026-11-08）：典藏漏斗埋点——只报分类量与成败布尔，码值绝不进事件
 // （收集端白名单里 code_verify / gift_claim 也只有 ok 字段，双保险）。口径见 docs/ANALYTICS.md。
@@ -23,6 +33,7 @@ return { unlocked: false};
 function keepsakeUnlocked() { return!!keepsakeState().unlocked;}
 function saveUnlock(code) {
 try { localStorage.setItem(LS_KEY, JSON.stringify({ unlocked: true, code: code || "", at: new Date().toISOString()}));} catch (e) {}
+clearBuyPending(); // 已解锁：「继续订购」入口与未完标记一并收起（手动输码与领码页自动解锁共用此口）
 }
 
 // ---------- 导出数据（唯一口径：长图与纪录册共用，数字只许从这里出） ----------
@@ -1149,6 +1160,9 @@ ${factHtml}
 <button type="button" class="ghost" id="ks-preview">先看长图预览（带水印）</button>
 </div>
 <div class="cardpreview" id="ks-prevbox"></div>
+${buyPending()? `<div class="row">
+<a class="ghost ks-resume" href="${esc(CFG.buyPage || "buy.html")}" target="_blank" rel="noopener">刚才的订购没付完，点这里接着付</a>
+</div>`: ""}
 <div class="row">
 <a class="ghost ks-buy" href="${esc(CFG.buyPage || "buy.html")}" target="_blank" rel="noopener">去订一册 · ¥${CFG.priceJPY} / ¥${CFG.priceCNY}</a>
 </div>
@@ -1159,10 +1173,12 @@ ${factHtml}
 </div>
 <p class="hint" id="ks-hint">${pending? "你从领码页带回的码已经填好了，点「用码解锁」就行。": ""}</p>
 <p class="hint">付完款会跳到领码页，码很大，抄下来也行。码丢了，凭付款订单能补发；换了设备，拿码再输一次就行。</p>
-<p class="hint">订完回到这一页，展开这一行就能导出——这一页先别关。</p>
+<p class="hint">订完回游戏，展开这一行输码就能导出。这一页关了也没事：下次打开游戏，首页「最近活过的人生」里点这一局，能接着弄。</p>
 </div>`;
 const buyA = panel.querySelector(".ks-buy");
-if (buyA) buyA.addEventListener("click", () => anaTrack("buy_click", {}));
+if (buyA) buyA.addEventListener("click", () => { markBuyPending(); anaTrack("buy_click", {});});
+const resumeA = panel.querySelector(".ks-resume");
+if (resumeA) resumeA.addEventListener("click", () => anaTrack("buy_click", {}));
 IFY.el("ks-preview").addEventListener("click", () => {
 const box = IFY.el("ks-prevbox");
 box.innerHTML = "";
@@ -1200,6 +1216,15 @@ if (!line) return;
 line.textContent = keepsakeUnlocked()
 ? "这一生订成册子 · 已解锁，导出"
 : `把这一生订成册子带走 · ¥${CFG.priceJPY} / ¥${CFG.priceCNY}`;
+// 订购回头路（父亲事故热修）：有未完标记且未解锁时，典藏台上方常驻「继续订购」直达订购页，
+// 不用先展开面板才找得到；解锁或标记清除后自动收起（storage/visibilitychange 也走本函数）。
+const rz = IFY.el("ks-resumebox");
+if (rz) {
+const showResume = !keepsakeUnlocked() && buyPending();
+rz.hidden = !showResume;
+if (showResume) rz.innerHTML = `<a class="ghost ks-buy" href="${IFY.esc(CFG.buyPage || "buy.html")}" target="_blank" rel="noopener">刚才的订购没付完，点这里接着付</a>`;
+else rz.innerHTML = "";
+}
 const panel = IFY.el("keepsake-panel");
 if (panel &&!panel.hidden) renderPanel();
 }
@@ -1207,7 +1232,7 @@ if (panel &&!panel.hidden) renderPanel();
 function mountKeepsakeDesk() {
 const desk = IFY.app().querySelector(".sharedesk");
 if (!desk || IFY.el("keepsake-line")) return;
-desk.insertAdjacentHTML("afterend", `<p class="keepsake-line" id="keepsake-line"><button type="button" class="textlink" id="keepsake-open"></button></p><p class="hint" style="margin:2px 0 0">长图能存下来发给家里人看，册子能打印出来送人。</p><div class="keepsake-panel" id="keepsake-panel" hidden></div>`);
+desk.insertAdjacentHTML("afterend", `<p class="keepsake-line" id="keepsake-line"><button type="button" class="textlink" id="keepsake-open"></button></p><p id="ks-resumebox" style="margin:6px 0 0" hidden></p><p class="hint" style="margin:2px 0 0">长图能存下来发给家里人看，册子能打印出来送人。</p><div class="keepsake-panel" id="keepsake-panel" hidden></div>`);
 const btn = IFY.el("keepsake-open");
 if (!btn) return;
 btn.addEventListener("click", () => {
