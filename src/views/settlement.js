@@ -1858,6 +1858,11 @@
       </div>
       <div class="sharedesk">
         <h3>把这一生寄出去</h3>
+        <p class="hint">这一生可以做成一张卡带走——判词和年表都在上面。存进手机，或者发给朋友，都行。</p>
+        <div class="row">
+          <button class="ghost" id="shareopen" aria-expanded="false">做成分享卡</button>
+        </div>
+        <div id="sharebody" hidden>
         <label class="refl-label">给这一生留一句话（可选）
           <input id="shareline" type="text" maxlength="60" placeholder="一句就好，会出现在发帖文案的开头" value="${IFY.playerMeta().reflections.length ? IFY.esc(IFY.playerMeta().reflections[0].text) : ""}">
         </label>
@@ -1883,6 +1888,7 @@
           <summary>发帖文案预览</summary>
           <p class="sharetext-body" id="sharetext"></p>
         </details>
+        </div>
       </div>
       <div class="row">
         <button class="primary" id="again-same">同种子再来一局（换选择）</button>
@@ -1955,6 +1961,16 @@
       catch (e) { IFY.el("copytext").textContent = "复制失败，展开下面的文案预览手动复制"; }
     });
     refreshCard();
+    // 结算整洁化（真机专项）：分享台默认收起——整页先是一份完整的纪录，点入口才展开
+    // 卡型/尺寸/保存等控件。控件全在 #sharebody 内，ID 与接线、预绘、埋点一律照旧，
+    // 容器隐藏不影响 buildCard；展开后与改前完全一致。
+    const shareOpenBtn = IFY.el("shareopen"), shareBody = IFY.el("sharebody");
+    if (shareOpenBtn && shareBody) shareOpenBtn.addEventListener("click", () => {
+      const open = shareBody.hidden;
+      shareBody.hidden = !open;
+      shareOpenBtn.textContent = open ? "收起" : "做成分享卡";
+      shareOpenBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    });
     // v0.33.0 人生纪录典藏：分享台之后挂一行安静入口＋导出面板（keepsake.js）。结算原有呈现
     // 一字不动，本钩子只做 DOM 追加；模块缺席（旧缓存）时静默跳过。
     if (typeof IFY.mountKeepsakeDesk === "function") IFY.mountKeepsakeDesk();
