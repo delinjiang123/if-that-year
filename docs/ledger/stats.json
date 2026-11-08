@@ -1,0 +1,466 @@
+{
+ "totalRows": 2914,
+ "uniqueIds": 2824,
+ "duplicateIds": [
+  {
+   "id": "pr_origin",
+   "count": 6,
+   "at": [
+    "src/content/prologue/prologue-c1955.js:95",
+    "src/content/prologue/prologue-c1965.js:161",
+    "src/content/prologue/prologue-c1978.js:116",
+    "src/content/prologue/prologue-c1985.js:115",
+    "src/content/prologue/prologue-c1995.js:113",
+    "src/content/prologue/prologue.js:210"
+   ]
+  },
+  {
+   "id": "pr_child1",
+   "count": 6,
+   "at": [
+    "src/content/prologue/prologue-c1955.js:98",
+    "src/content/prologue/prologue-c1965.js:164",
+    "src/content/prologue/prologue-c1978.js:119",
+    "src/content/prologue/prologue-c1985.js:118",
+    "src/content/prologue/prologue-c1995.js:116",
+    "src/content/prologue/prologue.js:216"
+   ]
+  },
+  {
+   "id": "pr_child2",
+   "count": 6,
+   "at": [
+    "src/content/prologue/prologue-c1955.js:113",
+    "src/content/prologue/prologue-c1965.js:181",
+    "src/content/prologue/prologue-c1978.js:136",
+    "src/content/prologue/prologue-c1985.js:134",
+    "src/content/prologue/prologue-c1995.js:132",
+    "src/content/prologue/prologue.js:234"
+   ]
+  },
+  {
+   "id": "pr_child3",
+   "count": 6,
+   "at": [
+    "src/content/prologue/prologue-c1955.js:128",
+    "src/content/prologue/prologue-c1965.js:197",
+    "src/content/prologue/prologue-c1978.js:152",
+    "src/content/prologue/prologue-c1985.js:151",
+    "src/content/prologue/prologue-c1995.js:154",
+    "src/content/prologue/prologue.js:251"
+   ]
+  },
+  {
+   "id": "pr_child4",
+   "count": 6,
+   "at": [
+    "src/content/prologue/prologue-c1955.js:137",
+    "src/content/prologue/prologue-c1965.js:209",
+    "src/content/prologue/prologue-c1978.js:162",
+    "src/content/prologue/prologue-c1985.js:163",
+    "src/content/prologue/prologue-c1995.js:165",
+    "src/content/prologue/prologue.js:263"
+   ]
+  },
+  {
+   "id": "pr_teen1",
+   "count": 6,
+   "at": [
+    "src/content/prologue/prologue-c1955.js:146",
+    "src/content/prologue/prologue-c1965.js:226",
+    "src/content/prologue/prologue-c1978.js:171",
+    "src/content/prologue/prologue-c1985.js:181",
+    "src/content/prologue/prologue-c1995.js:174",
+    "src/content/prologue/prologue.js:283"
+   ]
+  },
+  {
+   "id": "pr_teen2",
+   "count": 6,
+   "at": [
+    "src/content/prologue/prologue-c1955.js:161",
+    "src/content/prologue/prologue-c1965.js:246",
+    "src/content/prologue/prologue-c1978.js:200",
+    "src/content/prologue/prologue-c1985.js:215",
+    "src/content/prologue/prologue-c1995.js:190",
+    "src/content/prologue/prologue.js:299"
+   ]
+  },
+  {
+   "id": "pr_fork16",
+   "count": 6,
+   "at": [
+    "src/content/prologue/prologue-c1955.js:190",
+    "src/content/prologue/prologue-c1965.js:284",
+    "src/content/prologue/prologue-c1978.js:229",
+    "src/content/prologue/prologue-c1985.js:241",
+    "src/content/prologue/prologue-c1995.js:217",
+    "src/content/prologue/prologue.js:348"
+   ]
+  },
+  {
+   "id": "pr_y17",
+   "count": 6,
+   "at": [
+    "src/content/prologue/prologue-c1955.js:220",
+    "src/content/prologue/prologue-c1965.js:312",
+    "src/content/prologue/prologue-c1978.js:249",
+    "src/content/prologue/prologue-c1985.js:254",
+    "src/content/prologue/prologue-c1995.js:258",
+    "src/content/prologue/prologue.js:371"
+   ]
+  },
+  {
+   "id": "pr_y18",
+   "count": 6,
+   "at": [
+    "src/content/prologue/prologue-c1955.js:241",
+    "src/content/prologue/prologue-c1965.js:324",
+    "src/content/prologue/prologue-c1978.js:263",
+    "src/content/prologue/prologue-c1985.js:263",
+    "src/content/prologue/prologue-c1995.js:271",
+    "src/content/prologue/prologue.js:406"
+   ]
+  },
+  {
+   "id": "pr_y20",
+   "count": 6,
+   "at": [
+    "src/content/prologue/prologue-c1955.js:262",
+    "src/content/prologue/prologue-c1965.js:336",
+    "src/content/prologue/prologue-c1978.js:287",
+    "src/content/prologue/prologue-c1985.js:276",
+    "src/content/prologue/prologue-c1995.js:287",
+    "src/content/prologue/prologue.js:440"
+   ]
+  },
+  {
+   "id": "pr_y21",
+   "count": 6,
+   "at": [
+    "src/content/prologue/prologue-c1955.js:285",
+    "src/content/prologue/prologue-c1965.js:350",
+    "src/content/prologue/prologue-c1978.js:302",
+    "src/content/prologue/prologue-c1985.js:287",
+    "src/content/prologue/prologue-c1995.js:303",
+    "src/content/prologue/prologue.js:451"
+   ]
+  },
+  {
+   "id": "pr_half1",
+   "count": 6,
+   "at": [
+    "src/content/prologue/prologue-c1955.js:333",
+    "src/content/prologue/prologue-c1965.js:480",
+    "src/content/prologue/prologue-c1978.js:341",
+    "src/content/prologue/prologue-c1985.js:476",
+    "src/content/prologue/prologue-c1995.js:349",
+    "src/content/prologue/prologue.js:513"
+   ]
+  },
+  {
+   "id": "pr_half2",
+   "count": 6,
+   "at": [
+    "src/content/prologue/prologue-c1955.js:339",
+    "src/content/prologue/prologue-c1965.js:484",
+    "src/content/prologue/prologue-c1978.js:345",
+    "src/content/prologue/prologue-c1985.js:480",
+    "src/content/prologue/prologue-c1995.js:355",
+    "src/content/prologue/prologue.js:517"
+   ]
+  },
+  {
+   "id": "pr_half3",
+   "count": 6,
+   "at": [
+    "src/content/prologue/prologue-c1955.js:348",
+    "src/content/prologue/prologue-c1965.js:490",
+    "src/content/prologue/prologue-c1978.js:351",
+    "src/content/prologue/prologue-c1985.js:486",
+    "src/content/prologue/prologue-c1995.js:363",
+    "src/content/prologue/prologue.js:523"
+   ]
+  },
+  {
+   "id": "pr_never1",
+   "count": 6,
+   "at": [
+    "src/content/prologue/prologue-c1955.js:356",
+    "src/content/prologue/prologue-c1965.js:498",
+    "src/content/prologue/prologue-c1978.js:359",
+    "src/content/prologue/prologue-c1985.js:494",
+    "src/content/prologue/prologue-c1995.js:371",
+    "src/content/prologue/prologue.js:531"
+   ]
+  },
+  {
+   "id": "pr_never2",
+   "count": 6,
+   "at": [
+    "src/content/prologue/prologue-c1955.js:365",
+    "src/content/prologue/prologue-c1965.js:505",
+    "src/content/prologue/prologue-c1978.js:366",
+    "src/content/prologue/prologue-c1985.js:502",
+    "src/content/prologue/prologue-c1995.js:379",
+    "src/content/prologue/prologue.js:535"
+   ]
+  },
+  {
+   "id": "pr_never3",
+   "count": 6,
+   "at": [
+    "src/content/prologue/prologue-c1955.js:372",
+    "src/content/prologue/prologue-c1965.js:511",
+    "src/content/prologue/prologue-c1978.js:372",
+    "src/content/prologue/prologue-c1985.js:508",
+    "src/content/prologue/prologue-c1995.js:387",
+    "src/content/prologue/prologue.js:541"
+   ]
+  }
+ ],
+ "byFile": {
+  "src/content/pool/pack25.js": 126,
+  "src/content/pool/pack1.js": 111,
+  "src/content/lines/late-life.js": 109,
+  "src/content/era/era1955.js": 103,
+  "src/content/era/era1965.js": 96,
+  "src/content/pool/pack4.js": 90,
+  "src/content/pool/pack5.js": 89,
+  "src/content/pool/pack6.js": 88,
+  "src/content/pool/pack2.js": 86,
+  "src/content/pool/pack3.js": 86,
+  "src/content/pool/pack14.js": 83,
+  "src/content/pool/pack26.js": 83,
+  "src/content/pool/pack21.js": 80,
+  "src/content/lines/exam.js": 77,
+  "src/content/pool/pack22.js": 76,
+  "src/content/lines/side-and-steady.js": 75,
+  "src/content/pool/pack23.js": 75,
+  "src/content/pool/pack12.js": 74,
+  "src/content/pool/pack18.js": 74,
+  "src/content/pool/pack10.js": 73,
+  "src/content/pool/pack19.js": 73,
+  "src/content/pool/pack11.js": 71,
+  "src/content/pool/pack15.js": 71,
+  "src/content/pool/pack17.js": 71,
+  "src/content/rare/synergy.js": 71,
+  "src/content/pool/pack9.js": 70,
+  "src/content/pool/pack20.js": 70,
+  "src/content/prologue/cards.js": 68,
+  "src/content/era/era1978.js": 63,
+  "src/events.js": 50,
+  "src/content/prologue/prologue.js": 49,
+  "src/content/prologue/prologue-c1965.js": 43,
+  "src/content/prologue/prologue-c1978.js": 39,
+  "src/content/prologue/prologue-c1985.js": 39,
+  "src/content/prologue/prologue-c1955.js": 38,
+  "src/content/prologue/prologue-c1995.js": 37,
+  "src/content/lines/abroad.js": 29,
+  "src/content/pool/pack29.js": 28,
+  "src/content/lines/process-beats.js": 26,
+  "src/content/pool/pack33.js": 23,
+  "src/content/era/era1995.js": 23,
+  "src/content/pool/pack30.js": 22,
+  "src/content/era/era1985.js": 18,
+  "src/content/lines/covenant.js": 16,
+  "src/content/pool/pack27.js": 13,
+  "src/content/pool/pack35.js": 13,
+  "src/content/pool/pack28.js": 10,
+  "src/content/pool/pack34.js": 10,
+  "src/content/pool/pack31.js": 3,
+  "src/content/pool/pack32.js": 3
+ },
+ "byCategory": {
+  "普通池": 1845,
+  "具名线": 332,
+  "年代包": 303,
+  "童年记号": 104,
+  "序章幕": 95,
+  "出身牌": 68,
+  "基础事件": 45,
+  "序章处境幕": 36,
+  "特殊结局": 32,
+  "稀有事件": 31,
+  "序章随时池": 10,
+  "协同组合": 8,
+  "分岔": 5
+ },
+ "byEra": {
+  "全年代": 1932,
+  "c1955": 238,
+  "c1965": 237,
+  "c1978": 205,
+  "c2000": 134,
+  "c1995": 66,
+  "c1985": 64,
+  "c1978+c2000": 28,
+  "c1955+c1965+c1978+c1985+c1995+c2000": 5,
+  "c1995+c2000": 2,
+  "c1965+c1978+c1985": 2,
+  "c1978+c1985+c1995+c2000": 1
+ },
+ "byGate": {
+  "状态门": 1946,
+  "无门": 512,
+  "序章幕": 313,
+  "链条": 143
+ },
+ "byRoute": {
+  "不限": 2780,
+  "abroad": 53,
+  "home": 25,
+  "farm": 15,
+  "study": 14,
+  "corp": 8,
+  "gap": 5,
+  "corp+study+gap": 2,
+  "corp+abroad": 2,
+  "home+farm": 2,
+  "study+corp": 1,
+  "corp+study+abroad": 1,
+  "corp+home": 1,
+  "corp+gap": 1,
+  "home+study+gap": 1,
+  "home+gap": 1,
+  "corp+gap+home": 1,
+  "home+corp+abroad+study+gap": 1
+ },
+ "introducedKnown": 124,
+ "lineResolved": 2914,
+ "withOccupation": 273,
+ "runtimeGamePacks": 2480,
+ "runtimeGameDataEvents": 45,
+ "textCounts": {
+  "contentJsonStyle": {
+   "unique": 2409,
+   "occurrences": 2409
+  },
+  "contentJsStyle": {
+   "unique": 285,
+   "occurrences": 383
+  },
+  "contentBothStyles": {
+   "unique": 2707,
+   "occurrences": 2824
+  },
+  "srcBothStyles": {
+   "unique": 2815,
+   "occurrences": 2973
+  }
+ },
+ "lineMissing": [],
+ "textVsRuntime": {
+  "runtimeOnly": [],
+  "textOnly": [
+   "#97917a",
+   "#e3dac4",
+   "F25-1",
+   "F25-2",
+   "F25-3",
+   "F28-1",
+   "F28-2",
+   "F28-3",
+   "F28M-1",
+   "F28M-2",
+   "F28M-3",
+   "F31-1",
+   "F31-2",
+   "F31-3",
+   "F33-1",
+   "F33-2",
+   "F33-3",
+   "F33-4",
+   "F38-1",
+   "F38-2",
+   "F38-3",
+   "F38-4",
+   "F44-1",
+   "F44-2",
+   "F44-3",
+   "F45-1",
+   "F45-2",
+   "F45-3",
+   "F52-1",
+   "F52-2",
+   "F52-3",
+   "F52-4",
+   "F52-5",
+   "F58-1",
+   "F58-2",
+   "F58-3",
+   "F58-4",
+   "abroad",
+   "bought_house",
+   "c1955",
+   "c1965",
+   "c1978",
+   "c1985",
+   "c1995",
+   "c2000",
+   "car_bought",
+   "class_joined",
+   "corp",
+   "covid95_days",
+   "cruise_world",
+   "death",
+   "exam",
+   "exam_landed",
+   "farm",
+   "gap",
+   "garden_begun",
+   "home",
+   "kid_abroad",
+   "late",
+   "mark_move85",
+   "mark_palm95",
+   "moved_school65",
+   "none",
+   "only_child",
+   "pool_fam55",
+   "pool_move55",
+   "pr_birth",
+   "pr_early2",
+   "pr_early3",
+   "pr_early4",
+   "pr_gapflat",
+   "pr_grab",
+   "pr_pool95_exam",
+   "pr_pool95_leave",
+   "pr_pool95_move",
+   "pr_pool95_qzone",
+   "pr_pool95_toucai",
+   "pr_pool95_wangba",
+   "pr_pool95_wed",
+   "route",
+   "selfbuilt_house",
+   "sent_down",
+   "spouse>partnered",
+   "study",
+   "winter_begun",
+   "中",
+   "你的分在中间，够得着普通高中。中专那一档，差了几分，没有你的名字。隔壁班的第一名报了中专，名单贴出来，他妈在校门口站了半天。",
+   "几年",
+   "分数卡在中间。高中的线你够着了，就是学费不便宜；职校的单子也在你手里。线下头的同学，已经有人背着包跟老乡走了。",
+   "后来你想起那回搬家，想起的是新学校课桌上别人的名字。",
+   "孩子出生",
+   "家里搬了，大人的活换到新地方，住处也跟着换了。走前一天，你把常玩的那几个地方走了一遍：校门口的摊子、河边的台阶。新学校那头，一个人都不认识。",
+   "成绩贴出来，普高那条线你差了一截。单子上还剩中职的对口升学班、打工和留家这几行。考上普高的同桌在人堆里朝你挥手，你也抬了抬手。",
+   "红榜贴出来，你的名字在中间那一段。普高那行够不着了，单子上还剩对口升学班、就业班、打工和留家。够着普高的同学被围在榜中间，你先退了出来。",
+   "通读",
+   "那一年，孩子出生了。"
+  ]
+ },
+ "loadErrors": [],
+ "unnumbered": {
+  "routes": 6,
+  "forksNoId": 6,
+  "crisisKeys": 3,
+  "shadowRoutes": 6,
+  "microStages": 8,
+  "prologueOriginOpen": 24,
+  "prologueFlatsAges": 30,
+  "registryMilestones": 509,
+  "registryFlagsTotal": 544
+ }
+}
