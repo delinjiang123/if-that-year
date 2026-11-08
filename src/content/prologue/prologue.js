@@ -1573,7 +1573,20 @@
             if (!openConflict(cand)) { openIdx = cand; break; }
           }
         }
-        const open = pack.originOpen[openIdx];
+        let open = pack.originOpen[openIdx];
+        // 文本门（opt-in，彩电句小项起）：pack.originOpenTextGate 与 originOpen 同序登记
+        // 分句级呈现门 { seg, dropWhen: { birthYearMin, settingIn } }——选中后、拼屏前判一格：
+        // 出生年与家底处境同时命中 dropWhen 才把 seg 从正文里摘掉，其余格照原文发。判据只读
+        // 已定版事实（S.birthYear／家底牌 setting，与 originOpenCond.settingEq 同一读数）、
+        // 纯字符串操作、不消费流，抽中概率与顺延结果一概不变；出生年非数字（旧档）按不命中
+        // 处理——摘句须有实据，不凭空删。未声明此字段的包行为一字不变（现行只有 c1985 包声明）。
+        const og = pack.originOpenTextGate && pack.originOpenTextGate[openIdx];
+        if (og && typeof og.seg === "string" && og.seg && open.includes(og.seg)) {
+          const dw = og.dropWhen || {};
+          const byHit = dw.birthYearMin == null || (typeof S.birthYear === "number" && S.birthYear >= dw.birthYearMin);
+          const stHit = !dw.settingIn || (famCard0 && dw.settingIn.includes(famCard0.setting));
+          if (byHit && stHit) open = open.replace(og.seg, "");
+        }
         // fix3 B1（子类 1b）：手足形在来历幕定版写入枚举事实 siblingForm（家底牌自带形优先，
         // 其次开场白的独生断言，其余 unspecified）——后续平年/处境幕的手足句一律按此事实分文，不再各自断言。
         if (factOf(S, "siblingForm") === "absent") {

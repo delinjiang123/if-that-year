@@ -236,6 +236,28 @@ else {
     if (!pk) continue;
     const at = (id) => `prologue@${era}:${id}`;
     for (const f of ["originLB", "originMigrant"]) if (pk[f] !== undefined) { leafCount++; if (!leafOk(pk[f])) bad(at("(包级)"), f); }
+    // 文本门 originOpenTextGate（彩电句小项起，新增覆盖、只加不减）：须与 originOpen 同序
+    // 同长；每叶或为 null、或为 { seg, dropWhen }——seg 须为非空字符串且真实出现在同序
+    // originOpen 正文里（摘不到的死门＝数据错，先拦）；dropWhen 只许 birthYearMin（有限数）
+    // 与 settingIn（非空数组、值须在场景标签词表内）两键，多键/异形一律报错。未声明跳过。
+    if (pk.originOpenTextGate !== undefined) {
+      const SETTING_VOCAB = ["urban", "rural", "factory", "town"];
+      const g = pk.originOpenTextGate;
+      if (!Array.isArray(g) || g.length !== (pk.originOpen || []).length) err(`${at("(包级)")} originOpenTextGate 须与 originOpen 同序同长`);
+      else for (let i = 0; i < g.length; i++) {
+        const e = g[i];
+        if (e === null) continue;
+        const okShape = e && typeof e === "object" && !Array.isArray(e)
+          && Object.keys(e).every((k) => k === "seg" || k === "dropWhen")
+          && typeof e.seg === "string" && e.seg.length > 0
+          && typeof pk.originOpen[i] === "string" && pk.originOpen[i].includes(e.seg)
+          && (e.dropWhen === undefined || (e.dropWhen && typeof e.dropWhen === "object" && !Array.isArray(e.dropWhen)
+            && Object.keys(e.dropWhen).every((k) => k === "birthYearMin" || k === "settingIn")
+            && (e.dropWhen.birthYearMin === undefined || Number.isFinite(e.dropWhen.birthYearMin))
+            && (e.dropWhen.settingIn === undefined || (Array.isArray(e.dropWhen.settingIn) && e.dropWhen.settingIn.length > 0 && e.dropWhen.settingIn.every((s) => SETTING_VOCAB.includes(s))))));
+        if (!okShape) err(`${at("(包级)")} originOpenTextGate[${i}] 形状非法（应为 null 或 { seg∈同序正文, dropWhen{ birthYearMin?, settingIn?⊆词表 } }）`);
+      }
+    }
     if (pk.originMigrantBySit) for (const [k, v] of Object.entries(pk.originMigrantBySit)) { leafCount++; if (!leafOk(v)) bad(at("(包级)"), `originMigrantBySit.${k}`); }
     if (pk.special) for (const f of ["neverChild1Text", "neverChild4Text", "neverChild1MigrantText"]) if (pk.special[f] !== undefined) { leafCount++; if (!leafOk(pk.special[f])) bad(at("(包级)"), `special.${f}`); }
     for (const a of pk.acts || []) checkObj(a, at(a.id));
