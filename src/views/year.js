@@ -9,6 +9,7 @@
     if (r.set) IFY.S.flags[r.set] = true; // 呈现即立旗（v0.11.0 起覆盖有选项事件：去世旗等必立旗靠它保证）
     if (typeof IFY.houseOnBuyFlag === "function") IFY.houseOnBuyFlag(IFY.S, r.set, r);
     if (typeof IFY.careerNote === "function") IFY.careerNote(IFY.S, r); // 第 1 期 P1-2：履历记账（平行账，只写不读，下同）
+    if (typeof IFY.plantSeed === "function") IFY.plantSeed(IFY.S, r); // 第 1 期 P1-3：埋种（与 careerNote 镜像同位，唯一写点 plantSeed，下同）
     IFY.applyState(r); // v0.12.0：状态流转与立旗同一时机
     if (!r.choices) { IFY.applyEffects(r.effects); } else IFY.S.lastDelta = "";
     const rtext = procText(r); // v0.20.0 M2：呈现走变体解析（textState/textForm），与 sim 记录口径一致
@@ -25,6 +26,7 @@
       if (c.set) IFY.S.flags[c.set] = true;
       if (typeof IFY.houseOnBuyFlag === "function") IFY.houseOnBuyFlag(IFY.S, c.set, c);
       if (typeof IFY.careerNote === "function") IFY.careerNote(IFY.S, c);
+      if (typeof IFY.plantSeed === "function") IFY.plantSeed(IFY.S, c, r.id);
       IFY.applyState(c);
       IFY.rec("rare", r.id, { choice: c.label, set: c.set || null, fx: IFY.S.lastDelta });
       if (autoSelected) IFY.S.log.push(`${IFY.S.age} 岁 · 自动选：${c.label}`);
@@ -222,6 +224,7 @@
       if (c.set) IFY.S.flags[c.set] = true;
       if (typeof IFY.houseOnBuyFlag === "function") IFY.houseOnBuyFlag(IFY.S, c.set, c);
       if (typeof IFY.careerNote === "function") IFY.careerNote(IFY.S, c);
+      if (typeof IFY.plantSeed === "function") IFY.plantSeed(IFY.S, c, fork.id);
       IFY.applyState(c);
       IFY.applyTempDelta(c.temp); // 温度接点（v0.17.0）：选项可带 temp 增减，只改质地字段
       if (fork.id === "fork_kid") IFY.kidForkCovenant(c); // 孩子线批次 S4：fork_kid 落点记账（约的登记/再问补旗，旗与状态走上方通用序）
@@ -279,6 +282,7 @@
       if (ch.set) IFY.S.flags[ch.set] = true; IFY.applyState(ch); // v0.12.0：与其它选项路径统一（现行危机数据未用 set/setState，防未来内容轮）
       if (typeof IFY.houseOnBuyFlag === "function") IFY.houseOnBuyFlag(IFY.S, ch.set, ch);
       if (typeof IFY.careerNote === "function") IFY.careerNote(IFY.S, ch);
+      if (typeof IFY.plantSeed === "function") IFY.plantSeed(IFY.S, ch, c.id || c.key);
       IFY.S.log.push(`${IFY.S.age} 岁 · ${c.title}：${ch.label}`);
       if (autoSelected) IFY.S.log.push(`${IFY.S.age} 岁 · 自动选：${ch.label}`);
       IFY.rec("crisis", c.key, { choice: ch.label, set: ch.set || null, fx: IFY.S.lastDelta });
@@ -362,6 +366,7 @@
     if (e.set) IFY.S.flags[e.set] = true; // 顶层 set 呈现即立（v0.9.2 补齐普通事件路径；v0.11.0 起覆盖有选项事件：去世旗等必立旗靠它保证）
     if (typeof IFY.houseOnBuyFlag === "function") IFY.houseOnBuyFlag(IFY.S, e.set, e);
     if (typeof IFY.careerNote === "function") IFY.careerNote(IFY.S, e);
+    if (typeof IFY.plantSeed === "function") IFY.plantSeed(IFY.S, e);
     IFY.applyState(e); // v0.12.0：状态流转与立旗同一时机
     if (!e.choices) { IFY.applyEffects(e.effects); } else IFY.S.lastDelta = "";
     IFY.rec("event", e.id, { set: e.set || null, fx: !e.choices ? IFY.S.lastDelta : null });
@@ -378,6 +383,7 @@
       if (c.set) IFY.S.flags[c.set] = true;
       if (typeof IFY.houseOnBuyFlag === "function") IFY.houseOnBuyFlag(IFY.S, c.set, c);
       if (typeof IFY.careerNote === "function") IFY.careerNote(IFY.S, c);
+      if (typeof IFY.plantSeed === "function") IFY.plantSeed(IFY.S, c, e.id);
       IFY.applyState(c);
       IFY.rec("event", e.id, { choice: c.label, set: c.set || null, fx: IFY.S.lastDelta });
       if (autoSelected) IFY.S.log.push(`${IFY.S.age} 岁 · 自动选：${labelText(c)}`);

@@ -27,7 +27,7 @@ load("src/events.js");
 for (const p of PACK_FILES) load(p);
 load("src/content/prologue/cards.js");
 load("src/content/rare/synergy.js");
-load("src/content/registry-v023.js"); load("src/content/registry-wp2.js"); load("src/content/registry-wp3.js"); load("src/content/registry-wp4.js"); load("src/content/registry-wp5.js"); load("src/content/registry-wp6.js"); load("src/content/registry-wp7.js"); load("src/content/registry-wp8.js"); load("src/content/registry-retire.js"); load("src/world/state.js"); load("src/registry.js"); load("src/anchors.js"); load("src/rhythm.js");
+load("src/content/registry-v023.js"); load("src/content/registry-wp2.js"); load("src/content/registry-wp3.js"); load("src/content/registry-wp4.js"); load("src/content/registry-wp5.js"); load("src/content/registry-wp6.js"); load("src/content/registry-wp7.js"); load("src/content/registry-wp8.js"); load("src/content/registry-retire.js"); load("src/content/trades.js"); load("src/world/state.js"); load("src/registry.js"); load("src/anchors.js"); load("src/rhythm.js");
 load("src/content/prologue/prologue-c1955.js"); load("src/content/prologue/prologue-c1965.js"); load("src/content/prologue/prologue-c1978.js"); load("src/content/prologue/prologue-c1985.js"); load("src/content/prologue/prologue-c1995.js");
 load("src/content/prologue/prologue.js");
 load("src/storylet.js");
@@ -231,6 +231,78 @@ else {
     for (const [age, f] of Object.entries(pk.flatsByAge || {})) checkObj(f, at(`flat@${age}`));
   }
   console.log(`  条件分文形状: 已检叶 ${leafCount} 个（字符串或非空字符串数组）`);
+}
+
+// ---- 埋种声明校验（第 1 期 P1-3，设计 §2.1）：seed（选项）/ seedOnShow（呈现）声明 ----
+// 形状：行当 id 字符串或其非空数组；凡声明种子的对象必须带非空 seedNote（关口回指句
+// 的出处，缺了关口侧 fail-closed 不拼，数据层先拦）；行当必须在注册表 GAME_TRADES 内；
+// 单个声明对象至多 2 颗。覆盖面：主池/稀有/分岔/危机的条目与选项（递归）、序章六包的
+// acts/sitActs（含变体与选项）与池条目（act/变体）。
+{
+  const TR = sandbox.GAME_TRADES || {};
+  let declObjects = 0, seedChoice = 0, seedSeen = 0;
+  const countedObj = new Set(); // PRO.acts 与六包是同一批对象引用，普查按对象去重（校验本身重复走无害）
+  const asList = (v) => (v == null ? [] : Array.isArray(v) ? v : [v]);
+  function checkSeedDecl(o, at) {
+    if (!o || typeof o !== "object") return;
+    if (countedObj.has(o)) return;
+    countedObj.add(o);
+    const here = [];
+    for (const [fld, kind] of [["seed", "choice"], ["seedOnShow", "seen"]]) {
+      if (o[fld] === undefined) continue;
+      const v = o[fld];
+      if (!(typeof v === "string" || (Array.isArray(v) && v.length > 0 && v.every((x) => typeof x === "string" && x)))) { err(`${at} ${fld} 形状非法（应为行当 id 或其非空数组）`); continue; }
+      for (const t of asList(v)) here.push({ trade: t, kind });
+    }
+    if (!here.length) return;
+    declObjects++;
+    if (here.length > 2) err(`${at} 一拍种子 ${here.length} 颗，超上限 2`);
+    if (typeof o.seedNote !== "string" || !o.seedNote) err(`${at} 声明了种子但缺 seedNote（回指句出处必填）`);
+    for (const d of here) {
+      if (!TR[d.trade]) err(`${at} 种子指向未登记行当 ${d.trade}`);
+      if (d.kind === "choice") seedChoice++; else seedSeen++;
+    }
+  }
+  function walkBeat(e, at) {
+    checkSeedDecl(e, at);
+    for (const v of e.variants || []) checkSeedDecl(v, `${at}#variant`);
+    for (const v of e.altTexts || []) checkSeedDecl(v, `${at}#alt`);
+    for (const c of e.choices || []) { checkSeedDecl(c, `${at}#choice`); for (const c2 of c.choices || []) checkSeedDecl(c2, `${at}#choice2`); }
+  }
+  for (const [name, arr] of collections) for (const e of arr) walkBeat(e, `${name}:${e.id || "(无 id)"}`);
+  for (const e of D.endings || []) walkBeat(e, `endings:${e.id}`);
+  const packs2 = Object.assign({}, sandbox.GAME_PROLOGUE_PACKS || {});
+  if (PRO && PRO.packFor) packs2.c2000 = PRO.packFor("c2000");
+  for (const [era, pk] of Object.entries(packs2)) {
+    if (!pk) continue;
+    for (const a of pk.acts || []) walkBeat(a, `prologue@${era}:${a.id}`);
+    for (const lst of Object.values(pk.sitActs || {})) for (const a of lst || []) walkBeat(a, `prologue@${era}:${a.id}`);
+    for (const e of pk.pool || []) { if (e.act) walkBeat(e.act, `prologue@${era}:${e.id}`); for (const v of e.variants || []) checkSeedDecl(v, `prologue@${era}:${e.id}#variant`); }
+  }
+  console.log(`  埋种声明: 对象 ${declObjects} 个（选项种子 ${seedChoice} 颗 / 呈现种子 ${seedSeen} 颗），行当均在注册表内、一拍 ≤2、seedNote 齐全（有误见 ERROR）`);
+}
+
+// ---- 种子读取点白名单静态扫描（设计 §2.3.1）：.seeds / seedsOf( 只许出现在 ----
+// src/world/career.js（账本主：plantSeed 写、关口段与 seedsOf 读）与 src/engine.js
+// （状态管道：freshState 初始化与读档回填调用）。其余 src 文件出现即报错——呈现层
+// 挂点只许调 IFY.plantSeed（写），不许直读种子账。
+{
+  const ALLOW = new Set(["src/world/career.js", "src/engine.js"]);
+  const hits = [];
+  (function walk(dir) {
+    for (const name of fs.readdirSync(dir)) {
+      const p = path.join(dir, name);
+      if (fs.statSync(p).isDirectory()) walk(p);
+      else if (name.endsWith(".js")) {
+        const rel = path.relative(ROOT, p).split(path.sep).join("/");
+        if (ALLOW.has(rel)) continue;
+        const lines = fs.readFileSync(p, "utf8").split("\n");
+        lines.forEach((l, i) => { if (/\.seeds\b/.test(l) || /\bseedsOf\s*\(/.test(l)) hits.push(`${rel}:${i + 1}`); });
+      }
+    }
+  })(path.join(ROOT, "src"));
+  for (const h of hits) err(`种子读取点越白名单: ${h}`);
+  console.log(`  种子读取点白名单: src 全扫，越界 ${hits.length} 处（白名单 career.js / engine.js 状态管道）`);
 }
 
 console.log(`validate-storylet: 条目 ${total}（events ${(D.events || []).length} / rare ${(D.rare || []).length} / forks ${(D.forks || []).length} / prologue ${((PRO && PRO.acts) || []).length} / crisis ${Object.keys(D.crisis || {}).length}）| id 唯一 ${seen.size}`);

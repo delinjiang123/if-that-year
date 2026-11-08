@@ -276,7 +276,7 @@
         // 另一个场景」挂旧记号（shoestand→梧桐、lastpage→留言册），发放走 child4KeyFor 的带内
         // 扩轮换——记号逐种子与旧版全等，轨迹零扰动（断言组 ⑯ 有 r 全域扫描钉住）。
         { key: "shoestand", log: "梧桐树下修鞋", set: "mark_tree", mark: "mark_tree",
-          text: "毕业前几天，你脚上那双凉鞋开了胶，走一步响一步。放学你拐到校门口，蹲在梧桐树底下看修鞋的大爷收口：锥子穿过去，线带过来，几下就纳好了。大爷把鞋递给你，说，穿吧，还能穿一阵子。你穿上往家走，一路没再响。" },
+          text: "毕业前几天，你脚上那双凉鞋开了胶，走一步响一步。放学你拐到校门口，蹲在梧桐树底下看修鞋的大爷收口：锥子穿过去，线带过来，几下就纳好了。大爷把鞋递给你，说，穿吧，还能穿一阵子。你穿上往家走，一路没再响。", seedOnShow: "craft", seedNote: "你蹲在梧桐树底下，看修鞋的大爷收口纳鞋" },
         { key: "lastpage", log: "留言册传了一圈", set: "mark_yearbook", mark: "mark_yearbook",
           text: "留言册在班里传了一圈，回到你手上，沉了不少。你一页一页翻，平时不怎么说话的一个同学，写了满满一页，写的全是小事：借你的那块橡皮，还有一回替你值日的事。你把册子合上，回家跟课本收在了一块儿。" },
       ] },
@@ -513,8 +513,8 @@
       ],
       echo: "那是头一回，照顾人的和被照顾的换了个个儿。你当时只觉得跑腿累，没想到这事往后还有的是。",
       choices: [
-        { label: "放学先去病房送饭，陪一会儿再回家", effects: { relation: 1 }, echo: "保温桶里的饭她总说比食堂的好吃。你认得护士站的每个人了，查房的点儿，你比闹钟还准。" },
-        { label: "在病房写作业，顺手帮隔壁床的爷爷读报纸", effects: { wisdom: 1 }, echo: "隔壁床的爷爷耳朵背，你读报纸得凑近一点。读完一版，他从柜子里摸出个橘子塞给你，说这是探病的回礼。" },
+        { label: "放学先去病房送饭，陪一会儿再回家", effects: { relation: 1 }, echo: "保温桶里的饭她总说比食堂的好吃。你认得护士站的每个人了，查房的点儿，你比闹钟还准。", seed: "care", seedNote: "奶奶住院，你放学先去病房送饭，陪一会儿再回家" },
+        { label: "在病房写作业，顺手帮隔壁床的爷爷读报纸", effects: { wisdom: 1 }, echo: "隔壁床的爷爷耳朵背，你读报纸得凑近一点。读完一版，他从柜子里摸出个橘子塞给你，说这是探病的回礼。", seed: "care", seedNote: "你在奶奶的病房里写作业，顺手帮隔壁床的爷爷读报纸" },
         { label: "去了两天就嫌闷，第三天绕去同学家打游戏", effects: { relation: -1 }, echo: "你妈顶了你那天的班，没说你，只把保温桶洗了扣在灶台上。第二天你自己拎着桶去了，比平时早了十分钟。" },
       ] },
     // —— 童年深度一期（2026-11-06）：6/8/10 岁补固定幕，追加在 ACTS 末尾（旧 12 主幕＋WP5 拍下标不动，同 c1955 注）。
@@ -555,8 +555,8 @@
       ],
       choices: [
         { label: "对完答案就下线，群里攒了几百条没看", effects: {}, echo: "第二天你才知道，昨晚群里热闹了一整场，你只赶上个尾巴。" },
-        { label: "今晚的作业你先对完，拍照传上去，大家都等你", effects: { growth: 1 }, echo: "「传作业的来了」——你一上线，就有人这么喊。你有点得意。" },
-        { label: "群里传的小说看得眼花，你抽了书柜里的原书看", requiresFamily: "cf_02", effects: { growth: 1 }, echo: "原书有插图，还有目录。你看得比他们快，剧透是万万不能说的。" },
+        { label: "今晚的作业你先对完，拍照传上去，大家都等你", effects: { growth: 1 }, echo: "「传作业的来了」——你一上线，就有人这么喊。你有点得意。", seed: "dev", seedNote: "班级群里对答案，今晚的作业你先对完，拍照传了上去" },
+        { label: "群里传的小说看得眼花，你抽了书柜里的原书看", requiresFamily: "cf_02", effects: { growth: 1 }, echo: "原书有插图，还有目录。你看得比他们快，剧透是万万不能说的。", seed: "write", seedNote: "群里传的小说看得眼花，你抽了书柜里的原书来看" },
       ],
       choicesBySchooling: { never: [
         { label: "慢慢认群里的字，不认识的就记下来问人", effects: { growth: 1 }, echo: "一个假期下来，你记下来的生字，写满了两页纸。" },
@@ -1406,6 +1406,10 @@
       const effMark = effV ? effV.mark : act.mark;
       if (effSet && !(neverAlt && act.id === "pr_child1")) S.flags[effSet] = true;
       if (effMark && !(neverAlt && act.id === "pr_child1")) S.marks.push(markEntryWithShadow(effMark, act.age, act)); // WP9 A线：落账自带影子句（池伪条目走 act.markShadow、固定幕回落注册表）
+      // 第 1 期 P1-3：叙事幕埋种（seedOnShow）——幕首次物化时落，声明在生效变体上优先于幕级
+      // （本局实际呈现的那一幕才是那颗种的出处）；唯一写点 plantSeed，零流消费。
+      const seedSrc = (effV && effV.seedOnShow) ? effV : (act.seedOnShow ? act : null);
+      if (seedSrc && typeof window !== "undefined" && window.IFY && typeof window.IFY.plantSeed === "function") window.IFY.plantSeed(S, seedSrc, act.id, act.age);
       P.pendingState = act.setStateBySit ? (act.setStateBySit[P.situation] || act.setState || null) : (act.setState || null);
       // fix3（opt-in）：act.logBySchooling 按呈现时 schooling 换流水账行（如 never/left 局不记「升初中/初中毕业」）；
       // 未声明此字段的幕行为一字不变。

@@ -126,6 +126,44 @@
   }
   function seedsOf(S) { return S && Array.isArray(S.seeds) ? S.seeds : []; }
 
+  // 埋种唯一写点（第 1 期 P1-3，设计 §2.1/§2.3）：内容在拍上声明 seed（选项，所选
+  // 才落，kind=choice）/ seedOnShow（条目或变体呈现即落，kind=seen）+ seedNote
+  // （回指句出处，必填），呈现层各挂点把声明对象递进来，本函数统一落账：
+  // 记录 { trade, age, beatId, kind, seedNote }，只写 seeds 一本账，不碰任何状态
+  // 与任何一条流（埋种零随机：只看选了什么、呈现了什么）。fail-closed：注册表
+  // 缺席、行当未登记、缺 seedNote、岁数/拍 id 对不上——一律不落（数据层的缺口
+  // 由 validate-storylet 在仓内拦，不靠运行时兜底）；同拍同行当只记一颗（读侧
+  // seedStrengthOf 同口径去重）；一拍至多 2 颗在此再截一道。
+  function plantSeed(S, src, beatId, age) {
+    try {
+      if (!S || !src || typeof src !== "object") return;
+      const TR = (typeof window !== "undefined" && window.GAME_TRADES) || null;
+      if (!TR) return;
+      const bid = typeof beatId === "string" && beatId ? beatId : (typeof src.id === "string" && src.id ? src.id : null);
+      const at = typeof age === "number" ? age : (typeof S.age === "number" ? S.age : null);
+      if (!bid || at == null) return;
+      const note = typeof src.seedNote === "string" && src.seedNote ? src.seedNote : null;
+      if (!note) return;
+      const decls = [];
+      const collect = (v, kind) => {
+        if (v == null) return;
+        for (const t of Array.isArray(v) ? v : [v]) if (typeof t === "string" && t) decls.push({ trade: t, kind });
+      };
+      collect(src.seedOnShow, "seen");
+      collect(src.seed, "choice");
+      if (!decls.length) return;
+      if (!Array.isArray(S.seeds)) S.seeds = [];
+      let planted = 0;
+      for (const d of decls) {
+        if (planted >= 2) break;
+        if (!TR[d.trade]) continue;
+        if (S.seeds.some((r) => r && r.beatId === bid && r.trade === d.trade)) continue;
+        S.seeds.push({ trade: d.trade, age: at, beatId: bid, kind: d.kind, seedNote: note });
+        planted++;
+      }
+    } catch (e) { /* 埋种永不许打断呈现 */ }
+  }
+
   // 职业自有派生流（设计 §六）：种子 + "#career"（影子轨 "#shadow#career"，认人法与
   // applySplitFactToShadow 同款：session.tracks.B.state === S 即影子轨；无 session
   // 的 sim 口径一律按主轨）。流状态不落对象：计数存 career.rngA，取数时按种子重建
@@ -629,5 +667,5 @@
     } catch (e) { return null; }
   }
 
-  Object.assign(IFY, { careerNote, careerOf, careerSpells, seedsOf, careerRng, backfillCareer, careerIdleOf, gateDue, gateForkView, gateEchoLine, seedStrengthOf });
+  Object.assign(IFY, { careerNote, careerOf, careerSpells, seedsOf, plantSeed, careerRng, backfillCareer, careerIdleOf, gateDue, gateForkView, gateEchoLine, seedStrengthOf });
 })(window.IFY);
