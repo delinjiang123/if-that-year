@@ -196,12 +196,21 @@ else {
 // 例外（出生年小片）：factAlt 的数组条目可为对象形 {text, calWindow:[lo,hi]}——公历分段
 // 分文（读者 factAltPool 按呈现年过滤后仍走 condText 定款）；仅 factAlt 一处放行，形状由
 // 下方 factAltLeafOk 单独把门（text 非空字符串、calWindow 为 lo<=hi 的两年数组）。
+// 补查（出生年小片第五批）：textByTrack 叶此前不在本断言面内；第五批起条目可为对象形
+// {text, calWindow:[lo,hi], elseText}——公历分文（读者 trackText 按呈现年定款、出窗回落
+// elseText）。本断言面新增覆盖 textByTrack（含 altSets 内）：字符串原样放行，对象形由
+// 下方 trackLeafOk 单独把门（text/elseText 均非空字符串、calWindow 为 lo<=hi 的两年数组）；
+// 这是新增检查、不是放宽——此前对象形会静默漏检，此后形状不合即报错。
+// 集成补形（v0.60.7 总指挥）：扩招句恢复项（v0.60.6）的底文分段数组形（字符串段＋
+// {text, calWindow} 段，读者 trackTextOf）同为 textByTrack 合法叶，trackLeafOk 一并认：
+// 数组须非空、每段或为字符串、或为 text 非空且 calWindow 两元 lo<=hi 的对象——逐段严查。
 // 覆盖：六包的 acts/sitActs/pool（模板与变体）/poolActs（bands）/pool95（变体）/flatsByAge，
 // 与包级 originLB/originMigrant/originMigrantBySit/special never 文。性子框 frames 的 textLB
 // 与回声/选项/记号层不在本断言面（与普查口径一致，登记备查）。
 {
   const leafOk = (v) => typeof v === "string" || (Array.isArray(v) && v.length > 0 && v.every((x) => typeof x === "string"));
   const factAltLeafOk = (v) => typeof v === "string" || (Array.isArray(v) && v.length > 0 && v.every((x) => typeof x === "string" || (x && typeof x === "object" && typeof x.text === "string" && x.text.length > 0 && Array.isArray(x.calWindow) && x.calWindow.length === 2 && Number.isFinite(x.calWindow[0]) && Number.isFinite(x.calWindow[1]) && x.calWindow[0] <= x.calWindow[1])));
+  const trackLeafOk = (v) => typeof v === "string" || (Array.isArray(v) && v.length > 0 && v.every((x) => typeof x === "string" || (x && typeof x === "object" && typeof x.text === "string" && x.text.length > 0 && Array.isArray(x.calWindow) && x.calWindow.length === 2 && Number.isFinite(x.calWindow[0]) && Number.isFinite(x.calWindow[1]) && x.calWindow[0] <= x.calWindow[1]))) || (v && typeof v === "object" && !Array.isArray(v) && typeof v.text === "string" && v.text.length > 0 && typeof v.elseText === "string" && v.elseText.length > 0 && Array.isArray(v.calWindow) && v.calWindow.length === 2 && Number.isFinite(v.calWindow[0]) && Number.isFinite(v.calWindow[1]) && v.calWindow[0] <= v.calWindow[1]);
   const DIRECT = ["textLB", "textTown", "textByMigrant", "textByLeftBehind"];
   const MAPS = ["textBySchooling", "bandText", "textByQuota", "stageText", "textBySit", "textLBBySchooling", "trackAlt"];
   let leafCount = 0;
@@ -213,6 +222,8 @@ else {
     if (o.textByFact && typeof o.textByFact === "object") for (const [fn, map] of Object.entries(o.textByFact)) if (map && typeof map === "object") for (const [fv, v] of Object.entries(map)) { leafCount++; if (!leafOk(v)) bad(at, `textByFact.${fn}.${fv}`); }
     if (o.textByFlag && typeof o.textByFlag === "object") for (const [fl, v] of Object.entries(o.textByFlag)) { leafCount++; if (!leafOk(v)) bad(at, `textByFlag.${fl}`); }
     if (o.factAlt && o.factAlt.texts) for (const [fv, v] of Object.entries(o.factAlt.texts)) { leafCount++; if (!factAltLeafOk(v)) bad(at, `factAlt.${fv}`); }
+    if (o.textByTrack && typeof o.textByTrack === "object") for (const [k, v] of Object.entries(o.textByTrack)) { leafCount++; if (!trackLeafOk(v)) bad(at, `textByTrack.${k}`); }
+    for (const s of o.altSets || []) if (s && s.textByTrack && typeof s.textByTrack === "object") for (const [k, v] of Object.entries(s.textByTrack)) { leafCount++; if (!trackLeafOk(v)) bad(at, `altSets.textByTrack.${k}`); }
     if (o.factText && o.factText.texts) for (const [fv, v] of Object.entries(o.factText.texts)) { leafCount++; if (!leafOk(v)) bad(at, `factText.${fv}`); }
     if (o.flagText && o.flagText.text !== undefined) { leafCount++; if (!leafOk(o.flagText.text)) bad(at, "flagText.text"); }
     if (Array.isArray(o.factTexts)) for (const ft of o.factTexts) if (ft && ft.text !== undefined) { leafCount++; if (!leafOk(ft.text)) bad(at, `factTexts.${ft.fact}=${ft.is}`); }

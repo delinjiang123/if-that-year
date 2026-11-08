@@ -1379,6 +1379,20 @@
     }
     return out;
   }
+  // textByTrack 公历分文（出生年小片第五批，opt-in）：条目可为对象形
+  // { text, calWindow: [lo, hi], elseText }——呈现公历（出生年＋幕龄）落窗内取 text、
+  // 出窗取 elseText（同条目自带回落款）；出生年未知（旧档）时取 elseText，不冒出钉年文。
+  // 字符串与分段数组条目原样返回（数组归 trackTextOf 处理，总指挥集成时补此放行）、
+  // 与此前逐字全等；定款（actVariantKeyFor 选套）与流位一概不变。
+  // 用途：套内个别轨道文绑公历年（如 c1985 pr_y18 非典文只合呈现 2003 年的局），
+  // 其余出生年回落同轨通用文，不必为一句钉年文拆套。与 factAltPool 的 {text, calWindow}
+  // 对象形同族；校验器 validate-storylet 对 textByTrack 叶自带严查（trackLeafOk）。
+  function trackText(S, act, e) {
+    if (e == null || typeof e === "string" || Array.isArray(e)) return e;
+    const calY = typeof S.birthYear === "number" ? S.birthYear + act.age : null;
+    if (e.calWindow == null || (calY != null && calY >= e.calWindow[0] && calY <= e.calWindow[1])) return e.text;
+    return e.elseText;
+  }
   // pr_child4（c2000 包，12 岁）定款（变体扩容第二轮）：与 early2KeyFor 同法「带内扩轮换」——
   // 掷点 r 先按旧法落四带（floor(r*4) 定记号：0 梧桐 / 1 小卖部 / 2 留言册 / 3 毕业照），
   // 记号逐种子与旧版全等；梧桐带与留言册带的后半带改发同记号新款（shoestand / lastpage），
@@ -1635,7 +1649,7 @@
           const si = P.seedStr != null ? actVariantKeyFor(P.seedStr, act.id, act.altSets.length + 1) : 0;
           if (si > 0) { const set = act.altSets[si - 1]; if (set) { tbt = set.textByTrack || tbt; if (set.tail != null) ttail = set.tail; } }
         }
-        let bt = trackTextOf(S, act, tbt[S.state.track] || tbt.study);
+        let bt = trackTextOf(S, act, trackText(S, act, tbt[S.state.track] || tbt.study));
         // factAlt：按枚举事实（如 studyForm）确定性分文，不消费流；优先于 trackAlt。
         let factHit = false;
         if (act.factAlt && act.factAlt.texts) { const fv = factOf(S, act.factAlt.fact); const r = condText(P.seedStr, act.id, "factAlt", fv, factAltPool(S, act, act.factAlt.texts[fv])); if (r) { bt = r; factHit = true; } }

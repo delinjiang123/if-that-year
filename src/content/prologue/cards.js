@@ -106,9 +106,9 @@
     ],
     c1985: [
       { id: "ce85_01", name: "网吧那几年", text: "那几年，街口的网吧一家挨着一家，两块钱一小时，通宵还有包夜价。放学绕路去看一眼的人不少；家里添了电脑的人家，孩子就去得少了。", effects: { growth: 2, health: -1 } },
-      { id: "ce85_02", name: "非典那年", needsSchooling: ["school", "half"], text: "你十八岁那年赶上非典。街上空了好些日子，进出都要量体温，学校封了校门。你妈把口罩洗了又洗，挂在阳台上晾着。", effects: { growth: 1, wisdom: 1 } },
+      { id: "ce85_02", name: "非典那年", needsSchooling: ["school", "half"], text: "二〇〇三年，非典那年。街上空了好些日子，进出都要量体温，学校封了校门。你妈把口罩洗了又洗，挂在阳台上晾着。", effects: { growth: 1, wisdom: 1 } },
       { id: "ce85_03", name: "扩招那阵子", text: "你十八九岁那几年正赶上扩招，大学一年比一年招得多。考上的欢天喜地；等他们毕业才发现，找工作的人也一年比一年多。", effects: { growth: 1, freedom: 1, relation: -1 } },
-      { id: "ce85_04", name: "申奥那晚", text: "申奥成功那晚你十六岁，跟着大人在街上站了半宿，锣鼓响到后半夜。那股热乎劲，你后来好多年没再见过。", effects: { relation: 2 } },
+      { id: "ce85_04", name: "申奥那晚", text: "二〇〇一年，申奥成功那晚，你跟着大人在街上站了半宿，锣鼓响到后半夜。那股热乎劲，你后来好多年没再见过。", effects: { relation: 2 } },
       { id: "ce85_05", name: "你爸的呼机", text: "你爸腰里别着个呼机，响了就满街找电话回。你把要回的号码抄在小本子上，字写得又大又端正，怕他看不清。", effects: { relation: 1, money: -2 }, set: "hook_era_pager" },
       { id: "ce85_06", name: "MP3 不离耳", text: "你攒钱买了台 MP3，歌是从同学电脑里拷的。耳机戴了一年多，体检时医生让你少戴。你嘴上答应，转头又塞上了。", effects: { freedom: 2, health: -1, money: -1 } },
     ],
