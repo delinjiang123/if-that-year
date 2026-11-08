@@ -24,10 +24,16 @@
     c1995: [["school", 94], ["half", 5], ["never", 1]],
     c2000: [["school", 88], ["half", 9], ["never", 3]],
   };
+  // 出生地小片（用户 2026-11-09 亲点）：四款按出生地分工，与城乡/家底/出生年绑定（绑定表见
+  // C2000_PACK 的 originOpenSetting/originOpenCond，读者在来历幕 openConflict）——[0] 市妇幼
+  // 保健院（城里款，农村家底 cf_04 不发）；[1] 县医院（通发款，原款逐字未动）；[2] 市私立医院
+  // （只发家底厚的 cf_01——街口小卖部、money +2，本池唯一一张出生时就家底厚实的牌，紧巴组
+  // 对照 MODEST_FAMILIES）；[3] 镇卫生院（原款逐字未动，只留乡土窗口：农村家底且出生年
+  // ≤2003——2000 年代头几年乡下还有在卫生院生的，往后住院分娩挪去县医院，这款随之关窗）。
   const ORIGIN_OPEN = [
-    "你出生那年，家里住的还是老房子，厨房和卧房只隔一道布帘。爸妈把你的小床放在靠墙的一侧，墙上贴着一张全家福，是你满月时照的。",
+    "你出生在市里的妇幼保健院。你爸请了三天假守在医院，保温桶一天送两趟。出院那天，他把你裹得严严实实抱上公交，胳膊一路上没敢换姿势。",
     "你出生在县城医院。住院那几天，奶奶每天送两趟饭，保温桶用毛巾裹着，到的时候还是热的。出院回家，你爸在自行车后座绑了个小筐，说以后载你用。",
-    "你出生那年，家里刚搬进新楼房，还没通暖气，冬天屋里生着炉子。你爸把你的小被子搭在炉子边上烘着，你在烟火气里睡得沉。",
+    "你出生在市里一家私立医院。你爸提前打听好了，说那儿生孩子不用挤走廊，夜里也有人守着。结账的时候，你妈把单子看了两遍，你爸说，人平安就行，单子收起来吧。",
     "你出生在镇上的卫生院。你妈说，那天走廊里全是人，就数你哭声大。回家那天，你爸把自行车骑得特别慢，怕颠着你。",
   ];
   // 0 岁开局 B 案（出生一幕＋0–4 小段＋5 岁屏）：来历幕拆屏——出生叙事（各年代包自带的 originOpen，
@@ -631,6 +637,11 @@
   // 新机制只在包带相应字段时触发（texts[] 性子拍呈现变体 / choice altLabel+altEcho 城镇形 / act.textTown / act.trackAlt），c2000 包一概不带——旧代随机流消费点一格不变。
   const C2000_PACK = {
     originOpen: ORIGIN_OPEN,
+    // 出生地小片：[0] 标 urban——与农村家底（cf_04 的 setting=rural）互斥，城里款不发乡下；
+    // originOpenCond 为资格门（读者 openConflict）：[2] 私立款只发家底白名单、[3] 镇卫生院款
+    // 只发农村家底且出生年 ≤2003（口径见 ORIGIN_OPEN 上方注释）。[1] 县医院无标无门、通发兜底。
+    originOpenSetting: ["urban", null, null, null],
+    originOpenCond: [null, null, { familyIn: ["cf_01"] }, { settingEq: "rural", birthYearMax: 2003 }],
     originLB: ["你爸妈去了外地打工，你跟着爷爷奶奶过。电话一礼拜打一回，声音从听筒里出来，有点远。", "你爸妈在外地打工，你跟着爷爷奶奶长大。他们的声音你最熟，是从电话里听熟的；人要等到过年，站在村口，看从车上下来的那个，才对得上号。"],
     marks: MARKS, flatsByAge: FLATS_BY_AGE, acts: ACTS, sitActs: SIT_ACTS,
     // 活力批（v0.28 候选）：c2000 本代首个序章随时池，走 poolSchedule 的 WP7 通用形（与 c1985 的 pool 同形：
@@ -1451,6 +1462,18 @@
           if (oa) {
             if (P.family === "cf_11" && oa.siblings) return true; // 独生家底 × 任何兄姐断言
             if (P.family === "cf_06" && (oa.only || oa.siblings === "elderBrothers")) return true; // 姐＋弟家底 × 独生句/两个哥哥
+          }
+          // 出生地小片（opt-in）：资格门 originOpenCond——familyIn＝家底白名单（不在名单即
+          // 冲突）、settingEq＝家底牌场景须等值、birthYearMax＝出生年上限（S.birthYear 非
+          // 数字时按不合处理）。既有三表表达不了这三样：NotWithFamily 是排除表（「只许某几
+          // 张」要枚举其余全部家底）、Setting 是互斥表（管「不能同屏」不管「必须等值」）、
+          // Assert 只管手足、且三表都不读出生年。故在此扩一路，判据只读已定版事实、不消费
+          // 流、与上方顺延同路；未声明此字段的包行为一字不变（现行只有 c2000 包声明）。
+          const oc = pack.originOpenCond && pack.originOpenCond[idx];
+          if (oc) {
+            if (oc.familyIn && !oc.familyIn.includes(P.family)) return true;
+            if (oc.settingEq && (!famCard0 || famCard0.setting !== oc.settingEq)) return true;
+            if (oc.birthYearMax != null && !(typeof S.birthYear === "number" && S.birthYear <= oc.birthYearMax)) return true;
           }
           return false;
         };
