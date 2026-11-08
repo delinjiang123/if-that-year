@@ -1,4 +1,4 @@
-// 《如果那年》引擎 v0.58.7 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
+// 《如果那年》引擎 v0.58.8 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
 //      / 判词按数值形状拼装 / 全程自动存档可续玩 / 种子可输入、可复制分享链接 / 在线零 LLM 调用
 // [模块]本引擎自 v0.20.0 起拆为各自独立的模块文件（独立包装器 + window.IFY 共享命名空间），按 index.html 的顺序加载：本文件（建 IFY + 编排）→ src/world/apply.js → src/record.js → src/world/processes/{parents,spouse,work,place,health}.js → src/scheduler.js → src/views/{stream,year,shadow,settlement,share}.js → src/engine-boot.js（收尾，调用 IFY.renderStart()）。跨模块引用一律 IFY.<名>，可变量收编为 IFY 属性。
 window.IFY = window.IFY || {};
@@ -394,6 +394,47 @@ window.IFY = window.IFY || {};
       runs.unshift(entry);
       writeHistory(runs);
     } catch (e) { /* 留档失败静默，不阻塞结算 */ }
+  }
+
+  // ---------- 跨局避重（antirepeat 原型）：上一局见过的池事件 id ----------
+  // ify-seen-v1 = { v:1, at, seedStr, era, ids:[...] }：最近一个「完局」见过的池事件 id 集合，
+  // 完局时由 recordSeen 落盘（结算 !endRerun 同挂点，与 recordHistory 并列），只留最近一局、
+  // 每局整表覆盖——玩家的不满集中在紧邻的上一局；存两局会把薄切片（如 76+ 底盘约 30 条）
+  // 的可避余粮再吃掉一半，且两局前的局玩家多半已记不清，收益低、断供风险高，故只存一局。
+  // ids 取本局 usedEvents（池路记账的全部条目，去重、上限 300 条兜底；一局实际约 40–80 条，
+  // JSON 约 3KB 上下，远低于 localStorage 容量）。中途弃局不写：seen 恒指「上一局完整人生」。
+  // ify-avoid-v1 = { v:1, seedStr, ids:[...] }：本局开局那一刻的装填快照，只为续局恢复用——
+  // 续局时 seedStr 与存档种子对得上才恢复（防 A 局的快照串进 B 局）；完局时随 recordSeen 清除。
+  // 两键与 ify-save-v2 / ify-history-v1 互不相干：避重状态不进会话存档，旧档无此二键按未装填走。
+  const SEEN_KEY = "ify-seen-v1";
+  const AVOID_KEY = "ify-avoid-v1";
+  function loadSeen() {
+    try { const v = JSON.parse(localStorage.getItem(SEEN_KEY)); if (v && Array.isArray(v.ids)) return v; } catch (e) { /* 损坏数据按无记录走 */ }
+    return null;
+  }
+  function recordSeen() { // 完局落盘：本局见过的 id 整表覆盖 ify-seen-v1，并清掉本局的装填快照
+    try {
+      const ids = [...new Set(IFY.S.usedEvents || [])].slice(0, 300);
+      localStorage.setItem(SEEN_KEY, JSON.stringify({ v: 1, at: todayStr(), seedStr: IFY.S.seedStr, era: IFY.S.era, ids }));
+    } catch (e) { /* 存不了不阻塞结算 */ }
+    try { localStorage.removeItem(AVOID_KEY); } catch (e) {}
+    IFY.avoidPrev = null;
+  }
+  function armAvoidance(explicitSeed) { // 开局装填（newGame/newGamePrologue 调用）：决定本局 scheduler 读不读得到快照
+    IFY.avoidPrev = null;
+    try { localStorage.removeItem(AVOID_KEY); } catch (e) {}
+    if (explicitSeed) return; // 指定种子局（手填种子/种子链接/每日一局，种子都经 #seedin 或 seedParam 进来）：玩家主动复刻，不许历史改动其走向
+    const seen = loadSeen();
+    if (!seen || !seen.ids.length) return; // 无历史（首次玩/清过缓存）：未装填，与现行版本逐项一致
+    IFY.avoidPrev = new Set(seen.ids);
+    try { localStorage.setItem(AVOID_KEY, JSON.stringify({ v: 1, seedStr: IFY.S.seedStr, ids: seen.ids })); } catch (e) { /* 快照存不下只是续局不恢复避重，不阻塞开局 */ }
+  }
+  function restoreAvoidance() { // 续局恢复（restoreFromSave 尾）：快照种子与本档种子对得上才恢复本局的避重
+    IFY.avoidPrev = null;
+    try {
+      const v = JSON.parse(localStorage.getItem(AVOID_KEY));
+      if (v && v.seedStr === IFY.S.seedStr && Array.isArray(v.ids) && v.ids.length) IFY.avoidPrev = new Set(v.ids);
+    } catch (e) { /* 损坏数据按未装填走 */ }
   }
 
   // 开局屏的记录行：总天数 + 最近连续天数；连续只在 ≥2 天时提，断档时只报总数、只字不提断不断。
@@ -793,6 +834,7 @@ window.IFY = window.IFY || {};
       RNG.a = typeof flat.rngA === "number" ? flat.rngA : seedFromString(flat.seedStr);
       RNGW.a = typeof flat.rngW === "number" ? flat.rngW : seedFromString(String(flat.rngA) + "#world-legacy"); // 旧存档无进程/环境流存档值：由旧随机态派生续玩（不承诺与旧口径同一局，见 DEVLOG）
       RNGA.a = typeof flat.rngAmb === "number" ? flat.rngAmb : seedFromString(String(flat.rngA) + "#ambient-legacy");
+      restoreAvoidance(); // 跨局避重：续局按开局快照恢复（种子对不上不装填）；历史回看走同一路但回放不抽取，无实际作用
       return flat;
     };
     if (liveSaved) el("resume").addEventListener("click", () => {
@@ -910,15 +952,16 @@ window.IFY = window.IFY || {};
       startLock = true;
       el("startgo").disabled = true;
       const seedStr = (el("seedin").value || "").trim() || seedParam || candSeed; // 随机开局用开局页渲染时已生成的候选种子（牌面据此而发，§A3.2）
+      const explicitSeed = !!((el("seedin").value || "").trim() || seedParam); // 跨局避重：种子是玩家给的（手填/链接/每日一局写入 #seedin）＝指定局，不装填避重；只有走 candSeed 的新随机局才装填
       const eb = document.querySelector("#erapick .segbtn.sel");
       const eraId = eb ? eb.dataset.era : "c2000";
       const dRoute = dailyCtx && dailyCtx.eraId === eraId ? dailyCtx.routeId : null; // 年代被手改过则待选路线作废，不带进局
       if (hasPrologue(selEra())) {
-        newGamePrologue(seedStr, eraId, shownBirth(), dRoute); // 出生年：屏上明示的那一年（抽出或手动拨定），两条人生共用（影子在出生时拷 S.birthYear）
+        newGamePrologue(seedStr, eraId, shownBirth(), dRoute, explicitSeed); // 出生年：屏上明示的那一年（抽出或手动拨定），两条人生共用（影子在出生时拷 S.birthYear）
         return;
       }
       if (CARDS_ON && dealt) for (const cat of ["family", "temper", "era"]) ANA.track("card_pick", { cat, pick: picked[cat], changed: picked[cat] !== 0 });
-      newGame(seedStr, { era: eraId, birth: shownBirth(), cards: CARDS_ON && dealt ? [dealt.family[picked.family], dealt.temper[picked.temper], dealt.era[picked.era]] : [], dailyRoute: dRoute });
+      newGame(seedStr, { era: eraId, birth: shownBirth(), cards: CARDS_ON && dealt ? [dealt.family[picked.family], dealt.temper[picked.temper], dealt.era[picked.era]] : [], dailyRoute: dRoute, explicitSeed });
     });
     IFY.finishRender();
   }
@@ -949,6 +992,7 @@ window.IFY = window.IFY || {};
       if (names.length) IFY.S.log.push(`22 岁 · 出身：${names.join(" · ")}`);
     }
     if (opts && opts.dailyRoute) IFY.S.dailyRoute = opts.dailyRoute; // 今日一局待选路线：汇入拍预选高亮用，落定即清
+    armAvoidance(!!(opts && opts.explicitSeed)); // 跨局避重装填：须在首个 step() 抽取之前、S.seedStr 落定之后
     save();
     step(); // 无路线 + mergePending → step 落 22 岁汇入拍
   }
@@ -956,7 +1000,7 @@ window.IFY = window.IFY || {};
   // ---------- 序章（v0.17.0，试点年代 c2000）：独立推进循环，汇入点在 22 岁 ----------
   const STAGE_LABEL = { origin: "来历", child: "童年", teen: "少年", youth: "少年", adult: "成年", late: "晚年" };
 
-  function newGamePrologue(seedStr, eraId, birth, dailyRoute) {
+  function newGamePrologue(seedStr, eraId, birth, dailyRoute, explicitSeed) {
     IFY.S = freshState(seedStr);
     anaPrologueDone = false; anaRetireSent = false; // 统计升级批：新局重置埋点已发标记
     IFY.session = null; // v0.21 WP1：序章段会话由 save() 惰性建（tracks.B=null，蓝图 3.3），Track_B 待 22 岁汇入时出生
@@ -966,6 +1010,7 @@ window.IFY = window.IFY || {};
     if (eraId) { IFY.S.era = eraId; IFY.S.birthYear = birth; }
     IFY.S.autoMode = IFY.prefs.mode; IFY.S.speed = IFY.prefs.speed;
     if (dailyRoute) IFY.S.dailyRoute = dailyRoute; // v0.24.0：今日一局待选路线随档带入序章，22 岁汇入拍预选高亮、落定即清
+    armAvoidance(!!explicitSeed); // 跨局避重装填（序章幕次不走池抽取，快照只在 22 岁汇入后的成人段 L3 生效）
     PRO.start(IFY.S, seedStr); // 处境发放与童年基线在此落定（序章独立流，主 RNG 一格不动）
     IFY.rec("prologue", "sit_" + (IFY.S.prologue ? IFY.S.prologue.situation : "school")); // 处境发放进账本（v0.18.0）
     save();
@@ -1262,7 +1307,7 @@ window.IFY = window.IFY || {};
     DEFAULT_AUTO_MODE, RNG, RNGW, RNGA, mulberry, rng, rngW, rngA, seedStreams, seedFromString, drawBirthYear, clamp, esc,
     el, app, reducedMotion, freshState, sampleStatsPeak, sampleStatsLate, save, loadSave, clearSave, loadLives, todayStr, recordLives,
     STREAK_KEY, LASTLIFE_KEY, loadStreak, loadLastLife, dateStrOf, shiftedDateStr, recordDayAndLife,
-    HISTORY_KEY, loadHistory, recordHistory,
+    HISTORY_KEY, loadHistory, recordHistory, recordSeen, armAvoidance, restoreAvoidance,
     streakLine, lastLifeLine, dailyFor, loadPrefs, savePrefs, rhythmOf, rhythmBase, applyTempDelta,
     applyEffects, finalAge, renderStart, clearSave0, newGame, STAGE_LABEL, newGamePrologue, prologueHead,
     renderPrologue, renderRouteMerge, mergeIntoRoute, step, advance, renderDeath, TIER_ORDER, TIER_LABEL,

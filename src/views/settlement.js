@@ -1797,6 +1797,7 @@
         }
       } catch (e) { /* 落不下不阻塞结算呈现 */ }
       if (typeof IFY.recordHistory === "function") IFY.recordHistory(endInfoObj, endDisplay);
+      if (typeof IFY.recordSeen === "function") IFY.recordSeen(); // 跨局避重：本局见过的池事件落盘，供下一局开局装填（回放不写，与上方各记录同一 !endRerun 守卫）
     }
     const shadowLines = IFY.shadowCompareLines();
     const covLineRaw = IFY.covenantSettleLine(); // fork38 立约的结算对账行（v0.17.0）：没有立过约就不出

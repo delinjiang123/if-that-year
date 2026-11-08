@@ -307,14 +307,41 @@
     const want = (S.age >= 24 ? 1 : 0) + (S.age >= 27 ? 1 : 0);
     return drawn < want;
   }
+  // ---------- 跨局避重（antirepeat 原型）：上一局见过的池事件，在本局 L3 抽取时软避 ----------
+  // 数据面：IFY.avoidPrev 是开局时由 engine 侧装填的 Set（上一完局 usedEvents 的快照，见
+  // engine.js 的 armAvoidance）；null/空集 = 未装填，本函数走原路径逐字不变（parity 基线）。
+  // 作用域三重收窄：①只在本函数（L3 普通池）生效——链层 pickChain、稀有、危机、考试链头锚
+  // 都不经此路，链条拍与结构拍一概不碰；②只对受控 Track 本人（IFY._lifeDepth===0）生效——
+  // 影子无头步进恒在 withLife 内（depth≥1），读不到这份快照，影子抽取零影响；③指定种子局
+  // （手填/链接/每日）开局不装填，复刻局与无历史时逐项一致。
+  // 随机流纪律：三种模式（硬避/降权/关闭）都只改加权数组的构成，恒只消费一次 rngA()，
+  // 与原口径同计数；不新增随机源、不用 Math.random——同种子＋同装填状态恒同局。
+  // 断供纪律：降权模式下见过的条目至少保留 1 份权重、永不归零；新条目为 0 时整段关闭、
+  // 原样抽取——避重最坏情况退化为现行行为，绝不因避重断供。
+  const AVOID_MIN_FRESH = 10;  // 本抽候选里「没见过」的条数 ≥ 此值 → 硬避（本抽只在新条目里选）
+  const AVOID_PENALTY = 0.12;  // 新条目只有 1..9 条 → 见过的条目权重 ×0.12（软避，不排除）
+  IFY.avoidStats = { draws: 0, hard: 0, soft: 0, off: 0 }; // 诊断计数（原型用；不入存档、不入统计埋点）
+  IFY.avoidDiag = []; // 诊断：受控 Track 的历次 L3 抽中 id（原型实测用；集成时可删）
   function pickSaliency(pool) {
     if (!pool.length) return null;
+    const avoid = (IFY._lifeDepth || 0) === 0 ? IFY.avoidPrev : null;
+    let eff = pool, penalty = false;
+    if (avoid && avoid.size) {
+      const fresh = pool.filter((e) => !avoid.has(e.id));
+      if (fresh.length >= AVOID_MIN_FRESH) { eff = fresh; IFY.avoidStats.hard++; }
+      else if (fresh.length > 0) { penalty = true; IFY.avoidStats.soft++; }
+      else IFY.avoidStats.off++;
+      IFY.avoidStats.draws++;
+    }
     const weighted = [];
-    for (const e of pool) {
-      const n = baseWeight(e) * (1 + Math.round(saliencyScore(e))) * (routeDebtBoost(e) ? 4 : 1);
+    for (const e of eff) {
+      let n = baseWeight(e) * (1 + Math.round(saliencyScore(e))) * (routeDebtBoost(e) ? 4 : 1);
+      if (penalty && avoid.has(e.id)) n = Math.max(1, Math.round(n * AVOID_PENALTY));
       for (let i = 0; i < n; i++) weighted.push(e);
     }
-    return weighted[Math.floor(IFY.rngA() * weighted.length)];
+    const picked = weighted[Math.floor(IFY.rngA() * weighted.length)];
+    if ((IFY._lifeDepth || 0) === 0) IFY.avoidDiag.push(picked.id);
+    return picked;
   }
 
   // ---------- L2 链推进：分层抽取（替代 CHAIN_BOOST 权重硬顶） ----------
