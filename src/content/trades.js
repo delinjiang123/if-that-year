@@ -35,7 +35,12 @@
 //                  只登现有事实里直接点名家业的行当；无来源者为空数组（不是遗漏：
 //                  如 farm 的承继在现行事实里走少年轨道/农民路线本身，无家庭牌来源，
 //                  留第 2 期补）。famRetire65/famQuota65（顶替）牵 L65-家发放规则，
-//                  本批不登，留 P1-4 关口批裁。
+//                  P1-1 不登、留 P1-4 关口批裁——P1-4 裁定（本批）：只登 famQuota65
+//                  进 factory（它在 familyFacts 在册、过得了来源校验）；命中口径在
+//                  关口组装侧收紧为「枚举事实 quotaHolder === "mine"」（名额定下且
+//                  归我才算承继机会，归兄姐时不出项）；famRetire65 不登——顶替表
+//                  发下 ≠ 名额归我，且顶替进厂在现行内容里已有 pr_fork16 的
+//                  took_quota65 落点，关口再加一遍是重复。
 //   seedEcho / inheritEcho = 回指句模板位（§3.4）：本批只占位（null），模板文案随
 //                  P1-6 文案审定稿后填；null 时回指回落通用句的口径在 §3.4 已定。
 window.GAME_TRADES = {
@@ -125,9 +130,9 @@ window.GAME_TRADES = {
     "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
     "eduGate": null, "gateDirect": true,
     "coldOk": true, "coldKinds": ["assign", "recruit", "follow", "near", "wage"], "coldWeight": 5,
-    "inheritFrom": ["cf_05"],
+    "inheritFrom": ["cf_05", "famQuota65"],
     "seedEcho": null, "inheritEcho": null,
-    "note": "工厂制造入行：招工入行拍 p15_071 立旗（注记原文「招工入行」），五种冷门渠道全开；承继来源＝一个厂里出来的（cf_05）"
+    "note": "工厂制造入行：招工入行拍 p15_071 立旗（注记原文「招工入行」），五种冷门渠道全开；承继来源＝一个厂里出来的（cf_05）、顶替名额归我（famQuota65，命中须 quotaHolder=mine，组装侧收紧，P1-4 裁）"
   },
   "fab": {
     "flag": "fab_work", "form": "employee",
@@ -291,6 +296,12 @@ window.GAME_COLD_KIND_ERA = {
   "near":    { "c1955": true,  "c1965": true,  "c1978": true,  "c1985": true,  "c1995": true,  "c2000": true },
   "wage":    { "c1955": true,  "c1965": true,  "c1978": true,  "c1985": true,  "c1995": true,  "c2000": true },
 };
+
+// 关口总开关（第 1 期 P1-4 休眠批，设计稿 §6.1/§七）：数据面开关——open 不为 true
+// （含本字段缺失、注册表未载入）时，career.js 的 gateDue 恒返 false，关口不可达。
+// 本批只落组装与判定逻辑、开关默认关；P1-6 激活批填实各行关口资格（coldWeight 二维
+// 表等）后把 open 改 true 才算开门，改此一处即全门生效，不许在别处再设第二开关。
+window.GAME_GATE_SWITCH = { open: false };
 
 // 经登记数据文件通道合入（形状随 WP1 E9 骨架）：registry.js 尾部合入器认 trades 键，
 // 本体登记优先、同名先登记者胜。P1-2 起本文件在 index.html 加载序内（state.js 之前），

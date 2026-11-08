@@ -2,6 +2,8 @@
 // 的唯一写点（careerNote）与只读派生（careerOf / careerSpells / seedsOf），外加老档回填
 // （backfillCareer）与职业自有派生流（careerRng）。加载顺序见 index.html：
 // src/world/processes/work.js 之后、src/scheduler.js 之前。
+// 第 1 期 P1-4 追加（文件尾段）：入行关口的开门判定 gateDue、菜单组装 gateForkView、
+// 回指句纯函数 gateEchoLine（休眠批：总开关默认关、无现行调用点，详见尾段头注）。
 //
 // 平行账纪律（本批的命门）：career / seeds 只写不读——现行任何逻辑（工资、退休、
 // scheduler、结算、判词）都不许读这两本账改行为；本文件自身也不读它们做任何裁决，
@@ -209,5 +211,423 @@
     }
   }
 
-  Object.assign(IFY, { careerNote, careerOf, careerSpells, seedsOf, careerRng, backfillCareer });
+  // ================= 第 1 期 P1-4：入行关口（休眠批） =================
+  // 关口 = 进程呈现的 procOnly 分岔（fork_gate_first / fork_gate_switch，本体在
+  // src/content/gates.js 的 GAME_GATES，只写框骨架与兜底选项；本批不合入
+  // GAME_DATA.forks 的理由见该文件头注），照 fork_kid 的全套形状：开门判定
+  // gateDue、呈现定形 gateForkView、回指句纯函数 gateEchoLine，三者都在本文件
+  // （D7：职业代码归 career.js；与 kidGateDue/kidForkView 在 spouse.js 的进程归属同理）。
+  // 本批是休眠批：判定与组装全部落地，但没有任何现行路径调用它们——engine 的
+  // step()、shadow-life 的 stepYearHeadless()、scheduler、呈现主链一律不接；
+  // 且总开关 GAME_GATE_SWITCH（trades.js）默认关，gateDue 先查开关、关时恒假。
+  // 影子轨本批不走关口（政策 F 本体与打分零改动，P1-5 再接无头侧）。
+  // 读账纪律：gateDue 只读账、零随机、fail-closed；gateForkView 的一切随机只走
+  // 职业自有流 careerRng（冷门抽取与类型抽取），主流一格不动。seeds 的读取点
+  // 只许在本段（关口组装）与 seedsOf/plantSeed 一侧——§2.3.1 白名单，本段之外
+  // 不许新增 seeds 读点。careerNote 的记账语义本批一字不动：组装出的选项带
+  // via/coldKind/指针字段只是数据，唯一写点认不认这几个字段归激活批接线。
+
+  // 行当与冷门类型的工作文案名（P1-6 文案审定稿后换；机制只消费 trade id，
+  // 名字错位不影响任何判定）。冷门类型的 sub 是「平摆」的渠道说明句，无回指。
+  const GATE_TRADE_LABEL = {
+    farm: "种地", township: "进乡镇企业", farm_returned: "回地里种地", exam_landed: "考公上岸",
+    shop: "开个小店", gig: "接零活干", courier: "送快递", care: "做陪护", write: "靠写稿吃饭",
+    factory: "进厂", fab: "进半导体厂", craft: "学门手艺", heavy: "进钢铁厂", miner: "下矿",
+    truck: "跑长途货车", med_hosp: "进医院", med: "当医生", nurse: "当护士", img: "去影像科",
+    teach: "去教书", acct: "做财会", fin: "去证券营业部", press: "进报社", dev: "做软件开发",
+    driver_taxi: "开出租车", grad: "进课题组深造",
+  };
+  const GATE_KIND_SUB = {
+    assign: "分配下来的名额", recruit: "招工，你去报了名", follow: "有人带着你去",
+    near: "离家近，来回方便", wage: "这一行眼下给的钱多",
+  };
+  // 回指句工作模板（§3.4）：注册表 seedEcho/inheritEcho 定稿前（P1-6）用这两条
+  // 骨架，只许填 {age}/{note} 两个槽，槽数据全来自账（种子记录 / 出身牌名），
+  // 拼不出处即不拼（gateEchoLine fail-closed 返 null），不许现编。
+  const GATE_ECHO_SEED_STRONG = "{age} 岁那年，{note}。这颗种子，今天冒了头。";
+  const GATE_ECHO_SEED_WEAK = "{age} 岁那年，{note}。那点心思，今天又想起来了。";
+  const GATE_ECHO_INHERIT = "家里「{note}」，这一行你打小就熟。";
+
+  function tradesTable() {
+    const T = typeof window !== "undefined" ? window.GAME_TRADES : null;
+    return T && typeof T === "object" ? T : null;
+  }
+  // 总开关（§6.1）：字段缺失、非 true、注册表不在场，一律按关读（fail-closed）。
+  function gateSwitchOpen() {
+    const sw = typeof window !== "undefined" ? window.GAME_GATE_SWITCH : null;
+    return !!(sw && sw.open === true && tradesTable());
+  }
+  // 事实在账（与 record.js examPending 内的 fact 同口径镜像：旗 / 用过事件 /
+  // 用过稀有 / 账本条目任一命中）。
+  function factOn(S, id) {
+    if (!S || typeof S !== "object") return false;
+    return !!((S.flags && S.flags[id]) ||
+      (Array.isArray(S.usedEvents) && S.usedEvents.includes(id)) ||
+      (Array.isArray(S.usedRare) && S.usedRare.includes(id)) ||
+      (Array.isArray(S.ledger) && S.ledger.some((e) => e && e.id === id)));
+  }
+  // 学历门（§4.2.2）：与 record.js ctxOk 的 eduGate / eduGateHalf 逐项同口径——
+  // "gate" 严口径（schooling ∈ {school, pre} 或 edu_bridge），"half" 宽口径另放行
+  // half；schooling 未判定（pre 年代无处境判定）恒过。不许在此另拼第二套口径。
+  function gateEduPass(S, row) {
+    if (!row || !row.eduGate) return true;
+    const sc = S.state && S.state.schooling;
+    if (!sc || sc === "school" || sc === "pre") return true;
+    if (row.eduGate === "half" && sc === "half") return true;
+    return factOn(S, "edu_bridge");
+  }
+  // 可行公共层（§4.2 的 1/3/4）：年代在 eraIn 内、入行旗未落、forbidState 不命中
+  // （注册表当前无 forbidState 字段，防御性读，字段出现即生效）。
+  function gateRowCommon(S, row) {
+    if (!row || typeof row !== "object") return false;
+    if (Array.isArray(row.eraIn) && S.era && !row.eraIn.includes(S.era)) return false;
+    if (row.flag && S.flags && S.flags[row.flag]) return false;
+    if (row.forbidState && typeof row.forbidState === "object") {
+      for (const [dom, vals] of Object.entries(row.forbidState)) {
+        const cur = S.state && S.state[dom];
+        if (Array.isArray(vals) ? vals.includes(cur) : cur === vals) return false;
+      }
+    }
+    return true;
+  }
+  // 推掉后的冷却在账判定：gateDefers 计数与最近一次推掉的落点年龄 gateDeferAge
+  // 都在账才卡（本批只读不写：推掉的落账——计数＋落点年龄——归激活批在选项
+  // 应用序接，见施工报告的接线清单）；只读到计数没有落点年龄时不硬卡。
+  function gateCooling(S, years) {
+    const c = S.career;
+    if (!c || typeof c !== "object" || !(c.gateDefers > 0)) return false;
+    if (typeof c.gateDeferAge !== "number") return false;
+    return typeof S.age === "number" && S.age < c.gateDeferAge + years;
+  }
+  // 只读派生（P1-4 新增，只读不建壳）：当前未合上的待业段；无账/无段/坏账 null。
+  function careerIdleOf(S) {
+    if (!S || !S.career || typeof S.career !== "object" || !Array.isArray(S.career.idle)) return null;
+    const d = openIdle(S.career);
+    return d ? { from: d.from, to: d.to } : null;
+  }
+  // 最近一次入行落点（距今几年用）：履历段起点与 flagAges 两处取大者（旗为准、
+  // 履历补老档落点，§1.1 双账纪律）；无考返 null，调用方 fail-closed。
+  function gateLastEntryAge(S) {
+    let last = null;
+    const byFlag = tradesByFlag();
+    if (byFlag && S.flags) {
+      for (const flag of Object.keys(byFlag)) {
+        if (!S.flags[flag]) continue;
+        const a = S.flagAges && S.flagAges[flag];
+        if (typeof a === "number") last = last == null ? a : Math.max(last, a);
+      }
+    }
+    for (const sp of careerSpells(S)) {
+      if (sp && typeof sp.from === "number") last = last == null ? sp.from : Math.max(last, sp.from);
+    }
+    return last;
+  }
+
+  // 关口一 · 毕业/首次入行（§3.2）：尚无正职层入行旗（机会层四旗不算）、不在
+  // 未决窗内、年龄落窗。处境推入（exam_failed 落定）跳过窗下限与冷却（§3.3），
+  // 上限照卡。窗的口径：study 在读窗照工资轮 fallbackTierOf（22–27 在读，
+  // 28 起算读毕、读毕后 2 年内即 ≤30）；corp 22–24、farm 22–28 未落定窗过后；
+  // gap 停年（22）次年起。各轨上限同为 30（§3.2 点名 work/craft/home 22–30，
+  // 其余轨施工同顶，见报告裁量）。
+  function gateFirstDue(S) {
+    const byFlag = tradesByFlag();
+    if (!byFlag) return false;
+    for (const flag of Object.keys(byFlag)) {
+      if (!OPPORTUNITY_FLAGS[flag] && S.flags[flag]) return false; // 正职层已入行
+    }
+    if (S.state.workPhase === "retired") return false;
+    const age = S.age;
+    if (typeof age !== "number" || age < 22 || age > 30) return false;
+    const pushIn = factOn(S, "exam_failed");
+    if (!pushIn) {
+      if (typeof IFY.examPending === "function" && IFY.examPending(S)) return false;
+      const routeId = S.route && S.route.id, track = S.state.track;
+      if ((routeId === "study" || track === "study") && age < 28) return false;
+      if (routeId === "corp" && age <= 24) return false;
+      if (routeId === "farm" && age <= 28) return false;
+      if (routeId === "gap" && age < 23) return false;
+      if (gateCooling(S, 2)) return false;
+    }
+    return true;
+  }
+  // 关口三 · 大转行（§3.2/§4.4）：入过行、距上次入行 ≥3 年（硬推也不豁免）、
+  // 未退休，且触发任一：unit_gone 硬推；待业段满 1 年且想走（switch_wanted）
+  // 或已下岗（laid_off，§4.4 处境推力同列）；在职想走（switch_wanted 已立、
+  // 不在待业段）。冷却 1 年，unit_gone 硬推跳冷却（§3.3 推入通则）。
+  function gateSwitchDue(S) {
+    const byFlag = tradesByFlag();
+    if (!byFlag) return false;
+    let entered = careerSpells(S).length > 0;
+    if (!entered) for (const flag of Object.keys(byFlag)) if (S.flags[flag]) { entered = true; break; }
+    if (!entered) return false;
+    if (S.state.workPhase === "retired") return false;
+    if (typeof S.age !== "number") return false;
+    const last = gateLastEntryAge(S);
+    if (last == null || S.age - last < 3) return false;
+    const hardPush = factOn(S, "unit_gone");
+    if (!hardPush && gateCooling(S, 1)) return false;
+    if (hardPush) return true;
+    const idle = careerIdleOf(S);
+    let idleYearPlus = !!(idle && typeof idle.from === "number" && S.age - idle.from >= 1);
+    if (!idleYearPlus && S.flags.laid_off && S.flagAges && typeof S.flagAges.laid_off === "number") {
+      idleYearPlus = S.age - S.flagAges.laid_off >= 1; // 履历账缺段时以旗落点为准（§1.1）
+    }
+    if (idleYearPlus && (S.flags.switch_wanted || S.flags.laid_off)) return true;
+    if (S.flags.switch_wanted && !idle) return true;
+    return false;
+  }
+  // 开门判定总入口（进程层将来在 step 的进程段同点调用，本批无调用点）：
+  // kind = "first" | "switch"；只读账、零随机、异常一律按不开门读。
+  function gateDue(S, kind) {
+    try {
+      if (!S || typeof S !== "object" || !S.state || !S.flags || !S.route) return false;
+      if (!gateSwitchOpen()) return false;
+      if (kind === "first") return gateFirstDue(S);
+      if (kind === "switch") return gateSwitchDue(S);
+      return false;
+    } catch (e) { return false; }
+  }
+  // 选框（§3.2 + D3 同门两副框）：gate_first 三框——处境推入 fact 优先；刚出
+  // 学习窗（study 轨 28–29，或考试链落定一年内）走毕业框 grad；其余 job。
+  // gate_switch 两框——unit_gone 走 fact，其余 want。
+  function gateFrameOf(S, kind) {
+    if (kind === "switch") return factOn(S, "unit_gone") ? "fact" : "want";
+    if (factOn(S, "exam_failed")) return "fact";
+    const routeId = S.route && S.route.id;
+    if (routeId === "study" && typeof S.age === "number" && S.age <= 29) return "grad";
+    for (const f of ["exam_passed", "exam_landed"]) {
+      const a = S.flagAges && S.flagAges[f];
+      if (S.flags[f] && typeof a === "number" && typeof S.age === "number" && S.age - a <= 1) return "grad";
+    }
+    return "job";
+  }
+
+  // 种子强度（§4.1，只读派生）：choice 记 1、seen 记 0.5，同拍同行当只记一颗
+  // （读侧按 beatId 去重，与 plantSeed 的写侧纪律互为保险）；≥2 强点亮、
+  // 1–1.5 弱点亮、<1 不点亮。earliest = 最早一颗的埋种年龄（同强度排序用）。
+  function seedStrengthOf(S, tradeId) {
+    let strength = 0, earliest = null;
+    const seenBeats = new Set(), recs = [];
+    for (const r of seedsOf(S)) {
+      if (!r || r.trade !== tradeId) continue;
+      const w = r.kind === "choice" ? 1 : r.kind === "seen" ? 0.5 : 0;
+      if (w <= 0) continue;
+      if (r.beatId != null) { if (seenBeats.has(r.beatId)) continue; seenBeats.add(r.beatId); }
+      strength += w; recs.push(r);
+      if (typeof r.age === "number") earliest = earliest == null ? r.age : Math.min(earliest, r.age);
+    }
+    return { strength, earliest, recs };
+  }
+  // 承继命中：来源 id 是出身牌时认 S.prologue.family；是家庭事实时认事实在账。
+  // famQuota65 例外（P1-4 裁，见 trades.js 表头）：名额定下且归我才算承继机会——
+  // 归属本体是枚举事实 quotaHolder，famQuota65 本身只记「桌上定下过」。
+  function gateInheritHit(S, id) {
+    if (id === "famQuota65") return !!(S.facts && S.facts.quotaHolder === "mine");
+    if (S.prologue && S.prologue.family === id) return true;
+    return factOn(S, id);
+  }
+  // 冷门类型在本局的可用集（§4.3）：行当 coldKinds ∩ COLD_KIND_ERA 年代表
+  // （只有格子明写 false 才排除）∩ 类型×路线细分（本批只落一格：assign 不在
+  // farm 轨出——种地的人没有「被分配进厂」这回事，trades.js 表尾点名归本批）。
+  function gateColdKindsFor(S, row) {
+    const eraTab = typeof window !== "undefined" ? window.GAME_COLD_KIND_ERA : null;
+    return (Array.isArray(row.coldKinds) ? row.coldKinds : []).filter((k) => {
+      if (eraTab && eraTab[k] && eraTab[k][S.era] === false) return false;
+      if (k === "assign" && S.route && S.route.id === "farm") return false;
+      return true;
+    });
+  }
+  // 冷门类型权重（§4.4 处境加权，只作用于类型抽取、不动任何老权重表）：
+  // 父母进程进入照护段（care/hosp）→ near ×2；家底欠账（cf_13）→ wage ×2。
+  // （设计稿 §4.4 写「家底牌 cf_11 等穷家」——cf_11 在现行牌表是独生牌、不是
+  // 穷家，施工按牌表事实改认 cf_13「家里欠着账」，见报告裁量。）
+  function gateKindWeight(S, kind) {
+    let w = 1;
+    if (kind === "near" && S.parents) {
+      for (const who of ["dad", "mom"]) {
+        const p = S.parents[who];
+        if (p && (p.stage === "care" || p.stage === "hosp")) { w *= 2; break; }
+      }
+    }
+    if (kind === "wage" && S.prologue && S.prologue.family === "cf_13") w *= 2;
+    return w;
+  }
+  // D5 说明行（裁定硬条件）：种子点亮却被学历门挡住的行当不许无声消失——
+  // 不占选项位、不可选，只在菜单外留一行，写清哪一行、差什么门槛。工作文案，
+  // P1-6 文案审定稿。门槛说法与 gateEduPass 的口径一一对应（严口径＝正经文凭、
+  // 宽口径＝读过书，两者都认夜校/自考的桥）。
+  function gateEduNote(tid, row) {
+    const name = GATE_TRADE_LABEL[tid] || tid;
+    return row.eduGate === "half"
+      ? `${name}这一行，你早年动过心思，只是它要读过书——正经读完，或是夜校、自考补出来。你眼下还差这一样，这一回先摆不出来。`
+      : `${name}这一行，你早年动过心思，只是它要文凭——得正经读完书，或是夜校、自考补出来。你眼下还差这一样，这一回先摆不出来。`;
+  }
+  // 回指句填槽：模板只许 {age}/{note} 两槽，任一被引用的槽无值即整句作废
+  // （指不出处不许现编）。
+  function fillEcho(tmpl, slots) {
+    if (typeof tmpl !== "string" || !tmpl) return null;
+    let bad = false;
+    const out = tmpl.replace(/\{(age|note)\}/g, (m, k) => {
+      const v = slots[k];
+      if (v == null || v === "") { bad = true; return m; }
+      return String(v);
+    });
+    return bad ? null : out;
+  }
+  // 回指句纯函数（§3.4）：零随机、只读账。item = { via, trade, seed?, factId?,
+  // strength? }。via=seed：种子记录缺 seedNote 或缺埋种年龄 → 不拼（返 null）；
+  // 模板优先读注册表 seedEcho（本批全 null），回落工作骨架，强弱点亮分版。
+  // via=inherit：说明只认出身牌名（GAME_CARDS.byId 的 name 是玩家文案）；
+  // familyFacts 的 note 是登记说明、含元信息，不许直接上屏——认不出干净
+  // 来源（如 famQuota65）即不拼。via=cold：定法无回指，恒 null。
+  function gateEchoLine(S, item) {
+    try {
+      if (!S || !item || typeof item !== "object") return null;
+      const T = tradesTable();
+      const row = item.trade && T ? T[item.trade] : null;
+      if (item.via === "seed") {
+        const rec = item.seed;
+        if (!rec || typeof rec.seedNote !== "string" || !rec.seedNote) return null;
+        if (typeof rec.age !== "number") return null;
+        const tmpl = (row && typeof row.seedEcho === "string" && row.seedEcho)
+          || (typeof item.strength === "number" && item.strength >= 2 ? GATE_ECHO_SEED_STRONG : GATE_ECHO_SEED_WEAK);
+        return fillEcho(tmpl, { age: rec.age, note: rec.seedNote });
+      }
+      if (item.via === "inherit") {
+        const fid = item.factId;
+        if (!fid) return null;
+        let note = null;
+        const C = typeof window !== "undefined" ? window.GAME_CARDS : null;
+        const card = C && C.byId ? C.byId[fid] : null;
+        if (card && typeof card.name === "string" && card.name) note = card.name;
+        if (!note) return null;
+        const tmpl = (row && typeof row.inheritEcho === "string" && row.inheritEcho) || GATE_ECHO_INHERIT;
+        return fillEcho(tmpl, { note });
+      }
+      return null;
+    } catch (e) { return null; }
+  }
+  // 加权抽一（只走职业自有流）：items 非空、权重全正才抽；抽不出返 null。
+  function gateDrawOne(S, items, weightOf) {
+    let total = 0;
+    for (const it of items) total += weightOf(it);
+    if (!(total > 0)) return null;
+    const r = careerRng(S);
+    if (r == null) return null;
+    let x = r * total, idx = 0;
+    while (idx < items.length - 1 && x >= weightOf(items[idx])) { x -= weightOf(items[idx]); idx++; }
+    return items[idx];
+  }
+
+  // 菜单组装（§3.3 + §3.5）：构成序＝承继（≤2）→ 种子点亮（≤3，强度降序、
+  // 同强度最早埋种在前）→ 冷门（2–4，职业自有流加权抽）→ 兜底（本体自带，
+  // 恒 1），总选项 ≤8；溢出裁剪序：先裁冷门到 2、再裁种子到 2（承继与兜底
+  // 不裁）。处境推入只改开门时机与框（gateDue/gateFrameOf），不占选项位。
+  // 同一行当承继与种子同时命中时只出承继项（来处以承继为准，种子不再单列，
+  // 也不另出 D5 行——它已经在菜单上）。D5：种子点亮被学历门挡者进 gateNotes
+  // （菜单外），承继被学历门挡者照 §3.3 其余不可行例不摆、无声。
+  // 返回形状与 kidForkView 同构：本体副本 + age 实岁戳 + 组装 choices（每项带
+  // group: "lit"|"cold"|"defer" 供 D4 分组呈现，标题在 gateGroupTitles）+
+  // gateFrame + gateNotes。本体永不被改动。
+  function gateForkView(S, kind) {
+    try {
+      if (!S || typeof S !== "object" || !S.flags || !S.state) return null;
+      const wantId = kind === "switch" ? "fork_gate_switch" : kind === "first" ? "fork_gate_first" : "";
+      // 本体先认 GAME_GATES（本批登记处）；激活批毕业进 GAME_DATA.forks 后自动改走后者。
+      const gateDefs = (typeof window !== "undefined" && window.GAME_GATES && window.GAME_GATES.forks) || [];
+      const def = gateDefs.find((f) => f.id === wantId) || ((IFY.D && IFY.D.forks) || []).find((f) => f.id === wantId);
+      if (!def) return null;
+      const T = tradesTable();
+      if (!T) return null;
+      const frame = gateFrameOf(S, kind);
+      const notes = [];
+      // 上层一：承继
+      const inheritItems = [];
+      for (const [tid, row] of Object.entries(T)) {
+        if (!row || !Array.isArray(row.inheritFrom) || !row.inheritFrom.length) continue;
+        if (row.gateDirect !== true || !gateRowCommon(S, row)) continue;
+        const srcId = row.inheritFrom.find((id) => gateInheritHit(S, id));
+        if (!srcId) continue;
+        if (!gateEduPass(S, row)) continue;
+        inheritItems.push({ trade: tid, row, srcId });
+        if (inheritItems.length >= 2) break;
+      }
+      const litTrades = new Set(inheritItems.map((x) => x.trade));
+      // 上层二：种子点亮
+      const seedLit = [];
+      for (const [tid, row] of Object.entries(T)) {
+        if (!row || row.gateDirect !== true || litTrades.has(tid)) continue;
+        if (!gateRowCommon(S, row)) continue;
+        const agg = seedStrengthOf(S, tid);
+        if (agg.strength < 1) continue;
+        if (!gateEduPass(S, row)) { notes.push(gateEduNote(tid, row)); continue; } // D5
+        seedLit.push({ trade: tid, row, strength: agg.strength, earliest: agg.earliest, agg });
+      }
+      seedLit.sort((a, b) => (b.strength - a.strength) ||
+        ((a.earliest == null ? Number.MAX_SAFE_INTEGER : a.earliest) - (b.earliest == null ? Number.MAX_SAFE_INTEGER : b.earliest)));
+      const seedItems = seedLit.slice(0, 3);
+      for (const it of seedItems) litTrades.add(it.trade);
+      // 下层：冷门（先按默认 3 抽，溢出再按裁剪序收）
+      const pool = [];
+      for (const [tid, row] of Object.entries(T)) {
+        if (!row || row.coldOk !== true || litTrades.has(tid)) continue;
+        if (!gateRowCommon(S, row) || !gateEduPass(S, row)) continue;
+        if (!(row.coldWeight > 0)) continue;
+        const kinds = gateColdKindsFor(S, row);
+        if (!kinds.length) continue;
+        pool.push({ trade: tid, row, kinds });
+      }
+      let coldTarget = 3;
+      while (inheritItems.length + seedItems.length + coldTarget + 1 > 8) {
+        if (coldTarget > 2) coldTarget--;
+        else if (seedItems.length > 2) { litTrades.delete(seedItems.pop().trade); }
+        else if (coldTarget > 0) coldTarget--;
+        else break;
+      }
+      const coldItems = [];
+      const drawPool = pool.slice();
+      while (coldItems.length < coldTarget && drawPool.length) {
+        const picked = gateDrawOne(S, drawPool, (p) => p.row.coldWeight);
+        if (!picked) break;
+        drawPool.splice(drawPool.indexOf(picked), 1);
+        const kindPick = gateDrawOne(S, picked.kinds.map((k) => ({ kind: k })), (e) => gateKindWeight(S, e.kind));
+        coldItems.push({ trade: picked.trade, row: picked.row, coldKind: kindPick ? kindPick.kind : picked.kinds[0] });
+      }
+      // 落成选项（正式选项在此组装，本体 choices 只留兜底）
+      const choices = [];
+      for (const it of inheritItems) {
+        choices.push({
+          label: GATE_TRADE_LABEL[it.trade] || it.trade, effects: {}, set: it.row.flag,
+          via: "inherit", trade: it.trade, viaFact: it.srcId, group: "lit",
+          sub: gateEchoLine(S, { via: "inherit", trade: it.trade, factId: it.srcId }),
+        });
+      }
+      for (const it of seedItems) {
+        const echoRec = it.agg.recs.find((r) => typeof r.seedNote === "string" && r.seedNote) || it.agg.recs[0] || null;
+        choices.push({
+          label: GATE_TRADE_LABEL[it.trade] || it.trade, effects: {}, set: it.row.flag,
+          via: "seed", trade: it.trade, group: "lit",
+          seedBeat: echoRec ? echoRec.beatId : null, seedAge: echoRec ? echoRec.age : null,
+          sub: gateEchoLine(S, { via: "seed", trade: it.trade, seed: echoRec, strength: it.strength }),
+        });
+      }
+      for (const it of coldItems) {
+        choices.push({
+          label: GATE_TRADE_LABEL[it.trade] || it.trade, effects: {}, set: it.row.flag,
+          via: "cold", trade: it.trade, coldKind: it.coldKind, group: "cold",
+          sub: GATE_KIND_SUB[it.coldKind] || null,
+        });
+      }
+      const fb = (def.choices || []).find((c) => c && c.gateDefer) || (def.choices || [])[0];
+      if (fb) choices.push(Object.assign({}, fb, { group: "defer" }));
+      const view = Object.assign({}, def, {
+        age: S.age, choices, gateFrame: frame, gateNotes: notes,
+        gateGroupTitles: { lit: "有来处的", cold: "眼下的" },
+      });
+      if (def.gateFrames && def.gateFrames[frame]) view.text = def.gateFrames[frame];
+      return view;
+    } catch (e) { return null; }
+  }
+
+  Object.assign(IFY, { careerNote, careerOf, careerSpells, seedsOf, careerRng, backfillCareer, careerIdleOf, gateDue, gateForkView, gateEchoLine, seedStrengthOf });
 })(window.IFY);
