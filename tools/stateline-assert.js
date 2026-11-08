@@ -950,7 +950,7 @@ console.log("⑮ 序章变体扩容：early2/3/4 十文 / 平年六款 / child1/
     const f = FL[age];
     ok(!!f && !!f.texts && f.texts.length === 6 && f.texts[0] === orig && f.text === orig, `⑮ flat ${age}: texts 6 款、[0] 与 text 字段均为原句逐字`);
   }
-  ok(FL[14].textBySchooling && FL[14].textBySchooling.never === "十四岁这一年，你的个子蹿了一截，裤子眼看着短下去，露着脚脖子过了一冬天，谁也没顾上给你换。", "⑮ flat 14 never 分文逐字未动");
+  ok(FL[14].textBySchooling && Array.isArray(FL[14].textBySchooling.never) && FL[14].textBySchooling.never.length === 2 && FL[14].textBySchooling.never[0] === "十四岁这一年，你的个子蹿了一截，裤子眼看着短下去，露着脚脖子过了一冬天，谁也没顾上给你换。" && FL[14].textBySchooling.never[1] === "十四岁这一年，你的个子蹿了一截，鞋先小了，脚趾顶得疼。你把鞋后跟踩下去，当拖鞋穿，走路趿拉趿拉的。家里说等过年置办新的，这一等，就等到了天暖和。", "⑮ flat 14 never 分文两款（B+C 组补款：[0] 原串逐字）");
   ok(FL[14].texts.slice(1).every((t) => !t.includes("校服") && !t.includes("初二") && !t.includes("上学")), "⑮ flat 14 新款不预设上过学（无校服/初二/上学）");
   ok(JSON.stringify(FL[10].effects) === JSON.stringify({ relation: 1 }) && JSON.stringify(FL[6].effects) === "{}", "⑮ flat effects 与原值一致（10 岁 relation+1、6 岁空）");
   const c1 = first("pr_child1"), c2 = first("pr_child2"), t1 = first("pr_teen1");
