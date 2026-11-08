@@ -8,6 +8,7 @@
 const CFG = window.IFY_KEEPSAKE || {};
 const LS_KEY = "ify-keepsake-v1"; // 本机解锁记录：{unlocked:true, code, at}
 const PENDING_KEY = "ify-keepsake-pending"; // 领码页带回的码（sessionStorage，自动解锁失败时的预填兜底）
+const PENDING_LS_KEY = "ify-keepsake-pending-code"; // 同一枚待用码的 localStorage 备份（{code, at}）：sessionStorage 只活一次会话，微信切后台回收页面后就没了，备份让预填跨会话还在；解锁成功即随 saveUnlock 一并清掉
 const BUY_PENDING_KEY = "ify-buy-pending-v1"; // 订购未完标记（父亲事故热修）：点过购买（典藏台「去订一册」或订购页付款按钮）即落，输码解锁即清；未清前结算页常驻「继续订购」入口
 function markBuyPending() {
 try { localStorage.setItem(BUY_PENDING_KEY, JSON.stringify({ at: new Date().toISOString()}));} catch (e) {}
@@ -33,7 +34,15 @@ return { unlocked: false};
 function keepsakeUnlocked() { return!!keepsakeState().unlocked;}
 function saveUnlock(code) {
 try { localStorage.setItem(LS_KEY, JSON.stringify({ unlocked: true, code: code || "", at: new Date().toISOString()}));} catch (e) {}
+try { localStorage.removeItem(PENDING_LS_KEY);} catch (e) {} // 待用码备份使命完成，一并清掉
 clearBuyPending(); // 已解锁：「继续订购」入口与未完标记一并收起（手动输码与领码页自动解锁共用此口）
+}
+
+// 待用码的读法：sessionStorage 优先，没有再读 localStorage 备份
+function readPendingCode() {
+try { const s = sessionStorage.getItem(PENDING_KEY); if (s) return s;} catch (e) {}
+try { const v = JSON.parse(localStorage.getItem(PENDING_LS_KEY)); if (v && v.code) return v.code;} catch (e) {}
+return "";
 }
 
 // ---------- 导出数据（唯一口径：长图与纪录册共用，数字只许从这里出） ----------
@@ -1076,7 +1085,7 @@ if (res.status === 503 && data && data.reason === "unconfigured") return done({ 
 return done({ ok: false, reason: (data && data.reason) || "unavailable"});
 }
 function giftShareText(shown) {
-return `我在《如果那年》里过完了一生，把典藏送你一份。打开 if-that-year.pages.dev 玩一局，到结算页展开「把这一生订成册子带走」，输这个码：${shown}，就能把你那一局的长图和纪录册导出来。`;
+return `我在《如果那年》里过完了一生，把典藏送你一份。打开 if-that-year.pages.dev 玩一局，到结算页展开「支持作者 · 把这一生留成纪念」，输这个码：${shown}，就能把你那一局的长图和纪录册导出来。`;
 }
 function wireGift() {
 const btn = IFY.el("ks-gift");
@@ -1148,8 +1157,7 @@ IFY.el("ks-book").addEventListener("click", () => { openBook(false); anaTrack("k
 wireGift();
 return;
 }
-let pending = "";
-try { pending = sessionStorage.getItem(PENDING_KEY) || "";} catch (e) {}
+let pending = readPendingCode();
 panel.innerHTML = `<div class="ks-block">
 ${factHtml}
 <p class="ks-intro">游戏本身免费。走到这里，如果这一局让你想支持作者继续做下去，可以付一次；作为纪念，这台设备以后每一局都能把这一生导出成长图和纪录册。长图能存下来发给家里人看，册子打印出来能送人。</p>
@@ -1241,17 +1249,30 @@ refreshDesk();
 }
 
 // ---------- 领码页带回码：自动解锁（失败不打扰，码留作预填） ----------
+// 地址栏抹码：kc 处理完（核验成功、失败都算）就把 URL 里的 kc 抹掉，不刷新页面、
+// 不动其他参数——免得玩家之后复制这个链接发出去，把码一起发走。
+function scrubKcFromUrl() {
+try {
+const u = new URL(location.href);
+if (u.searchParams.has("kc")) {
+u.searchParams.delete("kc");
+history.replaceState(null, "", u.pathname + u.search + u.hash);
+}
+} catch (e) {}
+}
 try {
 const kc = new URLSearchParams(location.search).get("kc");
 if (kc &&!keepsakeUnlocked()) {
 try { sessionStorage.setItem(PENDING_KEY, kc);} catch (e) {}
+try { localStorage.setItem(PENDING_LS_KEY, JSON.stringify({ code: kc, at: new Date().toISOString()}));} catch (e) {} // 待用码再存一份到 localStorage：自动核验失败时两份都留着，跨会话预填靠这份
 verifyCode(kc).then((r) => {
 if (r.ok) {
 saveUnlock(kc);
 try { sessionStorage.removeItem(PENDING_KEY);} catch (e) {}
 refreshDesk();
 }
-}).catch(() => {});
+scrubKcFromUrl();
+}).catch(() => { scrubKcFromUrl(); });
 }
 } catch (e) {}
 

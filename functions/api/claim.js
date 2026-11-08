@@ -59,11 +59,44 @@ function codePage(c12) {
   const backUrl = "/?kc=" + encodeURIComponent(c12);
   return page("这是你的兑换码", `
     <p>付款收到了。这一枚码，就是你订的册子。</p>
-    <div class="code">${shown}</div>
+    <div class="code" id="codebox">${shown}</div>
+    <p class="hint">先把这枚码存好，再往下走。抄在纸上，或者截一张图存好，都行。</p>
+    <button type="button" class="btn" id="copycode">一键复制这枚码</button>
+    <p class="hint" id="copytip"></p>
+    <p class="hint">码要是丢了也别急：凭付款订单（Stripe 发到你邮箱的收据）到游戏页脚的 GitHub Issues 留言，能补发。换了设备，拿码再输一次就能恢复。</p>
     <a class="btn" href="${backUrl}">回游戏自动解锁</a>
-    <p class="hint">先点上面这个按钮，回到游戏就自动解锁了。要是跳回去没解开，回到游戏这一局的结算页，展开「把这一生订成册子带走」那一行，把这枚码输进去，一样解锁。</p>
-    <p class="hint">请把这枚码抄下来，或者截一张图存好。换了设备，拿码再输一次就能恢复。码丢了也别急：凭付款订单（Stripe 发到你邮箱的收据）到游戏页脚的 GitHub Issues 留言，能补发。</p>
-    <p class="hint">这枚码在这台设备上输过一次以后就记住了，往后每一局走完都能导出，不用再输。</p>`);
+    <p class="hint">点上面这个按钮回到游戏，正常就自动解锁了。要是跳回去没解开，回到游戏这一局的结算页，展开「支持作者 · 把这一生留成纪念」那一行，把这枚码输进去，一样解锁。</p>
+    <p class="hint">这枚码记在输码的那个浏览器里：平时在哪个浏览器里玩，就在哪个浏览器里输。输过一次，往后在这个浏览器里每一局走完都能导出，不用再输。</p>
+    <script>
+    (function () {
+      var btn = document.getElementById("copycode");
+      var tip = document.getElementById("copytip");
+      if (!btn) return;
+      function fallback() {
+        try {
+          var el = document.getElementById("codebox");
+          var range = document.createRange();
+          range.selectNodeContents(el);
+          var sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          tip.textContent = "没复制成。码已经帮你选中了，在选中的字上点一下「复制」，或者长按码选「复制」就行。";
+        } catch (e) {
+          tip.textContent = "没复制成。就照着上面的码抄下来，或者截一张图存好。";
+        }
+      }
+      btn.addEventListener("click", function () {
+        var text = ${JSON.stringify(c12)};
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () {
+            tip.textContent = "复制好了。粘到记事本或者发给自己存一份吧。";
+          }, fallback);
+        } else {
+          fallback();
+        }
+      });
+    })();
+    </script>`);
 }
 
 export async function onRequestGet(context) {
