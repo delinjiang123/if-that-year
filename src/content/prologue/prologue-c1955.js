@@ -209,6 +209,14 @@
           never: "这个夏天过后，一块儿玩的那些人要散到不同的地方去了。你没进过校门，往下的道，得选一条先走起来。",
           left: "这个夏天过后，一块儿玩的那些人要散到不同的地方去了。你的书已经放下了，往下的道，得选一条先走起来。",
         },
+        // 扩容第 0 期余尾（条件分文层）：altTexts 载体——text 与题面原文逐字相同，只为 textBySchooling 两键加一款（派生流定款，原款仍为 0 号）。
+        altTexts: [
+          { text: "初中毕业。这个夏天过后，一块儿玩的那些人要散到不同的地方去了。你这些年书读到哪儿，自己心里有数。往下的道，得选一条先走起来。",
+            textBySchooling: {
+              never: "一块儿玩的那些人，这个夏天都要散了，各人有各人的去处。你没进过校门，去处不在书里头找，可道还得自己选一条，先走起来。",
+              left: "一块儿玩的那些人，这个夏天都要散了，各人有各人的去处。你的书放下不是一天两天了，这一天迟早要来：往下的道，得选一条，先走起来。",
+            } },
+        ],
         assignRoll: { downPerMille: 418, formsPerMille: { chadui: 722, changdui: 114, bingtuan: 164 } },
         choicesTown: [
           { label: "跟同队的人结伴，一块儿走", townSide: "down", requiresFact: { sentdownForm: "chadui" }, set: "sent_down", setFact: { sentdownForm: "chadui" }, setState: { track: "work" }, effects: { relation: 1 }, echo: "你们几个把铺盖捆在一起上的车。到了队里住知青点，自己开伙，头一顿饭煮糊了，几个人分着吃完，都笑了。" },
