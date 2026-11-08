@@ -1054,6 +1054,78 @@ function downloadImage(canvas) {
 IFY.saveCanvasImage(canvas, "if-that-year-keepsake-" + IFY.S.seedStr + ".png");
 }
 
+// ---------- 长图生成保险（真机专项一 · 低配机）：空白自检＋降档重试＋防连点 ----------
+// 正常路径零影响：面板里那张 scale-1 成图交付前先过自检，过检照旧交付；只有检出空白
+// （全透明/一个墨点都没有）或重出抛错时，才按 0.8→0.65→0.5 降档重出自救。低配安卓的
+// 微信内核在内存压力下可能把大画布生成成空白，沙箱模拟不出，这层保险只为那种时刻存在。
+// 探针布在模块加载时先建好、反复复用；采样只读不改原图。自检标准从严：探针自己出
+// 问题一律「放过」，宁可放过一张图，不可误杀正常图（正常长图缩到探针尺寸后墨点成片）。
+const KS_PROBE = document.createElement("canvas");
+function probeKeepsakeCanvas(c) {
+try {
+if (!c || !c.width || !c.height) return { ink: 0, opaque: 0 };
+const pw = 96;
+const ph = Math.max(24, Math.min(1200, Math.round(pw * c.height / c.width)));
+KS_PROBE.width = pw; KS_PROBE.height = ph;
+const px = KS_PROBE.getContext("2d");
+if (!px) return { ink: -1, opaque: -1 };
+px.drawImage(c, 0, 0, pw, ph);
+const data = px.getImageData(0, 0, pw, ph).data;
+let ink = 0, opaque = 0;
+for (let i = 0; i < data.length; i += 4) {
+if (data[i + 3] > 200) {
+opaque++;
+// 纸色 #FAF8F4=(250,248,244)；三通道合计深出 60 以上才算墨点，避开把纸色当内容
+if ((250 - data[i]) + (248 - data[i + 1]) + (244 - data[i + 2]) > 60) ink++;
+}
+}
+return { ink, opaque };
+} catch (e) { return { ink: -1, opaque: -1 }; }
+}
+async function keepsakeCanvasBlank(c) {
+const p = probeKeepsakeCanvas(c);
+if (p.ink < 0) return false; // 探针失效：放过，走正常交付
+if (p.opaque === 0) return true; // 全透明：什么都没画出来
+if (p.ink > 2) return false; // 墨点够多：正常图
+if (p.ink > 0) { // 墨点只剩一两个，存疑：用 PNG 大小佐证（正常长图在 MB 级，空白图只有几十 KB）
+try {
+const b = await new Promise((res) => c.toBlob(res, "image/png"));
+return !b || b.size < 65536;
+} catch (e) { return false; }
+}
+return true; // 满布纸色/透明却一个墨点都没有
+}
+let ksExportBusy = false;
+async function exportKeepsakeLong(d, canvas, btn, note, swap) {
+if (ksExportBusy) return; // 防连点：生成/交付没完，再点不叠加（低配机上叠加生成最压内存）
+ksExportBusy = true;
+const label = btn? btn.textContent: "";
+if (btn) { btn.disabled = true; btn.textContent = "正在生成……"; }
+const say = (t) => { if (note) { note.hidden = !t; note.textContent = t || ""; } };
+try {
+let cur = canvas, down = false;
+if (await keepsakeCanvasBlank(cur)) {
+cur = null;
+for (const sc of [0.8, 0.65, 0.5]) {
+let c2 = null;
+try { c2 = renderKeepsakeImage(d, { scale: sc }); } catch (e) { c2 = null; }
+if (c2 && c2.width && c2.height && !(await keepsakeCanvasBlank(c2))) { cur = c2; down = true; break; }
+}
+}
+if (!cur) { // 阶梯全败：把话说出来，不许白屏、不许无声失败
+say("这张图这回没生成出来。再点一次试试；还不行，就先打开纪录册，那个不受影响。");
+return;
+}
+if (down && swap) { try { swap(cur); } catch (e) {} }
+downloadImage(cur);
+anaTrack("keepsake_export", { kind: "image" });
+if (down) say("这台设备上先出了一张小一号的图，内容一样，就是个头小一点。");
+} finally {
+ksExportBusy = false;
+if (btn) { btn.disabled = false; btn.textContent = label; }
+}
+}
+
 // ---------- 赠予（圆桌决议 S3）：用自己的已激活码领一枚赠予码 ----------
 // 显示形与 _codelib 的 displayCode 同制（4-4-4 连字符），前端不 import 服务端模块，这里同制拼。
 function giftDisplay(c12) {
@@ -1140,6 +1212,7 @@ ${factHtml}
 <button type="button" class="primary" id="ks-dl">下载长图（无水印）</button>
 <button type="button" class="ghost" id="ks-book">打开纪录册（可打印）</button>
 </div>
+<p class="hint" id="ks-dlnote" hidden></p>
 <div class="cardpreview" id="ks-prevbox"></div>
 <p class="picklab">送一份给朋友</p>
 <p class="hint">用你自己的码，能领出一枚新的码，送给一个人。他玩完一局，在结算页输这枚码，就能导出他那一局的典藏。一枚码只能领一份。</p>
@@ -1152,7 +1225,16 @@ const img = renderKeepsakeImage(d, { scale: 1});
 img.className = "card-img";
 const box = IFY.el("ks-prevbox");
 box.innerHTML = ""; box.appendChild(img);
-IFY.el("ks-dl").addEventListener("click", () => { downloadImage(img); anaTrack("keepsake_export", { kind: "image" }); });
+let exportImg = img; // 降档自救成功后换成小一号那张，后续再点导出的就是它
+const dlBtn = IFY.el("ks-dl");
+dlBtn.addEventListener("click", () => {
+exportKeepsakeLong(d, exportImg, dlBtn, IFY.el("ks-dlnote"), (c2) => {
+c2.className = "card-img";
+const b2 = IFY.el("ks-prevbox");
+if (b2 && exportImg.parentNode === b2) b2.replaceChild(c2, exportImg);
+exportImg = c2;
+});
+});
 IFY.el("ks-book").addEventListener("click", () => { openBook(false); anaTrack("keepsake_export", { kind: "booklet" }); });
 wireGift();
 return;
