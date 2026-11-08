@@ -269,13 +269,97 @@
     return c;
   }
 
-  function downloadCurrent() {
-    if (!IFY.currentCanvas) return;
+  // ---------- 存图共用出口（桌面下载 / 手机分享或长按保存） ----------
+  // 手机浏览器（尤其微信内置）会拦 <a download>＋data URL 的程序化点击，点了没反应。
+  // 桌面维持原下载法一字不变；手机先走 Web Share 带文件，不行就把图铺满屏让玩家长按保存。
+  function isMobileSave() {
+    try { if (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) return true; } catch (e) { /* 判定失败按 UA 兜底 */ }
+    return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || "");
+  }
+
+  // 微信/QQ/LINE 这类 App 自带浏览器：页面没法自动跳去系统浏览器，只能给想出去的人指一句路
+  function isInAppBrowser() {
+    return /MicroMessenger|QQ\/|Line\//i.test(navigator.userAgent || "");
+  }
+
+  function desktopSaveImage(canvas, filename) {
     const a = document.createElement("a");
-    a.download = "if-that-year-" + IFY.S.seedStr + ".png";
-    a.href = IFY.currentCanvas.toDataURL("image/png");
+    a.download = filename;
+    a.href = canvas.toDataURL("image/png");
     a.click();
   }
+
+  let imgViewState = null; // { el, url }：图面层同时只许一层，重开先摘旧的
+  function closeImageView() {
+    if (!imgViewState) return;
+    imgViewState.el.remove();
+    if (imgViewState.url) URL.revokeObjectURL(imgViewState.url);
+    imgViewState = null;
+  }
+
+  function showImageView(canvas, blob, filename) {
+    closeImageView();
+    const url = blob ? URL.createObjectURL(blob) : null;
+    const el = document.createElement("div");
+    el.className = "ify-imgview";
+    el.innerHTML = `<div class="imgview-inner">
+      <p class="imgview-note">图已经做好了。长按下面这张图，选『保存图片』，就能存进手机相册。</p>
+      <p class="imgview-appnav" hidden>想在手机自带浏览器里打开的话，点右上角的菜单，选『在浏览器打开』。</p>
+      <p class="imgview-fallback" hidden>这张图在你的浏览器里没打开出来。把这层关掉，回到刚才那一页截个屏，也能把这一生留下来。</p>
+      <img class="imgview-img" alt="这一生的图">
+      <div class="imgview-tools">
+        <a class="imgview-dl">也可以点这里下载</a>
+        <button type="button" class="imgview-close">关闭</button>
+      </div>
+    </div>`;
+    const img = el.querySelector(".imgview-img");
+    const dl = el.querySelector(".imgview-dl");
+    dl.setAttribute("download", filename);
+    el.querySelector(".imgview-appnav").hidden = !isInAppBrowser(); // 只在 App 自带浏览器里指路，普通浏览器不显示
+    // 图源两级兜底：先 blob 地址；老内核（微信旧 X5 等）不认 blob 图时，加载出错或图宽为 0
+    // 就自动换 data URL 再试一次；两个都不行才亮截屏提示行，不让玩家对着空白图。
+    let onDataURL = !url;
+    const imgFailed = () => {
+      if (!onDataURL) {
+        onDataURL = true;
+        img.src = canvas.toDataURL("image/png");
+        dl.href = img.src;
+        return;
+      }
+      el.querySelector(".imgview-fallback").hidden = false;
+    };
+    img.addEventListener("error", imgFailed);
+    img.addEventListener("load", () => { if (img.naturalWidth === 0) imgFailed(); });
+    img.src = url || canvas.toDataURL("image/png"); // toBlob 拿不到 blob 时直接用 data URL
+    dl.href = img.src;
+    el.querySelector(".imgview-close").addEventListener("click", closeImageView);
+    document.body.appendChild(el);
+    imgViewState = { el, url };
+  }
+
+  async function saveCanvasImage(canvas, filename) {
+    if (!canvas) return;
+    if (!isMobileSave()) { desktopSaveImage(canvas, filename); return; }
+    let blob = null;
+    try { blob = await new Promise((res) => canvas.toBlob(res, "image/png")); } catch (e) { blob = null; }
+    if (blob && navigator.canShare && navigator.share) {
+      try {
+        const file = new File([blob], filename, { type: "image/png" });
+        if (navigator.canShare({ files: [file] })) {
+          await navigator.share({ files: [file] });
+          return; // 分享成功就结束
+        }
+      } catch (e) {
+        if (e && e.name === "AbortError") return; // 玩家自己取消了分享，不再打扰
+      }
+    }
+    showImageView(canvas, blob, filename); // 分享走不通：铺图让玩家长按保存
+  }
+
+  function downloadCurrent() {
+    if (!IFY.currentCanvas) return;
+    saveCanvasImage(IFY.currentCanvas, "if-that-year-" + IFY.S.seedStr + ".png");
+  }
   Object.assign(IFY, { wrapText, sameSeedUrl, cardReflText, shareCopy, fitText, cardBase, cardFooter, cardStats, drawRoad,
-    parseLog, logNodes, logHighlights, buildCard, downloadCurrent });
+    parseLog, logNodes, logHighlights, buildCard, downloadCurrent, saveCanvasImage });
 })(window.IFY);

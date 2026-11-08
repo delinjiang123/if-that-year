@@ -241,6 +241,15 @@ button:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{o
 /* 纪录册（和式 L2）：屏上是整页浮层，内文字阶以 .book-page 字号为基（em 制），
    打印时字号切到 10.5pt、边距全走 @page，白底自立。间距先于内容：节距靠空，不靠色块。 */
 .ify-book{position:fixed;inset:0;overflow:auto;background:var(--paper);z-index:40;padding:22px 16px 60px}
+.ify-imgview{position:fixed;inset:0;overflow:auto;background:var(--paper);z-index:50;padding:22px 16px 60px}
+.ify-imgview .imgview-inner{max-width:660px;margin:0 auto}
+.ify-imgview .imgview-note{font-size:15px;color:var(--ink);line-height:1.7;margin:0 0 14px}
+.ify-imgview .imgview-appnav{font-size:14px;color:var(--ink);line-height:1.7;margin:-6px 0 14px}
+.ify-imgview .imgview-fallback{font-size:13.5px;color:var(--mut);line-height:1.7;margin:-6px 0 14px}
+.ify-imgview .imgview-img{display:block;width:100%;height:auto;background:var(--card);border:1px solid var(--line);border-radius:14px}
+.ify-imgview .imgview-tools{margin-top:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.ify-imgview .imgview-dl{background:none;border:1px solid var(--line);border-radius:999px;padding:12px 18px;font-size:14px;color:var(--ink);text-decoration:none;cursor:pointer}
+.ify-imgview .imgview-close{background:var(--accent);color:#fff;border:none;border-radius:999px;padding:12px 24px;font-size:15px;cursor:pointer}
 .ify-book .book-tools{max-width:660px;margin:0 auto 12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .ify-book .book-page{max-width:660px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:40px 38px;box-shadow:0 4px 14px rgba(35,33,28,.05);font-size:15px;color:#26241F}
 .ify-book .book-cover{padding-top:1.4em}

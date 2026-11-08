@@ -1042,10 +1042,7 @@ return REASON_TEXT[reason] || REASON_TEXT.not_found;
 
 // ---------- 结算页导出台 ----------
 function downloadImage(canvas) {
-const a = document.createElement("a");
-a.download = "if-that-year-keepsake-" + IFY.S.seedStr + ".png";
-a.href = canvas.toDataURL("image/png");
-a.click();
+IFY.saveCanvasImage(canvas, "if-that-year-keepsake-" + IFY.S.seedStr + ".png");
 }
 
 // ---------- 赠予（圆桌决议 S3）：用自己的已激活码领一枚赠予码 ----------
