@@ -14,7 +14,7 @@ const ld = (rel, key) => { const s = { window: {} }; vm.createContext(s); vm.run
 const errors = [], warnings = [];
 const err = (m) => errors.push(m), warn = (m) => warnings.push(m);
 
-const REG = (() => { const s = { window: {} }; vm.createContext(s); for (const rel of ["src/content/registry-v023.js", "src/content/registry-wp2.js", "src/content/registry-wp3.js", "src/content/registry-wp4.js", "src/content/registry-wp5.js", "src/content/registry-wp6.js", "src/content/registry-wp7.js", "src/content/registry-wp8.js", "src/content/registry-retire.js", "src/world/state.js", "src/registry.js"]) vm.runInContext(fs.readFileSync(path.join(ROOT, rel), "utf8"), s, { filename: rel }); return s.window.GAME_REGISTRY; })(); // v0.20.0 拆分：domains 在 src/world/state.js，milestones 在 src/registry.js，须同沙盒顺序载入；v0.23 WP1：登记数据文件（registry-v023.js）先行，registry.js 尾部合入
+const REG = (() => { const s = { window: {} }; vm.createContext(s); for (const rel of ["src/content/registry-v023.js", "src/content/registry-wp2.js", "src/content/registry-wp3.js", "src/content/registry-wp4.js", "src/content/registry-wp5.js", "src/content/registry-wp6.js", "src/content/registry-wp7.js", "src/content/registry-wp8.js", "src/content/registry-retire.js", "src/world/state.js", "src/content/trades.js", "src/registry.js"]) vm.runInContext(fs.readFileSync(path.join(ROOT, rel), "utf8"), s, { filename: rel }); return s.window.GAME_REGISTRY; })(); // v0.20.0 拆分：domains 在 src/world/state.js，milestones 在 src/registry.js，须同沙盒顺序载入；v0.23 WP1：登记数据文件（registry-v023.js）先行，registry.js 尾部合入
 const D = ld("src/events.js", "GAME_DATA");
 let events = [...D.events];
 for (const p of PACK_FILES) events = events.concat(ld(p, "GAME_PACKS") || []); // v0.20.0 M1-B：内容按领域重组至 src/content/，PACK_FILES 为 index.html 相对顺序的完整路径
@@ -558,7 +558,60 @@ for (const [name, def] of Object.entries(ENUM_FACTS)) {
 }
 for (const [name, def] of Object.entries(FAMILY_FACTS)) if (!def || typeof def !== "object" || Array.isArray(def)) err(`家庭事实旗 ${name}: 登记形状非法（应为 {beat, note} 对象）`);
 
-console.log(`validate-state: 条目 ${events.length}（含核心/扩展/协同/稀有/结局）+ 出身牌 ${cardCount} + 序章幕 ${PRO && PRO.acts ? PRO.acts.length : 0} | 域 ${Object.keys(DOMAINS).length} | 里程碑 ${Object.keys(MILESTONES).length} | 枚举事实 ${Object.keys(ENUM_FACTS).length} | 家庭事实旗 ${Object.keys(FAMILY_FACTS).length}`);
+// ---- 行当注册表值集校验（第 1 期 P1-1）：GAME_TRADES（src/content/trades.js）与 work.js
+// FORM_OF_FLAG 必须双向一致——trade id 集由旗机械派生（去尾 "_work"、无尾者原名），
+// 每行的 flag 须是入行旗、form 须与 FORM_OF_FLAG 逐字同值；字段形状（eraIn/eduGate/
+// coldKinds 值域、coldOk 与 coldKinds/coldWeight 的联动）逐项核。REG.trades 是同一份
+// 登记经 GAME_REGISTRY_EXTRA 合入 registry.js 后的镜像，键集须与 GAME_TRADES 全等
+// （合入链在本工具的加载序里实跑：trades.js 先于 registry.js 载入）。
+const TRADES = ld("src/content/trades.js", "GAME_TRADES");
+const COLD_KIND_ERA = ld("src/content/trades.js", "GAME_COLD_KIND_ERA");
+const FORM_OF_FLAG_CHK = (() => { const s = { window: { IFY: {} } }; vm.createContext(s); vm.runInContext(fs.readFileSync(path.join(ROOT, "src/world/processes/work.js"), "utf8"), s, { filename: "src/world/processes/work.js" }); return s.window.IFY.FORM_OF_FLAG || {}; })();
+const COLD_KINDS_ALL = ["assign", "recruit", "follow", "near", "wage"];
+let tradeCount = 0;
+if (!TRADES || typeof TRADES !== "object") err("行当注册表 GAME_TRADES 缺失或不是对象（src/content/trades.js）");
+else {
+  const tradeIds = Object.keys(TRADES);
+  tradeCount = tradeIds.length;
+  const seenFlags = new Set();
+  for (const [tid, t] of Object.entries(TRADES)) {
+    if (!t || typeof t !== "object") { err(`行当 ${tid}: 登记不是对象`); continue; }
+    if (!(t.flag in FORM_OF_FLAG_CHK)) { err(`行当 ${tid}: flag ${t.flag} 不是 work.js FORM_OF_FLAG 的入行旗`); continue; }
+    if (seenFlags.has(t.flag)) err(`行当 ${tid}: flag ${t.flag} 被两行登记（trade 与旗须一一对应）`);
+    seenFlags.add(t.flag);
+    const derivedId = t.flag.endsWith("_work") ? t.flag.slice(0, -"_work".length) : t.flag;
+    if (derivedId !== tid) err(`行当 ${tid}: id 与旗 ${t.flag} 的机械派生 ${derivedId} 不符`);
+    if (t.form !== FORM_OF_FLAG_CHK[t.flag]) err(`行当 ${tid}: form ${t.form} 与 FORM_OF_FLAG[${t.flag}]=${FORM_OF_FLAG_CHK[t.flag]} 不符`);
+    if (!Array.isArray(t.eraIn) || !t.eraIn.length) err(`行当 ${tid}: eraIn 缺失或为空`);
+    else for (const er of t.eraIn) if (!ERA_VALUES_ALL.includes(er)) err(`行当 ${tid}: eraIn 含非法年代 ${er}`);
+    if (!(t.eduGate === null || t.eduGate === "half" || t.eduGate === "gate")) err(`行当 ${tid}: eduGate ${t.eduGate} 不在 {null, half, gate} 内`);
+    if (typeof t.gateDirect !== "boolean") err(`行当 ${tid}: gateDirect 不是布尔`);
+    if (typeof t.coldOk !== "boolean") err(`行当 ${tid}: coldOk 不是布尔`);
+    else if (!t.coldOk) {
+      if (!Array.isArray(t.coldKinds) || t.coldKinds.length) err(`行当 ${tid}: coldOk=false 时 coldKinds 必须为空数组`);
+      if (t.coldWeight !== 0) err(`行当 ${tid}: coldOk=false 时 coldWeight 必须为 0`);
+    } else {
+      if (!Array.isArray(t.coldKinds) || !t.coldKinds.length) err(`行当 ${tid}: coldOk=true 时 coldKinds 不得为空`);
+      else for (const k of t.coldKinds) if (!COLD_KINDS_ALL.includes(k)) err(`行当 ${tid}: coldKinds 含非法类型 ${k}`);
+      if (typeof t.coldWeight !== "number" || !(t.coldWeight > 0)) err(`行当 ${tid}: coldOk=true 时 coldWeight 必须为正数`);
+    }
+    if (!Array.isArray(t.inheritFrom)) err(`行当 ${tid}: inheritFrom 不是数组`);
+    else for (const src of t.inheritFrom) if (!(src in FAMILY_FACTS) && !(CARDS && CARDS.byId && src in CARDS.byId)) err(`行当 ${tid}: inheritFrom 来源 ${src} 既非家庭事实旗也非出身牌`);
+    if (!("seedEcho" in t) || !("inheritEcho" in t)) err(`行当 ${tid}: seedEcho/inheritEcho 模板位缺失（P1-1 占位也须在场）`);
+  }
+  for (const f of Object.keys(FORM_OF_FLAG_CHK)) if (!seenFlags.has(f)) err(`入行旗 ${f} 未在行当注册表登记（FORM_OF_FLAG 与 GAME_TRADES 须双向一致）`);
+  const regTrades = REG.trades || {};
+  for (const tid of tradeIds) if (!(tid in regTrades)) err(`行当 ${tid}: 未经 GAME_REGISTRY_EXTRA 合入 GAME_REGISTRY.trades`);
+  for (const tid of Object.keys(regTrades)) if (!(tid in TRADES)) err(`GAME_REGISTRY.trades 含未登记行当 ${tid}`);
+  if (!COLD_KIND_ERA || typeof COLD_KIND_ERA !== "object") err("COLD_KIND_ERA 表缺失（src/content/trades.js）");
+  else for (const k of COLD_KINDS_ALL) {
+    const row = COLD_KIND_ERA[k];
+    if (!row) { err(`COLD_KIND_ERA 缺冷门类型 ${k} 行`); continue; }
+    for (const er of ERA_VALUES_ALL) if (typeof row[er] !== "boolean") err(`COLD_KIND_ERA.${k}.${er} 不是布尔`);
+  }
+}
+
+console.log(`validate-state: 条目 ${events.length}（含核心/扩展/协同/稀有/结局）+ 出身牌 ${cardCount} + 序章幕 ${PRO && PRO.acts ? PRO.acts.length : 0} | 域 ${Object.keys(DOMAINS).length} | 里程碑 ${Object.keys(MILESTONES).length} | 枚举事实 ${Object.keys(ENUM_FACTS).length} | 家庭事实旗 ${Object.keys(FAMILY_FACTS).length} | 行当 ${tradeCount}`);
 if (reservedInfo.length) { console.log(`已登记未开放（reserved）${reservedInfo.length} 项:`); reservedInfo.forEach((m) => console.log("  RESERVED", m)); }
 console.log(`错误 ${errors.length} 条:`); errors.forEach((m) => console.log("  ERROR", m));
 console.log(`警告 ${warnings.length} 条:`); warnings.forEach((m) => console.log("  WARN", m));

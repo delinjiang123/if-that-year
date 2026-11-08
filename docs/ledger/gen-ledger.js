@@ -32,6 +32,11 @@
  * 职业/行当机械对法：只看条目自身字段里出现的旗名（ctx 键、require、
  * set——含选项 set、all），按 OCC_FLAG_TABLE 对照打标签，可多挂；
  * 对照表是照主树真实旗词汇定的，表外旗一律不打，宁缺毋滥。
+ *
+ * 职业族机械对法（第 1 期 P1-1 增）：同一批旗名与行当注册表（src/content/
+ * trades.js 的 GAME_TRADES，flag→trade id 一一对应）对照打「职业族」标签，
+ * 与职业/行当标签并行——前者是文案向的粗分类，后者是职业层注册表的行当 id。
+ * tree.md 另出「职业族 → 年代 → 年龄段」查询树，只收挂上职业族的条目。
  */
 "use strict";
 const fs = require("fs");
@@ -77,6 +82,7 @@ load("src/content/rare/synergy.js");
 for (const f of scriptSrcs.filter((s) => s.startsWith("src/content/registry-"))) load(f);
 load("src/content/prologue/prologue.js");
 for (const e of ["c1978", "c1955", "c1965", "c1985", "c1995"]) load(`src/content/prologue/prologue-${e}.js`);
+load("src/content/trades.js"); // 第 1 期 P1-1：行当注册表（登记数据文件同位，registry.js 合入 trades 键）
 load("src/world/state.js");
 load("src/registry.js");
 
@@ -159,6 +165,16 @@ function occupationsOf(e) {
   return [...tags].sort();
 }
 
+/* ---------- 4b. 职业族对照（行当注册表，P1-1） ---------- */
+const GAME_TRADES = w.GAME_TRADES || {};
+const TRADE_BY_FLAG = {}; // flag -> trade id
+for (const [tid, t] of Object.entries(GAME_TRADES)) if (t && t.flag) TRADE_BY_FLAG[t.flag] = tid;
+function tradesOf(e) {
+  const tags = new Set();
+  for (const f of flagsOf(e)) if (TRADE_BY_FLAG[f]) tags.add(TRADE_BY_FLAG[f]);
+  return [...tags].sort();
+}
+
 /* ---------- 5. 门槛类型 ---------- */
 const GATE_FIELDS = [
   "require", "requiresFactAny", "requiresFactHard", "stateAll", "state", "stateNot",
@@ -221,6 +237,7 @@ function addRow(e, file, category, fileEra) {
     line: takeLine(file, e.id),
     category,
     occupations: occupationsOf(e),
+    trades: tradesOf(e),
     era: eraOf(e, fileEra),
     route: routeOf(e),
     ageMin: min,
@@ -321,6 +338,8 @@ const stats = {
   introducedKnown: rows.filter((r) => r.introduced !== "unknown").length,
   lineResolved: rows.filter((r) => r.line !== null).length,
   withOccupation: rows.filter((r) => r.occupations.length).length,
+  withTrade: rows.filter((r) => r.trades.length).length,
+  byTrade: (() => { const m = {}; for (const r of rows) for (const t of r.trades) m[t] = (m[t] || 0) + 1; return Object.fromEntries(Object.entries(m).sort((a, b) => b[1] - a[1])); })(),
   runtimeGamePacks: (w.GAME_PACKS || []).length,
   runtimeGameDataEvents: ((w.GAME_DATA || {}).events || []).length,
   textCounts: {
@@ -367,9 +386,9 @@ fs.writeFileSync(path.join(OUT, "ledger.json"), JSON.stringify({
 const esc = (s) => String(s).replace(/\|/g, "\\|");
 let md = "# 《如果那年》事件编号台账（机读 JSON 的人读版；由 gen-ledger.js 生成，禁止手改）\n\n";
 md += `共 ${stats.totalRows} 条（唯一 id ${stats.uniqueIds} 个）。引入版本对不上 registry 登记的记 unknown。\n\n`;
-md += "| # | id | 源文件:行 | 大类 | 职业/行当 | 年代 | 路线 | 年龄段 | 门槛 | 引入 | 状态 |\n|---|---|---|---|---|---|---|---|---|---|---|\n";
+md += "| # | id | 源文件:行 | 大类 | 职业/行当 | 职业族 | 年代 | 路线 | 年龄段 | 门槛 | 引入 | 状态 |\n|---|---|---|---|---|---|---|---|---|---|---|---|\n";
 for (const r of rows) {
-  md += `| ${r.seq} | ${esc(r.id)} | ${esc(r.file.replace("src/content/", "").replace("src/", ""))}:${r.line === null ? "?" : r.line} | ${r.category} | ${r.occupations.join("、") || "—"} | ${esc(r.era)} | ${esc(r.route)} | ${r.ageBand} | ${r.gate} | ${r.introduced} | ${r.status} |\n`;
+  md += `| ${r.seq} | ${esc(r.id)} | ${esc(r.file.replace("src/content/", "").replace("src/", ""))}:${r.line === null ? "?" : r.line} | ${r.category} | ${r.occupations.join("、") || "—"} | ${r.trades.join("、") || "—"} | ${esc(r.era)} | ${esc(r.route)} | ${r.ageBand} | ${r.gate} | ${r.introduced} | ${r.status} |\n`;
 }
 fs.writeFileSync(path.join(OUT, "ledger.md"), md);
 
@@ -403,6 +422,26 @@ for (const node of [...tree.values()].sort((a, b) => a.key.join("/").localeCompa
   if (c3 !== cur3) { tm += `\n#### ${c3}\n`; cur3 = c3; }
   const ids = [...new Set(node.ids)].sort();
   tm += `- ${c4}（${ids.length}）：${ids.join(", ")}\n`;
+}
+// 查询树二：职业族 → 年代 → 年龄段（P1-1 增；只收挂上职业族的条目，行当 id 见 trades.js）
+const tradeTree = new Map();
+for (const r of rows) {
+  for (const t of r.trades) {
+    const key = [t, r.era, bandOf(r)];
+    const k = key.join("\x00");
+    if (!tradeTree.has(k)) tradeTree.set(k, { key, ids: [] });
+    tradeTree.get(k).ids.push(r.id);
+  }
+}
+tm += "\n# 查询树二：职业族 → 年代 → 年龄段（gen-ledger.js 生成）\n\n";
+tm += "职业族＝行当注册表（src/content/trades.js）的 trade id；只收自身字段挂上对应入行旗的条目，未挂职业族的条目不在此树（计数见 stats.json 的 withTrade/byTrade）。\n";
+let tc1 = null, tc2 = null;
+for (const node of [...tradeTree.values()].sort((a, b) => a.key.join("/").localeCompare(b.key.join("/"), "zh"))) {
+  const [t1, t2, t3] = node.key;
+  if (t1 !== tc1) { tm += `\n## ${t1}\n`; tc1 = t1; tc2 = null; }
+  if (t2 !== tc2) { tm += `\n### ${t2}\n`; tc2 = t2; }
+  const ids = [...new Set(node.ids)].sort();
+  tm += `- ${t3}（${ids.length}）：${ids.join(", ")}\n`;
 }
 fs.writeFileSync(path.join(OUT, "tree.md"), tm);
 fs.writeFileSync(path.join(OUT, "stats.json"), JSON.stringify(stats, null, 1));

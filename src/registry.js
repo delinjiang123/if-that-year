@@ -2327,5 +2327,6 @@ window.GAME_REGISTRY.examBandTables = {
     for (const [k, v] of Object.entries(x.enumFacts || {})) if (!(k in REG.enumFacts)) REG.enumFacts[k] = v;
     for (const [k, v] of Object.entries(x.familyFacts || {})) if (!(k in REG.familyFacts)) REG.familyFacts[k] = v;
     for (const [k, v] of Object.entries(x.examBandTables || {})) if (!(k in REG.examBandTables)) REG.examBandTables[k] = v;
+    if (x.trades) { REG.trades = REG.trades || {}; for (const [k, v] of Object.entries(x.trades)) if (!(k in REG.trades)) REG.trades[k] = v; } // 第 1 期 P1-1：行当注册表（src/content/trades.js）合入，本体无 trades 登记、恒由 extra 补入
   }
 })();
