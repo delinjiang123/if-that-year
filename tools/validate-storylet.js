@@ -193,11 +193,15 @@ else {
 // ---- 序章条件分文形状（读者最小扩展批）：分文叶值或为字符串、或为非空字符串数组 ----
 // 与 prologue.js 的 condText 读者同口径：字符串原样返回、数组按派生哈希定款；其余形状
 // （空数组、含非字符串元素的数组、数字/对象冒充叶值）在呈现层只会回落未命中，必须在此拦下。
+// 例外（出生年小片）：factAlt 的数组条目可为对象形 {text, calWindow:[lo,hi]}——公历分段
+// 分文（读者 factAltPool 按呈现年过滤后仍走 condText 定款）；仅 factAlt 一处放行，形状由
+// 下方 factAltLeafOk 单独把门（text 非空字符串、calWindow 为 lo<=hi 的两年数组）。
 // 覆盖：六包的 acts/sitActs/pool（模板与变体）/poolActs（bands）/pool95（变体）/flatsByAge，
 // 与包级 originLB/originMigrant/originMigrantBySit/special never 文。性子框 frames 的 textLB
 // 与回声/选项/记号层不在本断言面（与普查口径一致，登记备查）。
 {
   const leafOk = (v) => typeof v === "string" || (Array.isArray(v) && v.length > 0 && v.every((x) => typeof x === "string"));
+  const factAltLeafOk = (v) => typeof v === "string" || (Array.isArray(v) && v.length > 0 && v.every((x) => typeof x === "string" || (x && typeof x === "object" && typeof x.text === "string" && x.text.length > 0 && Array.isArray(x.calWindow) && x.calWindow.length === 2 && Number.isFinite(x.calWindow[0]) && Number.isFinite(x.calWindow[1]) && x.calWindow[0] <= x.calWindow[1])));
   const DIRECT = ["textLB", "textTown", "textByMigrant", "textByLeftBehind"];
   const MAPS = ["textBySchooling", "bandText", "textByQuota", "stageText", "textBySit", "textLBBySchooling", "trackAlt"];
   let leafCount = 0;
@@ -208,7 +212,7 @@ else {
     for (const f of MAPS) if (o[f] && typeof o[f] === "object") for (const [k, v] of Object.entries(o[f])) { leafCount++; if (!leafOk(v)) bad(at, `${f}.${k}`); }
     if (o.textByFact && typeof o.textByFact === "object") for (const [fn, map] of Object.entries(o.textByFact)) if (map && typeof map === "object") for (const [fv, v] of Object.entries(map)) { leafCount++; if (!leafOk(v)) bad(at, `textByFact.${fn}.${fv}`); }
     if (o.textByFlag && typeof o.textByFlag === "object") for (const [fl, v] of Object.entries(o.textByFlag)) { leafCount++; if (!leafOk(v)) bad(at, `textByFlag.${fl}`); }
-    if (o.factAlt && o.factAlt.texts) for (const [fv, v] of Object.entries(o.factAlt.texts)) { leafCount++; if (!leafOk(v)) bad(at, `factAlt.${fv}`); }
+    if (o.factAlt && o.factAlt.texts) for (const [fv, v] of Object.entries(o.factAlt.texts)) { leafCount++; if (!factAltLeafOk(v)) bad(at, `factAlt.${fv}`); }
     if (o.factText && o.factText.texts) for (const [fv, v] of Object.entries(o.factText.texts)) { leafCount++; if (!leafOk(v)) bad(at, `factText.${fv}`); }
     if (o.flagText && o.flagText.text !== undefined) { leafCount++; if (!leafOk(o.flagText.text)) bad(at, "flagText.text"); }
     if (Array.isArray(o.factTexts)) for (const ft of o.factTexts) if (ft && ft.text !== undefined) { leafCount++; if (!leafOk(ft.text)) bad(at, `factTexts.${ft.fact}=${ft.is}`); }

@@ -1084,6 +1084,10 @@
     // 公历年而旧形把呈现龄钉死的拍（非典拍 pr_kid8_95、奥运拍 pr_kid8_00），声明口径见各包。
     const derived = [];
     for (const a of acts) {
+      // 出生年小片（opt-in）：带 calWindow 的固定幕按呈现公历（出生年＋幕龄）过门——呈现年
+      // 落在窗外，本局不出这幕。给质地绑年代、又不便转池的定龄拍用（如 c1978 的 pr_fam78b
+      // 下岗拍只合 1995–2003 年呈现）；出生年不可知时不拦。未声明 calWindow 的幕行为不变。
+      if (a.calWindow && typeof S.birthYear === "number") { const cy = S.birthYear + a.age; if (cy < a.calWindow[0] || cy > a.calWindow[1]) continue; }
       if (!a.calendarAge) { derived.push(a); continue; }
       let age = null;
       if (typeof S.birthYear === "number") {
@@ -1181,7 +1185,10 @@
       // fix2（opt-in）：变体可带 notMigrant，随迁局不发该款（如农村专属款）；未声明的变体过滤结果不变。
       // fix4（opt-in）：变体可带 notLeftBehind，留守局不发该款（如父母日常在场的送学/买车款，
       // 留守局改发同幕无父母款）；与 notMigrant 同形，每幕仍只掷一次、流位不变。
-      let pool = act.variants.filter((v) => !(v.notFamily && P.family && v.notFamily.includes(P.family)) && !(v.notMigrant && P.migrantChild) && !(v.notLeftBehind && P.leftBehind));
+      // 出生年小片（opt-in）：变体可带 calYear（单个公历年）——呈现公历（出生年＋幕龄）须恰为
+      // 该年才进池，与 altTexts 的 calYear 同口径（如 c1978 盼盼款绑 1990 年北京亚运，呈现龄
+      // 12 岁，只有 1978 出生局对得上）；未声明的变体过滤结果不变，每幕仍只掷一次、流位不变。
+      let pool = act.variants.filter((v) => !(v.notFamily && P.family && v.notFamily.includes(P.family)) && !(v.notMigrant && P.migrantChild) && !(v.notLeftBehind && P.leftBehind) && !(v.calYear != null && !(typeof S.birthYear === "number" && S.birthYear + act.age === v.calYear)));
       // fix3 B1（2a）：变体带 setting 时与家底牌场景标签互斥的款不发（过滤后为空回落未过滤池）；每幕仍只掷一次、流位不变。
       if (famSetting) { const sp = pool.filter((v) => !settingConflict(famSetting, v.setting)); if (sp.length) pool = sp; }
       // 变体扩容第二轮（c2000 包 pr_child4）：走 child4KeyFor 带内扩轮换——仍只掷一格、流位不变，
@@ -1338,6 +1345,22 @@
       return typeof picked === "string" ? picked : undefined;
     }
     return val;
+  }
+  // 出生年小片（opt-in）：factAlt 分文的公历分段过滤——条目可为对象形 {text, calWindow}，
+  // 呈现公历（出生年＋幕龄）落窗内才入选；字符串条目恒入选。过滤只改候选池、仍走 condText
+  // 派生定款，不消费任何随机流；全为字符串的旧形数组原样返回（与此前逐字全等）。过滤后
+  // 为空（数据自相矛盾时）回落全条目文本，不许静默吞成未命中。用途：断言绑公历的分文链
+  // （如 c1978 中专翻转链：双向选择/并轨/分配取消只合翻转当年的呈现局）。
+  function factAltPool(S, act, arr) {
+    if (!Array.isArray(arr) || !arr.some((e) => e && typeof e === "object")) return arr;
+    const calY = typeof S.birthYear === "number" ? S.birthYear + act.age : null;
+    const pool = [];
+    for (const e of arr) {
+      if (typeof e === "string") { pool.push(e); continue; }
+      if (!e || typeof e.text !== "string") continue;
+      if (e.calWindow == null || (calY != null && calY >= e.calWindow[0] && calY <= e.calWindow[1])) pool.push(e.text);
+    }
+    return pool.length ? pool : arr.map((e) => (typeof e === "string" ? e : (e && e.text))).filter((t) => typeof t === "string");
   }
   // pr_child4（c2000 包，12 岁）定款（变体扩容第二轮）：与 early2KeyFor 同法「带内扩轮换」——
   // 掷点 r 先按旧法落四带（floor(r*4) 定记号：0 梧桐 / 1 小卖部 / 2 留言册 / 3 毕业照），
@@ -1598,7 +1621,7 @@
         let bt = tbt[S.state.track] || tbt.study;
         // factAlt：按枚举事实（如 studyForm）确定性分文，不消费流；优先于 trackAlt。
         let factHit = false;
-        if (act.factAlt && act.factAlt.texts) { const fv = factOf(S, act.factAlt.fact); const r = condText(P.seedStr, act.id, "factAlt", fv, act.factAlt.texts[fv]); if (r) { bt = r; factHit = true; } }
+        if (act.factAlt && act.factAlt.texts) { const fv = factOf(S, act.factAlt.fact); const r = condText(P.seedStr, act.id, "factAlt", fv, factAltPool(S, act, act.factAlt.texts[fv])); if (r) { bt = r; factHit = true; } }
         // flagText：按已立旗标分文（如复读形），factAlt 未命中时生效，不消费流。
         if (!factHit && act.flagText && S.flags && S.flags[act.flagText.flag]) { const r = condText(P.seedStr, act.id, "flagText", act.flagText.flag, act.flagText.text); if (typeof r === "string") bt = r; }
         // 中专变体（c1965/c1978 的 study 轨 trackAlt）：物化点按序章流二选一，定版后随存档走
@@ -1853,8 +1876,23 @@
       if (!f) continue;
       // 变体扩容批：平年带 texts 时按 (种子, 年龄) 哈希选款作底文（P.seedStr 缺失＝旧档，回落原句）；
       // 不带 texts 的包平年行为与旧版逐字相同。
+      // 出生年小片（opt-in）：texts 条目可为对象形 {text, calWindow}——先按呈现公历
+      // （出生年＋平年龄）过滤再定款（字符串条目恒入选）；无对象条目时池与旧形逐字相同。
+      // 旧档无 seedStr 时，有公历门的平年取过滤池首款（不再回落可能出窗的 f.text 原句），
+      // 无公历门的平年仍回落原句、行为不变。
       let baseText = f.text;
-      if (f.texts && f.texts.length > 1 && P.seedStr) baseText = f.texts[flatKeyFor(P.seedStr, a, f.texts.length)] || f.text;
+      if (f.texts && f.texts.length > 1) {
+        if (f.texts.some((e) => e && typeof e === "object")) {
+          const calY = typeof S.birthYear === "number" ? S.birthYear + a : null;
+          const pool = [];
+          for (const e of f.texts) {
+            if (typeof e === "string") { pool.push(e); continue; }
+            if (!e || typeof e.text !== "string") continue;
+            if (e.calWindow == null || (calY != null && calY >= e.calWindow[0] && calY <= e.calWindow[1])) pool.push(e.text);
+          }
+          if (pool.length) baseText = P.seedStr ? (pool[flatKeyFor(P.seedStr, a, pool.length)] || f.text) : pool[0];
+        } else if (P.seedStr) baseText = f.texts[flatKeyFor(P.seedStr, a, f.texts.length)] || f.text;
+      }
       // fix2（opt-in）：平年文可带 textBySchooling 按当前 schooling 整段换文（未声明的平年行为不变）。
       let fText = (f.textBySchooling && S.state && condText(P.seedStr, "flat@" + a, "textBySchooling", S.state.schooling, f.textBySchooling[S.state.schooling])) || baseText;
       // fix3 B1（子类 1b/1d）：平年文可带 textByFact（按枚举事实，如手足形）与 textByLeftBehind
