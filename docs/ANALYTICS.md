@@ -21,21 +21,22 @@
 
 收集端就是仓库里的 `functions/api/collect.js`，同源 Pages Function，路径 `/api/collect`，不引入任何第三方服务。`index.html` 的注入已改为 `enabled: true`、`endpoint: "/api/collect"`。收集端只收 POST，只保留事件表内字段，未知事件直接丢弃，成功统一返回 204；不记录 IP、不种 cookie。
 
-存储要用户在 Cloudflare 后台点一步，代码里配不了：控制台 → Workers & Pages → if-that-year → Settings → Functions → KV namespace bindings → Add binding。先在同页（或 KV 菜单）创建一个 KV namespace，名字自选，如 `ify-analytics`；变量名必须填 `IFY_ANALYTICS_KV`，选好刚建的 namespace 后保存。保存后重新部署才生效，下一次 push 自动部署即可。
+存储走 Analytics Engine（AE 迁移批，2026-11-08 起；此前用 KV，历史数据见「保留多久」）。绑定要用户在 Cloudflare 后台点一步，代码里配不了：控制台 → Workers & Pages → if-that-year → Settings → Functions → Analytics Engine bindings → Add binding。变量名必须填 `IFY_AE`，数据集名填 `ify_events`（首写自动创建）。保存后重新部署才生效，下一次 push 自动部署即可。事件进 AE 后按固定列位存（index1=事件名，blob1–13=分类字段，double1–3=岁数/成败/改选，映射表在 `collect.js` 的 `toDataPoint` 注释里），时间由 AE 按写入时刻自动落 timestamp 列，事件自带的 `at` 不再另存。
 
-验证方法：绑定并部署后，打开站点玩完一局（事件攒满 10 条或关页时自动发送），再到控制台 Storage → KV → 该 namespace 里看，应能看到以当天日期开头的 key，点开 value 是逐行 JSON 事件。
+验证方法：绑定并部署后，打开站点玩完一局（事件攒满 10 条或关页时自动发送），再用「汇总台」的 `/api/stats` 读一次，当天 totals 应能看到对应事件计数上涨。
 
 若没绑：站点与游戏一切正常，收集端只收不存、静默丢弃，不会报错。
 
 ## 汇总台（统计升级批，2026-11-08）
 
-汇总端点 `functions/api/stats.js`，同源 Pages Function，路径 `/api/stats`。它读同一个 `IFY_ANALYTICS_KV`，把原始 JSONL 按天聚合出计数与分布，免去人工翻 KV。
+汇总端点 `functions/api/stats.js`，同源 Pages Function，路径 `/api/stats`。它经 Analytics Engine 的 SQL API 读数据集 `ify_events`，聚合全部在 SQL 里完成，免去人工翻原始事件。
 
-- 用法：`GET /api/stats?key=<密钥>&days=<天数>`。`days` 默认 7、上限 31（按 UTC 日期，含今天）。
-- 密钥：Pages 环境变量 `ANALYTICS_STATS_KEY`（在控制台 Settings → Environment variables 里设为 Secret，不要写进仓库）。未设置时返回 503；`key` 不对返回 403；KV 未绑定返回 503。**没有密钥谁也读不了汇总**——这个端点不公开。
-- 返回内容：每事件总数；`game_start` 与 `game_complete` 的 era / route 分布；`game_complete` 的 ending / tier 分布与 endAge 分段（`<50` / `50s` / `60s` / `70s` / `80+`）；`share_click` 的 action 分布；典藏漏斗五步（keepsake_open / keepsake_preview / buy_click / code_verify 成功数 / gift_claim 成功数）；完局率（game_complete ÷ game_start）；分享率（share_click 总数 ÷ game_complete 总数——事件级近似，一局可多次分享，未按局去重，返回里 `notes` 有注明）；访客数（带 vid 的 distinct 编号数，按天与区间）、回访访客数（在 ≥2 个不同日期出现过的编号数）、人均局数分布（按每编号的 game_start 次数分 1 / 2 / 3+ 档）。
-- vid 在汇总里只做内存计数，**返回中绝不出现任何单个 vid**，也不返回任何单个事件。
-- 读取上限（小站设计，代码里明写）：单次最多读 2000 个 KV 键、50000 条事件，超出即停并在返回的 `truncated` 里标明。
+- 用法：`GET /api/stats?key=<密钥>&days=<天数>`。`days` 默认 7、上限 31（按 UTC 日期，含今天；SQL 区间为 [起日 00:00, 止日次日 00:00)）。
+- 密钥：Pages 环境变量 `ANALYTICS_STATS_KEY`（在控制台 Settings → Environment variables 里设为 Secret，不要写进仓库）。未设置时返回 503；`key` 不对返回 403。**没有密钥谁也读不了汇总**——这个端点不公开。
+- SQL API 凭据：另需 Pages 环境变量 `CF_ACCOUNT_ID` 与 `CF_API_TOKEN`（后者为带 Analytics Engine 读取权限的 Cloudflare API token，同样设为 Secret）。任一未设置返回 503（`reason: "unconfigured"`）；SQL API 调用失败返回 502（`reason: "ae_query_failed"`，带简短 detail），不会裸崩 500。
+- 返回内容：每事件总数；`game_start` 与 `game_complete` 的 era / route 分布；`game_complete` 的 ending / tier 分布与 endAge 分段（`<50` / `50s` / `60s` / `70s` / `80+`——double1 先按原值分组，分段在端点代码里做，SQL 里不写 CASE）；`share_click` 的 action 分布；典藏漏斗五步（keepsake_open / keepsake_preview / buy_click / code_verify 成功数 / gift_claim 成功数，成功数只 sum 对应事件的 ok 编码）；完局率（game_complete ÷ game_start）；分享率（share_click 总数 ÷ game_complete 总数——事件级近似，一局可多次分享，未按局去重，返回里 `notes` 有注明）；访客数（带 vid 的 distinct 编号数，按天与区间）、回访访客数（在 ≥2 个不同日期出现过的编号数）、人均局数分布（按每编号的 game_start 次数分 1 / 2 / 3+ 档）。返回带 `source: "analytics_engine"` 标明数据来源。
+- vid 在汇总里只在 SQL 内计数（回访与人均局数用按 vid 分组的子查询，只回计数），**返回中绝不出现任何单个 vid**，也不返回任何单个事件。
+- 数据来自 Analytics Engine，平台在高量时可能采样；当前量级为全量，返回的 `notes` 里有注明。
 
 ## 事件表
 
@@ -73,7 +74,7 @@
 
 - 它是浏览器在本机用 `crypto.randomUUID()` 掷出来的一个纯随机数，存在 localStorage 的 `ify_vid` 键里，随每个事件附带，只用来在汇总时数「来了多少个人、回没回来、平均玩几局」。
 - 生成时**不读任何设备信息**：不看机型、屏幕、时区、语言、浏览器版本——这些一概不采集，所以拼不出设备指纹，它就是一串随机数。
-- 它**永远不和能认人的信息结合**：不与兑换码、Stripe 订单、邮箱或任何账户信息关联（本站也没有账户系统）；汇总端点只在内存里数它，返回结果里不出现任何单个编号；它也不会出现在任何玩家看得见的页面、链接或导出成品里。
+- 它**永远不和能认人的信息结合**：不与兑换码、Stripe 订单、邮箱或任何账户信息关联（本站也没有账户系统）；汇总端点只在 SQL 里数它（按编号分组也只回计数），返回结果里不出现任何单个编号；它也不会出现在任何玩家看得见的页面、链接或导出成品里。
 - localStorage 里与统计有关的只有这一个键，与游戏存档（`ify-save-v2`）完全分开。另有一个 sessionStorage 的会话标志（`ify-ana-visit`），只表示「这次会话已经报到过一次」，本身不发送、不含任何编号，关掉标签页就没了——它不是编号。
 
 **不收什么**
@@ -83,7 +84,8 @@
 
 **保留多久**
 
-- 原始事件在 KV 里保留 13 个月，到期删除。汇总出来的数字（总数、分布这类已经数完的统计）可以长期保留——汇总里不含任何单个访客的信息。
+- 原始事件在 Analytics Engine 里保留 3 个月（平台口径），到期自动删除。汇总出来的数字（总数、分布这类已经数完的统计）可以长期保留——汇总里不含任何单个访客的信息。
+- AE 迁移（2026-11-08）之前写进 KV（namespace `ify-analytics`）的历史事件仍保留在原 namespace 里，不再写入新数据；汇总台也不再读它，需要清理时单独删 namespace 即可。
 
 **怎么删**
 
@@ -91,7 +93,7 @@
 
 **给不给别人**
 
-- 数据只存在本站自己的 Cloudflare KV 里。不给第三方、不出售、不用于广告投放或用户画像。
+- 数据只存在本站自己的 Cloudflare Analytics Engine 里（迁移前的历史事件在本站自己的 KV 里）。不给第三方、不出售、不用于广告投放或用户画像。
 
 **与游戏的隔离**
 

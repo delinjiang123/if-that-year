@@ -1,6 +1,7 @@
 // 《如果那年》匿名埋点收集端（v0.17.0）——同源 Pages Function，路径 /api/collect。
 // 口径见 docs/ANALYTICS.md：只收事件表内字段，不记录 IP、不种 cookie、不回任何可识别信息。
-// 存储：绑定名 IFY_ANALYTICS_KV 的 KV namespace，key 为 UTC 日期/随机后缀，value 为逐行 JSON（JSONL）。
+// 存储：Analytics Engine 绑定 IFY_AE（数据集 ify_events），每条清洗后的事件写一个数据点，
+// 列位固定（见 toDataPoint 的列映射表）；时间由 AE 按写入时刻自动落 timestamp 列。
 // 绑定缺失 = 只收不存：仍返回 204 并静默丢弃，站点绝不能因埋点未配好而出错。
 
 const MAX_BODY_BYTES = 64 * 1024; // 请求体上限约 64KB
@@ -29,11 +30,37 @@ const ALLOWED_FIELDS = {
   gift_claim: ["ok"],
 };
 
-function randomSuffix() {
-  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
-    return crypto.randomUUID();
-  }
-  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+// Analytics Engine 列映射（固定列位，stats.js 的 SQL 按列号读，不许挪动）：
+//   index1  = 事件名
+//   blob1   = vid          blob6  = action        blob11 = ref
+//   blob2   = era          blob7  = cat           blob12 = pick（整数下标的字符串形：
+//   blob3   = route        blob8  = kind                口径是按取值分组数选了哪张卡，
+//   blob4   = ending       blob9  = state               不是求和求平均，故不入 doubles）
+//   blob5   = tier         blob10 = death（布尔的字符串形 "true"/"false"）
+//   blob13  = seen（布尔的字符串形）
+//   double1 = endAge ?? age（岁数类数值）  double2 = ok（true→1，其余→0）
+//   double3 = changed（true→1，其余→0，与改选率 sum 口径对齐）
+// 缺失字段一律落空串 / 0，形状恒定，方便 SQL 侧无条件按列聚合。
+function bs(v) {
+  if (v === null || v === undefined) return "";
+  return String(v);
+}
+
+function toDataPoint(ev) {
+  const ageRaw = ev.endAge ?? ev.age;
+  return {
+    indexes: [ev.name],
+    blobs: [
+      bs(ev.vid), bs(ev.era), bs(ev.route), bs(ev.ending), bs(ev.tier),
+      bs(ev.action), bs(ev.cat), bs(ev.kind), bs(ev.state), bs(ev.death),
+      bs(ev.ref), bs(ev.pick), bs(ev.seen),
+    ],
+    doubles: [
+      typeof ageRaw === "number" && Number.isFinite(ageRaw) ? ageRaw : 0,
+      ev.ok === true ? 1 : 0,
+      ev.changed === true ? 1 : 0,
+    ],
+  };
 }
 
 // 其余方法 405：Pages Functions 只导出 onRequestPost 时，非 POST 请求由运行时
@@ -93,15 +120,14 @@ export async function onRequestPost(context) {
     cleaned.push(ev);
   }
 
-  const kv = env && env.IFY_ANALYTICS_KV;
-  if (kv && cleaned.length) {
-    try {
-      const day = new Date().toISOString().slice(0, 10); // UTC YYYY-MM-DD
-      const key = `${day}/${randomSuffix()}`;
-      const value = cleaned.map((ev) => JSON.stringify(ev)).join("\n");
-      await kv.put(key, value);
-    } catch {
-      // 存储失败静默丢弃，绝不影响站点。
+  const ae = env && env.IFY_AE;
+  if (ae && cleaned.length) {
+    for (const ev of cleaned) {
+      try {
+        ae.writeDataPoint(toDataPoint(ev));
+      } catch {
+        // 单条写入失败静默丢弃这一条，其余照常写，绝不影响站点。
+      }
     }
   }
   // 绑定不存在时同样走到这里：只收不存，返回 204。
