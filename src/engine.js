@@ -1,4 +1,4 @@
-// 《如果那年》引擎 v0.59.5 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
+// 《如果那年》引擎 v0.59.6 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
 //      / 判词按数值形状拼装 / 全程自动存档可续玩 / 种子可输入、可复制分享链接 / 在线零 LLM 调用
 // [模块]本引擎自 v0.20.0 起拆为各自独立的模块文件（独立包装器 + window.IFY 共享命名空间），按 index.html 的顺序加载：本文件（建 IFY + 编排）→ src/world/apply.js → src/record.js → src/world/processes/{parents,spouse,work,place,health}.js → src/scheduler.js → src/views/{stream,year,shadow,settlement,share}.js → src/engine-boot.js（收尾，调用 IFY.renderStart()）。跨模块引用一律 IFY.<名>，可变量收编为 IFY 属性。
 window.IFY = window.IFY || {};
@@ -223,6 +223,11 @@ window.IFY = window.IFY || {};
       wageCarry: 0, wageLastNet: 0, wageSettledAge: 0,
       // 住房线：购房定档 houseTier/houseLoc（捕获时写死，终生不变）、变现落账标记 houseSettled、通勤自由结转 houseCarry（仿 wageCarry）
       houseTier: null, houseLoc: null, houseSettled: false, houseCarry: 0,
+      // 第 1 期 P1-2（职业层地基）：伏笔种子账 seeds（拍上埋下的入行伏笔，形状见 p1-design §一）与
+      // 履历账 career（入行段 spells 多段实账，唯一写点 world/career.js 的 careerNote）——平行账，
+      // 只写不读：现行逻辑一律不读它们改行为。career 诞生时为 null（未建壳＝一格未消费），首次
+      // 入行/关口开门时才由唯一写点建壳；老档读入走 backfillCareer 按账本重建（D1 存实账）。
+      seeds: [], career: null,
       autoMode: DEFAULT_AUTO_MODE, speed: "mid", // 推进设定在本局的副本；权威来源是 localStorage 的 ify-prefs；v0.21 WP1：同形保留、恒不作数，存档时只进 session.meta（蓝图 3.1）
     };
   }
@@ -269,6 +274,11 @@ window.IFY = window.IFY || {};
   // 地段默认 city、购房年取落旗年龄缺则 33 岁）。实现走 house.js 的 IFY.backfillHouse（形态/档位派生都在它那边）。
   function backfillHouse(t) { if (typeof IFY.backfillHouse === "function") IFY.backfillHouse(t); }
 
+  // 职业层旧档回填（第 1 期 P1-2）：无 seeds/career 的存档读入时逐轨补——seeds 补空账，
+  // career 由 world/career.js 的 IFY.backfillCareer 按现有旗与账本重建一份履历（与
+  // mainEntryOf 派生对账，D1 存实账、D12 只记账不堵门）。实现走 career.js，此处只转发。
+  function backfillCareer(t) { if (typeof IFY.backfillCareer === "function") IFY.backfillCareer(t); }
+
   // 判词批 C 旧档回填：无 statsPeak 的存档读入时以载入时六维现值逐维初始化峰值（峰值只从
   // 载入点起算——只少记不多记，不追溯、不编造）；容器在但单维缺失时逐维按现值补，既有值不覆盖。
   function backfillStatsPeak(t) {
@@ -292,8 +302,8 @@ window.IFY = window.IFY || {};
       const s = JSON.parse(localStorage.getItem(SAVE_KEY));
       if (!s) return null;
       // v2 的 Track 条目本体即平铺 state（route/flags 直挂条目上，与 backfillAdmitted 同口径）
-      if (s.tracks) { for (const k of Object.keys(s.tracks)) { backfillAdmitted(s.tracks[k]); backfillWage(s.tracks[k]); backfillHouse(s.tracks[k]); backfillStatsPeak(s.tracks[k]); backfillStatsLate(s.tracks[k]); } const a = s.tracks[s.controlTrack || "A"] || s.tracks.A; return a && (a.route || a.mergePending || (a.phase === "prologue" && a.prologue)) ? s : null; }
-      backfillAdmitted(s); backfillWage(s); backfillHouse(s); backfillStatsPeak(s); backfillStatsLate(s);
+      if (s.tracks) { for (const k of Object.keys(s.tracks)) { backfillAdmitted(s.tracks[k]); backfillWage(s.tracks[k]); backfillHouse(s.tracks[k]); backfillStatsPeak(s.tracks[k]); backfillStatsLate(s.tracks[k]); backfillCareer(s.tracks[k]); } const a = s.tracks[s.controlTrack || "A"] || s.tracks.A; return a && (a.route || a.mergePending || (a.phase === "prologue" && a.prologue)) ? s : null; }
+      backfillAdmitted(s); backfillWage(s); backfillHouse(s); backfillStatsPeak(s); backfillStatsLate(s); backfillCareer(s);
       return (s.route || s.mergePending || (s.phase === "prologue" && s.prologue)) ? s : null;
     } catch (e) { return null; }
   }

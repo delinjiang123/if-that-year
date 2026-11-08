@@ -611,6 +611,48 @@ else {
   }
 }
 
+// ---- 职业账映射校验（第 1 期 P1-2）：world/career.js 记账用到的 flag → trade/form
+// 必须与行当注册表逐行一致。career.js 运行时从 GAME_TRADES 现读映射、不另存副本，
+// 本节用真实文件行为验：同沙盒载入 trades.js + work.js + career.js（seedFromString/
+// mulberry 以 engine.js 同算法在沙盒内替身——career.js 对这两件优先取 IFY 的，替身只
+// 为让本文件可独立装载，职业流序列口径由整局对账另行实证），对每面入行旗合成一拍
+// careerNote，断言记下的段 trade/form 与注册表该行及 FORM_OF_FLAG 逐字同值；另验
+// 非入行 src 不建壳、注册表缺失时 careerNote 整点 no-op（fail-closed）。
+(() => {
+  const careerPath = path.join(ROOT, "src/world/career.js");
+  if (!fs.existsSync(careerPath)) { err("职业账模块缺失（src/world/career.js）"); return; }
+  const mkSandbox = (withTrades) => {
+    const s = { window: { IFY: {} } };
+    vm.createContext(s);
+    if (withTrades) vm.runInContext(fs.readFileSync(path.join(ROOT, "src/content/trades.js"), "utf8"), s, { filename: "src/content/trades.js" });
+    vm.runInContext(fs.readFileSync(path.join(ROOT, "src/world/processes/work.js"), "utf8"), s, { filename: "src/world/processes/work.js" });
+    s.window.IFY.seedFromString = (str) => { let h = 2166136261; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
+    s.window.IFY.mulberry = (st) => { st.a |= 0; st.a = (st.a + 0x6D2B79F5) | 0; let t = Math.imul(st.a ^ (st.a >>> 15), 1 | st.a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+    vm.runInContext(fs.readFileSync(careerPath, "utf8"), s, { filename: "src/world/career.js" });
+    return s.window.IFY;
+  };
+  const IFYC = mkSandbox(true);
+  if (typeof IFYC.careerNote !== "function" || typeof IFYC.backfillCareer !== "function") err("career.js 未导出 careerNote/backfillCareer");
+  else if (TRADES && typeof TRADES === "object") {
+    for (const [tid, t] of Object.entries(TRADES)) {
+      const st = { seedStr: "validate-state", age: 30, flags: {}, ledger: [], flagAges: {}, career: null, seeds: [] };
+      IFYC.careerNote(st, { set: t.flag });
+      const sp = st.career && Array.isArray(st.career.spells) ? st.career.spells[0] : null;
+      if (!sp) { err(`职业账：入行旗 ${t.flag} 的 careerNote 未记段`); continue; }
+      if (sp.trade !== tid) err(`职业账：旗 ${t.flag} 记下的 trade ${sp.trade} 与注册表行 ${tid} 不符`);
+      if (sp.form !== t.form) err(`职业账：旗 ${t.flag} 记下的 form ${sp.form} 与注册表 ${t.form} 不符`);
+      if (sp.form !== FORM_OF_FLAG_CHK[t.flag]) err(`职业账：旗 ${t.flag} 记下的 form ${sp.form} 与 FORM_OF_FLAG ${FORM_OF_FLAG_CHK[t.flag]} 不符`);
+    }
+    const st2 = { seedStr: "validate-state", age: 30, flags: {}, career: null, seeds: [] };
+    IFYC.careerNote(st2, { set: "house_own" }); // 非入行旗：不许建壳记账
+    if (st2.career !== null) err("职业账：非入行 src 不应建 career 壳");
+    const IFYN = mkSandbox(false);
+    const st3 = { seedStr: "validate-state", age: 30, flags: {}, career: null, seeds: [] };
+    IFYN.careerNote(st3, { set: Object.keys(FORM_OF_FLAG_CHK)[0] });
+    if (st3.career !== null) err("职业账：注册表缺失时 careerNote 必须整点 no-op（fail-closed）");
+  }
+})();
+
 console.log(`validate-state: 条目 ${events.length}（含核心/扩展/协同/稀有/结局）+ 出身牌 ${cardCount} + 序章幕 ${PRO && PRO.acts ? PRO.acts.length : 0} | 域 ${Object.keys(DOMAINS).length} | 里程碑 ${Object.keys(MILESTONES).length} | 枚举事实 ${Object.keys(ENUM_FACTS).length} | 家庭事实旗 ${Object.keys(FAMILY_FACTS).length} | 行当 ${tradeCount}`);
 if (reservedInfo.length) { console.log(`已登记未开放（reserved）${reservedInfo.length} 项:`); reservedInfo.forEach((m) => console.log("  RESERVED", m)); }
 console.log(`错误 ${errors.length} 条:`); errors.forEach((m) => console.log("  ERROR", m));

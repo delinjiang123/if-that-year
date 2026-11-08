@@ -1,9 +1,10 @@
 // 《如果那年》行当注册表（第 1 期 P1-1 登记批）——职业层的单一事实源（数据面）。
 // 本批只登记已有行当：全表 26 行与 src/world/processes/work.js 的 FORM_OF_FLAG 逐行对应
 // （tools/validate-state.js 双向核对，不一致即报错）。新行当留第 2 期，禁止在本表先造。
-// 本文件不进 index.html 加载序、不被任何运行时代码引用（P1-1 红线：零行为变化）；
+// P1-1 时本文件不进加载序、无运行时引用（零行为变化）；第 1 期 P1-2 起进入
+// index.html 加载序，与其它登记数据文件同位（src/world/state.js 之前）——纯数据面，
 // 登记经 GAME_REGISTRY_EXTRA 合入（registry.js 尾部合入器认 trades 键，先登记者胜），
-// 加载点将来与其它登记数据文件同位（src/world/state.js 之前）。
+// 运行时唯一读点是 world/career.js 的记账映射（flag → trade/form 现读本表，不另存副本）。
 //
 // 字段口径（设计稿 ~/workspace/p1-design/DESIGN.md §一/§三/§四，裁定见同目录 RULINGS.md）：
 //   trade id     = 旗名去掉尾部 "_work"（无此尾者原名：exam_landed/farm_returned/
@@ -292,6 +293,6 @@ window.GAME_COLD_KIND_ERA = {
 };
 
 // 经登记数据文件通道合入（形状随 WP1 E9 骨架）：registry.js 尾部合入器认 trades 键，
-// 本体登记优先、同名先登记者胜。本批文件不在 index.html 加载序内，此行在现行运行时
-// 不执行；校验工具（validate-state）按登记数据文件同位载入本文件验证合入链。
+// 本体登记优先、同名先登记者胜。P1-2 起本文件在 index.html 加载序内（state.js 之前），
+// 此行在现行运行时执行；validate-state 按同一位置载入本文件验证合入链。
 window.GAME_REGISTRY_EXTRA = (window.GAME_REGISTRY_EXTRA || []).concat([{ trades: window.GAME_TRADES }]);

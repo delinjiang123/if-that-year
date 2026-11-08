@@ -91,6 +91,7 @@
     advanceParentStage(who, beat); // v0.21 WP2：父母 stage 推进改调共享函数（原段代码搬家，逻辑一字不动）
     if (item.set) IFY.S.flags[item.set] = true;
     if (typeof IFY.houseOnBuyFlag === "function") IFY.houseOnBuyFlag(IFY.S, item.set, item);
+    if (typeof IFY.careerNote === "function") IFY.careerNote(IFY.S, item); // 第 1 期 P1-2：履历记账（平行账，只写不读，下同）
     IFY.applyState(item);
     if (!item.choices) { IFY.applyEffects(item.effects); } else IFY.S.lastDelta = "";
     IFY.rec("proc", item.id, { set: item.set || null, fx: !item.choices ? IFY.S.lastDelta : null });
@@ -114,6 +115,7 @@
       IFY.applyEffects(c.effects);
       if (c.set) IFY.S.flags[c.set] = true;
       if (typeof IFY.houseOnBuyFlag === "function") IFY.houseOnBuyFlag(IFY.S, c.set, c);
+      if (typeof IFY.careerNote === "function") IFY.careerNote(IFY.S, c);
       IFY.applyState(c);
       if (c.deferDating) { IFY.S.datingSince = IFY.S.age - 3; IFY.S.datingDefers = (IFY.S.datingDefers || 0) + 1; } // 推迟：时钟回拨，下次到期在约 4 年后
       if (c.deferRetire) { if (IFY.S.retirePlan) IFY.S.retirePlan.nodeAge = IFY.S.age + 3; IFY.S.retireDefers = (IFY.S.retireDefers || 0) + 1; } // 退休节点推迟（v0.19.0）：节点后移 3 年，推迟两次后由 proc_retire_auto 收束
