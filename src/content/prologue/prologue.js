@@ -968,8 +968,8 @@
           // 未命中回落 textLB/text 原口径；未声明这些字段的变体行为一字不变。
           const pseudo = { id: e.id, age: trig, log: va.log || e.log || "家里的一桩事", familyBeat: true, familyFact: va.familyFact || e.familyFact || undefined, // AN-5 R5(a)：变体级 familyFact 透传（bands 路已支持、无变体声明时与原行为逐字一致）——同一条目两档强度不得共用一旗
             splitMove: e.splitMove || va.splitMove || undefined,
-            text: (P.leftBehind && va.textLBBySchooling && va.textLBBySchooling[P.situation]) ? va.textLBBySchooling[P.situation]
-              : ((P.leftBehind && va.textLB) ? va.textLB : va.text), echo: va.echo || null, choices: va.choices || null, poolEntry: e.id,
+            text: (P.leftBehind && condText(P.seedStr, e.id, "textLBBySchooling", P.situation, va.textLBBySchooling && va.textLBBySchooling[P.situation]))
+              || (P.leftBehind && condText(P.seedStr, e.id, "textLB", "LB", va.textLB)) || va.text, echo: va.echo || null, choices: va.choices || null, poolEntry: e.id,
             poolExtraFact: va.extraFact || null,
             textBySchooling: va.textBySchooling || undefined, echoBySchooling: va.echoBySchooling || undefined,
             choicesBySchooling: va.choicesBySchooling || undefined };
@@ -1005,7 +1005,8 @@
         // v0.23 WP9 A线：同 WP7 形——变体 markShadow（按记号 id 索引的 map）随伪条目转发到呈现点落账；未声明的变体两字段皆 undefined、行为不变。
         markShadow: (va.markShadow && mkId) ? va.markShadow[mkId] : undefined,
         markShadowBySchooling: (va.markShadowBySchooling && mkId) ? va.markShadowBySchooling[mkId] : undefined,
-        text: (P.leftBehind && va.textLB) || (va.textBySit && va.textBySit[P.situation]) || va.text,
+        text: (P.leftBehind && condText(P.seedStr, e.id, "textLB", "LB", va.textLB))
+          || condText(P.seedStr, e.id, "textBySit", P.situation, va.textBySit && va.textBySit[P.situation]) || va.text,
         echo: (P.leftBehind && va.echoLB) || (va.echoBySit && va.echoBySit[P.situation]) || va.echo || null,
         choices: (P.leftBehind && va.choicesLB) || (va.choicesBySit && va.choicesBySit[P.situation]) || va.choices || null,
         poolEntry: e.id, poolSegment: va.segment || segOf(trig),
@@ -1101,8 +1102,8 @@
     let text = act.text;
     // fix3 B1（子类 3b）：bandFork 拍同样吃幕级 textBySchooling——离校者题面不预设「初中毕业」；
     // band 已掷定者仍以下方 bandText 为准（band 与 left/never 互斥，bandSkipSchooling 保证不掷）。
-    if (act.textBySchooling && S.state && act.textBySchooling[S.state.schooling]) text = act.textBySchooling[S.state.schooling];
-    if (!legacy && band !== "absent" && act.bandText && act.bandText[band]) text = act.bandText[band];
+    if (act.textBySchooling && S.state) { const r = condText(P.seedStr, act.id, "textBySchooling", S.state.schooling, act.textBySchooling[S.state.schooling]); if (r) text = r; }
+    if (!legacy && band !== "absent" && act.bandText) { const r = condText(P.seedStr, act.id, "bandText", band, act.bandText[band]); if (r) text = r; }
     if (P.itch === "out") text += "\n十五岁那年你跟家里提过的那件事，今天要定下来了。";
     let choices = act.choices;
     if (!legacy && band !== "absent") {
@@ -1275,6 +1276,22 @@
   // 以 (种子, 幕 id) 派生一掷，在「原款＋新款」共 n 款里定款（0＝原款）；零序章流消费
   // （不用 pickVariants，避免在 fork16 等下游定版之前多掷一格）；旧档无 seedStr 时调用方回落 0。
   function actVariantKeyFor(seedStr, actId, n) { return Math.floor(derivedRoll(seedStr, "#act" + actId) * n); }
+
+  // 条件分文取值（读者最小扩展批，总指挥裁定统一方案）：分文字段值是字符串时原样返回、
+  // 与此前逐字全等；是数组时按 actVariantKeyFor(seedStr, 幕id+"|"+字段+"|"+键, 数组长)
+  // 派生定款（seedStr 缺失回落下标 0），不消费任何随机流。坏数据（空数组、定款元素非
+  // 字符串）回落 undefined——等同该分文未命中、由前层文本兜底，不许静默吞成空文；形状
+  // 合法性由 tools/validate-storylet.js 的分文形状断言把门（字符串或非空字符串数组）。
+  function condText(seedStr, actId, field, key, val) {
+    if (typeof val === "string") return val;
+    if (Array.isArray(val)) {
+      if (!val.length) return undefined;
+      const idx = seedStr != null ? actVariantKeyFor(seedStr, actId + "|" + field + "|" + key, val.length) : 0;
+      const picked = val[idx];
+      return typeof picked === "string" ? picked : undefined;
+    }
+    return val;
+  }
   // pr_child4（c2000 包，12 岁）定款（变体扩容第二轮）：与 early2KeyFor 同法「带内扩轮换」——
   // 掷点 r 先按旧法落四带（floor(r*4) 定记号：0 梧桐 / 1 小卖部 / 2 留言册 / 3 毕业照），
   // 记号逐种子与旧版全等；梧桐带与留言册带的后半带改发同记号新款（shoestand / lastpage），
@@ -1447,9 +1464,10 @@
           setFact(S, "siblingForm", P.family === "cf_06" ? "sisterAndBrother" : (P.family === "cf_11" || (oaF && oaF.only)) ? "only" : "unspecified");
         }
         const fam = P.family && C && C.byId[P.family] ? C.byId[P.family].text : "";
-        const lb = P.leftBehind ? "\n" + pack.originLB : "";
+        const lb = P.leftBehind ? "\n" + (condText(P.seedStr, act.id, "originLB", "LB", pack.originLB) || "") : "";
         // fix2（opt-in）：originMigrantBySit 按处境换随迁来历行（如 never 者随迁但没报上名，与 pr_child1 口径对齐）；未声明的包行为不变。
-        const migText = (pack.originMigrantBySit && pack.originMigrantBySit[P.situation]) || pack.originMigrant;
+        const migText = condText(P.seedStr, act.id, "originMigrantBySit", P.situation, pack.originMigrantBySit && pack.originMigrantBySit[P.situation])
+          || condText(P.seedStr, act.id, "originMigrant", "migrant", pack.originMigrant);
         const mig = P.migrantChild && migText ? "\n" + migText : ""; // WP8：随迁质地行（仅带 originMigrant 的包）
         // 0 岁开局 B 案：拆屏只切已物化的文本——出生成出生幕（框架句＋open＋收尾句），
         // 余下（家底＋留守行＋随迁行）留 5 岁屏。本分支的序章流消费仍只有上方 openIdx 一格，
@@ -1481,7 +1499,8 @@
         // 不用其值，使此后全部序章流掷定（band/assignRoll/trackAlt 等）与基线逐格对齐。
         if (act.consumesTextCell) prng(S);
         const fr = temperFrameOf(S, act);
-        let ftext = (P.leftBehind && fr.textLB) ? fr.textLB : fr.text;
+        let ftext = fr.text;
+        if (P.leftBehind) { const r = condText(P.seedStr, act.id, "frameTextLB", fr.name || "", fr.textLB); if (r) ftext = r; }
         // 条件钩子（番頭审阅 1）：框里预设具体动作的句子只在本局真发到那张卡时出，否则走 without 落点，不许悬空。
         if (fr.cond) {
           const has = (P.temper || []).includes(fr.cond.card);
@@ -1516,16 +1535,16 @@
         let bt = tbt[S.state.track] || tbt.study;
         // factAlt：按枚举事实（如 studyForm）确定性分文，不消费流；优先于 trackAlt。
         let factHit = false;
-        if (act.factAlt && act.factAlt.texts) { const fv = factOf(S, act.factAlt.fact); if (act.factAlt.texts[fv]) { bt = act.factAlt.texts[fv]; factHit = true; } }
+        if (act.factAlt && act.factAlt.texts) { const fv = factOf(S, act.factAlt.fact); const r = condText(P.seedStr, act.id, "factAlt", fv, act.factAlt.texts[fv]); if (r) { bt = r; factHit = true; } }
         // flagText：按已立旗标分文（如复读形），factAlt 未命中时生效，不消费流。
-        if (!factHit && act.flagText && S.flags && S.flags[act.flagText.flag]) bt = act.flagText.text;
+        if (!factHit && act.flagText && S.flags && S.flags[act.flagText.flag]) { const r = condText(P.seedStr, act.id, "flagText", act.flagText.flag, act.flagText.text); if (typeof r === "string") bt = r; }
         // 中专变体（c1965/c1978 的 study 轨 trackAlt）：物化点按序章流二选一，定版后随存档走
-        if (!factHit && act.trackAlt && act.trackAlt[S.state.track] && prng(S) < 0.5) bt = act.trackAlt[S.state.track];
+        if (!factHit && act.trackAlt) { const r = condText(P.seedStr, act.id, "trackAlt", S.state.track, act.trackAlt[S.state.track]); if (r && prng(S) < 0.5) bt = r; }
         // 事实/旗分文（WP2，补丁稿 wp2-prologue-js-patch，合并二期落）：textByFact 按枚举事实值整段换文、textByFlag 按已立旗换文，均不消费流
-        if (act.textByFact) for (const [fn, map] of Object.entries(act.textByFact)) { const fv = factOf(S, fn); if (map && map[fv]) bt = map[fv]; }
-        if (act.textByFlag) for (const [fl, tx] of Object.entries(act.textByFlag)) { if (S.flags[fl]) { bt = tx; break; } }
+        if (act.textByFact) for (const [fn, map] of Object.entries(act.textByFact)) { const fv = factOf(S, fn); const r = map ? condText(P.seedStr, act.id, "textByFact", fn + "=" + fv, map[fv]) : null; if (r) bt = r; }
+        if (act.textByFlag) for (const [fl, tx] of Object.entries(act.textByFlag)) { if (S.flags[fl]) { const r = condText(P.seedStr, act.id, "textByFlag", fl, tx); if (typeof r === "string") { bt = r; break; } } }
         // 出身分文（WP8 §2.4，合并二期落）：factTexts 逐条按枚举事实命中整段换文（如留守/随迁的 17 岁）
-        if (act.factTexts) for (const ft of act.factTexts) { if (factOf(S, ft.fact) === ft.is) bt = ft.text; }
+        if (act.factTexts) for (const ft of act.factTexts) { if (factOf(S, ft.fact) === ft.is) { const r = condText(P.seedStr, act.id, "factTexts", ft.fact + "=" + ft.is, ft.text); if (typeof r === "string") bt = r; } }
         P.curText = bt + (ttail || "");
         P.curChoices = act.choices || null;
       } else if (act.eraText) {
@@ -1535,18 +1554,20 @@
         let era = eraCard && !(eraCard.needsSchooling && S.state && !eraCard.needsSchooling.includes(S.state.schooling)) ? eraCard.text : "";
         // fix2（opt-in）：变体带 textBySchooling 命中当前 schooling 时整段换文，且不再拼时代牌
         // （时代牌文本可能预设在校，与换文处境相冲）；未命中时拼牌口径不变。
-        const sitAlt = (v && v.textBySchooling && S.state && v.textBySchooling[S.state.schooling]) || (act.textBySchooling && S.state && act.textBySchooling[S.state.schooling]);
+        const sitAlt = (v && v.textBySchooling && S.state && condText(P.seedStr, act.id, "textBySchooling", (v.key || "") + "|" + S.state.schooling, v.textBySchooling[S.state.schooling]))
+          || (act.textBySchooling && S.state && condText(P.seedStr, act.id, "textBySchooling", S.state.schooling, act.textBySchooling[S.state.schooling]));
         const base = sitAlt || (v ? v.text : act.text);
         P.curText = sitAlt ? base : (era ? base + "\n" + era : base);
         P.curChoices = act.choices || null;
       } else if (act.id === "pr_child1" && P.situation === "never") {
         // never 变体（v0.20.1 W6）：7 岁没进校门，与 8 岁专属拍（pr_never1「没进过校门」）对齐；文本在年代包 special 里（c2000 原文已移入内置包）
         // fix3（opt-in）：包带 special.neverChild1MigrantText 时，随迁 never 者读城市形（手续没办下来，与 originMigrantBySit.never 同口径）。
-        P.curText = (P.migrantChild && pack.special.neverChild1MigrantText) || pack.special.neverChild1Text;
+        P.curText = (P.migrantChild && condText(P.seedStr, act.id, "neverChild1MigrantText", "never", pack.special.neverChild1MigrantText))
+          || condText(P.seedStr, act.id, "neverChild1Text", "never", pack.special.neverChild1Text);
         P.curChoices = null;
       } else if (act.id === "pr_child4" && P.situation === "never") {
         // never 变体（v0.20.1 W6）：12 岁没有「小学毕业」这回事，写路过校门口的一拍；文本在年代包 special 里
-        P.curText = pack.special.neverChild4Text;
+        P.curText = condText(P.seedStr, act.id, "neverChild4Text", "never", pack.special.neverChild4Text);
         P.curChoices = null;
       } else if (act.id === "pr_fork16" && act.bandFork) {
         // v0.23 WP5（F00）：band 在拍内落定、切单子、craft 分班形与题面都在 forkMaterialize 定版（见 WP5 段）
@@ -1565,33 +1586,33 @@
         }
         // fix2（opt-in）：schooling 分文——变体级/幕级 textBySchooling 命中当前 schooling 时整段换文
         // （如 never 的童年拍、half 退学后的少年拍不预设在校）；未声明的幕行为不变。
-        if (v && v.textBySchooling && S.state && v.textBySchooling[S.state.schooling]) t = v.textBySchooling[S.state.schooling];
+        if (v && v.textBySchooling && S.state) { const r = condText(P.seedStr, act.id, "textBySchooling", (v.key || "") + "|" + S.state.schooling, v.textBySchooling[S.state.schooling]); if (r) t = r; }
         // fix4（opt-in 通用化）：变体带 textLB 时留守局整段换文——原仅 pr_child2 一幕硬编码，现扩到
         // 任何带此字段的变体（c1978 child1 egg 款、c1965 child1 river 款、c1985 child4 football 款、
         // c2000 child1 wrongline 款等父母在场款的祖辈形）。置于变体级 textBySchooling 之后：留守×never
         // 同命中时以留守文为准（never 分文若仍带父母在场句，如 c1995 field 款旧 never 文，不许盖回）。
-        if (P.leftBehind && v && v.textLB) t = v.textLB;
+        if (P.leftBehind && v) { const r = condText(P.seedStr, act.id, "textLB", (v.key || "") + "|LB", v.textLB); if (r) t = r; }
         // fix3（opt-in）：act.textByMigrant——随迁者整段换文（如 never 随迁者的 pr_never1 读城市形，不读老家山村形）；未声明的幕行为不变。
-        if (act.textByMigrant && P.migrantChild) t = act.textByMigrant;
+        if (P.migrantChild) { const r = condText(P.seedStr, act.id, "textByMigrant", "migrant", act.textByMigrant); if (r) t = r; }
         // 城镇家底的整幕替换文本（c1955 性子相关拍 textTown；仅当家底在本包 townFamilies 内）
-        if (act.textTown && P.family && pack.special.townFamilies.includes(P.family)) t = act.textTown;
+        if (act.textTown && P.family && pack.special.townFamilies.includes(P.family)) { const r = condText(P.seedStr, act.id, "textTown", "town", act.textTown); if (r) t = r; }
         // fix3 B1（子类 3b）：幕级 textBySchooling 移到 textTown 之后应用——处境事实优先于家底替换
         // （城镇×离校者的分岔题面不许被 textTown 的「初中毕业」盖回去）；现行内容无任何一幕同时带
         // textTown 与 textBySchooling，此移动对既有呈现逐字不变。
-        if (tbsMap && S.state && tbsMap[S.state.schooling]) t = tbsMap[S.state.schooling];
+        if (tbsMap && S.state) { const r = condText(P.seedStr, act.id, "textBySchooling", S.state.schooling, tbsMap[S.state.schooling]); if (r) t = r; }
         // fix4（opt-in）：幕级 textLB——无变体幕的留守整段换文（如 c1978 pr_fam78a 的父母回来形、
         // pr_teen2 的祖辈形）；置于幕级 textBySchooling 之后，留守优先于处境分文（与平年段 choose
         // 的「留守＞事实＞处境」同序）。未声明的幕行为不变。
-        if (P.leftBehind && act.textLB) t = act.textLB;
+        if (P.leftBehind) { const r = condText(P.seedStr, act.id, "textLB", "LB", act.textLB); if (r) t = r; }
         // fix3 B1（子类 1b）：幕级 textByFact 整段换文（与 textByTrack 分支同形）——处境幕的手足句
         // （如 pr_never1 的「看妹妹」）按 siblingForm 分文，置于 textTown 之后使事实分文优先于家底替换。
-        if (act.textByFact) for (const [fn, map] of Object.entries(act.textByFact)) { const fv = factOf(S, fn); if (map && map[fv]) t = map[fv]; }
+        if (act.textByFact) for (const [fn, map] of Object.entries(act.textByFact)) { const fv = factOf(S, fn); const r = map ? condText(P.seedStr, act.id, "textByFact", fn + "=" + fv, map[fv]) : null; if (r) t = r; }
         // factText：按枚举事实（如 examBand）追加场景行（如看榜），不消费流。
-        if (act.factText && act.factText.texts) { const fv = factOf(S, act.factText.fact || "examBand"); if (act.factText.texts[fv]) t += "\n" + act.factText.texts[fv]; }
+        if (act.factText && act.factText.texts) { const fv = factOf(S, act.factText.fact || "examBand"); const r = condText(P.seedStr, act.id, "factText", fv, act.factText.texts[fv]); if (r) t += "\n" + r; }
         // examBand 掷定＋band 分文（WP7 P1／WP8 §2.5，合并二期合流）：带 examBand 的分岔拍在呈现点掷档一次（序章流）；
         // bandText 替换式（bandTextReplace：题面只是引子，band 文即正文）与追加式（题面＋band 场景拼接）按拍自带字段分派。
         if (act.examBand && factOf(S, "examBand") === "absent") rollExamBand(S, act);
-        if (act.examBand && act.bandText) { const btx = act.bandText[factOf(S, "examBand")]; if (btx) t = act.bandTextReplace ? btx : (t || "") + "\n" + btx; }
+        if (act.examBand && act.bandText) { const band = factOf(S, "examBand"); const btx = condText(P.seedStr, act.id, "bandText", band, act.bandText[band]); if (btx) t = act.bandTextReplace ? btx : (t || "") + "\n" + btx; }
         if (act.id === "pr_fork16" && P.itch === "out") t += "\n十五岁那年你跟家里提过的那件事，今天要定下来了。";
         if (act.tail) t += act.tail;
         P.curText = t;
@@ -1625,7 +1646,7 @@
             S.flags.quota_decided65 = true;
             const key = holder === "sibling" ? (S.flags.sibAway65 ? "siblingAway" : "siblingBack")
               : holder === "mine" ? (S.flags.sibMarried65 ? "mineMarried" : "mine") : holder;
-            if (act.textByQuota && (act.textByQuota[key] || act.textByQuota[holder])) P.curText = act.textByQuota[key] || act.textByQuota[holder];
+            if (act.textByQuota) { const r = condText(P.seedStr, act.id, "textByQuota", key, act.textByQuota[key]) || condText(P.seedStr, act.id, "textByQuota", holder, act.textByQuota[holder]); if (r) P.curText = r; }
             P.quotaEchoKey = key;
           }
         }
@@ -1635,14 +1656,15 @@
         const st = segOf(act.age);
         P.poolEcho = null;
         const pv = act.variants ? variantOf(S, act) : null;
-        if (pv && pv.stageText && pv.stageText[st]) P.curText = pv.stageText[st];
-        else if (act.stageText && act.stageText[st]) P.curText = act.stageText[st];
+        const pvStage = pv && pv.stageText ? condText(P.seedStr, act.id, "stageText", st, pv.stageText[st]) : null;
+        if (pvStage) P.curText = pvStage;
+        else if (act.stageText) { const r = condText(P.seedStr, act.id, "stageText", st, act.stageText[st]); if (r) P.curText = r; }
         if (act.stageChoices && act.stageChoices[st]) P.curChoices = act.stageChoices[st].map((c) => Object.assign({}, c));
         if (act.stageEcho && act.stageEcho[st]) P.poolEcho = act.stageEcho[st];
         // fix3（opt-in）：池伪条目带 textBySchooling/choicesBySchooling/echoBySchooling 时按呈现时 schooling 换文
         // （池调度在开局定版、读不到 14 岁才落定的 left；带考试 framing 的段变体靠此在退学后收口）。未声明者行为不变。
         const schNow = S.state && S.state.schooling;
-        if (schNow && act.textBySchooling && act.textBySchooling[schNow]) P.curText = act.textBySchooling[schNow];
+        if (schNow && act.textBySchooling) { const r = condText(P.seedStr, act.id, "textBySchooling", schNow, act.textBySchooling[schNow]); if (r) P.curText = r; }
         if (schNow && act.choicesBySchooling && act.choicesBySchooling[schNow]) P.curChoices = act.choicesBySchooling[schNow].map((c) => Object.assign({}, c));
         if (schNow && act.echoBySchooling && act.echoBySchooling[schNow]) P.poolEcho = act.echoBySchooling[schNow];
         const psf = act.poolSetByStage && act.poolSetByStage[st];
@@ -1764,11 +1786,11 @@
       let baseText = f.text;
       if (f.texts && f.texts.length > 1 && P.seedStr) baseText = f.texts[flatKeyFor(P.seedStr, a, f.texts.length)] || f.text;
       // fix2（opt-in）：平年文可带 textBySchooling 按当前 schooling 整段换文（未声明的平年行为不变）。
-      let fText = (f.textBySchooling && S.state && f.textBySchooling[S.state.schooling]) || baseText;
+      let fText = (f.textBySchooling && S.state && condText(P.seedStr, "flat@" + a, "textBySchooling", S.state.schooling, f.textBySchooling[S.state.schooling])) || baseText;
       // fix3 B1（子类 1b/1d）：平年文可带 textByFact（按枚举事实，如手足形）与 textByLeftBehind
       // （留守口吻）整段换文，优先级 留守＞事实＞处境＞原文；均不消费流。
-      if (f.textByFact) for (const [fn, map] of Object.entries(f.textByFact)) { const fv = factOf(S, fn); if (map && map[fv]) fText = map[fv]; }
-      if (P.leftBehind && f.textByLeftBehind) fText = f.textByLeftBehind;
+      if (f.textByFact) for (const [fn, map] of Object.entries(f.textByFact)) { const fv = factOf(S, fn); const r = map ? condText(P.seedStr, "flat@" + a, "textByFact", fn + "=" + fv, map[fv]) : null; if (r) fText = r; }
+      if (P.leftBehind) { const r = condText(P.seedStr, "flat@" + a, "textByLeftBehind", "LB", f.textByLeftBehind); if (r) fText = r; }
       P.gapQueue.push({ age: a, text: fText, effects: flatMute ? null : (f.effects || null) });
     }
     S.age = nextAge;
@@ -1779,7 +1801,7 @@
   }
 
   const PRO_API = { sitActs: SIT_ACTS, flatsByAge: FLATS_BY_AGE, situationW: SITUATION_W, start, present, choose, stageFor, prng, packFor, hasPack,
-    early2KeyFor, early34KeyFor, flatKeyFor, actVariantKeyFor, child4KeyFor, // 变体扩容批：定款函数验收读口（与 wp5BeatFor 同例）
+    early2KeyFor, early34KeyFor, flatKeyFor, actVariantKeyFor, child4KeyFor, condText, // 变体扩容批：定款函数验收读口（与 wp5BeatFor 同例）；condText 为读者最小扩展批读口
     factOf, setFact, rollExamBand, gateNoteSample: GATE_NOTE_SAMPLE,
     wp5BeatFor, rebuildSeq, migrantFamilies: MIGRANT_FAMILIES, careFamilies: CARE_FAMILIES }; // v0.23 WP5：验收脚本读口（选拍与 seq 重建）
   // acts / marks 惰性合并全年代包：校验与影子瞥视按 id 查全集（id 跨代唯一，集成时核过）；无包文件被加载的环境（单文件校验沙箱）自动退回 c2000 集。

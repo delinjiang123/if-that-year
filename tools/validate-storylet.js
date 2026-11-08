@@ -190,6 +190,49 @@ else {
   anchorNote = `forks ${tabForks.size} 双向一致 / procBeats ${procTab.size} 双向一致 / glimpseAges [30,40,50] / prologueForks ${(AN.prologueForks || []).length}`;
 }
 
+// ---- 序章条件分文形状（读者最小扩展批）：分文叶值或为字符串、或为非空字符串数组 ----
+// 与 prologue.js 的 condText 读者同口径：字符串原样返回、数组按派生哈希定款；其余形状
+// （空数组、含非字符串元素的数组、数字/对象冒充叶值）在呈现层只会回落未命中，必须在此拦下。
+// 覆盖：六包的 acts/sitActs/pool（模板与变体）/poolActs（bands）/pool95（变体）/flatsByAge，
+// 与包级 originLB/originMigrant/originMigrantBySit/special never 文。性子框 frames 的 textLB
+// 与回声/选项/记号层不在本断言面（与普查口径一致，登记备查）。
+{
+  const leafOk = (v) => typeof v === "string" || (Array.isArray(v) && v.length > 0 && v.every((x) => typeof x === "string"));
+  const DIRECT = ["textLB", "textTown", "textByMigrant", "textByLeftBehind"];
+  const MAPS = ["textBySchooling", "bandText", "textByQuota", "stageText", "textBySit", "textLBBySchooling", "trackAlt"];
+  let leafCount = 0;
+  const bad = (at, what) => err(`${at} 分文 ${what} 形状非法（应为字符串或非空字符串数组）`);
+  function checkObj(o, at) {
+    if (!o || typeof o !== "object") return;
+    for (const f of DIRECT) if (o[f] !== undefined) { leafCount++; if (!leafOk(o[f])) bad(at, f); }
+    for (const f of MAPS) if (o[f] && typeof o[f] === "object") for (const [k, v] of Object.entries(o[f])) { leafCount++; if (!leafOk(v)) bad(at, `${f}.${k}`); }
+    if (o.textByFact && typeof o.textByFact === "object") for (const [fn, map] of Object.entries(o.textByFact)) if (map && typeof map === "object") for (const [fv, v] of Object.entries(map)) { leafCount++; if (!leafOk(v)) bad(at, `textByFact.${fn}.${fv}`); }
+    if (o.textByFlag && typeof o.textByFlag === "object") for (const [fl, v] of Object.entries(o.textByFlag)) { leafCount++; if (!leafOk(v)) bad(at, `textByFlag.${fl}`); }
+    if (o.factAlt && o.factAlt.texts) for (const [fv, v] of Object.entries(o.factAlt.texts)) { leafCount++; if (!leafOk(v)) bad(at, `factAlt.${fv}`); }
+    if (o.factText && o.factText.texts) for (const [fv, v] of Object.entries(o.factText.texts)) { leafCount++; if (!leafOk(v)) bad(at, `factText.${fv}`); }
+    if (o.flagText && o.flagText.text !== undefined) { leafCount++; if (!leafOk(o.flagText.text)) bad(at, "flagText.text"); }
+    if (Array.isArray(o.factTexts)) for (const ft of o.factTexts) if (ft && ft.text !== undefined) { leafCount++; if (!leafOk(ft.text)) bad(at, `factTexts.${ft.fact}=${ft.is}`); }
+    for (const v of o.variants || []) checkObj(v, at);
+    for (const v of o.altTexts || []) checkObj(v, at);
+  }
+  const packs = Object.assign({}, sandbox.GAME_PROLOGUE_PACKS || {});
+  if (PRO && PRO.packFor) packs.c2000 = PRO.packFor("c2000");
+  for (const [era, pk] of Object.entries(packs)) {
+    if (!pk) continue;
+    const at = (id) => `prologue@${era}:${id}`;
+    for (const f of ["originLB", "originMigrant"]) if (pk[f] !== undefined) { leafCount++; if (!leafOk(pk[f])) bad(at("(包级)"), f); }
+    if (pk.originMigrantBySit) for (const [k, v] of Object.entries(pk.originMigrantBySit)) { leafCount++; if (!leafOk(v)) bad(at("(包级)"), `originMigrantBySit.${k}`); }
+    if (pk.special) for (const f of ["neverChild1Text", "neverChild4Text", "neverChild1MigrantText"]) if (pk.special[f] !== undefined) { leafCount++; if (!leafOk(pk.special[f])) bad(at("(包级)"), `special.${f}`); }
+    for (const a of pk.acts || []) checkObj(a, at(a.id));
+    for (const lst of Object.values(pk.sitActs || {})) for (const a of lst || []) checkObj(a, at(a.id));
+    for (const e of pk.pool || []) { if (e.act) checkObj(e.act, at(e.id)); for (const v of e.variants || []) checkObj(v, at(e.id)); }
+    for (const e of pk.poolActs || []) for (const [bk, band] of Object.entries(e.bands || {})) checkObj(band, `${at(e.id)}#${bk}`);
+    for (const e of pk.pool95 || []) for (const v of e.variants || []) checkObj(v, at(e.id));
+    for (const [age, f] of Object.entries(pk.flatsByAge || {})) checkObj(f, at(`flat@${age}`));
+  }
+  console.log(`  条件分文形状: 已检叶 ${leafCount} 个（字符串或非空字符串数组）`);
+}
+
 console.log(`validate-storylet: 条目 ${total}（events ${(D.events || []).length} / rare ${(D.rare || []).length} / forks ${(D.forks || []).length} / prologue ${((PRO && PRO.acts) || []).length} / crisis ${Object.keys(D.crisis || {}).length}）| id 唯一 ${seen.size}`);
 console.log(`  锚点表一致性: ${anchorNote}`);
 console.log(`  domain 计数: ${JSON.stringify(byDomain)}`);
