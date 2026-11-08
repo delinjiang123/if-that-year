@@ -204,6 +204,10 @@ else {
 // 集成补形（v0.60.7 总指挥）：扩招句恢复项（v0.60.6）的底文分段数组形（字符串段＋
 // {text, calWindow} 段，读者 trackTextOf）同为 textByTrack 合法叶，trackLeafOk 一并认：
 // 数组须非空、每段或为字符串、或为 text 非空且 calWindow 两元 lo<=hi 的对象——逐段严查。
+// 补查（出生年小片第六批）：变体/幕级的公历字段（calYear 单年、calWindow 公历窗）此前不在
+// 本断言面内；第六批起变体新增 calWindow（读者 pickVariants 过滤），本断言面新增覆盖——
+// 凡对象带 calYear 须为有限数、带 calWindow 须为 lo<=hi 的两元有限数数组，形状不合即报错。
+// 这是新增检查、不是放宽（覆盖面：checkObj 所及的幕/变体/altTexts/平年/带对象）。
 // 覆盖：六包的 acts/sitActs/pool（模板与变体）/poolActs（bands）/pool95（变体）/flatsByAge，
 // 与包级 originLB/originMigrant/originMigrantBySit/special never 文。性子框 frames 的 textLB
 // 与回声/选项/记号层不在本断言面（与普查口径一致，登记备查）。
@@ -222,6 +226,8 @@ else {
     if (o.textByFact && typeof o.textByFact === "object") for (const [fn, map] of Object.entries(o.textByFact)) if (map && typeof map === "object") for (const [fv, v] of Object.entries(map)) { leafCount++; if (!leafOk(v)) bad(at, `textByFact.${fn}.${fv}`); }
     if (o.textByFlag && typeof o.textByFlag === "object") for (const [fl, v] of Object.entries(o.textByFlag)) { leafCount++; if (!leafOk(v)) bad(at, `textByFlag.${fl}`); }
     if (o.factAlt && o.factAlt.texts) for (const [fv, v] of Object.entries(o.factAlt.texts)) { leafCount++; if (!factAltLeafOk(v)) bad(at, `factAlt.${fv}`); }
+    if (o.calYear !== undefined) { leafCount++; if (!(typeof o.calYear === "number" && Number.isFinite(o.calYear))) bad(at, "calYear"); }
+    if (o.calWindow !== undefined) { leafCount++; if (!(Array.isArray(o.calWindow) && o.calWindow.length === 2 && Number.isFinite(o.calWindow[0]) && Number.isFinite(o.calWindow[1]) && o.calWindow[0] <= o.calWindow[1])) bad(at, "calWindow"); }
     if (o.textByTrack && typeof o.textByTrack === "object") for (const [k, v] of Object.entries(o.textByTrack)) { leafCount++; if (!trackLeafOk(v)) bad(at, `textByTrack.${k}`); }
     for (const s of o.altSets || []) if (s && s.textByTrack && typeof s.textByTrack === "object") for (const [k, v] of Object.entries(s.textByTrack)) { leafCount++; if (!trackLeafOk(v)) bad(at, `altSets.textByTrack.${k}`); }
     if (o.factText && o.factText.texts) for (const [fv, v] of Object.entries(o.factText.texts)) { leafCount++; if (!leafOk(v)) bad(at, `factText.${fv}`); }

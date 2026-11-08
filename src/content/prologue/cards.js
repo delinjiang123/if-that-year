@@ -113,7 +113,7 @@
       { id: "ce85_06", name: "MP3 不离耳", text: "你攒钱买了台 MP3，歌是从同学电脑里拷的。耳机戴了一年多，体检时医生让你少戴。你嘴上答应，转头又塞上了。", effects: { freedom: 2, health: -1, money: -1 } },
     ],
     c1995: [
-      { id: "ce95_01", name: "奥运那年", text: "你十三岁那年北京开了奥运会。学校组织看开幕式，那年夏天，家里的电视几乎没关过。福娃那首歌，你听得都会唱了。", effects: { relation: 1, growth: 1 }, set: "hook_era_olympic" },
+      { id: "ce95_01", name: "奥运那年", text: "二〇〇八年，北京开了奥运会。学校组织看开幕式，那年夏天，家里的电视几乎没关过。福娃那首歌，你听得都会唱了。", effects: { relation: 1, growth: 1 }, set: "hook_era_olympic" },
       { id: "ce95_02", name: "半夜起来偷菜", needsSchooling: ["school", "half"], text: "你上初中时班里都玩种菜偷菜。你定了半夜的闹钟起来收菜，第二天上课直点头。你妈发现后，把电脑设了密码。", effects: { freedom: 1, growth: -1, health: -1 } },
       { id: "ce95_03", name: "第一部智能手机", text: "那几年，大人换手机换得勤，家里换下来的旧机子就到了你手里。屏幕不大，看新闻、听歌都够用。你慢慢习惯了，睡前先看一眼手机才睡。", effects: { freedom: 1, relation: 1, health: -1 } },
       { id: "ce95_04", name: "双十一帮着抢", text: "双十一刚热闹起来那几年，你帮你妈在电脑上抢东西，零点一过，手比翻书还快。包裹一个接一个送到家，你妈拆着拆着说，这个月说啥也不能再买了。", effects: { relation: 1, money: -1 } },

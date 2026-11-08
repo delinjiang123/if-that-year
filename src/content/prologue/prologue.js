@@ -1188,7 +1188,12 @@
       // 出生年小片（opt-in）：变体可带 calYear（单个公历年）——呈现公历（出生年＋幕龄）须恰为
       // 该年才进池，与 altTexts 的 calYear 同口径（如 c1978 盼盼款绑 1990 年北京亚运，呈现龄
       // 12 岁，只有 1978 出生局对得上）；未声明的变体过滤结果不变，每幕仍只掷一次、流位不变。
-      let pool = act.variants.filter((v) => !(v.notFamily && P.family && v.notFamily.includes(P.family)) && !(v.notMigrant && P.migrantChild) && !(v.notLeftBehind && P.leftBehind) && !(v.calYear != null && !(typeof S.birthYear === "number" && S.birthYear + act.age === v.calYear)));
+      // 出生年小片第六批（opt-in）：变体可带 calWindow（公历窗 [lo,hi]）——呈现公历落窗内才
+      // 进池，与 calYear 同口径、只是单年放宽为窗（如 c1995 福娃款：福娃 2005 年 11 月才
+      // 揭晓、呈现是 12 岁毕业季的夏天，呈现年须 2006–2009、即 1994–1997 出生局才对得上，
+      // 总指挥集成时按揭晓日修正 SCOPE 窗下限）；出生年不可知时带窗款不进池
+      // （与 calYear 同）；未声明的变体过滤结果不变，每幕仍只掷一次、流位不变。
+      let pool = act.variants.filter((v) => !(v.notFamily && P.family && v.notFamily.includes(P.family)) && !(v.notMigrant && P.migrantChild) && !(v.notLeftBehind && P.leftBehind) && !(v.calYear != null && !(typeof S.birthYear === "number" && S.birthYear + act.age === v.calYear)) && !(v.calWindow != null && !(typeof S.birthYear === "number" && S.birthYear + act.age >= v.calWindow[0] && S.birthYear + act.age <= v.calWindow[1])));
       // fix3 B1（2a）：变体带 setting 时与家底牌场景标签互斥的款不发（过滤后为空回落未过滤池）；每幕仍只掷一次、流位不变。
       if (famSetting) { const sp = pool.filter((v) => !settingConflict(famSetting, v.setting)); if (sp.length) pool = sp; }
       // 变体扩容第二轮（c2000 包 pr_child4）：走 child4KeyFor 带内扩轮换——仍只掷一格、流位不变，
