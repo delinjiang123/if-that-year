@@ -168,6 +168,7 @@
       if (schoolingCopy !== undefined) S.state.schooling = schoolingCopy;
       if (trackCopy !== undefined) S.state.track = trackCopy;
       S.facts = factsCopy; // v0.23 E8：枚举事实整容器落 B（与 A 深拷贝同值，之后各走各账）
+      if (typeof IFY.inheritSeedsAtBirth === "function") IFY.inheritSeedsAtBirth(S, A); // 第 1 期 P1-5（设计 §5.1）：22 岁前埋下的种子随出生整表深拷贝给 B——拷贝本体在 career.js（种子账的写侧归账本主，本文件不直读该账）；只读 A、不消费任何流，拷贝后两轨各记各的
       for (const [name, v] of Object.entries(famFlagsCopy)) S.flags[name] = v; // v0.23 E8：familyFact 已立旗逐项落 B
       S.marks = marksCopy;
       S.prologue = proCopy;

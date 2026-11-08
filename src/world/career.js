@@ -164,6 +164,30 @@
     } catch (e) { /* 埋种永不许打断呈现 */ }
   }
 
+  // 出生拷贝（第 1 期 P1-5，设计 §5.1/§5.3）：影子在选路合流时诞生，政策是「分岔
+  // 之前是同一个人」——src（主轨）在 22 岁前埋下的种子整表深拷贝给 dst（影子），
+  // 拷贝后两轨各记各的、互不可见（withLife 纪律）。拷贝是种子账的写侧动作，归本
+  // 文件（账本主）执行：birthShadow 只调这一口，不直读种子账（§2.3.1 白名单纪律，
+  // validate-storylet 的静态扫描同口径）。只读 src、零随机、不碰任何一条流；记录
+  // 逐条验形——trade 为非空串、age 为数字且 <22 才拷（§5.3 的边界：22 岁起两轨
+  // 的种互不可见，恰 22 与更大的不拷），坏记录按无此种读（§1.4 炸档防线）。
+  // fail-closed：任何异常按没拷成处理，绝不带崩出生。返回实拷条数（只供验收）。
+  function inheritSeedsAtBirth(dst, src) {
+    try {
+      if (!dst || typeof dst !== "object" || !src || typeof src !== "object") return 0;
+      const list = Array.isArray(src.seeds) ? src.seeds : [];
+      const picked = [];
+      for (const r of list) {
+        if (!r || typeof r !== "object") continue;
+        if (typeof r.trade !== "string" || !r.trade) continue;
+        if (typeof r.age !== "number" || !(r.age < 22)) continue;
+        picked.push(r);
+      }
+      dst.seeds = JSON.parse(JSON.stringify(picked));
+      return dst.seeds.length;
+    } catch (e) { return 0; }
+  }
+
   // 职业自有派生流（设计 §六）：种子 + "#career"（影子轨 "#shadow#career"，认人法与
   // applySplitFactToShadow 同款：session.tracks.B.state === S 即影子轨；无 session
   // 的 sim 口径一律按主轨）。流状态不落对象：计数存 career.rngA，取数时按种子重建
@@ -667,5 +691,5 @@
     } catch (e) { return null; }
   }
 
-  Object.assign(IFY, { careerNote, careerOf, careerSpells, seedsOf, plantSeed, careerRng, backfillCareer, careerIdleOf, gateDue, gateForkView, gateEchoLine, seedStrengthOf });
+  Object.assign(IFY, { careerNote, careerOf, careerSpells, seedsOf, plantSeed, inheritSeedsAtBirth, careerRng, backfillCareer, careerIdleOf, gateDue, gateForkView, gateEchoLine, seedStrengthOf });
 })(window.IFY);
