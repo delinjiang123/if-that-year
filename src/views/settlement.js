@@ -1853,9 +1853,6 @@
       <div class="timeline" id="timeline">${tlLog.map((l) => { const m = l.match(/^(\d+) 岁 · ([\s\S]*)$/); const yr = m && IFY.S.birthYear ? `${IFY.S.birthYear + (+m[1])} 年 · ` : ""; return `<p>${IFY.esc(yr + l)}</p>`; }).join("")}</div>
       </div>
       ${lifelineHtml(tlView)}
-      <div class="row">
-        <button class="ghost" id="copylink">复制同局链接（给朋友玩同一种子）</button>
-      </div>
       <div class="sharedesk">
         <h3>把这一生寄出去</h3>
         <p class="hint">这一生可以做成一张卡带走——判词和年表都在上面。存进手机，或者发给朋友，都行。</p>
@@ -1921,12 +1918,8 @@
       try { await navigator.clipboard.writeText(url); IFY.el("seedcopy").textContent = "已复制，去发给他"; }
       catch (e) { IFY.el("seedcopy").textContent = url; }
     });
-    IFY.el("copylink").addEventListener("click", async () => {
-      IFY.ANA.track("share_click", { action: "copy_link" });
-      const url = IFY.sameSeedUrl();
-      try { await navigator.clipboard.writeText(url); IFY.el("copylink").textContent = "已复制，去发给他"; }
-      catch (e) { IFY.el("copylink").textContent = url; }
-    });
+    // 复制同局链接只留种子行那一处（seedcopy，整洁化批玩家席裁定）：原整行按钮 #copylink
+    // 与它重复，已撤；开始页种子输入与典藏种子档案页不在此列。
     // ---------- 分享台接线：切换版式/尺寸即重绘预览 ----------
     let cardType = "verdict", cardRatio = "45";
     const refreshCard = () => {
