@@ -84,11 +84,13 @@ export async function onRequestGet(context) {
         body: sql,
       }
     );
+    const rawText = await r.text().catch(() => "");
     let payload = null;
-    try { payload = await r.json(); } catch { /* 下面统一按失败处理 */ }
+    try { payload = JSON.parse(rawText); } catch { /* 下面统一按失败处理 */ }
     if (!r.ok || !payload || !Array.isArray(payload.data)) {
       const detail =
         (payload && payload.errors && payload.errors[0] && payload.errors[0].message) ||
+        rawText.trim().slice(0, 200) ||
         `HTTP ${r.status}`;
       throw new Error(String(detail).slice(0, 200));
     }
