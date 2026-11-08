@@ -1,4 +1,4 @@
-// 《如果那年》引擎 v0.58.4 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
+// 《如果那年》引擎 v0.58.5 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
 //      / 判词按数值形状拼装 / 全程自动存档可续玩 / 种子可输入、可复制分享链接 / 在线零 LLM 调用
 // [模块]本引擎自 v0.20.0 起拆为各自独立的模块文件（独立包装器 + window.IFY 共享命名空间），按 index.html 的顺序加载：本文件（建 IFY + 编排）→ src/world/apply.js → src/record.js → src/world/processes/{parents,spouse,work,place,health}.js → src/scheduler.js → src/views/{stream,year,shadow,settlement,share}.js → src/engine-boot.js（收尾，调用 IFY.renderStart()）。跨模块引用一律 IFY.<名>，可变量收编为 IFY 属性。
 window.IFY = window.IFY || {};
@@ -690,6 +690,7 @@ window.IFY = window.IFY || {};
         <p class="setlab">最近活过的人生</p>
         ${histRuns.map((h, i) => `<button type="button" class="histrow" data-hist="${i}"><b>${esc(h.at || "")}</b><span>${esc(eraNameOf(h.era))} · ${esc(h.routeName || "")} · 活到 ${h.endAge} 岁</span><small>${esc(h.verdictLine || "")}</small></button>`).join("")}
         <p class="hint">点一局，回到那一局的结算页。订册子、导出，都在那一页上。</p>
+        <p class="hint">这份记录只留在这台设备、这个浏览器里。换个浏览器打开，或者清掉浏览器存的东西，就看不到了。</p>
       </section>` : ""}
       <section class="card foldcard">
         <div class="foldblock${foldOpen ? " open" : ""}" id="foldblock">
