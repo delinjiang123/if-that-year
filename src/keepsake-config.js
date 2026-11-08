@@ -6,8 +6,8 @@
 window.IFY_KEEPSAKE = {
   priceJPY: 500, // 日元档（定数：附则区间 ¥480–¥500 取整档）
   priceCNY: 25, // 人民币档（附则已定，不按汇率硬换算）
-  payLinkJPY: "", // Stripe 支付链接（日元 ¥500；支持卡与钱包）
-  payLinkCNY: "", // Stripe 支付链接（人民币 ¥25；支付宝 / 微信支付）
+  payLinkJPY: "https://buy.stripe.com/14AcN53NPgAy4j9055es000", // Stripe 支付链接（日元 ¥500；支持卡与钱包）
+  payLinkCNY: "https://buy.stripe.com/4gMeVd5VXgAy6rh055es001", // Stripe 支付链接（人民币 ¥25；支付宝 / 微信支付）
   buyPage: "buy.html", // 购买页（相对游戏页路径）
   claimPath: "/api/claim", // 领码页（Pages Function，付款回跳落点）
   verifyPath: "/api/verify-code", // 输码核验端点（Pages Function）
