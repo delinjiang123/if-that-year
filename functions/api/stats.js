@@ -160,12 +160,12 @@ export async function onRequestGet(context) {
     }
     // 访客聚合（vid = blob1，空串排除；原值不出 SQL，只回计数）
     const distinctRows = await runSql(
-      `SELECT uniq(blob1) AS n FROM ${DATASET} WHERE ${range} AND blob1 != ''`
+      `SELECT count(DISTINCT blob1) AS n FROM ${DATASET} WHERE ${range} AND blob1 != ''`
     );
     distinctVisitors = distinctRows.length ? Number(distinctRows[0].n || 0) : 0;
     visitorsByDay = {};
     const dayRows = await runSql(
-      `SELECT toDate(timestamp) AS day, uniq(blob1) AS n FROM ${DATASET} WHERE ${range} AND blob1 != '' GROUP BY day`
+      `SELECT toDate(timestamp) AS day, count(DISTINCT blob1) AS n FROM ${DATASET} WHERE ${range} AND blob1 != '' GROUP BY day`
     );
     for (const row of dayRows) {
       if (row.day) visitorsByDay[String(row.day)] = Number(row.n || 0);
@@ -175,7 +175,7 @@ export async function onRequestGet(context) {
     // 这两条单独兜底：被平台拒绝时只降这两项，不拖垮整端（见文件头降级口径）。
     try {
       const retRows = await runSql(
-        `SELECT count() AS n FROM (SELECT blob1 FROM ${DATASET} WHERE ${range} AND blob1 != '' GROUP BY blob1 HAVING uniq(toDate(timestamp)) >= 2)`
+        `SELECT count() AS n FROM (SELECT blob1 FROM ${DATASET} WHERE ${range} AND blob1 != '' GROUP BY blob1 HAVING count(DISTINCT toDate(timestamp)) >= 2)`
       );
       returning = retRows.length ? Number(retRows[0].n || 0) : 0;
       startsPerVisitor = { "1": 0, "2": 0, "3+": 0 };
