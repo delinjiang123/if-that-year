@@ -1,6 +1,6 @@
 {
- "totalRows": 2921,
- "uniqueIds": 2831,
+ "totalRows": 2957,
+ "uniqueIds": 2867,
  "duplicateIds": [
   {
    "id": "pr_origin",
@@ -256,6 +256,7 @@
   "src/content/prologue/prologue-c1985.js": 39,
   "src/content/prologue/prologue-c1955.js": 38,
   "src/content/prologue/prologue-c1995.js": 37,
+  "src/content/pool/pack37.js": 36,
   "src/content/lines/abroad.js": 29,
   "src/content/pool/pack29.js": 28,
   "src/content/lines/process-beats.js": 26,
@@ -273,7 +274,7 @@
   "src/content/pool/pack36.js": 3
  },
  "byCategory": {
-  "普通池": 1850,
+  "普通池": 1886,
   "具名线": 332,
   "年代包": 303,
   "童年记号": 104,
@@ -288,7 +289,7 @@
   "分岔": 7
  },
  "byEra": {
-  "全年代": 1939,
+  "全年代": 1975,
   "c1955": 238,
   "c1965": 237,
   "c1978": 205,
@@ -302,13 +303,13 @@
   "c1978+c1985+c1995+c2000": 1
  },
  "byGate": {
-  "状态门": 1962,
-  "无门": 503,
+  "状态门": 1986,
+  "无门": 515,
   "序章幕": 313,
   "链条": 143
  },
  "byRoute": {
-  "不限": 2787,
+  "不限": 2823,
   "abroad": 53,
   "home": 25,
   "farm": 15,
@@ -327,18 +328,18 @@
   "corp+gap+home": 1,
   "home+corp+abroad+study+gap": 1
  },
- "introducedKnown": 124,
- "lineResolved": 2921,
- "withOccupation": 273,
- "withTrade": 245,
+ "introducedKnown": 129,
+ "lineResolved": 2957,
+ "withOccupation": 280,
+ "withTrade": 252,
  "byTrade": {
   "factory": 59,
   "farm": 34,
   "shop": 31,
   "craft": 23,
   "fab": 20,
+  "teach": 16,
   "gig": 13,
-  "teach": 9,
   "courier": 9,
   "heavy": 9,
   "exam_landed": 6,
@@ -359,24 +360,24 @@
   "med": 1,
   "truck": 1
  },
- "runtimeGamePacks": 2485,
+ "runtimeGamePacks": 2521,
  "runtimeGameDataEvents": 45,
  "textCounts": {
   "contentJsonStyle": {
-   "unique": 2414,
-   "occurrences": 2414
+   "unique": 2450,
+   "occurrences": 2450
   },
   "contentJsStyle": {
    "unique": 280,
    "occurrences": 471
   },
   "contentBothStyles": {
-   "unique": 2707,
-   "occurrences": 2917
+   "unique": 2743,
+   "occurrences": 2953
   },
   "srcBothStyles": {
-   "unique": 2817,
-   "occurrences": 3070
+   "unique": 2855,
+   "occurrences": 3108
   }
  },
  "lineMissing": [],
@@ -401,16 +402,9 @@
    "F33-2",
    "F33-3",
    "F33-4",
-   "F38-1",
-   "F38-2",
-   "F38-3",
-   "F38-4",
    "F44-1",
    "F44-2",
    "F44-3",
-   "F45-1",
-   "F45-2",
-   "F45-3",
    "F52-1",
    "F52-2",
    "F52-3",
@@ -420,6 +414,15 @@
    "F58-2",
    "F58-3",
    "F58-4",
+   "FK-1",
+   "FK-2",
+   "FK-3",
+   "FK-4",
+   "FK-5",
+   "FK-6",
+   "FK-7",
+   "FK-8",
+   "FK-9",
    "abroad",
    "bought_house",
    "c1955",

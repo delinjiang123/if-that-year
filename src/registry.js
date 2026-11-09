@@ -2184,9 +2184,14 @@ window.GAME_REGISTRY.milestones = {
   },
   "teach_work": {
    "setters": [
-    "r_school1"
+    "r_school1",
+    "p37_015",
+    "p37_016",
+    "p37_017",
+    "p37_018",
+    "p37_019"
    ],
-   "note": "教师入行（v0.19.0）：r_school1 分配到校呈现即立（两选项均为教书），教师簇以此为门；traj_school 仍为轨迹旗"
+   "note": "教师入行（v0.19.0）：r_school1 分配到校呈现即立（两选项均为教书），教师簇以此为门；traj_school 仍为轨迹旗。v0.60.20 补登 pack37 五条入行拍（代课/接班/考编/特岗/临聘，均 ctx entry 立 teach_work）"
   },
   "acct_work": {
    "setters": [
