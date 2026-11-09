@@ -103,98 +103,86 @@
     return req.includes("exam_retry");
   }
 
-  // --- 统一条件求值：路线/标记组合/数值形状/前置链 ---
-  function met(e) {
-    if (IFY.S.flags && IFY.S.flags.farm_left && isFarmLineItem(e)) return false; // 退出层：全家进城后土地线关门
-    if (examRetryGateApplies(e) && !IFY.ctxOk({ eduGateHalf: true })) return false; // 链身关门：require 型后继过宽学历门（见 examRetryGateApplies）
-    if (e.procOnly) return false; // 进程条目只由进程呈现，不进普通抽取池（v0.18.0）
-    if (e.ctx && !IFY.ctxOk(e.ctx)) return false; // 职业语境门（v0.18.0）
-    if (e.anyParentAlive && IFY.S.state.dad !== "alive" && IFY.S.state.mom !== "alive") return false;
-    if (e.anyFamilyAlive && !(typeof IFY.anyFamilyAlive === "function" && IFY.anyFamilyAlive(IFY.S))) return false; // 判词批 D：家里还有人门，求值本体在 record.js 的派生层，与 unmetConditions 同读一处，不许两处各拼一份
-    if (e.kidMin != null && (IFY.S.kidsAt == null || IFY.S.age - IFY.S.kidsAt < e.kidMin)) return false; // v0.18.0：孩子年龄门（按 kids 落定年龄推孩子岁数，挡「孩子 9 岁脱产备考」类错位） // 与父母进程对齐（fork52：父母都不在了不出此岔）
-    if (e.kidMax != null && (IFY.S.kidsAt == null || IFY.S.age - IFY.S.kidsAt > e.kidMax)) return false; // v0.19.0 三相：孩子年龄上限门（与 kidMin 对称，挡「孩子 9 岁入园」类错位；字段形状在 tools/validate-state.js 登记核对）
-    if (e.kidAgeMin != null) { const ka = kidAgeTrue(); if (ka == null || ka < e.kidAgeMin) return false; } // v0.20.1：孩子真实年龄下限门（锚出生年，口径见 kidAgeTrue）
-    if (e.kidAgeMax != null) { const ka = kidAgeTrue(); if (ka == null || ka > e.kidAgeMax) return false; } // v0.20.1：孩子真实年龄上限门（婴儿期文本用它封顶）
-    if (e.petMin != null) { const pa = petAgesTrue(e); if (!pa.length || Math.max(...pa) < e.petMin) return false; } // v0.20.1：宠物真实年龄下限门（老龄文本 ≥9；分不清物种时任一宠物达龄即过）
-    if (e.petMax != null) { const pa = petAgesTrue(e); if (!pa.length || Math.min(...pa) > e.petMax) return false; } // v0.20.1：宠物真实年龄上限门（幼宠文本用；任一宠物够小即过）
-    if (e.flagAgeWithin && (IFY.S.flagAges == null || IFY.S.flagAges[e.flagAgeWithin.flag] == null || IFY.S.age - IFY.S.flagAges[e.flagAgeWithin.flag] > e.flagAgeWithin.years)) return false; // v0.19.0 三相：旗标落点时间窗门（通用形状 {flag, years}，读 flagAges 底子；挡身后手续隔多年重办类复发）
-    if (e.flagAgeMin && (IFY.S.flagAges == null || IFY.S.flagAges[e.flagAgeMin.flag] == null || IFY.S.age - IFY.S.flagAges[e.flagAgeMin.flag] < e.flagAgeMin.years)) return false; // 内容修复批：旗标落点下限门（flagAgeWithin 的对偶——置旗未满 N 年不出；挡刚落点即被同题追问类紧贴复发，如刚搬完家又问搬不搬；字段形状在 tools/validate-state.js 登记核对）
-    if (e.rehireAfterRetire && !(typeof IFY.hasRehireAfterRetire === "function" && IFY.hasRehireAfterRetire())) return false; // v0.20.1 W7：返聘后复退门（条目级布尔）——账本里首次全退流转之后真有过 retired→part 返聘边才可抽（work.js hasRehireAfterRetire，读账本不读旧旗）
-    if (e.route && e.route !== IFY.S.route.id) return false;
-    if (e.routeIn && !e.routeIn.includes(IFY.S.route.id) && !(IFY.S.route.id == null && e.routeIn.includes("home") && IFY.S.state && IFY.S.state.track === "home")) return false;
-    if (e.forbidRoute && e.forbidRoute === IFY.S.route.id) return false;
-    if (e.requiresFactHard && !factAnyOk(e.requiresFactHard)) return false; // WP2（补丁稿 wp2-scheduler-year-patch，合并二期落）: 枚举事实硬门
-    if (e.era && IFY.S.era !== e.era) return false;
-    if (e.minYear && (IFY.S.birthYear || 1978) + IFY.S.age < e.minYear) return false; // 公历门（v0.11.0）：事件标注的最早公历年，出生年+年龄换算
-    if (e.maxYear && (IFY.S.birthYear || 1978) + IFY.S.age > e.maxYear) return false; // 公历门下限对偶（v0.23 合并二期 F）：事件标注的最晚公历年；此前 maxYear 字段只有 p1_035 在用而 met 未消费，本轮起真生效（该条可达公历本就在界内，行为不变）
-    if (e.eraIn && !e.eraIn.includes(IFY.S.era || "c2000")) return false;
-    if (e.require && !(Array.isArray(e.require) ? e.require : [e.require]).every((f) => IFY.S.flags[f])) return false;
-    if (e.forbid && (Array.isArray(e.forbid) ? e.forbid : [e.forbid]).some((f) => IFY.S.flags[f])) return false;
-    if (e.all && !e.all.every((f) => IFY.S.flags[f])) return false;
-    if (e.any && !e.any.some((f) => IFY.S.flags[f])) return false;
-    if (e.state && !Object.entries(e.state).every(([dom, v]) => (Array.isArray(v) ? v.includes(IFY.S.state[dom]) : IFY.S.state[dom] === v))) return false; // 状态门（v0.12.0）：值可为单值或候选数组
-    if (e.stateAll && !Object.entries(e.stateAll).every(([dom, v]) => (Array.isArray(v) ? v.includes(IFY.S.state[dom]) : IFY.S.state[dom] === v))) return false; // 与 state 同语义；区别只在抽取权重（state 对应旧 require 的 ×3，stateAll 对应旧 all/forbid 的 ×1，迁移按来源保真，见 docs/STATE-MATRIX.md §6）
-    if (e.stateNot && Object.entries(e.stateNot).some(([dom, v]) => (Array.isArray(v) ? v.includes(IFY.S.state[dom]) : IFY.S.state[dom] === v))) return false;
-    if (e.chain && !IFY.S.usedEvents.includes(e.chain) && !(IFY.S.usedRare || []).includes(e.chain)) return false;
-    if (e.when && (e.when.lt !== undefined ? IFY.S.stats[e.when.stat] >= e.when.lt : IFY.S.stats[e.when.stat] <= e.when.gt)) return false;
-    if (e.stats && !e.stats.every((c) => (c.lt !== undefined ? IFY.S.stats[c.k] < c.lt : IFY.S.stats[c.k] > c.gt))) return false;
-    return true;
-  }
-
-  // ---------- 差一项求值（v0.20.0 M2 结算「差一步」）：与 met() 同口径逐项核对，返回未满足项清单 ----------
-  // 纯读求值：不掷骰、不改状态。unmet 每项为结构化描述 {kind, ...}，呈现层（settlement.js）据此写人话；
-  // evidenceMissing = 结局证据组还差几点（无 evidence 声明按 0）。判定逻辑只此一份，呈现层不复制 met。
-  function unmetConditions(e) {
-    const out = [];
-    const S = IFY.S, F = (S && S.flags) || {};
-    if (e.ctx && !IFY.ctxOk(e.ctx)) out.push({ kind: "ctx" });
-    if (e.anyParentAlive && S.state.dad !== "alive" && S.state.mom !== "alive") out.push({ kind: "parents" });
-    if (e.anyFamilyAlive && !(typeof IFY.anyFamilyAlive === "function" && IFY.anyFamilyAlive(S))) out.push({ kind: "family" }); // 判词批 D：与 met() 同读 record.js 派生本体
-    if (e.kidMin != null && (S.kidsAt == null || S.age - S.kidsAt < e.kidMin)) out.push({ kind: "kidAge", need: e.kidMin, have: S.kidsAt == null ? null : S.age - S.kidsAt });
-    if (e.kidMax != null && (S.kidsAt == null || S.age - S.kidsAt > e.kidMax)) out.push({ kind: "kidAgeMax", need: e.kidMax, have: S.kidsAt == null ? null : S.age - S.kidsAt });
-    { const kb = S.kidsBornAt != null ? S.kidsBornAt : S.kidsAt; const ka = kb == null ? null : S.age - kb;
-      if (e.kidAgeMin != null && (ka == null || ka < e.kidAgeMin)) out.push({ kind: "kidAgeTrue", need: e.kidAgeMin, have: ka });
-      if (e.kidAgeMax != null && (ka == null || ka > e.kidAgeMax)) out.push({ kind: "kidAgeTrueMax", need: e.kidAgeMax, have: ka }); }
-    if (e.petMin != null || e.petMax != null) { const pa = petAgesTrue(e);
-      if (e.petMin != null && (!pa.length || Math.max(...pa) < e.petMin)) out.push({ kind: "petAge", need: e.petMin, have: pa.length ? Math.max(...pa) : null });
-      if (e.petMax != null && (!pa.length || Math.min(...pa) > e.petMax)) out.push({ kind: "petAgeMax", need: e.petMax, have: pa.length ? Math.min(...pa) : null }); }
-    if (e.flagAgeWithin && (S.flagAges == null || S.flagAges[e.flagAgeWithin.flag] == null || S.age - S.flagAges[e.flagAgeWithin.flag] > e.flagAgeWithin.years)) out.push({ kind: "flagAge", flag: e.flagAgeWithin.flag });
-    if (e.flagAgeMin && (S.flagAges == null || S.flagAges[e.flagAgeMin.flag] == null || S.age - S.flagAges[e.flagAgeMin.flag] < e.flagAgeMin.years)) out.push({ kind: "flagAgeMin", flag: e.flagAgeMin.flag }); // 内容修复批：与 met() 的 flagAgeMin 同口径
-    if (e.rehireAfterRetire && !(typeof IFY.hasRehireAfterRetire === "function" && IFY.hasRehireAfterRetire())) out.push({ kind: "rehireAfter" });
-    if (e.route && (!S.route || e.route !== S.route.id)) out.push({ kind: "route", need: e.route });
-    if (e.routeIn && !(S.route && e.routeIn.includes(S.route.id))) out.push({ kind: "routeIn", need: e.routeIn });
-    if (e.forbidRoute && S.route && e.forbidRoute === S.route.id) out.push({ kind: "forbidRoute", need: e.forbidRoute });
-    if (e.era && S.era !== e.era) out.push({ kind: "era", need: e.era });
-    if (e.minYear && (S.birthYear || 1978) + S.age < e.minYear) out.push({ kind: "minYear", need: e.minYear });
-    if (e.maxYear && (S.birthYear || 1978) + S.age > e.maxYear) out.push({ kind: "maxYear", need: e.maxYear }); // 出生年内容片 R5：与 minYear 对偶登记（此前只有 met() 消费 maxYear，「差一步」解释对 maxYear 条目缺一侧）；纯解释层，不改任何呈现判定
-    if (e.eraIn && !e.eraIn.includes(S.era || "c2000")) out.push({ kind: "eraIn", need: e.eraIn });
-    const reqList = e.require ? (Array.isArray(e.require) ? e.require : [e.require]) : [];
-    for (const f of reqList) if (!F[f]) out.push({ kind: "flag", flag: f });
-    if (e.forbid) for (const f of (Array.isArray(e.forbid) ? e.forbid : [e.forbid])) if (F[f]) out.push({ kind: "forbidFlag", flag: f });
-    if (e.all) for (const f of e.all) if (!F[f]) out.push({ kind: "flag", flag: f });
-    if (e.any && !e.any.some((f) => F[f])) out.push({ kind: "anyFlag", flags: e.any.slice() });
+  // --- 统一条件求值：单一实现（架构批甲） ---
+  // evalGates(e, out)：全部条目门的逐项判定只此一份。out === null 为布尔模式（met 消费）：
+  // 首个未满足项即返回 false、全过返回 true——求值顺序与旧 met 逐行相同、布尔模式不构造
+  // 任何描述对象（热路径零分配）；out 为数组为收集模式（unmetConditions 消费）：逐项把
+  // 未满足项的结构化描述 push 进 out 并返回 out。两模式共用同一串判定，met(e) ⇔
+  // evalGates(e, []) 为空由此结构性成立——旧实现 met 与 unmetConditions 两份手写判定
+  // 已漂移（requiresFactHard / farm 退出层 / examRetry 学历门 / procOnly 只在 met 一侧，
+  // routeIn 的 track=home 回落只在 met 一侧），本函数把这四类门一并登记进收集模式：
+  // 新增 kind 为 farmLine/examGate/procOnly/factHard，呈现层 missText 未登记的 kind 走
+  // 默认文案，与 kidAgeTrue/petAge 等既有未登记 kind 同例。
+  // 全部判定为纯读：不掷骰、不改状态（ctxOk/factAnyOk/anyFamilyAlive/hasRehireAfterRetire/
+  // kidAgeTrue/petAgesTrue 皆纯函数），两模式结论与求值顺序无关；route 缺失（汇入前）
+  // 的退化输入旧 met 会抛错、新实现按未满足处理——真实局里 route 汇入后才求值，不可达。
+  function evalGates(e, out) {
+    const collect = out !== null;
+    const S = IFY.S;
+    const F = (S && S.flags) || {};
+    const routeId = S && S.route ? S.route.id : null;
+    if (F.farm_left && isFarmLineItem(e)) { if (!collect) return false; out.push({ kind: "farmLine" }); } // 退出层：全家进城后土地线关门
+    if (examRetryGateApplies(e) && !IFY.ctxOk({ eduGateHalf: true })) { if (!collect) return false; out.push({ kind: "examGate" }); } // 链身关门：require 型后继过宽学历门（见 examRetryGateApplies）
+    if (e.procOnly) { if (!collect) return false; out.push({ kind: "procOnly" }); } // 进程条目只由进程呈现，不进普通抽取池（v0.18.0）
+    if (e.ctx && !IFY.ctxOk(e.ctx)) { if (!collect) return false; out.push({ kind: "ctx" }); } // 职业语境门（v0.18.0）
+    if (e.anyParentAlive && S.state.dad !== "alive" && S.state.mom !== "alive") { if (!collect) return false; out.push({ kind: "parents" }); }
+    if (e.anyFamilyAlive && !(typeof IFY.anyFamilyAlive === "function" && IFY.anyFamilyAlive(S))) { if (!collect) return false; out.push({ kind: "family" }); } // 判词批 D：家里还有人门，求值本体在 record.js 的派生层
+    if (e.kidMin != null && (S.kidsAt == null || S.age - S.kidsAt < e.kidMin)) { if (!collect) return false; out.push({ kind: "kidAge", need: e.kidMin, have: S.kidsAt == null ? null : S.age - S.kidsAt }); } // v0.18.0：孩子年龄门（按 kids 落定年龄推孩子岁数）
+    if (e.kidMax != null && (S.kidsAt == null || S.age - S.kidsAt > e.kidMax)) { if (!collect) return false; out.push({ kind: "kidAgeMax", need: e.kidMax, have: S.kidsAt == null ? null : S.age - S.kidsAt }); } // v0.19.0 三相：孩子年龄上限门
+    if (e.kidAgeMin != null) { const ka = kidAgeTrue(); if (ka == null || ka < e.kidAgeMin) { if (!collect) return false; out.push({ kind: "kidAgeTrue", need: e.kidAgeMin, have: ka }); } } // v0.20.1：孩子真实年龄下限门（锚出生年，见 kidAgeTrue）
+    if (e.kidAgeMax != null) { const ka = kidAgeTrue(); if (ka == null || ka > e.kidAgeMax) { if (!collect) return false; out.push({ kind: "kidAgeTrueMax", need: e.kidAgeMax, have: ka }); } } // v0.20.1：孩子真实年龄上限门
+    if (e.petMin != null) { const pa = petAgesTrue(e); if (!pa.length || Math.max(...pa) < e.petMin) { if (!collect) return false; out.push({ kind: "petAge", need: e.petMin, have: pa.length ? Math.max(...pa) : null }); } } // v0.20.1：宠物真实年龄下限门
+    if (e.petMax != null) { const pa = petAgesTrue(e); if (!pa.length || Math.min(...pa) > e.petMax) { if (!collect) return false; out.push({ kind: "petAgeMax", need: e.petMax, have: pa.length ? Math.min(...pa) : null }); } } // v0.20.1：宠物真实年龄上限门
+    if (e.flagAgeWithin && (S.flagAges == null || S.flagAges[e.flagAgeWithin.flag] == null || S.age - S.flagAges[e.flagAgeWithin.flag] > e.flagAgeWithin.years)) { if (!collect) return false; out.push({ kind: "flagAge", flag: e.flagAgeWithin.flag }); } // v0.19.0 三相：旗标落点时间窗门
+    if (e.flagAgeMin && (S.flagAges == null || S.flagAges[e.flagAgeMin.flag] == null || S.age - S.flagAges[e.flagAgeMin.flag] < e.flagAgeMin.years)) { if (!collect) return false; out.push({ kind: "flagAgeMin", flag: e.flagAgeMin.flag }); } // 内容修复批：旗标落点下限门
+    if (e.rehireAfterRetire && !(typeof IFY.hasRehireAfterRetire === "function" && IFY.hasRehireAfterRetire())) { if (!collect) return false; out.push({ kind: "rehireAfter" }); } // v0.20.1 W7：返聘后复退门
+    if (e.route && e.route !== routeId) { if (!collect) return false; out.push({ kind: "route", need: e.route }); }
+    if (e.routeIn && !e.routeIn.includes(routeId) && !(routeId == null && e.routeIn.includes("home") && S.state && S.state.track === "home")) { if (!collect) return false; out.push({ kind: "routeIn", need: e.routeIn }); } // routeIn 回落：未汇入且 track=home 时 routeIn 含 home 视为过（旧 met 独有口径，本次收进单一实现）
+    if (e.forbidRoute && e.forbidRoute === routeId) { if (!collect) return false; out.push({ kind: "forbidRoute", need: e.forbidRoute }); }
+    if (e.requiresFactHard && !factAnyOk(e.requiresFactHard)) { if (!collect) return false; out.push({ kind: "factHard", need: e.requiresFactHard }); } // WP2：枚举事实硬门（旧 unmetConditions 缺此项——差一步与段通道都看不见它，本次补登记）
+    if (e.era && S.era !== e.era) { if (!collect) return false; out.push({ kind: "era", need: e.era }); }
+    if (e.minYear && (S.birthYear || 1978) + S.age < e.minYear) { if (!collect) return false; out.push({ kind: "minYear", need: e.minYear }); } // 公历门（v0.11.0）
+    if (e.maxYear && (S.birthYear || 1978) + S.age > e.maxYear) { if (!collect) return false; out.push({ kind: "maxYear", need: e.maxYear }); } // 公历门下限对偶（v0.23 合并二期 F）
+    if (e.eraIn && !e.eraIn.includes(S.era || "c2000")) { if (!collect) return false; out.push({ kind: "eraIn", need: e.eraIn }); }
+    if (e.require) for (const f of (Array.isArray(e.require) ? e.require : [e.require])) if (!F[f]) { if (!collect) return false; out.push({ kind: "flag", flag: f }); }
+    if (e.forbid) for (const f of (Array.isArray(e.forbid) ? e.forbid : [e.forbid])) if (F[f]) { if (!collect) return false; out.push({ kind: "forbidFlag", flag: f }); }
+    if (e.all) for (const f of e.all) if (!F[f]) { if (!collect) return false; out.push({ kind: "flag", flag: f }); }
+    if (e.any && !e.any.some((f) => F[f])) { if (!collect) return false; out.push({ kind: "anyFlag", flags: e.any.slice() }); }
     for (const obj of [e.state, e.stateAll]) {
       if (!obj) continue;
       for (const [dom, v] of Object.entries(obj)) {
         const vals = Array.isArray(v) ? v : [v];
-        if (!vals.includes(S.state[dom])) out.push({ kind: "state", dom, need: vals });
+        if (!vals.includes(S.state[dom])) { if (!collect) return false; out.push({ kind: "state", dom, need: vals }); }
       }
     }
     if (e.stateNot) for (const [dom, v] of Object.entries(e.stateNot)) {
       const vals = Array.isArray(v) ? v : [v];
-      if (vals.includes(S.state[dom])) out.push({ kind: "stateNot", dom, need: vals });
+      if (vals.includes(S.state[dom])) { if (!collect) return false; out.push({ kind: "stateNot", dom, need: vals }); }
     }
-    if (e.chain && !S.usedEvents.includes(e.chain) && !(S.usedRare || []).includes(e.chain)) out.push({ kind: "chain", chain: e.chain });
+    if (e.chain && !S.usedEvents.includes(e.chain) && !(S.usedRare || []).includes(e.chain)) { if (!collect) return false; out.push({ kind: "chain", chain: e.chain }); }
     if (e.when) {
       const have = S.stats[e.when.stat];
       const ok = e.when.lt !== undefined ? have < e.when.lt : have > e.when.gt;
-      if (!ok) out.push({ kind: "stat", stat: e.when.stat, gt: e.when.gt, lt: e.when.lt, have });
+      if (!ok) { if (!collect) return false; out.push({ kind: "stat", stat: e.when.stat, gt: e.when.gt, lt: e.when.lt, have }); }
     }
     if (e.stats) for (const c of e.stats) {
       const have = S.stats[c.k];
       const ok = c.lt !== undefined ? have < c.lt : have > c.gt;
-      if (!ok) out.push({ kind: "stat", stat: c.k, gt: c.gt, lt: c.lt, have });
+      if (!ok) { if (!collect) return false; out.push({ kind: "stat", stat: c.k, gt: c.gt, lt: c.lt, have }); }
     }
+    return collect ? out : true;
+  }
+
+  // --- 统一条件求值：路线/标记组合/数值形状/前置链（met = evalGates 的布尔模式） ---
+  function met(e) {
+    return evalGates(e, null) === true;
+  }
+
+  // ---------- 差一项求值（v0.20.0 M2 结算「差一步」）：消费 evalGates 的逐项判定结果 ----------
+  // 纯读求值：不掷骰、不改状态。unmet 每项为结构化描述 {kind, ...}，呈现层（settlement.js）据此写人话；
+  // evidenceMissing = 结局证据组还差几点（无 evidence 声明按 0）。判定逻辑只此一份（evalGates），呈现层不复制 met。
+  function unmetConditions(e) {
+    const out = evalGates(e, []);
     const ev = evidenceCount(e);
     return { unmet: out, evidence: ev, evidenceMissing: e.evidence ? Math.max(0, 2 - ev) : 0 };
   }
