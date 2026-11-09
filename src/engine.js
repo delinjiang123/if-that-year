@@ -1,4 +1,4 @@
-// 《如果那年》引擎 v0.60.35 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
+// 《如果那年》引擎 v0.60.36 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
 //      / 判词按数值形状拼装 / 全程自动存档可续玩 / 种子可输入、可复制分享链接 / 在线零 LLM 调用
 // [模块]本引擎自 v0.20.0 起拆为各自独立的模块文件（独立包装器 + window.IFY 共享命名空间），按 index.html 的顺序加载：本文件（建 IFY + 编排）→ src/world/apply.js → src/record.js → src/world/processes/{parents,spouse,work,place,health}.js → src/scheduler.js → src/views/{stream,year,shadow,settlement,share}.js → src/engine-boot.js（收尾，调用 IFY.renderStart()）。跨模块引用一律 IFY.<名>，可变量收编为 IFY 属性。
 window.IFY = window.IFY || {};
@@ -134,6 +134,23 @@ window.IFY = window.IFY || {};
     if (hi <= lo) return lo;
     const st = { a: seedFromString(String(seedStr) + "#birth:" + era.id) };
     return lo + Math.floor(mulberry(st) * (hi - lo + 1));
+  }
+
+  // 菜单呈现置换（SHUF-01）：与 drawBirthYear 同纪律的旁路派生——置换种子只由
+  // （局种子串＋菜单上下文 ctx）哈希决定，不消费 RNG/RNGW/RNGA 任何一条游戏流，
+  // 人生轨迹一字不受影响。同一局同一菜单（ctx 相同）重绘恒同序、换种子换序。
+  // 只许呈现层拿它重排「已经组装好的」选项显示序；组装、账面、影子无头解决
+  // 一律不经此函数。返回 [0..n) 的一个排列（Fisher–Yates，mulberry 旁路流）。
+  function menuPerm(seedStr, ctx, n) {
+    const idx = [];
+    for (let i = 0; i < n; i++) idx.push(i);
+    if (n < 2) return idx;
+    const st = { a: seedFromString(String(seedStr) + "#menu:" + String(ctx)) };
+    for (let i = n - 1; i > 0; i--) {
+      const j = Math.floor(mulberry(st) * (i + 1));
+      const t = idx[i]; idx[i] = idx[j]; idx[j] = t;
+    }
+    return idx;
   }
 
   const clamp = (v) => Math.max(0, Math.min(100, v));
@@ -1110,10 +1127,14 @@ window.IFY = window.IFY || {};
     if (!anaPrologueDone) { anaPrologueDone = true; ANA.track("prologue_done", { era: IFY.S.era }); }
     const trackName = { study: "念书", work: "打工", craft: "学手艺", home: "守家里" }[IFY.S.state.track] || "";
     const mergeText = `${trackName ? `这几年，你是${trackName}过来的。` : ""}到了 22 岁，路一下子宽了。往哪边走，这一回你自己定。没选的那几条也不会消失——往后隔些年，它们还会远远地看你一眼。`;
+    // SHUF-01：路线岔口呈现序按局洗牌——只重排按钮的显示序，按钮仍带 D.routes
+    // 原下标（data-i），点击与落定都按路线身份走，D.routes 本身与 mergeIntoRoute
+    // 的 unchosen 构建（影子路线的数据序来源）一字不动。置换走旁路 menuPerm。
+    const routeOrder = menuPerm(IFY.S.seedStr, "route@" + (IFY.S.era || ""), D.routes.length);
     app().innerHTML = `<section class="card">${prologueHead(START_AGE, "adult")}${IFY.autoPanelHtml()}
       <h2>22 岁 · 往后的路</h2>
       <p>${mergeText}</p>
-      <div class="choices">${D.routes.map((r, i) => `<button class="choice${IFY.S.dailyRoute === r.id ? " dailymark" : ""}" data-i="${i}"><b>${esc(routeNameFork(r))}</b><small>${esc(routeDescFork(r))}</small></button>`).join("")}</div>
+      <div class="choices">${routeOrder.map((i) => { const r = D.routes[i]; return `<button class="choice${IFY.S.dailyRoute === r.id ? " dailymark" : ""}" data-i="${i}"><b>${esc(routeNameFork(r))}</b><small>${esc(routeDescFork(r))}</small></button>`; }).join("")}</div>
       </section>`;
     IFY.finishRender();
     const chooseRoute = (route, autoSelected) => {
@@ -1126,15 +1147,17 @@ window.IFY = window.IFY || {};
       IFY.choiceBeat(b, () => chooseRoute(route, false));
     }));
     // 全程自动选扩围（本批）：选路与事件屏同一套两段式——今日一局的 .dailymark 不特殊照顾，纯随机抽
+    // SHUF-01：抽的是「呈现位」下标（与高亮的按钮同位），落定的路线按该呈现位
+    // 的 data-i 身份取——自动流自此跟着呈现走，不再按 D.routes 数据位抽。
     IFY.armAuto(mergeText, () => {
-      const idx = Math.floor(IFY.rng() * D.routes.length);
+      const p = Math.floor(IFY.rng() * routeOrder.length);
       const btns = document.querySelectorAll(".choices .choice");
       btns.forEach((o, j) => {
         o.disabled = true;
-        o.classList.toggle("picked", j === idx);
-        o.classList.toggle("faded", j !== idx);
+        o.classList.toggle("picked", j === p);
+        o.classList.toggle("faded", j !== p);
       });
-      IFY.autoPhase2 = setTimeout(() => { IFY.autoPhase2 = null; chooseRoute(D.routes[idx], true); }, 400);
+      IFY.autoPhase2 = setTimeout(() => { IFY.autoPhase2 = null; chooseRoute(D.routes[routeOrder[p]], true); }, 400);
     }, "choice");
   }
 
@@ -1338,7 +1361,7 @@ window.IFY = window.IFY || {};
   }
   Object.assign(IFY, { D, CARDS, PRO, RHYTHM, PROLOGUE_ERA, hasPrologue, ANA, START_AGE, MAX_AGE, STAT_META, GLIMPSE_AGES, ERAS, SAVE_KEY,
     LIVES_KEY, PREFS_KEY, SPEED_CPS, SPEED_LABEL, SPEED_STYLE, AUTO_BASE_MS, AUTO_CAP_MS, AUTO_MODES,
-    DEFAULT_AUTO_MODE, RNG, RNGW, RNGA, mulberry, rng, rngW, rngA, seedStreams, seedFromString, drawBirthYear, clamp, esc,
+    DEFAULT_AUTO_MODE, RNG, RNGW, RNGA, mulberry, rng, rngW, rngA, seedStreams, seedFromString, drawBirthYear, menuPerm, clamp, esc,
     el, app, reducedMotion, freshState, sampleStatsPeak, sampleStatsLate, save, loadSave, clearSave, loadLives, todayStr, recordLives,
     STREAK_KEY, LASTLIFE_KEY, loadStreak, loadLastLife, dateStrOf, shiftedDateStr, recordDayAndLife,
     HISTORY_KEY, loadHistory, recordHistory, recordSeen, armAvoidance, restoreAvoidance,

@@ -225,11 +225,26 @@
     const gateGrouped = !!(fork.gateGroupTitles && typeof fork.gateGroupTitles === "object");
     const gateBtn = ([c, i]) => `<button class="choice" data-i="${i}">${IFY.esc(labelText(c))}${c.sub ? `<span class="choice-sub">${IFY.esc(c.sub)}</span>` : ""}</button>`;
     let choicesHtml;
+    // SHUF-01：呈现序（自动选抽位与高亮按此序）。非关口分岔恒等于 vis、行为一字
+    // 不变；关口菜单（只有 gateForkView 的 view 带 gateGroupTitles）在下方按
+    // 分组段内洗牌后的顺序落定。按钮始终带 fork.choices 原下标（data-i），
+    // 点击按身份回查，呈现序不进任何账。
+    let presented = vis;
     if (gateGrouped) {
       const parts = [];
-      const litPart = vis.filter(([c]) => c.group === "lit");
-      const coldPart = vis.filter(([c]) => c.group === "cold");
-      const deferPart = vis.filter(([c]) => c.group !== "lit" && c.group !== "cold");
+      // SHUF-01 关口菜单呈现洗牌：只在各分组段内重排（组题与段的构成是 D4
+      // 既定呈现，段间不串位——冷门项不许跑到「有来处的」标题下）；置换走旁路
+      // menuPerm（种子串＋菜单 id＋年龄＋年代＋段名），不消费任何游戏随机流，
+      // 组装结果（fork.choices）与影子无头解决读到的选项集一字不动。
+      const shufSeg = (arr, tag) => {
+        if (arr.length < 2 || typeof IFY.menuPerm !== "function" || !IFY.S) return arr;
+        const ctx = `gate:${fork.id || ""}@${fork.age}@${IFY.S.era || ""}:${tag}`;
+        return IFY.menuPerm(IFY.S.seedStr, ctx, arr.length).map((k) => arr[k]);
+      };
+      const litPart = shufSeg(vis.filter(([c]) => c.group === "lit"), "lit");
+      const coldPart = shufSeg(vis.filter(([c]) => c.group === "cold"), "cold");
+      const deferPart = shufSeg(vis.filter(([c]) => c.group !== "lit" && c.group !== "cold"), "defer");
+      presented = litPart.concat(coldPart, deferPart);
       if (litPart.length && fork.gateGroupTitles.lit) parts.push(`<h3 class="gate-group">${IFY.esc(fork.gateGroupTitles.lit)}</h3>${litPart.map(gateBtn).join("")}`);
       if (coldPart.length && fork.gateGroupTitles.cold) parts.push(`<h3 class="gate-group">${IFY.esc(fork.gateGroupTitles.cold)}</h3>${coldPart.map(gateBtn).join("")}`);
       parts.push(deferPart.map(gateBtn).join(""));
@@ -268,17 +283,19 @@
       const c = fork.choices[Number(b.dataset.i)];
       IFY.choiceBeat(b, () => chooseForkChoice(c, false));
     }));
-    // 全程自动选扩围（本批）：大岔口与事件屏同一套两段式——抽选只在玩家看得见的选项（vis）里抽，
+    // 全程自动选扩围（本批）：大岔口与事件屏同一套两段式——抽选只在玩家看得见的选项里抽，
     // 主计时到点先预高亮 400ms，再走同一落定函数；plain 模式 kind 门控照旧不触发、停住等玩家。
+    // SHUF-01：抽的是「呈现位」下标（presented，与屏上按钮同位），高亮与落定同位
+    // 取项——自动流跟着呈现走；非关口分岔 presented === vis，与旧行为一致。
     IFY.armAuto(forkText, () => {
-      const p = Math.floor(IFY.rng() * vis.length);
+      const p = Math.floor(IFY.rng() * presented.length);
       const btns = document.querySelectorAll(".choices .choice");
       btns.forEach((o, j) => {
         o.disabled = true;
         o.classList.toggle("picked", j === p);
         o.classList.toggle("faded", j !== p);
       });
-      IFY.autoPhase2 = setTimeout(() => { IFY.autoPhase2 = null; chooseForkChoice(vis[p][0], true); }, 400);
+      IFY.autoPhase2 = setTimeout(() => { IFY.autoPhase2 = null; chooseForkChoice(presented[p][0], true); }, 400);
     }, "choice");
   }
 
