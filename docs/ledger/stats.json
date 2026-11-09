@@ -1,6 +1,6 @@
 {
- "totalRows": 3119,
- "uniqueIds": 3029,
+ "totalRows": 3175,
+ "uniqueIds": 3085,
  "duplicateIds": [
   {
    "id": "pr_origin",
@@ -249,6 +249,7 @@
   "src/content/pool/pack20.js": 70,
   "src/content/prologue/cards.js": 68,
   "src/content/era/era1978.js": 63,
+  "src/content/pool/pack42.js": 56,
   "src/content/prologue/prologue.js": 56,
   "src/events.js": 52,
   "src/content/prologue/prologue-c1965.js": 43,
@@ -278,7 +279,7 @@
   "src/content/pool/pack36.js": 3
  },
  "byCategory": {
-  "普通池": 2034,
+  "普通池": 2090,
   "具名线": 332,
   "年代包": 309,
   "童年记号": 104,
@@ -293,11 +294,11 @@
   "分岔": 7
  },
  "byEra": {
-  "全年代": 2108,
+  "全年代": 2132,
   "c1955": 241,
   "c1965": 237,
   "c1978": 205,
-  "c2000": 155,
+  "c2000": 187,
   "c1995": 68,
   "c1985": 66,
   "c1978+c2000": 28,
@@ -307,13 +308,13 @@
   "c1978+c1985+c1995+c2000": 1
  },
  "byGate": {
-  "状态门": 2101,
+  "状态门": 2157,
   "无门": 554,
   "序章幕": 321,
   "链条": 143
  },
  "byRoute": {
-  "不限": 2985,
+  "不限": 3041,
   "abroad": 53,
   "home": 25,
   "farm": 15,
@@ -333,9 +334,9 @@
   "home+corp+abroad+study+gap": 1
  },
  "introducedKnown": 153,
- "lineResolved": 3119,
- "withOccupation": 306,
- "withTrade": 285,
+ "lineResolved": 3175,
+ "withOccupation": 308,
+ "withTrade": 287,
  "byTrade": {
   "factory": 59,
   "farm": 34,
@@ -349,9 +350,9 @@
   "heavy": 9,
   "press": 9,
   "med_hosp": 8,
+  "med": 8,
   "exam_landed": 6,
   "driver_taxi": 6,
-  "med": 6,
   "img": 5,
   "nurse": 5,
   "truck": 5,
@@ -373,24 +374,24 @@
   ]
  },
  "themeDupesRemoved": 0,
- "runtimeGamePacks": 2675,
+ "runtimeGamePacks": 2731,
  "runtimeGameDataEvents": 45,
  "textCounts": {
   "contentJsonStyle": {
-   "unique": 2604,
-   "occurrences": 2604
+   "unique": 2660,
+   "occurrences": 2660
   },
   "contentJsStyle": {
    "unique": 288,
    "occurrences": 479
   },
   "contentBothStyles": {
-   "unique": 2905,
-   "occurrences": 3115
+   "unique": 2961,
+   "occurrences": 3171
   },
   "srcBothStyles": {
-   "unique": 3018,
-   "occurrences": 3271
+   "unique": 3074,
+   "occurrences": 3327
   }
  },
  "lineMissing": [],

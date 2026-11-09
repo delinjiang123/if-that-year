@@ -5,8 +5,8 @@
   "scope": "带 id 的可玩内容条目：GAME_DATA.events/forks(带id) + GAME_PACKS + GAME_SYNERGY + GAME_CARDS + 序章六代包",
   "gateRules": "序章幕（序章包/出身牌）> 链条（chain 字段或被 chain 指向）> 状态门（带门槛字段）> 无门",
   "themes": "主题列来自 docs/ledger/themes.json 手维护映射（横切索引，一条目可挂多主题）；生成器校验：映射 id 不在台账行且非 career.js 的 WORK_FACTS 事实 id 时报错停机，同主题内重复 id 去重计数（stats.themeDupesRemoved），职业层事实挂载见 stats.themeFacts",
-  "totalRows": 3119,
-  "uniqueIds": 3029
+  "totalRows": 3175,
+  "uniqueIds": 3085
  },
  "entries": [
   {
@@ -42222,538 +42222,6 @@
   },
   {
    "seq": 2282,
-   "id": "p41_001",
-   "file": "src/content/pool/pack41.js",
-   "line": 36,
-   "category": "普通池",
-   "occupations": [],
-   "trades": [],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 19,
-   "ageMax": 24,
-   "ageBand": "19–24",
-   "gate": "无门",
-   "introduced": "unknown",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2283,
-   "id": "p41_002",
-   "file": "src/content/pool/pack41.js",
-   "line": 37,
-   "category": "普通池",
-   "occupations": [],
-   "trades": [],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 19,
-   "ageMax": 24,
-   "ageBand": "19–24",
-   "gate": "无门",
-   "introduced": "unknown",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2284,
-   "id": "p41_003",
-   "file": "src/content/pool/pack41.js",
-   "line": 38,
-   "category": "普通池",
-   "occupations": [],
-   "trades": [],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 18,
-   "ageMax": 23,
-   "ageBand": "18–23",
-   "gate": "无门",
-   "introduced": "unknown",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2285,
-   "id": "p41_004",
-   "file": "src/content/pool/pack41.js",
-   "line": 39,
-   "category": "普通池",
-   "occupations": [],
-   "trades": [],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 19,
-   "ageMax": 24,
-   "ageBand": "19–24",
-   "gate": "无门",
-   "introduced": "unknown",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2286,
-   "id": "p41_005",
-   "file": "src/content/pool/pack41.js",
-   "line": 40,
-   "category": "普通池",
-   "occupations": [],
-   "trades": [],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 19,
-   "ageMax": 23,
-   "ageBand": "19–23",
-   "gate": "无门",
-   "introduced": "unknown",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2287,
-   "id": "p41_006",
-   "file": "src/content/pool/pack41.js",
-   "line": 41,
-   "category": "普通池",
-   "occupations": [],
-   "trades": [],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 19,
-   "ageMax": 24,
-   "ageBand": "19–24",
-   "gate": "无门",
-   "introduced": "unknown",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2288,
-   "id": "p41_007",
-   "file": "src/content/pool/pack41.js",
-   "line": 42,
-   "category": "普通池",
-   "occupations": [],
-   "trades": [],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 18,
-   "ageMax": 24,
-   "ageBand": "18–24",
-   "gate": "无门",
-   "introduced": "unknown",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2289,
-   "id": "p41_008",
-   "file": "src/content/pool/pack41.js",
-   "line": 43,
-   "category": "普通池",
-   "occupations": [],
-   "trades": [],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 20,
-   "ageMax": 25,
-   "ageBand": "20–25",
-   "gate": "无门",
-   "introduced": "unknown",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2290,
-   "id": "p41_009",
-   "file": "src/content/pool/pack41.js",
-   "line": 44,
-   "category": "普通池",
-   "occupations": [],
-   "trades": [],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 19,
-   "ageMax": 25,
-   "ageBand": "19–25",
-   "gate": "无门",
-   "introduced": "unknown",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2291,
-   "id": "p41_010",
-   "file": "src/content/pool/pack41.js",
-   "line": 45,
-   "category": "普通池",
-   "occupations": [],
-   "trades": [],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 19,
-   "ageMax": 24,
-   "ageBand": "19–24",
-   "gate": "无门",
-   "introduced": "unknown",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2292,
-   "id": "p41_011",
-   "file": "src/content/pool/pack41.js",
-   "line": 46,
-   "category": "普通池",
-   "occupations": [
-    "矿业"
-   ],
-   "trades": [
-    "miner"
-   ],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 19,
-   "ageMax": 25,
-   "ageBand": "19–25",
-   "gate": "状态门",
-   "introduced": "v0.19.0",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2293,
-   "id": "p41_012",
-   "file": "src/content/pool/pack41.js",
-   "line": 47,
-   "category": "普通池",
-   "occupations": [
-    "矿业"
-   ],
-   "trades": [
-    "miner"
-   ],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 19,
-   "ageMax": 27,
-   "ageBand": "19–27",
-   "gate": "状态门",
-   "introduced": "v0.19.0",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2294,
-   "id": "p41_013",
-   "file": "src/content/pool/pack41.js",
-   "line": 48,
-   "category": "普通池",
-   "occupations": [
-    "矿业"
-   ],
-   "trades": [
-    "miner"
-   ],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 20,
-   "ageMax": 30,
-   "ageBand": "20–30",
-   "gate": "状态门",
-   "introduced": "v0.19.0",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2295,
-   "id": "p41_014",
-   "file": "src/content/pool/pack41.js",
-   "line": 49,
-   "category": "普通池",
-   "occupations": [
-    "矿业"
-   ],
-   "trades": [
-    "miner"
-   ],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 19,
-   "ageMax": 28,
-   "ageBand": "19–28",
-   "gate": "状态门",
-   "introduced": "v0.19.0",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2296,
-   "id": "p41_015",
-   "file": "src/content/pool/pack41.js",
-   "line": 50,
-   "category": "普通池",
-   "occupations": [
-    "矿业"
-   ],
-   "trades": [
-    "miner"
-   ],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 22,
-   "ageMax": 32,
-   "ageBand": "22–32",
-   "gate": "状态门",
-   "introduced": "v0.19.0",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2297,
-   "id": "p41_016",
-   "file": "src/content/pool/pack41.js",
-   "line": 51,
-   "category": "普通池",
-   "occupations": [
-    "矿业"
-   ],
-   "trades": [
-    "miner"
-   ],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 22,
-   "ageMax": 45,
-   "ageBand": "22–45",
-   "gate": "状态门",
-   "introduced": "unknown",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2298,
-   "id": "p41_017",
-   "file": "src/content/pool/pack41.js",
-   "line": 52,
-   "category": "普通池",
-   "occupations": [
-    "矿业"
-   ],
-   "trades": [
-    "miner"
-   ],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 24,
-   "ageMax": 50,
-   "ageBand": "24–50",
-   "gate": "状态门",
-   "introduced": "unknown",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2299,
-   "id": "cr_miner_001",
-   "file": "src/content/pool/pack41.js",
-   "line": 53,
-   "category": "普通池",
-   "occupations": [],
-   "trades": [],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 19,
-   "ageMax": 50,
-   "ageBand": "19–50",
-   "gate": "状态门",
-   "introduced": "unknown",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2300,
-   "id": "cr_miner_002",
-   "file": "src/content/pool/pack41.js",
-   "line": 54,
-   "category": "普通池",
-   "occupations": [],
-   "trades": [],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 19,
-   "ageMax": 50,
-   "ageBand": "19–50",
-   "gate": "状态门",
-   "introduced": "unknown",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2301,
-   "id": "cr_miner_003",
-   "file": "src/content/pool/pack41.js",
-   "line": 55,
-   "category": "普通池",
-   "occupations": [],
-   "trades": [],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 19,
-   "ageMax": 50,
-   "ageBand": "19–50",
-   "gate": "状态门",
-   "introduced": "unknown",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2302,
-   "id": "cr_miner_004",
-   "file": "src/content/pool/pack41.js",
-   "line": 56,
-   "category": "普通池",
-   "occupations": [],
-   "trades": [],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 19,
-   "ageMax": 50,
-   "ageBand": "19–50",
-   "gate": "状态门",
-   "introduced": "unknown",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2303,
-   "id": "cr_miner_005",
-   "file": "src/content/pool/pack41.js",
-   "line": 57,
-   "category": "普通池",
-   "occupations": [],
-   "trades": [],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 19,
-   "ageMax": 50,
-   "ageBand": "19–50",
-   "gate": "状态门",
-   "introduced": "unknown",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2304,
-   "id": "cr_miner_006",
-   "file": "src/content/pool/pack41.js",
-   "line": 58,
-   "category": "普通池",
-   "occupations": [],
-   "trades": [],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 19,
-   "ageMax": 50,
-   "ageBand": "19–50",
-   "gate": "状态门",
-   "introduced": "unknown",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2305,
-   "id": "cr_miner_007",
-   "file": "src/content/pool/pack41.js",
-   "line": 59,
-   "category": "普通池",
-   "occupations": [],
-   "trades": [],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 19,
-   "ageMax": 50,
-   "ageBand": "19–50",
-   "gate": "状态门",
-   "introduced": "unknown",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2306,
-   "id": "cr_miner_008",
-   "file": "src/content/pool/pack41.js",
-   "line": 60,
-   "category": "普通池",
-   "occupations": [],
-   "trades": [],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 19,
-   "ageMax": 50,
-   "ageBand": "19–50",
-   "gate": "状态门",
-   "introduced": "unknown",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2307,
-   "id": "cr_miner_009",
-   "file": "src/content/pool/pack41.js",
-   "line": 61,
-   "category": "普通池",
-   "occupations": [],
-   "trades": [],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 19,
-   "ageMax": 50,
-   "ageBand": "19–50",
-   "gate": "状态门",
-   "introduced": "unknown",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2308,
-   "id": "cr_miner_010",
-   "file": "src/content/pool/pack41.js",
-   "line": 62,
-   "category": "普通池",
-   "occupations": [],
-   "trades": [],
-   "era": "全年代",
-   "route": "不限",
-   "ageMin": 19,
-   "ageMax": 50,
-   "ageBand": "19–50",
-   "gate": "状态门",
-   "introduced": "unknown",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2309,
-   "id": "cr_miner_011",
-   "file": "src/content/pool/pack41.js",
-   "line": 63,
-   "category": "普通池",
-   "occupations": [],
-   "trades": [],
-   "era": "c2000",
-   "route": "不限",
-   "ageMin": 19,
-   "ageMax": 50,
-   "ageBand": "19–50",
-   "gate": "状态门",
-   "introduced": "unknown",
-   "status": "在用",
-   "themes": []
-  },
-  {
-   "seq": 2310,
    "id": "p40_001",
    "file": "src/content/pool/pack40.js",
    "line": 31,
@@ -42771,7 +42239,7 @@
    "themes": []
   },
   {
-   "seq": 2311,
+   "seq": 2283,
    "id": "p40_002",
    "file": "src/content/pool/pack40.js",
    "line": 32,
@@ -42789,7 +42257,7 @@
    "themes": []
   },
   {
-   "seq": 2312,
+   "seq": 2284,
    "id": "p40_003",
    "file": "src/content/pool/pack40.js",
    "line": 33,
@@ -42807,7 +42275,7 @@
    "themes": []
   },
   {
-   "seq": 2313,
+   "seq": 2285,
    "id": "p40_004",
    "file": "src/content/pool/pack40.js",
    "line": 34,
@@ -42825,7 +42293,7 @@
    "themes": []
   },
   {
-   "seq": 2314,
+   "seq": 2286,
    "id": "p40_005",
    "file": "src/content/pool/pack40.js",
    "line": 35,
@@ -42843,7 +42311,7 @@
    "themes": []
   },
   {
-   "seq": 2315,
+   "seq": 2287,
    "id": "p40_006",
    "file": "src/content/pool/pack40.js",
    "line": 36,
@@ -42861,7 +42329,7 @@
    "themes": []
   },
   {
-   "seq": 2316,
+   "seq": 2288,
    "id": "p40_007",
    "file": "src/content/pool/pack40.js",
    "line": 37,
@@ -42879,7 +42347,7 @@
    "themes": []
   },
   {
-   "seq": 2317,
+   "seq": 2289,
    "id": "p40_008",
    "file": "src/content/pool/pack40.js",
    "line": 38,
@@ -42897,7 +42365,7 @@
    "themes": []
   },
   {
-   "seq": 2318,
+   "seq": 2290,
    "id": "p40_009",
    "file": "src/content/pool/pack40.js",
    "line": 39,
@@ -42915,7 +42383,7 @@
    "themes": []
   },
   {
-   "seq": 2319,
+   "seq": 2291,
    "id": "p40_010",
    "file": "src/content/pool/pack40.js",
    "line": 40,
@@ -42933,7 +42401,7 @@
    "themes": []
   },
   {
-   "seq": 2320,
+   "seq": 2292,
    "id": "p40_011",
    "file": "src/content/pool/pack40.js",
    "line": 41,
@@ -42951,7 +42419,7 @@
    "themes": []
   },
   {
-   "seq": 2321,
+   "seq": 2293,
    "id": "p40_012",
    "file": "src/content/pool/pack40.js",
    "line": 42,
@@ -42969,7 +42437,7 @@
    "themes": []
   },
   {
-   "seq": 2322,
+   "seq": 2294,
    "id": "p40_013",
    "file": "src/content/pool/pack40.js",
    "line": 43,
@@ -42987,7 +42455,7 @@
    "themes": []
   },
   {
-   "seq": 2323,
+   "seq": 2295,
    "id": "p40_014",
    "file": "src/content/pool/pack40.js",
    "line": 44,
@@ -43005,7 +42473,7 @@
    "themes": []
   },
   {
-   "seq": 2324,
+   "seq": 2296,
    "id": "p40_015",
    "file": "src/content/pool/pack40.js",
    "line": 45,
@@ -43027,7 +42495,7 @@
    "themes": []
   },
   {
-   "seq": 2325,
+   "seq": 2297,
    "id": "p40_016",
    "file": "src/content/pool/pack40.js",
    "line": 46,
@@ -43049,7 +42517,7 @@
    "themes": []
   },
   {
-   "seq": 2326,
+   "seq": 2298,
    "id": "p40_017",
    "file": "src/content/pool/pack40.js",
    "line": 47,
@@ -43071,7 +42539,7 @@
    "themes": []
   },
   {
-   "seq": 2327,
+   "seq": 2299,
    "id": "p40_018",
    "file": "src/content/pool/pack40.js",
    "line": 48,
@@ -43093,7 +42561,7 @@
    "themes": []
   },
   {
-   "seq": 2328,
+   "seq": 2300,
    "id": "p40_019",
    "file": "src/content/pool/pack40.js",
    "line": 49,
@@ -43115,7 +42583,7 @@
    "themes": []
   },
   {
-   "seq": 2329,
+   "seq": 2301,
    "id": "p40_020",
    "file": "src/content/pool/pack40.js",
    "line": 50,
@@ -43137,7 +42605,7 @@
    "themes": []
   },
   {
-   "seq": 2330,
+   "seq": 2302,
    "id": "p40_021",
    "file": "src/content/pool/pack40.js",
    "line": 51,
@@ -43160,7 +42628,7 @@
    "themes": []
   },
   {
-   "seq": 2331,
+   "seq": 2303,
    "id": "p40_022",
    "file": "src/content/pool/pack40.js",
    "line": 52,
@@ -43184,7 +42652,7 @@
    "themes": []
   },
   {
-   "seq": 2332,
+   "seq": 2304,
    "id": "p40_023",
    "file": "src/content/pool/pack40.js",
    "line": 53,
@@ -43206,7 +42674,7 @@
    "themes": []
   },
   {
-   "seq": 2333,
+   "seq": 2305,
    "id": "p40_024",
    "file": "src/content/pool/pack40.js",
    "line": 54,
@@ -43228,7 +42696,7 @@
    "themes": []
   },
   {
-   "seq": 2334,
+   "seq": 2306,
    "id": "p40_025",
    "file": "src/content/pool/pack40.js",
    "line": 55,
@@ -43250,7 +42718,7 @@
    "themes": []
   },
   {
-   "seq": 2335,
+   "seq": 2307,
    "id": "cr_med_001",
    "file": "src/content/pool/pack40.js",
    "line": 56,
@@ -43268,7 +42736,7 @@
    "themes": []
   },
   {
-   "seq": 2336,
+   "seq": 2308,
    "id": "cr_med_002",
    "file": "src/content/pool/pack40.js",
    "line": 57,
@@ -43286,7 +42754,7 @@
    "themes": []
   },
   {
-   "seq": 2337,
+   "seq": 2309,
    "id": "cr_med_003",
    "file": "src/content/pool/pack40.js",
    "line": 58,
@@ -43304,7 +42772,7 @@
    "themes": []
   },
   {
-   "seq": 2338,
+   "seq": 2310,
    "id": "cr_med_004",
    "file": "src/content/pool/pack40.js",
    "line": 59,
@@ -43322,7 +42790,7 @@
    "themes": []
   },
   {
-   "seq": 2339,
+   "seq": 2311,
    "id": "cr_med_005",
    "file": "src/content/pool/pack40.js",
    "line": 60,
@@ -43340,7 +42808,7 @@
    "themes": []
   },
   {
-   "seq": 2340,
+   "seq": 2312,
    "id": "cr_med_006",
    "file": "src/content/pool/pack40.js",
    "line": 61,
@@ -43358,7 +42826,7 @@
    "themes": []
   },
   {
-   "seq": 2341,
+   "seq": 2313,
    "id": "cr_medhosp_001",
    "file": "src/content/pool/pack40.js",
    "line": 62,
@@ -43376,7 +42844,7 @@
    "themes": []
   },
   {
-   "seq": 2342,
+   "seq": 2314,
    "id": "cr_medhosp_002",
    "file": "src/content/pool/pack40.js",
    "line": 63,
@@ -43394,7 +42862,7 @@
    "themes": []
   },
   {
-   "seq": 2343,
+   "seq": 2315,
    "id": "cr_nurse_001",
    "file": "src/content/pool/pack40.js",
    "line": 64,
@@ -43412,7 +42880,7 @@
    "themes": []
   },
   {
-   "seq": 2344,
+   "seq": 2316,
    "id": "cr_nurse_002",
    "file": "src/content/pool/pack40.js",
    "line": 65,
@@ -43430,7 +42898,7 @@
    "themes": []
   },
   {
-   "seq": 2345,
+   "seq": 2317,
    "id": "cr_nurse_003",
    "file": "src/content/pool/pack40.js",
    "line": 66,
@@ -43448,7 +42916,7 @@
    "themes": []
   },
   {
-   "seq": 2346,
+   "seq": 2318,
    "id": "cr_img_001",
    "file": "src/content/pool/pack40.js",
    "line": 67,
@@ -43466,7 +42934,7 @@
    "themes": []
   },
   {
-   "seq": 2347,
+   "seq": 2319,
    "id": "cr_img_002",
    "file": "src/content/pool/pack40.js",
    "line": 68,
@@ -43484,7 +42952,1555 @@
    "themes": []
   },
   {
+   "seq": 2320,
+   "id": "p41_001",
+   "file": "src/content/pool/pack41.js",
+   "line": 36,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 19,
+   "ageMax": 24,
+   "ageBand": "19–24",
+   "gate": "无门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2321,
+   "id": "p41_002",
+   "file": "src/content/pool/pack41.js",
+   "line": 37,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 19,
+   "ageMax": 24,
+   "ageBand": "19–24",
+   "gate": "无门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2322,
+   "id": "p41_003",
+   "file": "src/content/pool/pack41.js",
+   "line": 38,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 18,
+   "ageMax": 23,
+   "ageBand": "18–23",
+   "gate": "无门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2323,
+   "id": "p41_004",
+   "file": "src/content/pool/pack41.js",
+   "line": 39,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 19,
+   "ageMax": 24,
+   "ageBand": "19–24",
+   "gate": "无门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2324,
+   "id": "p41_005",
+   "file": "src/content/pool/pack41.js",
+   "line": 40,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 19,
+   "ageMax": 23,
+   "ageBand": "19–23",
+   "gate": "无门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2325,
+   "id": "p41_006",
+   "file": "src/content/pool/pack41.js",
+   "line": 41,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 19,
+   "ageMax": 24,
+   "ageBand": "19–24",
+   "gate": "无门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2326,
+   "id": "p41_007",
+   "file": "src/content/pool/pack41.js",
+   "line": 42,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 18,
+   "ageMax": 24,
+   "ageBand": "18–24",
+   "gate": "无门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2327,
+   "id": "p41_008",
+   "file": "src/content/pool/pack41.js",
+   "line": 43,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 20,
+   "ageMax": 25,
+   "ageBand": "20–25",
+   "gate": "无门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2328,
+   "id": "p41_009",
+   "file": "src/content/pool/pack41.js",
+   "line": 44,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 19,
+   "ageMax": 25,
+   "ageBand": "19–25",
+   "gate": "无门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2329,
+   "id": "p41_010",
+   "file": "src/content/pool/pack41.js",
+   "line": 45,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 19,
+   "ageMax": 24,
+   "ageBand": "19–24",
+   "gate": "无门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2330,
+   "id": "p41_011",
+   "file": "src/content/pool/pack41.js",
+   "line": 46,
+   "category": "普通池",
+   "occupations": [
+    "矿业"
+   ],
+   "trades": [
+    "miner"
+   ],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 19,
+   "ageMax": 25,
+   "ageBand": "19–25",
+   "gate": "状态门",
+   "introduced": "v0.19.0",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2331,
+   "id": "p41_012",
+   "file": "src/content/pool/pack41.js",
+   "line": 47,
+   "category": "普通池",
+   "occupations": [
+    "矿业"
+   ],
+   "trades": [
+    "miner"
+   ],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 19,
+   "ageMax": 27,
+   "ageBand": "19–27",
+   "gate": "状态门",
+   "introduced": "v0.19.0",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2332,
+   "id": "p41_013",
+   "file": "src/content/pool/pack41.js",
+   "line": 48,
+   "category": "普通池",
+   "occupations": [
+    "矿业"
+   ],
+   "trades": [
+    "miner"
+   ],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 20,
+   "ageMax": 30,
+   "ageBand": "20–30",
+   "gate": "状态门",
+   "introduced": "v0.19.0",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2333,
+   "id": "p41_014",
+   "file": "src/content/pool/pack41.js",
+   "line": 49,
+   "category": "普通池",
+   "occupations": [
+    "矿业"
+   ],
+   "trades": [
+    "miner"
+   ],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 19,
+   "ageMax": 28,
+   "ageBand": "19–28",
+   "gate": "状态门",
+   "introduced": "v0.19.0",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2334,
+   "id": "p41_015",
+   "file": "src/content/pool/pack41.js",
+   "line": 50,
+   "category": "普通池",
+   "occupations": [
+    "矿业"
+   ],
+   "trades": [
+    "miner"
+   ],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 22,
+   "ageMax": 32,
+   "ageBand": "22–32",
+   "gate": "状态门",
+   "introduced": "v0.19.0",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2335,
+   "id": "p41_016",
+   "file": "src/content/pool/pack41.js",
+   "line": 51,
+   "category": "普通池",
+   "occupations": [
+    "矿业"
+   ],
+   "trades": [
+    "miner"
+   ],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 22,
+   "ageMax": 45,
+   "ageBand": "22–45",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2336,
+   "id": "p41_017",
+   "file": "src/content/pool/pack41.js",
+   "line": 52,
+   "category": "普通池",
+   "occupations": [
+    "矿业"
+   ],
+   "trades": [
+    "miner"
+   ],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 24,
+   "ageMax": 50,
+   "ageBand": "24–50",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2337,
+   "id": "cr_miner_001",
+   "file": "src/content/pool/pack41.js",
+   "line": 53,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 19,
+   "ageMax": 50,
+   "ageBand": "19–50",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2338,
+   "id": "cr_miner_002",
+   "file": "src/content/pool/pack41.js",
+   "line": 54,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 19,
+   "ageMax": 50,
+   "ageBand": "19–50",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2339,
+   "id": "cr_miner_003",
+   "file": "src/content/pool/pack41.js",
+   "line": 55,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 19,
+   "ageMax": 50,
+   "ageBand": "19–50",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2340,
+   "id": "cr_miner_004",
+   "file": "src/content/pool/pack41.js",
+   "line": 56,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 19,
+   "ageMax": 50,
+   "ageBand": "19–50",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2341,
+   "id": "cr_miner_005",
+   "file": "src/content/pool/pack41.js",
+   "line": 57,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 19,
+   "ageMax": 50,
+   "ageBand": "19–50",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2342,
+   "id": "cr_miner_006",
+   "file": "src/content/pool/pack41.js",
+   "line": 58,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 19,
+   "ageMax": 50,
+   "ageBand": "19–50",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2343,
+   "id": "cr_miner_007",
+   "file": "src/content/pool/pack41.js",
+   "line": 59,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 19,
+   "ageMax": 50,
+   "ageBand": "19–50",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2344,
+   "id": "cr_miner_008",
+   "file": "src/content/pool/pack41.js",
+   "line": 60,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 19,
+   "ageMax": 50,
+   "ageBand": "19–50",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2345,
+   "id": "cr_miner_009",
+   "file": "src/content/pool/pack41.js",
+   "line": 61,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 19,
+   "ageMax": 50,
+   "ageBand": "19–50",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2346,
+   "id": "cr_miner_010",
+   "file": "src/content/pool/pack41.js",
+   "line": 62,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 19,
+   "ageMax": 50,
+   "ageBand": "19–50",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2347,
+   "id": "cr_miner_011",
+   "file": "src/content/pool/pack41.js",
+   "line": 63,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 19,
+   "ageMax": 50,
+   "ageBand": "19–50",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
    "seq": 2348,
+   "id": "cr_med_007",
+   "file": "src/content/pool/pack42.js",
+   "line": 7,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 24,
+   "ageMax": 46,
+   "ageBand": "24–46",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2349,
+   "id": "cr_med_008",
+   "file": "src/content/pool/pack42.js",
+   "line": 8,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 24,
+   "ageMax": 48,
+   "ageBand": "24–48",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2350,
+   "id": "cr_med_009",
+   "file": "src/content/pool/pack42.js",
+   "line": 9,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 25,
+   "ageMax": 54,
+   "ageBand": "25–54",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2351,
+   "id": "cr_med_010",
+   "file": "src/content/pool/pack42.js",
+   "line": 10,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 32,
+   "ageMax": 58,
+   "ageBand": "32–58",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2352,
+   "id": "cr_med_011",
+   "file": "src/content/pool/pack42.js",
+   "line": 11,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 31,
+   "ageMax": 56,
+   "ageBand": "31–56",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2353,
+   "id": "cr_med_012",
+   "file": "src/content/pool/pack42.js",
+   "line": 12,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 26,
+   "ageMax": 48,
+   "ageBand": "26–48",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2354,
+   "id": "cr_med_013",
+   "file": "src/content/pool/pack42.js",
+   "line": 13,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 25,
+   "ageMax": 48,
+   "ageBand": "25–48",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2355,
+   "id": "cr_med_014",
+   "file": "src/content/pool/pack42.js",
+   "line": 14,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 24,
+   "ageMax": 44,
+   "ageBand": "24–44",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2356,
+   "id": "cr_med_015",
+   "file": "src/content/pool/pack42.js",
+   "line": 15,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 24,
+   "ageMax": 50,
+   "ageBand": "24–50",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2357,
+   "id": "cr_med_016",
+   "file": "src/content/pool/pack42.js",
+   "line": 16,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 29,
+   "ageMax": 54,
+   "ageBand": "29–54",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2358,
+   "id": "cr_med_017",
+   "file": "src/content/pool/pack42.js",
+   "line": 17,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 26,
+   "ageMax": 52,
+   "ageBand": "26–52",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2359,
+   "id": "cr_med_018",
+   "file": "src/content/pool/pack42.js",
+   "line": 18,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 33,
+   "ageMax": 60,
+   "ageBand": "33–60",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2360,
+   "id": "cr_med_019",
+   "file": "src/content/pool/pack42.js",
+   "line": 19,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 24,
+   "ageMax": 46,
+   "ageBand": "24–46",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2361,
+   "id": "cr_med_020",
+   "file": "src/content/pool/pack42.js",
+   "line": 20,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 29,
+   "ageMax": 56,
+   "ageBand": "29–56",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2362,
+   "id": "cr_med_021",
+   "file": "src/content/pool/pack42.js",
+   "line": 21,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 24,
+   "ageMax": 52,
+   "ageBand": "24–52",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2363,
+   "id": "cr_med_022",
+   "file": "src/content/pool/pack42.js",
+   "line": 22,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 26,
+   "ageMax": 48,
+   "ageBand": "26–48",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2364,
+   "id": "cr_med_023",
+   "file": "src/content/pool/pack42.js",
+   "line": 23,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 24,
+   "ageMax": 48,
+   "ageBand": "24–48",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2365,
+   "id": "cr_med_024",
+   "file": "src/content/pool/pack42.js",
+   "line": 24,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 26,
+   "ageMax": 52,
+   "ageBand": "26–52",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2366,
+   "id": "cr_med_025",
+   "file": "src/content/pool/pack42.js",
+   "line": 25,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 40,
+   "ageMax": 62,
+   "ageBand": "40–62",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2367,
+   "id": "cr_med_026",
+   "file": "src/content/pool/pack42.js",
+   "line": 26,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 27,
+   "ageMax": 54,
+   "ageBand": "27–54",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2368,
+   "id": "cr_med_hosp_003",
+   "file": "src/content/pool/pack42.js",
+   "line": 27,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 26,
+   "ageMax": 52,
+   "ageBand": "26–52",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2369,
+   "id": "cr_med_hosp_004",
+   "file": "src/content/pool/pack42.js",
+   "line": 28,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 28,
+   "ageMax": 54,
+   "ageBand": "28–54",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2370,
+   "id": "cr_med_hosp_005",
+   "file": "src/content/pool/pack42.js",
+   "line": 29,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 27,
+   "ageMax": 50,
+   "ageBand": "27–50",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2371,
+   "id": "cr_med_hosp_006",
+   "file": "src/content/pool/pack42.js",
+   "line": 30,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 29,
+   "ageMax": 55,
+   "ageBand": "29–55",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2372,
+   "id": "cr_med_hosp_007",
+   "file": "src/content/pool/pack42.js",
+   "line": 31,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 30,
+   "ageMax": 56,
+   "ageBand": "30–56",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2373,
+   "id": "cr_med_hosp_008",
+   "file": "src/content/pool/pack42.js",
+   "line": 32,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 29,
+   "ageMax": 55,
+   "ageBand": "29–55",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2374,
+   "id": "cr_med_hosp_009",
+   "file": "src/content/pool/pack42.js",
+   "line": 33,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 29,
+   "ageMax": 56,
+   "ageBand": "29–56",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2375,
+   "id": "cr_med_hosp_010",
+   "file": "src/content/pool/pack42.js",
+   "line": 34,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 28,
+   "ageMax": 52,
+   "ageBand": "28–52",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2376,
+   "id": "cr_med_hosp_011",
+   "file": "src/content/pool/pack42.js",
+   "line": 35,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 27,
+   "ageMax": 54,
+   "ageBand": "27–54",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2377,
+   "id": "cr_med_hosp_012",
+   "file": "src/content/pool/pack42.js",
+   "line": 36,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 30,
+   "ageMax": 56,
+   "ageBand": "30–56",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2378,
+   "id": "cr_med_hosp_013",
+   "file": "src/content/pool/pack42.js",
+   "line": 37,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 28,
+   "ageMax": 55,
+   "ageBand": "28–55",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2379,
+   "id": "cr_med_hosp_014",
+   "file": "src/content/pool/pack42.js",
+   "line": 38,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 30,
+   "ageMax": 55,
+   "ageBand": "30–55",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2380,
+   "id": "cr_med_hosp_015",
+   "file": "src/content/pool/pack42.js",
+   "line": 39,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 28,
+   "ageMax": 54,
+   "ageBand": "28–54",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2381,
+   "id": "cr_med_hosp_016",
+   "file": "src/content/pool/pack42.js",
+   "line": 40,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 28,
+   "ageMax": 54,
+   "ageBand": "28–54",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2382,
+   "id": "cr_nurse_004",
+   "file": "src/content/pool/pack42.js",
+   "line": 41,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 27,
+   "ageMax": 52,
+   "ageBand": "27–52",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2383,
+   "id": "cr_nurse_005",
+   "file": "src/content/pool/pack42.js",
+   "line": 42,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 28,
+   "ageMax": 56,
+   "ageBand": "28–56",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2384,
+   "id": "cr_nurse_006",
+   "file": "src/content/pool/pack42.js",
+   "line": 43,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 26,
+   "ageMax": 50,
+   "ageBand": "26–50",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2385,
+   "id": "cr_nurse_007",
+   "file": "src/content/pool/pack42.js",
+   "line": 44,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 30,
+   "ageMax": 56,
+   "ageBand": "30–56",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2386,
+   "id": "cr_nurse_008",
+   "file": "src/content/pool/pack42.js",
+   "line": 45,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 28,
+   "ageMax": 54,
+   "ageBand": "28–54",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2387,
+   "id": "cr_nurse_009",
+   "file": "src/content/pool/pack42.js",
+   "line": 46,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 27,
+   "ageMax": 54,
+   "ageBand": "27–54",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2388,
+   "id": "cr_nurse_010",
+   "file": "src/content/pool/pack42.js",
+   "line": 47,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 24,
+   "ageMax": 50,
+   "ageBand": "24–50",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2389,
+   "id": "cr_nurse_011",
+   "file": "src/content/pool/pack42.js",
+   "line": 48,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 32,
+   "ageMax": 58,
+   "ageBand": "32–58",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2390,
+   "id": "cr_nurse_012",
+   "file": "src/content/pool/pack42.js",
+   "line": 49,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 34,
+   "ageMax": 58,
+   "ageBand": "34–58",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2391,
+   "id": "cr_nurse_013",
+   "file": "src/content/pool/pack42.js",
+   "line": 50,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 27,
+   "ageMax": 54,
+   "ageBand": "27–54",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2392,
+   "id": "cr_img_003",
+   "file": "src/content/pool/pack42.js",
+   "line": 51,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 28,
+   "ageMax": 52,
+   "ageBand": "28–52",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2393,
+   "id": "cr_img_004",
+   "file": "src/content/pool/pack42.js",
+   "line": 52,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 28,
+   "ageMax": 54,
+   "ageBand": "28–54",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2394,
+   "id": "cr_img_005",
+   "file": "src/content/pool/pack42.js",
+   "line": 53,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 30,
+   "ageMax": 56,
+   "ageBand": "30–56",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2395,
+   "id": "cr_img_006",
+   "file": "src/content/pool/pack42.js",
+   "line": 54,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 30,
+   "ageMax": 56,
+   "ageBand": "30–56",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2396,
+   "id": "cr_img_007",
+   "file": "src/content/pool/pack42.js",
+   "line": 55,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 27,
+   "ageMax": 52,
+   "ageBand": "27–52",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2397,
+   "id": "cr_img_008",
+   "file": "src/content/pool/pack42.js",
+   "line": 56,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 29,
+   "ageMax": 54,
+   "ageBand": "29–54",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2398,
+   "id": "cr_img_009",
+   "file": "src/content/pool/pack42.js",
+   "line": 57,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 28,
+   "ageMax": 55,
+   "ageBand": "28–55",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2399,
+   "id": "cr_img_010",
+   "file": "src/content/pool/pack42.js",
+   "line": 58,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "c2000",
+   "route": "不限",
+   "ageMin": 32,
+   "ageMax": 58,
+   "ageBand": "32–58",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2400,
+   "id": "p42_001",
+   "file": "src/content/pool/pack42.js",
+   "line": 59,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 24,
+   "ageMax": 50,
+   "ageBand": "24–50",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2401,
+   "id": "p42_002",
+   "file": "src/content/pool/pack42.js",
+   "line": 60,
+   "category": "普通池",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 21,
+   "ageMax": 48,
+   "ageBand": "21–48",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2402,
+   "id": "p42_003",
+   "file": "src/content/pool/pack42.js",
+   "line": 61,
+   "category": "普通池",
+   "occupations": [
+    "医护"
+   ],
+   "trades": [
+    "med"
+   ],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 23,
+   "ageMax": 55,
+   "ageBand": "23–55",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2403,
+   "id": "p42_004",
+   "file": "src/content/pool/pack42.js",
+   "line": 62,
+   "category": "普通池",
+   "occupations": [
+    "医护"
+   ],
+   "trades": [
+    "med"
+   ],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 28,
+   "ageMax": 54,
+   "ageBand": "28–54",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 2404,
    "id": "cov_has_flow",
    "file": "src/content/lines/covenant.js",
    "line": 7,
@@ -43502,7 +44518,7 @@
    "themes": []
   },
   {
-   "seq": 2349,
+   "seq": 2405,
    "id": "cov_none_flow",
    "file": "src/content/lines/covenant.js",
    "line": 9,
@@ -43520,7 +44536,7 @@
    "themes": []
   },
   {
-   "seq": 2350,
+   "seq": 2406,
    "id": "cov_wait_flow",
    "file": "src/content/lines/covenant.js",
    "line": 11,
@@ -43538,7 +44554,7 @@
    "themes": []
   },
   {
-   "seq": 2351,
+   "seq": 2407,
    "id": "cov_solo_due",
    "file": "src/content/lines/covenant.js",
    "line": 21,
@@ -43556,7 +44572,7 @@
    "themes": []
   },
   {
-   "seq": 2352,
+   "seq": 2408,
    "id": "echo_deskmate",
    "file": "src/content/lines/covenant.js",
    "line": 27,
@@ -43574,7 +44590,7 @@
    "themes": []
   },
   {
-   "seq": 2353,
+   "seq": 2409,
    "id": "echo_river",
    "file": "src/content/lines/covenant.js",
    "line": 29,
@@ -43592,7 +44608,7 @@
    "themes": []
   },
   {
-   "seq": 2354,
+   "seq": 2410,
    "id": "echo_tree",
    "file": "src/content/lines/covenant.js",
    "line": 31,
@@ -43610,7 +44626,7 @@
    "themes": []
   },
   {
-   "seq": 2355,
+   "seq": 2411,
    "id": "echo_candy",
    "file": "src/content/lines/covenant.js",
    "line": 34,
@@ -43628,7 +44644,7 @@
    "themes": []
   },
   {
-   "seq": 2356,
+   "seq": 2412,
    "id": "echo_window",
    "file": "src/content/lines/covenant.js",
    "line": 36,
@@ -43646,7 +44662,7 @@
    "themes": []
   },
   {
-   "seq": 2357,
+   "seq": 2413,
    "id": "echo_wrongline",
    "file": "src/content/lines/covenant.js",
    "line": 38,
@@ -43664,7 +44680,7 @@
    "themes": []
   },
   {
-   "seq": 2358,
+   "seq": 2414,
    "id": "echo_hoop",
    "file": "src/content/lines/covenant.js",
    "line": 40,
@@ -43682,7 +44698,7 @@
    "themes": []
   },
   {
-   "seq": 2359,
+   "seq": 2415,
    "id": "echo_corn",
    "file": "src/content/lines/covenant.js",
    "line": 42,
@@ -43700,7 +44716,7 @@
    "themes": []
   },
   {
-   "seq": 2360,
+   "seq": 2416,
    "id": "echo_icepop",
    "file": "src/content/lines/covenant.js",
    "line": 44,
@@ -43718,7 +44734,7 @@
    "themes": []
   },
   {
-   "seq": 2361,
+   "seq": 2417,
    "id": "echo_shop",
    "file": "src/content/lines/covenant.js",
    "line": 46,
@@ -43736,7 +44752,7 @@
    "themes": []
   },
   {
-   "seq": 2362,
+   "seq": 2418,
    "id": "echo_yearbook",
    "file": "src/content/lines/covenant.js",
    "line": 48,
@@ -43754,7 +44770,7 @@
    "themes": []
   },
   {
-   "seq": 2363,
+   "seq": 2419,
    "id": "echo_classphoto",
    "file": "src/content/lines/covenant.js",
    "line": 50,
@@ -43772,7 +44788,7 @@
    "themes": []
   },
   {
-   "seq": 2364,
+   "seq": 2420,
    "id": "proc_dad_care",
    "file": "src/content/lines/process-beats.js",
    "line": 7,
@@ -43790,7 +44806,7 @@
    "themes": []
   },
   {
-   "seq": 2365,
+   "seq": 2421,
    "id": "proc_mom_care",
    "file": "src/content/lines/process-beats.js",
    "line": 13,
@@ -43808,7 +44824,7 @@
    "themes": []
   },
   {
-   "seq": 2366,
+   "seq": 2422,
    "id": "proc_dad_signal",
    "file": "src/content/lines/process-beats.js",
    "line": 20,
@@ -43826,7 +44842,7 @@
    "themes": []
   },
   {
-   "seq": 2367,
+   "seq": 2423,
    "id": "proc_mom_signal",
    "file": "src/content/lines/process-beats.js",
    "line": 22,
@@ -43844,7 +44860,7 @@
    "themes": []
   },
   {
-   "seq": 2368,
+   "seq": 2424,
    "id": "proc_dad_hosp",
    "file": "src/content/lines/process-beats.js",
    "line": 24,
@@ -43862,7 +44878,7 @@
    "themes": []
   },
   {
-   "seq": 2369,
+   "seq": 2425,
    "id": "proc_mom_hosp",
    "file": "src/content/lines/process-beats.js",
    "line": 29,
@@ -43880,7 +44896,7 @@
    "themes": []
   },
   {
-   "seq": 2370,
+   "seq": 2426,
    "id": "proc_dad_dead",
    "file": "src/content/lines/process-beats.js",
    "line": 34,
@@ -43898,7 +44914,7 @@
    "themes": []
   },
   {
-   "seq": 2371,
+   "seq": 2427,
    "id": "proc_mom_dead",
    "file": "src/content/lines/process-beats.js",
    "line": 36,
@@ -43916,7 +44932,7 @@
    "themes": []
   },
   {
-   "seq": 2372,
+   "seq": 2428,
    "id": "proc_dating",
    "file": "src/content/lines/process-beats.js",
    "line": 39,
@@ -43934,7 +44950,7 @@
    "themes": []
   },
   {
-   "seq": 2373,
+   "seq": 2429,
    "id": "proc_kid_debut",
    "file": "src/content/lines/process-beats.js",
    "line": 50,
@@ -43952,7 +44968,7 @@
    "themes": []
   },
   {
-   "seq": 2374,
+   "seq": 2430,
    "id": "e_med_start",
    "file": "src/content/lines/process-beats.js",
    "line": 60,
@@ -43974,7 +44990,7 @@
    "themes": []
   },
   {
-   "seq": 2375,
+   "seq": 2431,
    "id": "e_med_years",
    "file": "src/content/lines/process-beats.js",
    "line": 65,
@@ -43992,7 +45008,7 @@
    "themes": []
   },
   {
-   "seq": 2376,
+   "seq": 2432,
    "id": "e_truck_start",
    "file": "src/content/lines/process-beats.js",
    "line": 67,
@@ -44014,7 +45030,7 @@
    "themes": []
   },
   {
-   "seq": 2377,
+   "seq": 2433,
    "id": "e_truck_years",
    "file": "src/content/lines/process-beats.js",
    "line": 72,
@@ -44032,7 +45048,7 @@
    "themes": []
   },
   {
-   "seq": 2378,
+   "seq": 2434,
    "id": "e_lit_echo1",
    "file": "src/content/lines/process-beats.js",
    "line": 75,
@@ -44050,7 +45066,7 @@
    "themes": []
   },
   {
-   "seq": 2379,
+   "seq": 2435,
    "id": "e_lit_echo2",
    "file": "src/content/lines/process-beats.js",
    "line": 77,
@@ -44068,7 +45084,7 @@
    "themes": []
   },
   {
-   "seq": 2380,
+   "seq": 2436,
    "id": "e_half_echo",
    "file": "src/content/lines/process-beats.js",
    "line": 79,
@@ -44086,7 +45102,7 @@
    "themes": []
   },
   {
-   "seq": 2381,
+   "seq": 2437,
    "id": "e_work_echo",
    "file": "src/content/lines/process-beats.js",
    "line": 81,
@@ -44104,7 +45120,7 @@
    "themes": []
   },
   {
-   "seq": 2382,
+   "seq": 2438,
    "id": "e_never_work",
    "file": "src/content/lines/process-beats.js",
    "line": 83,
@@ -44122,7 +45138,7 @@
    "themes": []
   },
   {
-   "seq": 2383,
+   "seq": 2439,
    "id": "proc_retire_node",
    "file": "src/content/lines/process-beats.js",
    "line": 86,
@@ -44140,7 +45156,7 @@
    "themes": []
   },
   {
-   "seq": 2384,
+   "seq": 2440,
    "id": "proc_retire_full",
    "file": "src/content/lines/process-beats.js",
    "line": 93,
@@ -44158,7 +45174,7 @@
    "themes": []
   },
   {
-   "seq": 2385,
+   "seq": 2441,
    "id": "proc_retire_auto",
    "file": "src/content/lines/process-beats.js",
    "line": 97,
@@ -44176,7 +45192,7 @@
    "themes": []
   },
   {
-   "seq": 2386,
+   "seq": 2442,
    "id": "e_retire_firstmonth",
    "file": "src/content/lines/process-beats.js",
    "line": 100,
@@ -44194,7 +45210,7 @@
    "themes": []
   },
   {
-   "seq": 2387,
+   "seq": 2443,
    "id": "e_retire_farewell",
    "file": "src/content/lines/process-beats.js",
    "line": 102,
@@ -44212,7 +45228,7 @@
    "themes": []
   },
   {
-   "seq": 2388,
+   "seq": 2444,
    "id": "e_rehire_1",
    "file": "src/content/lines/process-beats.js",
    "line": 105,
@@ -44230,7 +45246,7 @@
    "themes": []
   },
   {
-   "seq": 2389,
+   "seq": 2445,
    "id": "e_rehire_2",
    "file": "src/content/lines/process-beats.js",
    "line": 111,
@@ -44248,7 +45264,7 @@
    "themes": []
   },
   {
-   "seq": 2390,
+   "seq": 2446,
    "id": "proc_abroad_kind",
    "file": "src/content/lines/abroad.js",
    "line": 16,
@@ -44266,7 +45282,7 @@
    "themes": []
   },
   {
-   "seq": 2391,
+   "seq": 2447,
    "id": "ab37_001",
    "file": "src/content/lines/abroad.js",
    "line": 26,
@@ -44284,7 +45300,7 @@
    "themes": []
   },
   {
-   "seq": 2392,
+   "seq": 2448,
    "id": "ab37_002",
    "file": "src/content/lines/abroad.js",
    "line": 28,
@@ -44302,7 +45318,7 @@
    "themes": []
   },
   {
-   "seq": 2393,
+   "seq": 2449,
    "id": "ab37_003",
    "file": "src/content/lines/abroad.js",
    "line": 30,
@@ -44320,7 +45336,7 @@
    "themes": []
   },
   {
-   "seq": 2394,
+   "seq": 2450,
    "id": "ab37_004",
    "file": "src/content/lines/abroad.js",
    "line": 32,
@@ -44338,7 +45354,7 @@
    "themes": []
   },
   {
-   "seq": 2395,
+   "seq": 2451,
    "id": "ab37_005",
    "file": "src/content/lines/abroad.js",
    "line": 34,
@@ -44356,7 +45372,7 @@
    "themes": []
   },
   {
-   "seq": 2396,
+   "seq": 2452,
    "id": "ab37_006",
    "file": "src/content/lines/abroad.js",
    "line": 36,
@@ -44374,7 +45390,7 @@
    "themes": []
   },
   {
-   "seq": 2397,
+   "seq": 2453,
    "id": "ab37_007",
    "file": "src/content/lines/abroad.js",
    "line": 38,
@@ -44392,7 +45408,7 @@
    "themes": []
   },
   {
-   "seq": 2398,
+   "seq": 2454,
    "id": "ab37_008",
    "file": "src/content/lines/abroad.js",
    "line": 40,
@@ -44410,7 +45426,7 @@
    "themes": []
   },
   {
-   "seq": 2399,
+   "seq": 2455,
    "id": "ab37_009",
    "file": "src/content/lines/abroad.js",
    "line": 45,
@@ -44428,7 +45444,7 @@
    "themes": []
   },
   {
-   "seq": 2400,
+   "seq": 2456,
    "id": "ab37_010",
    "file": "src/content/lines/abroad.js",
    "line": 47,
@@ -44446,7 +45462,7 @@
    "themes": []
   },
   {
-   "seq": 2401,
+   "seq": 2457,
    "id": "ab37_011",
    "file": "src/content/lines/abroad.js",
    "line": 50,
@@ -44464,7 +45480,7 @@
    "themes": []
   },
   {
-   "seq": 2402,
+   "seq": 2458,
    "id": "ab37_012",
    "file": "src/content/lines/abroad.js",
    "line": 52,
@@ -44482,7 +45498,7 @@
    "themes": []
   },
   {
-   "seq": 2403,
+   "seq": 2459,
    "id": "ab37_013",
    "file": "src/content/lines/abroad.js",
    "line": 54,
@@ -44500,7 +45516,7 @@
    "themes": []
   },
   {
-   "seq": 2404,
+   "seq": 2460,
    "id": "ab37_014",
    "file": "src/content/lines/abroad.js",
    "line": 56,
@@ -44518,7 +45534,7 @@
    "themes": []
   },
   {
-   "seq": 2405,
+   "seq": 2461,
    "id": "ab37_015",
    "file": "src/content/lines/abroad.js",
    "line": 58,
@@ -44536,7 +45552,7 @@
    "themes": []
   },
   {
-   "seq": 2406,
+   "seq": 2462,
    "id": "ab37_016",
    "file": "src/content/lines/abroad.js",
    "line": 60,
@@ -44554,7 +45570,7 @@
    "themes": []
   },
   {
-   "seq": 2407,
+   "seq": 2463,
    "id": "ab37_017",
    "file": "src/content/lines/abroad.js",
    "line": 65,
@@ -44572,7 +45588,7 @@
    "themes": []
   },
   {
-   "seq": 2408,
+   "seq": 2464,
    "id": "ab37_018",
    "file": "src/content/lines/abroad.js",
    "line": 67,
@@ -44590,7 +45606,7 @@
    "themes": []
   },
   {
-   "seq": 2409,
+   "seq": 2465,
    "id": "ab37_019",
    "file": "src/content/lines/abroad.js",
    "line": 69,
@@ -44608,7 +45624,7 @@
    "themes": []
   },
   {
-   "seq": 2410,
+   "seq": 2466,
    "id": "ab37_020",
    "file": "src/content/lines/abroad.js",
    "line": 71,
@@ -44626,7 +45642,7 @@
    "themes": []
   },
   {
-   "seq": 2411,
+   "seq": 2467,
    "id": "ab37_021",
    "file": "src/content/lines/abroad.js",
    "line": 77,
@@ -44644,7 +45660,7 @@
    "themes": []
   },
   {
-   "seq": 2412,
+   "seq": 2468,
    "id": "ab37_022",
    "file": "src/content/lines/abroad.js",
    "line": 79,
@@ -44662,7 +45678,7 @@
    "themes": []
   },
   {
-   "seq": 2413,
+   "seq": 2469,
    "id": "ab37_023",
    "file": "src/content/lines/abroad.js",
    "line": 81,
@@ -44680,7 +45696,7 @@
    "themes": []
   },
   {
-   "seq": 2414,
+   "seq": 2470,
    "id": "ab37_024",
    "file": "src/content/lines/abroad.js",
    "line": 86,
@@ -44698,7 +45714,7 @@
    "themes": []
   },
   {
-   "seq": 2415,
+   "seq": 2471,
    "id": "ab37_025",
    "file": "src/content/lines/abroad.js",
    "line": 91,
@@ -44716,7 +45732,7 @@
    "themes": []
   },
   {
-   "seq": 2416,
+   "seq": 2472,
    "id": "ab37_026",
    "file": "src/content/lines/abroad.js",
    "line": 93,
@@ -44734,7 +45750,7 @@
    "themes": []
   },
   {
-   "seq": 2417,
+   "seq": 2473,
    "id": "ab37_027",
    "file": "src/content/lines/abroad.js",
    "line": 95,
@@ -44752,7 +45768,7 @@
    "themes": []
   },
   {
-   "seq": 2418,
+   "seq": 2474,
    "id": "ab37_028",
    "file": "src/content/lines/abroad.js",
    "line": 97,
@@ -44770,7 +45786,7 @@
    "themes": []
   },
   {
-   "seq": 2419,
+   "seq": 2475,
    "id": "e55_001",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -44788,7 +45804,7 @@
    "themes": []
   },
   {
-   "seq": 2420,
+   "seq": 2476,
    "id": "e55_002",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -44806,7 +45822,7 @@
    "themes": []
   },
   {
-   "seq": 2421,
+   "seq": 2477,
    "id": "e55_003",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -44824,7 +45840,7 @@
    "themes": []
   },
   {
-   "seq": 2422,
+   "seq": 2478,
    "id": "e55_004",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -44842,7 +45858,7 @@
    "themes": []
   },
   {
-   "seq": 2423,
+   "seq": 2479,
    "id": "e55_005",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -44860,7 +45876,7 @@
    "themes": []
   },
   {
-   "seq": 2424,
+   "seq": 2480,
    "id": "e55_006",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -44878,7 +45894,7 @@
    "themes": []
   },
   {
-   "seq": 2425,
+   "seq": 2481,
    "id": "e55_007",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -44896,7 +45912,7 @@
    "themes": []
   },
   {
-   "seq": 2426,
+   "seq": 2482,
    "id": "e55_008",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -44914,7 +45930,7 @@
    "themes": []
   },
   {
-   "seq": 2427,
+   "seq": 2483,
    "id": "e55_009",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -44932,7 +45948,7 @@
    "themes": []
   },
   {
-   "seq": 2428,
+   "seq": 2484,
    "id": "e55_010",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -44950,7 +45966,7 @@
    "themes": []
   },
   {
-   "seq": 2429,
+   "seq": 2485,
    "id": "e55_011",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -44968,7 +45984,7 @@
    "themes": []
   },
   {
-   "seq": 2430,
+   "seq": 2486,
    "id": "e55_012",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -44986,7 +46002,7 @@
    "themes": []
   },
   {
-   "seq": 2431,
+   "seq": 2487,
    "id": "e55_013",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45004,7 +46020,7 @@
    "themes": []
   },
   {
-   "seq": 2432,
+   "seq": 2488,
    "id": "e55_014",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45022,7 +46038,7 @@
    "themes": []
   },
   {
-   "seq": 2433,
+   "seq": 2489,
    "id": "e55_015",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45040,7 +46056,7 @@
    "themes": []
   },
   {
-   "seq": 2434,
+   "seq": 2490,
    "id": "e55_016",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45058,7 +46074,7 @@
    "themes": []
   },
   {
-   "seq": 2435,
+   "seq": 2491,
    "id": "e55_017",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45076,7 +46092,7 @@
    "themes": []
   },
   {
-   "seq": 2436,
+   "seq": 2492,
    "id": "e55_018",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45094,7 +46110,7 @@
    "themes": []
   },
   {
-   "seq": 2437,
+   "seq": 2493,
    "id": "e55_019",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45112,7 +46128,7 @@
    "themes": []
   },
   {
-   "seq": 2438,
+   "seq": 2494,
    "id": "e55_020",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45130,7 +46146,7 @@
    "themes": []
   },
   {
-   "seq": 2439,
+   "seq": 2495,
    "id": "e55_021",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45148,7 +46164,7 @@
    "themes": []
   },
   {
-   "seq": 2440,
+   "seq": 2496,
    "id": "e55_022",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45166,7 +46182,7 @@
    "themes": []
   },
   {
-   "seq": 2441,
+   "seq": 2497,
    "id": "e55_023",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45184,7 +46200,7 @@
    "themes": []
   },
   {
-   "seq": 2442,
+   "seq": 2498,
    "id": "e55_024",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45202,7 +46218,7 @@
    "themes": []
   },
   {
-   "seq": 2443,
+   "seq": 2499,
    "id": "e55_025",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45220,7 +46236,7 @@
    "themes": []
   },
   {
-   "seq": 2444,
+   "seq": 2500,
    "id": "e55_026",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45238,7 +46254,7 @@
    "themes": []
   },
   {
-   "seq": 2445,
+   "seq": 2501,
    "id": "e55_027",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45256,7 +46272,7 @@
    "themes": []
   },
   {
-   "seq": 2446,
+   "seq": 2502,
    "id": "e55_028",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45274,7 +46290,7 @@
    "themes": []
   },
   {
-   "seq": 2447,
+   "seq": 2503,
    "id": "e55_029",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45292,7 +46308,7 @@
    "themes": []
   },
   {
-   "seq": 2448,
+   "seq": 2504,
    "id": "e55_030",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45310,7 +46326,7 @@
    "themes": []
   },
   {
-   "seq": 2449,
+   "seq": 2505,
    "id": "e55_031",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45328,7 +46344,7 @@
    "themes": []
   },
   {
-   "seq": 2450,
+   "seq": 2506,
    "id": "e55_032",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45346,7 +46362,7 @@
    "themes": []
   },
   {
-   "seq": 2451,
+   "seq": 2507,
    "id": "e55_033",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45364,7 +46380,7 @@
    "themes": []
   },
   {
-   "seq": 2452,
+   "seq": 2508,
    "id": "e55_034",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45382,7 +46398,7 @@
    "themes": []
   },
   {
-   "seq": 2453,
+   "seq": 2509,
    "id": "e55_035",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45400,7 +46416,7 @@
    "themes": []
   },
   {
-   "seq": 2454,
+   "seq": 2510,
    "id": "e55_036",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45418,7 +46434,7 @@
    "themes": []
   },
   {
-   "seq": 2455,
+   "seq": 2511,
    "id": "e55_037",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45436,7 +46452,7 @@
    "themes": []
   },
   {
-   "seq": 2456,
+   "seq": 2512,
    "id": "e55_038",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45454,7 +46470,7 @@
    "themes": []
   },
   {
-   "seq": 2457,
+   "seq": 2513,
    "id": "e55_039",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45472,7 +46488,7 @@
    "themes": []
   },
   {
-   "seq": 2458,
+   "seq": 2514,
    "id": "e55_040",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45490,7 +46506,7 @@
    "themes": []
   },
   {
-   "seq": 2459,
+   "seq": 2515,
    "id": "e55_041",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45508,7 +46524,7 @@
    "themes": []
   },
   {
-   "seq": 2460,
+   "seq": 2516,
    "id": "e55_042",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45526,7 +46542,7 @@
    "themes": []
   },
   {
-   "seq": 2461,
+   "seq": 2517,
    "id": "e55_043",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45544,7 +46560,7 @@
    "themes": []
   },
   {
-   "seq": 2462,
+   "seq": 2518,
    "id": "e55_044",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45562,7 +46578,7 @@
    "themes": []
   },
   {
-   "seq": 2463,
+   "seq": 2519,
    "id": "e55_045",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45580,7 +46596,7 @@
    "themes": []
   },
   {
-   "seq": 2464,
+   "seq": 2520,
    "id": "e55_046",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45598,7 +46614,7 @@
    "themes": []
   },
   {
-   "seq": 2465,
+   "seq": 2521,
    "id": "e55_047",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45616,7 +46632,7 @@
    "themes": []
   },
   {
-   "seq": 2466,
+   "seq": 2522,
    "id": "e55_048",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45634,7 +46650,7 @@
    "themes": []
   },
   {
-   "seq": 2467,
+   "seq": 2523,
    "id": "e55_049",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45652,7 +46668,7 @@
    "themes": []
   },
   {
-   "seq": 2468,
+   "seq": 2524,
    "id": "e55_050",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45670,7 +46686,7 @@
    "themes": []
   },
   {
-   "seq": 2469,
+   "seq": 2525,
    "id": "e55_051",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45688,7 +46704,7 @@
    "themes": []
   },
   {
-   "seq": 2470,
+   "seq": 2526,
    "id": "e55_052",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45706,7 +46722,7 @@
    "themes": []
   },
   {
-   "seq": 2471,
+   "seq": 2527,
    "id": "e55_053",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45724,7 +46740,7 @@
    "themes": []
   },
   {
-   "seq": 2472,
+   "seq": 2528,
    "id": "e55_054",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45742,7 +46758,7 @@
    "themes": []
   },
   {
-   "seq": 2473,
+   "seq": 2529,
    "id": "e55_055",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45760,7 +46776,7 @@
    "themes": []
   },
   {
-   "seq": 2474,
+   "seq": 2530,
    "id": "e55_056",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45778,7 +46794,7 @@
    "themes": []
   },
   {
-   "seq": 2475,
+   "seq": 2531,
    "id": "e55_057",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45796,7 +46812,7 @@
    "themes": []
   },
   {
-   "seq": 2476,
+   "seq": 2532,
    "id": "e55_005w",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45814,7 +46830,7 @@
    "themes": []
   },
   {
-   "seq": 2477,
+   "seq": 2533,
    "id": "e55_006w",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45832,7 +46848,7 @@
    "themes": []
   },
   {
-   "seq": 2478,
+   "seq": 2534,
    "id": "e55_058",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45850,7 +46866,7 @@
    "themes": []
   },
   {
-   "seq": 2479,
+   "seq": 2535,
    "id": "e55_059",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45868,7 +46884,7 @@
    "themes": []
   },
   {
-   "seq": 2480,
+   "seq": 2536,
    "id": "e55_060",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45886,7 +46902,7 @@
    "themes": []
   },
   {
-   "seq": 2481,
+   "seq": 2537,
    "id": "e55_061",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45904,7 +46920,7 @@
    "themes": []
   },
   {
-   "seq": 2482,
+   "seq": 2538,
    "id": "e55_062",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45922,7 +46938,7 @@
    "themes": []
   },
   {
-   "seq": 2483,
+   "seq": 2539,
    "id": "e55_063",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45940,7 +46956,7 @@
    "themes": []
   },
   {
-   "seq": 2484,
+   "seq": 2540,
    "id": "e55_064",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45958,7 +46974,7 @@
    "themes": []
   },
   {
-   "seq": 2485,
+   "seq": 2541,
    "id": "e55_065",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45976,7 +46992,7 @@
    "themes": []
   },
   {
-   "seq": 2486,
+   "seq": 2542,
    "id": "e55_066",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -45994,7 +47010,7 @@
    "themes": []
   },
   {
-   "seq": 2487,
+   "seq": 2543,
    "id": "e55_067",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -46012,7 +47028,7 @@
    "themes": []
   },
   {
-   "seq": 2488,
+   "seq": 2544,
    "id": "e55_068",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -46030,7 +47046,7 @@
    "themes": []
   },
   {
-   "seq": 2489,
+   "seq": 2545,
    "id": "e55_069",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -46048,7 +47064,7 @@
    "themes": []
   },
   {
-   "seq": 2490,
+   "seq": 2546,
    "id": "e55_070",
    "file": "src/content/era/era1955.js",
    "line": 5,
@@ -46066,7 +47082,7 @@
    "themes": []
   },
   {
-   "seq": 2491,
+   "seq": 2547,
    "id": "e55_071",
    "file": "src/content/era/era1955.js",
    "line": 6,
@@ -46084,7 +47100,7 @@
    "themes": []
   },
   {
-   "seq": 2492,
+   "seq": 2548,
    "id": "e55_072",
    "file": "src/content/era/era1955.js",
    "line": 11,
@@ -46102,7 +47118,7 @@
    "themes": []
   },
   {
-   "seq": 2493,
+   "seq": 2549,
    "id": "e55_073",
    "file": "src/content/era/era1955.js",
    "line": 12,
@@ -46120,7 +47136,7 @@
    "themes": []
   },
   {
-   "seq": 2494,
+   "seq": 2550,
    "id": "e55_074",
    "file": "src/content/era/era1955.js",
    "line": 13,
@@ -46138,7 +47154,7 @@
    "themes": []
   },
   {
-   "seq": 2495,
+   "seq": 2551,
    "id": "e55_075",
    "file": "src/content/era/era1955.js",
    "line": 14,
@@ -46156,7 +47172,7 @@
    "themes": []
   },
   {
-   "seq": 2496,
+   "seq": 2552,
    "id": "e55_076",
    "file": "src/content/era/era1955.js",
    "line": 15,
@@ -46174,7 +47190,7 @@
    "themes": []
   },
   {
-   "seq": 2497,
+   "seq": 2553,
    "id": "e55_077",
    "file": "src/content/era/era1955.js",
    "line": 16,
@@ -46192,7 +47208,7 @@
    "themes": []
   },
   {
-   "seq": 2498,
+   "seq": 2554,
    "id": "e55_078",
    "file": "src/content/era/era1955.js",
    "line": 17,
@@ -46210,7 +47226,7 @@
    "themes": []
   },
   {
-   "seq": 2499,
+   "seq": 2555,
    "id": "e55_079",
    "file": "src/content/era/era1955.js",
    "line": 18,
@@ -46228,7 +47244,7 @@
    "themes": []
   },
   {
-   "seq": 2500,
+   "seq": 2556,
    "id": "e55_080",
    "file": "src/content/era/era1955.js",
    "line": 19,
@@ -46246,7 +47262,7 @@
    "themes": []
   },
   {
-   "seq": 2501,
+   "seq": 2557,
    "id": "e55_081",
    "file": "src/content/era/era1955.js",
    "line": 20,
@@ -46264,7 +47280,7 @@
    "themes": []
   },
   {
-   "seq": 2502,
+   "seq": 2558,
    "id": "e55_082",
    "file": "src/content/era/era1955.js",
    "line": 21,
@@ -46282,7 +47298,7 @@
    "themes": []
   },
   {
-   "seq": 2503,
+   "seq": 2559,
    "id": "e55_083",
    "file": "src/content/era/era1955.js",
    "line": 22,
@@ -46300,7 +47316,7 @@
    "themes": []
   },
   {
-   "seq": 2504,
+   "seq": 2560,
    "id": "e55_084",
    "file": "src/content/era/era1955.js",
    "line": 23,
@@ -46318,7 +47334,7 @@
    "themes": []
   },
   {
-   "seq": 2505,
+   "seq": 2561,
    "id": "e55_085",
    "file": "src/content/era/era1955.js",
    "line": 24,
@@ -46336,7 +47352,7 @@
    "themes": []
   },
   {
-   "seq": 2506,
+   "seq": 2562,
    "id": "e55_086",
    "file": "src/content/era/era1955.js",
    "line": 25,
@@ -46354,7 +47370,7 @@
    "themes": []
   },
   {
-   "seq": 2507,
+   "seq": 2563,
    "id": "e55_087",
    "file": "src/content/era/era1955.js",
    "line": 26,
@@ -46372,7 +47388,7 @@
    "themes": []
   },
   {
-   "seq": 2508,
+   "seq": 2564,
    "id": "e55_088",
    "file": "src/content/era/era1955.js",
    "line": 27,
@@ -46390,7 +47406,7 @@
    "themes": []
   },
   {
-   "seq": 2509,
+   "seq": 2565,
    "id": "e55_089",
    "file": "src/content/era/era1955.js",
    "line": 28,
@@ -46408,7 +47424,7 @@
    "themes": []
   },
   {
-   "seq": 2510,
+   "seq": 2566,
    "id": "e55_090",
    "file": "src/content/era/era1955.js",
    "line": 29,
@@ -46426,7 +47442,7 @@
    "themes": []
   },
   {
-   "seq": 2511,
+   "seq": 2567,
    "id": "e55_091",
    "file": "src/content/era/era1955.js",
    "line": 30,
@@ -46444,7 +47460,7 @@
    "themes": []
   },
   {
-   "seq": 2512,
+   "seq": 2568,
    "id": "e55_092",
    "file": "src/content/era/era1955.js",
    "line": 31,
@@ -46462,7 +47478,7 @@
    "themes": []
   },
   {
-   "seq": 2513,
+   "seq": 2569,
    "id": "e55_093",
    "file": "src/content/era/era1955.js",
    "line": 32,
@@ -46480,7 +47496,7 @@
    "themes": []
   },
   {
-   "seq": 2514,
+   "seq": 2570,
    "id": "e55_094",
    "file": "src/content/era/era1955.js",
    "line": 33,
@@ -46498,7 +47514,7 @@
    "themes": []
   },
   {
-   "seq": 2515,
+   "seq": 2571,
    "id": "e55_095",
    "file": "src/content/era/era1955.js",
    "line": 34,
@@ -46516,7 +47532,7 @@
    "themes": []
   },
   {
-   "seq": 2516,
+   "seq": 2572,
    "id": "e55_096",
    "file": "src/content/era/era1955.js",
    "line": 35,
@@ -46534,7 +47550,7 @@
    "themes": []
   },
   {
-   "seq": 2517,
+   "seq": 2573,
    "id": "e55_097",
    "file": "src/content/era/era1955.js",
    "line": 36,
@@ -46552,7 +47568,7 @@
    "themes": []
   },
   {
-   "seq": 2518,
+   "seq": 2574,
    "id": "e55_098",
    "file": "src/content/era/era1955.js",
    "line": 37,
@@ -46570,7 +47586,7 @@
    "themes": []
   },
   {
-   "seq": 2519,
+   "seq": 2575,
    "id": "e55_099",
    "file": "src/content/era/era1955.js",
    "line": 38,
@@ -46588,7 +47604,7 @@
    "themes": []
   },
   {
-   "seq": 2520,
+   "seq": 2576,
    "id": "e55_100",
    "file": "src/content/era/era1955.js",
    "line": 39,
@@ -46606,7 +47622,7 @@
    "themes": []
   },
   {
-   "seq": 2521,
+   "seq": 2577,
    "id": "e55_101",
    "file": "src/content/era/era1955.js",
    "line": 40,
@@ -46624,7 +47640,7 @@
    "themes": []
   },
   {
-   "seq": 2522,
+   "seq": 2578,
    "id": "e55_102",
    "file": "src/content/era/era1955.js",
    "line": 41,
@@ -46644,7 +47660,7 @@
    ]
   },
   {
-   "seq": 2523,
+   "seq": 2579,
    "id": "e55_103",
    "file": "src/content/era/era1955.js",
    "line": 42,
@@ -46664,7 +47680,7 @@
    ]
   },
   {
-   "seq": 2524,
+   "seq": 2580,
    "id": "e55_104",
    "file": "src/content/era/era1955.js",
    "line": 43,
@@ -46684,7 +47700,7 @@
    ]
   },
   {
-   "seq": 2525,
+   "seq": 2581,
    "id": "e65_001",
    "file": "src/content/era/era1965.js",
    "line": 3,
@@ -46702,7 +47718,7 @@
    "themes": []
   },
   {
-   "seq": 2526,
+   "seq": 2582,
    "id": "e65_002",
    "file": "src/content/era/era1965.js",
    "line": 4,
@@ -46720,7 +47736,7 @@
    "themes": []
   },
   {
-   "seq": 2527,
+   "seq": 2583,
    "id": "e65_003",
    "file": "src/content/era/era1965.js",
    "line": 5,
@@ -46738,7 +47754,7 @@
    "themes": []
   },
   {
-   "seq": 2528,
+   "seq": 2584,
    "id": "e65_004",
    "file": "src/content/era/era1965.js",
    "line": 6,
@@ -46756,7 +47772,7 @@
    "themes": []
   },
   {
-   "seq": 2529,
+   "seq": 2585,
    "id": "e65_005",
    "file": "src/content/era/era1965.js",
    "line": 7,
@@ -46774,7 +47790,7 @@
    "themes": []
   },
   {
-   "seq": 2530,
+   "seq": 2586,
    "id": "e65_006",
    "file": "src/content/era/era1965.js",
    "line": 8,
@@ -46792,7 +47808,7 @@
    "themes": []
   },
   {
-   "seq": 2531,
+   "seq": 2587,
    "id": "e65_007",
    "file": "src/content/era/era1965.js",
    "line": 9,
@@ -46810,7 +47826,7 @@
    "themes": []
   },
   {
-   "seq": 2532,
+   "seq": 2588,
    "id": "e65_008",
    "file": "src/content/era/era1965.js",
    "line": 10,
@@ -46828,7 +47844,7 @@
    "themes": []
   },
   {
-   "seq": 2533,
+   "seq": 2589,
    "id": "e65_009",
    "file": "src/content/era/era1965.js",
    "line": 11,
@@ -46846,7 +47862,7 @@
    "themes": []
   },
   {
-   "seq": 2534,
+   "seq": 2590,
    "id": "e65_010",
    "file": "src/content/era/era1965.js",
    "line": 12,
@@ -46864,7 +47880,7 @@
    "themes": []
   },
   {
-   "seq": 2535,
+   "seq": 2591,
    "id": "e65_011",
    "file": "src/content/era/era1965.js",
    "line": 13,
@@ -46882,7 +47898,7 @@
    "themes": []
   },
   {
-   "seq": 2536,
+   "seq": 2592,
    "id": "e65_012",
    "file": "src/content/era/era1965.js",
    "line": 14,
@@ -46900,7 +47916,7 @@
    "themes": []
   },
   {
-   "seq": 2537,
+   "seq": 2593,
    "id": "e65_013",
    "file": "src/content/era/era1965.js",
    "line": 15,
@@ -46918,7 +47934,7 @@
    "themes": []
   },
   {
-   "seq": 2538,
+   "seq": 2594,
    "id": "e65_014",
    "file": "src/content/era/era1965.js",
    "line": 16,
@@ -46936,7 +47952,7 @@
    "themes": []
   },
   {
-   "seq": 2539,
+   "seq": 2595,
    "id": "e65_015",
    "file": "src/content/era/era1965.js",
    "line": 17,
@@ -46954,7 +47970,7 @@
    "themes": []
   },
   {
-   "seq": 2540,
+   "seq": 2596,
    "id": "e65_016",
    "file": "src/content/era/era1965.js",
    "line": 18,
@@ -46972,7 +47988,7 @@
    "themes": []
   },
   {
-   "seq": 2541,
+   "seq": 2597,
    "id": "e65_017",
    "file": "src/content/era/era1965.js",
    "line": 19,
@@ -46990,7 +48006,7 @@
    "themes": []
   },
   {
-   "seq": 2542,
+   "seq": 2598,
    "id": "e65_018",
    "file": "src/content/era/era1965.js",
    "line": 20,
@@ -47008,7 +48024,7 @@
    "themes": []
   },
   {
-   "seq": 2543,
+   "seq": 2599,
    "id": "e65_019",
    "file": "src/content/era/era1965.js",
    "line": 21,
@@ -47026,7 +48042,7 @@
    "themes": []
   },
   {
-   "seq": 2544,
+   "seq": 2600,
    "id": "e65_020",
    "file": "src/content/era/era1965.js",
    "line": 22,
@@ -47044,7 +48060,7 @@
    "themes": []
   },
   {
-   "seq": 2545,
+   "seq": 2601,
    "id": "e65_021",
    "file": "src/content/era/era1965.js",
    "line": 23,
@@ -47062,7 +48078,7 @@
    "themes": []
   },
   {
-   "seq": 2546,
+   "seq": 2602,
    "id": "e65_022",
    "file": "src/content/era/era1965.js",
    "line": 24,
@@ -47080,7 +48096,7 @@
    "themes": []
   },
   {
-   "seq": 2547,
+   "seq": 2603,
    "id": "e65_023",
    "file": "src/content/era/era1965.js",
    "line": 25,
@@ -47098,7 +48114,7 @@
    "themes": []
   },
   {
-   "seq": 2548,
+   "seq": 2604,
    "id": "e65_024",
    "file": "src/content/era/era1965.js",
    "line": 26,
@@ -47116,7 +48132,7 @@
    "themes": []
   },
   {
-   "seq": 2549,
+   "seq": 2605,
    "id": "e65_025",
    "file": "src/content/era/era1965.js",
    "line": 27,
@@ -47134,7 +48150,7 @@
    "themes": []
   },
   {
-   "seq": 2550,
+   "seq": 2606,
    "id": "e65_026",
    "file": "src/content/era/era1965.js",
    "line": 28,
@@ -47152,7 +48168,7 @@
    "themes": []
   },
   {
-   "seq": 2551,
+   "seq": 2607,
    "id": "e65_027",
    "file": "src/content/era/era1965.js",
    "line": 29,
@@ -47170,7 +48186,7 @@
    "themes": []
   },
   {
-   "seq": 2552,
+   "seq": 2608,
    "id": "e65_028",
    "file": "src/content/era/era1965.js",
    "line": 30,
@@ -47188,7 +48204,7 @@
    "themes": []
   },
   {
-   "seq": 2553,
+   "seq": 2609,
    "id": "e65_029",
    "file": "src/content/era/era1965.js",
    "line": 31,
@@ -47206,7 +48222,7 @@
    "themes": []
   },
   {
-   "seq": 2554,
+   "seq": 2610,
    "id": "e65_030",
    "file": "src/content/era/era1965.js",
    "line": 32,
@@ -47224,7 +48240,7 @@
    "themes": []
   },
   {
-   "seq": 2555,
+   "seq": 2611,
    "id": "e65_031",
    "file": "src/content/era/era1965.js",
    "line": 33,
@@ -47242,7 +48258,7 @@
    "themes": []
   },
   {
-   "seq": 2556,
+   "seq": 2612,
    "id": "e65_032",
    "file": "src/content/era/era1965.js",
    "line": 34,
@@ -47260,7 +48276,7 @@
    "themes": []
   },
   {
-   "seq": 2557,
+   "seq": 2613,
    "id": "e65_033",
    "file": "src/content/era/era1965.js",
    "line": 35,
@@ -47278,7 +48294,7 @@
    "themes": []
   },
   {
-   "seq": 2558,
+   "seq": 2614,
    "id": "e65_034",
    "file": "src/content/era/era1965.js",
    "line": 36,
@@ -47296,7 +48312,7 @@
    "themes": []
   },
   {
-   "seq": 2559,
+   "seq": 2615,
    "id": "e65_035",
    "file": "src/content/era/era1965.js",
    "line": 37,
@@ -47314,7 +48330,7 @@
    "themes": []
   },
   {
-   "seq": 2560,
+   "seq": 2616,
    "id": "e65_036",
    "file": "src/content/era/era1965.js",
    "line": 38,
@@ -47332,7 +48348,7 @@
    "themes": []
   },
   {
-   "seq": 2561,
+   "seq": 2617,
    "id": "e65_037",
    "file": "src/content/era/era1965.js",
    "line": 39,
@@ -47350,7 +48366,7 @@
    "themes": []
   },
   {
-   "seq": 2562,
+   "seq": 2618,
    "id": "e65_038",
    "file": "src/content/era/era1965.js",
    "line": 40,
@@ -47368,7 +48384,7 @@
    "themes": []
   },
   {
-   "seq": 2563,
+   "seq": 2619,
    "id": "e65_039",
    "file": "src/content/era/era1965.js",
    "line": 41,
@@ -47386,7 +48402,7 @@
    "themes": []
   },
   {
-   "seq": 2564,
+   "seq": 2620,
    "id": "e65_040",
    "file": "src/content/era/era1965.js",
    "line": 42,
@@ -47404,7 +48420,7 @@
    "themes": []
   },
   {
-   "seq": 2565,
+   "seq": 2621,
    "id": "e65_041",
    "file": "src/content/era/era1965.js",
    "line": 43,
@@ -47422,7 +48438,7 @@
    "themes": []
   },
   {
-   "seq": 2566,
+   "seq": 2622,
    "id": "e65_042",
    "file": "src/content/era/era1965.js",
    "line": 44,
@@ -47440,7 +48456,7 @@
    "themes": []
   },
   {
-   "seq": 2567,
+   "seq": 2623,
    "id": "e65_043",
    "file": "src/content/era/era1965.js",
    "line": 45,
@@ -47458,7 +48474,7 @@
    "themes": []
   },
   {
-   "seq": 2568,
+   "seq": 2624,
    "id": "e65_044",
    "file": "src/content/era/era1965.js",
    "line": 46,
@@ -47476,7 +48492,7 @@
    "themes": []
   },
   {
-   "seq": 2569,
+   "seq": 2625,
    "id": "e65_045",
    "file": "src/content/era/era1965.js",
    "line": 47,
@@ -47494,7 +48510,7 @@
    "themes": []
   },
   {
-   "seq": 2570,
+   "seq": 2626,
    "id": "e65_046",
    "file": "src/content/era/era1965.js",
    "line": 48,
@@ -47512,7 +48528,7 @@
    "themes": []
   },
   {
-   "seq": 2571,
+   "seq": 2627,
    "id": "e65_047",
    "file": "src/content/era/era1965.js",
    "line": 49,
@@ -47532,7 +48548,7 @@
    ]
   },
   {
-   "seq": 2572,
+   "seq": 2628,
    "id": "e65_048",
    "file": "src/content/era/era1965.js",
    "line": 50,
@@ -47550,7 +48566,7 @@
    "themes": []
   },
   {
-   "seq": 2573,
+   "seq": 2629,
    "id": "e65_049",
    "file": "src/content/era/era1965.js",
    "line": 51,
@@ -47568,7 +48584,7 @@
    "themes": []
   },
   {
-   "seq": 2574,
+   "seq": 2630,
    "id": "e65_050",
    "file": "src/content/era/era1965.js",
    "line": 52,
@@ -47586,7 +48602,7 @@
    "themes": []
   },
   {
-   "seq": 2575,
+   "seq": 2631,
    "id": "e65_051",
    "file": "src/content/era/era1965.js",
    "line": 53,
@@ -47604,7 +48620,7 @@
    "themes": []
   },
   {
-   "seq": 2576,
+   "seq": 2632,
    "id": "e65_052",
    "file": "src/content/era/era1965.js",
    "line": 54,
@@ -47622,7 +48638,7 @@
    "themes": []
   },
   {
-   "seq": 2577,
+   "seq": 2633,
    "id": "e65_053",
    "file": "src/content/era/era1965.js",
    "line": 55,
@@ -47640,7 +48656,7 @@
    "themes": []
   },
   {
-   "seq": 2578,
+   "seq": 2634,
    "id": "e65_054",
    "file": "src/content/era/era1965.js",
    "line": 56,
@@ -47658,7 +48674,7 @@
    "themes": []
   },
   {
-   "seq": 2579,
+   "seq": 2635,
    "id": "e65_055",
    "file": "src/content/era/era1965.js",
    "line": 57,
@@ -47676,7 +48692,7 @@
    "themes": []
   },
   {
-   "seq": 2580,
+   "seq": 2636,
    "id": "e65_056",
    "file": "src/content/era/era1965.js",
    "line": 58,
@@ -47694,7 +48710,7 @@
    "themes": []
   },
   {
-   "seq": 2581,
+   "seq": 2637,
    "id": "e65_057",
    "file": "src/content/era/era1965.js",
    "line": 59,
@@ -47712,7 +48728,7 @@
    "themes": []
   },
   {
-   "seq": 2582,
+   "seq": 2638,
    "id": "e65_058",
    "file": "src/content/era/era1965.js",
    "line": 60,
@@ -47730,7 +48746,7 @@
    "themes": []
   },
   {
-   "seq": 2583,
+   "seq": 2639,
    "id": "e65_059",
    "file": "src/content/era/era1965.js",
    "line": 61,
@@ -47748,7 +48764,7 @@
    "themes": []
   },
   {
-   "seq": 2584,
+   "seq": 2640,
    "id": "e65_060",
    "file": "src/content/era/era1965.js",
    "line": 62,
@@ -47766,7 +48782,7 @@
    "themes": []
   },
   {
-   "seq": 2585,
+   "seq": 2641,
    "id": "e65_061",
    "file": "src/content/era/era1965.js",
    "line": 63,
@@ -47784,7 +48800,7 @@
    "themes": []
   },
   {
-   "seq": 2586,
+   "seq": 2642,
    "id": "e65_062",
    "file": "src/content/era/era1965.js",
    "line": 64,
@@ -47802,7 +48818,7 @@
    "themes": []
   },
   {
-   "seq": 2587,
+   "seq": 2643,
    "id": "e65_063",
    "file": "src/content/era/era1965.js",
    "line": 65,
@@ -47820,7 +48836,7 @@
    "themes": []
   },
   {
-   "seq": 2588,
+   "seq": 2644,
    "id": "e65_064",
    "file": "src/content/era/era1965.js",
    "line": 66,
@@ -47838,7 +48854,7 @@
    "themes": []
   },
   {
-   "seq": 2589,
+   "seq": 2645,
    "id": "e65_065",
    "file": "src/content/era/era1965.js",
    "line": 67,
@@ -47856,7 +48872,7 @@
    "themes": []
   },
   {
-   "seq": 2590,
+   "seq": 2646,
    "id": "e65_066",
    "file": "src/content/era/era1965.js",
    "line": 71,
@@ -47874,7 +48890,7 @@
    "themes": []
   },
   {
-   "seq": 2591,
+   "seq": 2647,
    "id": "e65_067",
    "file": "src/content/era/era1965.js",
    "line": 76,
@@ -47892,7 +48908,7 @@
    "themes": []
   },
   {
-   "seq": 2592,
+   "seq": 2648,
    "id": "e65_068",
    "file": "src/content/era/era1965.js",
    "line": 77,
@@ -47910,7 +48926,7 @@
    "themes": []
   },
   {
-   "seq": 2593,
+   "seq": 2649,
    "id": "e65_069",
    "file": "src/content/era/era1965.js",
    "line": 78,
@@ -47928,7 +48944,7 @@
    "themes": []
   },
   {
-   "seq": 2594,
+   "seq": 2650,
    "id": "e65_070",
    "file": "src/content/era/era1965.js",
    "line": 79,
@@ -47946,7 +48962,7 @@
    "themes": []
   },
   {
-   "seq": 2595,
+   "seq": 2651,
    "id": "e65_071",
    "file": "src/content/era/era1965.js",
    "line": 80,
@@ -47964,7 +48980,7 @@
    "themes": []
   },
   {
-   "seq": 2596,
+   "seq": 2652,
    "id": "e65_072",
    "file": "src/content/era/era1965.js",
    "line": 81,
@@ -47982,7 +48998,7 @@
    "themes": []
   },
   {
-   "seq": 2597,
+   "seq": 2653,
    "id": "e65_073",
    "file": "src/content/era/era1965.js",
    "line": 82,
@@ -48000,7 +49016,7 @@
    "themes": []
   },
   {
-   "seq": 2598,
+   "seq": 2654,
    "id": "e65_074",
    "file": "src/content/era/era1965.js",
    "line": 83,
@@ -48018,7 +49034,7 @@
    "themes": []
   },
   {
-   "seq": 2599,
+   "seq": 2655,
    "id": "e65_075",
    "file": "src/content/era/era1965.js",
    "line": 84,
@@ -48036,7 +49052,7 @@
    "themes": []
   },
   {
-   "seq": 2600,
+   "seq": 2656,
    "id": "e65_076",
    "file": "src/content/era/era1965.js",
    "line": 85,
@@ -48054,7 +49070,7 @@
    "themes": []
   },
   {
-   "seq": 2601,
+   "seq": 2657,
    "id": "e65_077",
    "file": "src/content/era/era1965.js",
    "line": 86,
@@ -48072,7 +49088,7 @@
    "themes": []
   },
   {
-   "seq": 2602,
+   "seq": 2658,
    "id": "e65_078",
    "file": "src/content/era/era1965.js",
    "line": 87,
@@ -48090,7 +49106,7 @@
    "themes": []
   },
   {
-   "seq": 2603,
+   "seq": 2659,
    "id": "e65_079",
    "file": "src/content/era/era1965.js",
    "line": 88,
@@ -48108,7 +49124,7 @@
    "themes": []
   },
   {
-   "seq": 2604,
+   "seq": 2660,
    "id": "e65_080",
    "file": "src/content/era/era1965.js",
    "line": 89,
@@ -48126,7 +49142,7 @@
    "themes": []
   },
   {
-   "seq": 2605,
+   "seq": 2661,
    "id": "e65_081",
    "file": "src/content/era/era1965.js",
    "line": 90,
@@ -48144,7 +49160,7 @@
    "themes": []
   },
   {
-   "seq": 2606,
+   "seq": 2662,
    "id": "e65_082",
    "file": "src/content/era/era1965.js",
    "line": 91,
@@ -48162,7 +49178,7 @@
    "themes": []
   },
   {
-   "seq": 2607,
+   "seq": 2663,
    "id": "e65_083",
    "file": "src/content/era/era1965.js",
    "line": 92,
@@ -48180,7 +49196,7 @@
    "themes": []
   },
   {
-   "seq": 2608,
+   "seq": 2664,
    "id": "e65_084",
    "file": "src/content/era/era1965.js",
    "line": 93,
@@ -48198,7 +49214,7 @@
    "themes": []
   },
   {
-   "seq": 2609,
+   "seq": 2665,
    "id": "e65_085",
    "file": "src/content/era/era1965.js",
    "line": 94,
@@ -48216,7 +49232,7 @@
    "themes": []
   },
   {
-   "seq": 2610,
+   "seq": 2666,
    "id": "e65_086",
    "file": "src/content/era/era1965.js",
    "line": 95,
@@ -48234,7 +49250,7 @@
    "themes": []
   },
   {
-   "seq": 2611,
+   "seq": 2667,
    "id": "e65_087",
    "file": "src/content/era/era1965.js",
    "line": 96,
@@ -48252,7 +49268,7 @@
    "themes": []
   },
   {
-   "seq": 2612,
+   "seq": 2668,
    "id": "e65_088",
    "file": "src/content/era/era1965.js",
    "line": 97,
@@ -48270,7 +49286,7 @@
    "themes": []
   },
   {
-   "seq": 2613,
+   "seq": 2669,
    "id": "e65_089",
    "file": "src/content/era/era1965.js",
    "line": 98,
@@ -48288,7 +49304,7 @@
    "themes": []
   },
   {
-   "seq": 2614,
+   "seq": 2670,
    "id": "e65_090",
    "file": "src/content/era/era1965.js",
    "line": 99,
@@ -48306,7 +49322,7 @@
    "themes": []
   },
   {
-   "seq": 2615,
+   "seq": 2671,
    "id": "e65_091",
    "file": "src/content/era/era1965.js",
    "line": 100,
@@ -48324,7 +49340,7 @@
    "themes": []
   },
   {
-   "seq": 2616,
+   "seq": 2672,
    "id": "e65_092",
    "file": "src/content/era/era1965.js",
    "line": 101,
@@ -48342,7 +49358,7 @@
    "themes": []
   },
   {
-   "seq": 2617,
+   "seq": 2673,
    "id": "e65_093",
    "file": "src/content/era/era1965.js",
    "line": 102,
@@ -48360,7 +49376,7 @@
    "themes": []
   },
   {
-   "seq": 2618,
+   "seq": 2674,
    "id": "e65_094",
    "file": "src/content/era/era1965.js",
    "line": 103,
@@ -48378,7 +49394,7 @@
    "themes": []
   },
   {
-   "seq": 2619,
+   "seq": 2675,
    "id": "e65_095",
    "file": "src/content/era/era1965.js",
    "line": 104,
@@ -48396,7 +49412,7 @@
    "themes": []
   },
   {
-   "seq": 2620,
+   "seq": 2676,
    "id": "e65_096",
    "file": "src/content/era/era1965.js",
    "line": 105,
@@ -48414,7 +49430,7 @@
    "themes": []
   },
   {
-   "seq": 2621,
+   "seq": 2677,
    "id": "e78_001",
    "file": "src/content/era/era1978.js",
    "line": 3,
@@ -48432,7 +49448,7 @@
    "themes": []
   },
   {
-   "seq": 2622,
+   "seq": 2678,
    "id": "e78_002",
    "file": "src/content/era/era1978.js",
    "line": 4,
@@ -48450,7 +49466,7 @@
    "themes": []
   },
   {
-   "seq": 2623,
+   "seq": 2679,
    "id": "e78_003",
    "file": "src/content/era/era1978.js",
    "line": 5,
@@ -48468,7 +49484,7 @@
    "themes": []
   },
   {
-   "seq": 2624,
+   "seq": 2680,
    "id": "e78_004",
    "file": "src/content/era/era1978.js",
    "line": 6,
@@ -48486,7 +49502,7 @@
    "themes": []
   },
   {
-   "seq": 2625,
+   "seq": 2681,
    "id": "e78_005",
    "file": "src/content/era/era1978.js",
    "line": 7,
@@ -48504,7 +49520,7 @@
    "themes": []
   },
   {
-   "seq": 2626,
+   "seq": 2682,
    "id": "e78_006",
    "file": "src/content/era/era1978.js",
    "line": 8,
@@ -48522,7 +49538,7 @@
    "themes": []
   },
   {
-   "seq": 2627,
+   "seq": 2683,
    "id": "e78_007",
    "file": "src/content/era/era1978.js",
    "line": 9,
@@ -48540,7 +49556,7 @@
    "themes": []
   },
   {
-   "seq": 2628,
+   "seq": 2684,
    "id": "e78_008",
    "file": "src/content/era/era1978.js",
    "line": 10,
@@ -48558,7 +49574,7 @@
    "themes": []
   },
   {
-   "seq": 2629,
+   "seq": 2685,
    "id": "e78_009",
    "file": "src/content/era/era1978.js",
    "line": 11,
@@ -48576,7 +49592,7 @@
    "themes": []
   },
   {
-   "seq": 2630,
+   "seq": 2686,
    "id": "e78_010",
    "file": "src/content/era/era1978.js",
    "line": 12,
@@ -48594,7 +49610,7 @@
    "themes": []
   },
   {
-   "seq": 2631,
+   "seq": 2687,
    "id": "e78_011",
    "file": "src/content/era/era1978.js",
    "line": 13,
@@ -48612,7 +49628,7 @@
    "themes": []
   },
   {
-   "seq": 2632,
+   "seq": 2688,
    "id": "e78_012",
    "file": "src/content/era/era1978.js",
    "line": 14,
@@ -48630,7 +49646,7 @@
    "themes": []
   },
   {
-   "seq": 2633,
+   "seq": 2689,
    "id": "e78_013",
    "file": "src/content/era/era1978.js",
    "line": 15,
@@ -48648,7 +49664,7 @@
    "themes": []
   },
   {
-   "seq": 2634,
+   "seq": 2690,
    "id": "e78_014",
    "file": "src/content/era/era1978.js",
    "line": 16,
@@ -48666,7 +49682,7 @@
    "themes": []
   },
   {
-   "seq": 2635,
+   "seq": 2691,
    "id": "e78_015",
    "file": "src/content/era/era1978.js",
    "line": 17,
@@ -48684,7 +49700,7 @@
    "themes": []
   },
   {
-   "seq": 2636,
+   "seq": 2692,
    "id": "e78_016",
    "file": "src/content/era/era1978.js",
    "line": 18,
@@ -48702,7 +49718,7 @@
    "themes": []
   },
   {
-   "seq": 2637,
+   "seq": 2693,
    "id": "e78_017",
    "file": "src/content/era/era1978.js",
    "line": 19,
@@ -48720,7 +49736,7 @@
    "themes": []
   },
   {
-   "seq": 2638,
+   "seq": 2694,
    "id": "e78_018",
    "file": "src/content/era/era1978.js",
    "line": 20,
@@ -48738,7 +49754,7 @@
    "themes": []
   },
   {
-   "seq": 2639,
+   "seq": 2695,
    "id": "e78_019",
    "file": "src/content/era/era1978.js",
    "line": 21,
@@ -48756,7 +49772,7 @@
    "themes": []
   },
   {
-   "seq": 2640,
+   "seq": 2696,
    "id": "e78_020",
    "file": "src/content/era/era1978.js",
    "line": 22,
@@ -48774,7 +49790,7 @@
    "themes": []
   },
   {
-   "seq": 2641,
+   "seq": 2697,
    "id": "e78_021",
    "file": "src/content/era/era1978.js",
    "line": 23,
@@ -48794,7 +49810,7 @@
    ]
   },
   {
-   "seq": 2642,
+   "seq": 2698,
    "id": "e78_022",
    "file": "src/content/era/era1978.js",
    "line": 24,
@@ -48812,7 +49828,7 @@
    "themes": []
   },
   {
-   "seq": 2643,
+   "seq": 2699,
    "id": "e78_023",
    "file": "src/content/era/era1978.js",
    "line": 25,
@@ -48832,7 +49848,7 @@
    ]
   },
   {
-   "seq": 2644,
+   "seq": 2700,
    "id": "e78_024",
    "file": "src/content/era/era1978.js",
    "line": 26,
@@ -48852,7 +49868,7 @@
    ]
   },
   {
-   "seq": 2645,
+   "seq": 2701,
    "id": "e78_025",
    "file": "src/content/era/era1978.js",
    "line": 27,
@@ -48870,7 +49886,7 @@
    "themes": []
   },
   {
-   "seq": 2646,
+   "seq": 2702,
    "id": "e78_026",
    "file": "src/content/era/era1978.js",
    "line": 28,
@@ -48888,7 +49904,7 @@
    "themes": []
   },
   {
-   "seq": 2647,
+   "seq": 2703,
    "id": "e78_027",
    "file": "src/content/era/era1978.js",
    "line": 29,
@@ -48906,7 +49922,7 @@
    "themes": []
   },
   {
-   "seq": 2648,
+   "seq": 2704,
    "id": "e78_028",
    "file": "src/content/era/era1978.js",
    "line": 30,
@@ -48924,7 +49940,7 @@
    "themes": []
   },
   {
-   "seq": 2649,
+   "seq": 2705,
    "id": "e78_029",
    "file": "src/content/era/era1978.js",
    "line": 31,
@@ -48942,7 +49958,7 @@
    "themes": []
   },
   {
-   "seq": 2650,
+   "seq": 2706,
    "id": "e78_030",
    "file": "src/content/era/era1978.js",
    "line": 32,
@@ -48960,7 +49976,7 @@
    "themes": []
   },
   {
-   "seq": 2651,
+   "seq": 2707,
    "id": "e78_031",
    "file": "src/content/era/era1978.js",
    "line": 33,
@@ -48978,7 +49994,7 @@
    "themes": []
   },
   {
-   "seq": 2652,
+   "seq": 2708,
    "id": "e78_032",
    "file": "src/content/era/era1978.js",
    "line": 34,
@@ -48996,7 +50012,7 @@
    "themes": []
   },
   {
-   "seq": 2653,
+   "seq": 2709,
    "id": "e78_033",
    "file": "src/content/era/era1978.js",
    "line": 35,
@@ -49014,7 +50030,7 @@
    "themes": []
   },
   {
-   "seq": 2654,
+   "seq": 2710,
    "id": "e78_034",
    "file": "src/content/era/era1978.js",
    "line": 36,
@@ -49032,7 +50048,7 @@
    "themes": []
   },
   {
-   "seq": 2655,
+   "seq": 2711,
    "id": "e78_035",
    "file": "src/content/era/era1978.js",
    "line": 37,
@@ -49050,7 +50066,7 @@
    "themes": []
   },
   {
-   "seq": 2656,
+   "seq": 2712,
    "id": "e78_036",
    "file": "src/content/era/era1978.js",
    "line": 38,
@@ -49068,7 +50084,7 @@
    "themes": []
   },
   {
-   "seq": 2657,
+   "seq": 2713,
    "id": "e78_037",
    "file": "src/content/era/era1978.js",
    "line": 39,
@@ -49086,7 +50102,7 @@
    "themes": []
   },
   {
-   "seq": 2658,
+   "seq": 2714,
    "id": "e78_038",
    "file": "src/content/era/era1978.js",
    "line": 40,
@@ -49104,7 +50120,7 @@
    "themes": []
   },
   {
-   "seq": 2659,
+   "seq": 2715,
    "id": "e78_039",
    "file": "src/content/era/era1978.js",
    "line": 41,
@@ -49122,7 +50138,7 @@
    "themes": []
   },
   {
-   "seq": 2660,
+   "seq": 2716,
    "id": "e78_040",
    "file": "src/content/era/era1978.js",
    "line": 42,
@@ -49140,7 +50156,7 @@
    "themes": []
   },
   {
-   "seq": 2661,
+   "seq": 2717,
    "id": "e78_041",
    "file": "src/content/era/era1978.js",
    "line": 43,
@@ -49158,7 +50174,7 @@
    "themes": []
   },
   {
-   "seq": 2662,
+   "seq": 2718,
    "id": "e78_042",
    "file": "src/content/era/era1978.js",
    "line": 44,
@@ -49176,7 +50192,7 @@
    "themes": []
   },
   {
-   "seq": 2663,
+   "seq": 2719,
    "id": "e78_043",
    "file": "src/content/era/era1978.js",
    "line": 45,
@@ -49194,7 +50210,7 @@
    "themes": []
   },
   {
-   "seq": 2664,
+   "seq": 2720,
    "id": "e78_044",
    "file": "src/content/era/era1978.js",
    "line": 46,
@@ -49212,7 +50228,7 @@
    "themes": []
   },
   {
-   "seq": 2665,
+   "seq": 2721,
    "id": "e78_045",
    "file": "src/content/era/era1978.js",
    "line": 47,
@@ -49230,7 +50246,7 @@
    "themes": []
   },
   {
-   "seq": 2666,
+   "seq": 2722,
    "id": "e78_046",
    "file": "src/content/era/era1978.js",
    "line": 48,
@@ -49248,7 +50264,7 @@
    "themes": []
   },
   {
-   "seq": 2667,
+   "seq": 2723,
    "id": "e78_047",
    "file": "src/content/era/era1978.js",
    "line": 49,
@@ -49266,7 +50282,7 @@
    "themes": []
   },
   {
-   "seq": 2668,
+   "seq": 2724,
    "id": "e78_048",
    "file": "src/content/era/era1978.js",
    "line": 50,
@@ -49284,7 +50300,7 @@
    "themes": []
   },
   {
-   "seq": 2669,
+   "seq": 2725,
    "id": "e78_049",
    "file": "src/content/era/era1978.js",
    "line": 51,
@@ -49302,7 +50318,7 @@
    "themes": []
   },
   {
-   "seq": 2670,
+   "seq": 2726,
    "id": "e78_050",
    "file": "src/content/era/era1978.js",
    "line": 52,
@@ -49320,7 +50336,7 @@
    "themes": []
   },
   {
-   "seq": 2671,
+   "seq": 2727,
    "id": "e78_051",
    "file": "src/content/era/era1978.js",
    "line": 53,
@@ -49338,7 +50354,7 @@
    "themes": []
   },
   {
-   "seq": 2672,
+   "seq": 2728,
    "id": "e78_052",
    "file": "src/content/era/era1978.js",
    "line": 54,
@@ -49356,7 +50372,7 @@
    "themes": []
   },
   {
-   "seq": 2673,
+   "seq": 2729,
    "id": "e78_053",
    "file": "src/content/era/era1978.js",
    "line": 55,
@@ -49374,7 +50390,7 @@
    "themes": []
   },
   {
-   "seq": 2674,
+   "seq": 2730,
    "id": "e78_054",
    "file": "src/content/era/era1978.js",
    "line": 56,
@@ -49392,7 +50408,7 @@
    "themes": []
   },
   {
-   "seq": 2675,
+   "seq": 2731,
    "id": "e78_055",
    "file": "src/content/era/era1978.js",
    "line": 57,
@@ -49410,7 +50426,7 @@
    "themes": []
   },
   {
-   "seq": 2676,
+   "seq": 2732,
    "id": "e78_056",
    "file": "src/content/era/era1978.js",
    "line": 58,
@@ -49428,7 +50444,7 @@
    "themes": []
   },
   {
-   "seq": 2677,
+   "seq": 2733,
    "id": "e78_057",
    "file": "src/content/era/era1978.js",
    "line": 59,
@@ -49446,7 +50462,7 @@
    "themes": []
   },
   {
-   "seq": 2678,
+   "seq": 2734,
    "id": "e78_058",
    "file": "src/content/era/era1978.js",
    "line": 60,
@@ -49464,7 +50480,7 @@
    "themes": []
   },
   {
-   "seq": 2679,
+   "seq": 2735,
    "id": "e78_059",
    "file": "src/content/era/era1978.js",
    "line": 61,
@@ -49482,7 +50498,7 @@
    "themes": []
   },
   {
-   "seq": 2680,
+   "seq": 2736,
    "id": "e78_060",
    "file": "src/content/era/era1978.js",
    "line": 65,
@@ -49500,7 +50516,7 @@
    "themes": []
   },
   {
-   "seq": 2681,
+   "seq": 2737,
    "id": "e78_061",
    "file": "src/content/era/era1978.js",
    "line": 66,
@@ -49518,7 +50534,7 @@
    "themes": []
   },
   {
-   "seq": 2682,
+   "seq": 2738,
    "id": "e78_062",
    "file": "src/content/era/era1978.js",
    "line": 67,
@@ -49536,7 +50552,7 @@
    "themes": []
   },
   {
-   "seq": 2683,
+   "seq": 2739,
    "id": "e78_063",
    "file": "src/content/era/era1978.js",
    "line": 68,
@@ -49554,7 +50570,7 @@
    "themes": []
   },
   {
-   "seq": 2684,
+   "seq": 2740,
    "id": "echo_case85",
    "file": "src/content/era/era1985.js",
    "line": 16,
@@ -49572,7 +50588,7 @@
    "themes": []
   },
   {
-   "seq": 2685,
+   "seq": 2741,
    "id": "echo_flag85",
    "file": "src/content/era/era1985.js",
    "line": 17,
@@ -49590,7 +50606,7 @@
    "themes": []
   },
   {
-   "seq": 2686,
+   "seq": 2742,
    "id": "echo_cover85",
    "file": "src/content/era/era1985.js",
    "line": 18,
@@ -49608,7 +50624,7 @@
    "themes": []
   },
   {
-   "seq": 2687,
+   "seq": 2743,
    "id": "echo_marble85",
    "file": "src/content/era/era1985.js",
    "line": 19,
@@ -49626,7 +50642,7 @@
    "themes": []
   },
   {
-   "seq": 2688,
+   "seq": 2744,
    "id": "echo_game85",
    "file": "src/content/era/era1985.js",
    "line": 20,
@@ -49644,7 +50660,7 @@
    "themes": []
   },
   {
-   "seq": 2689,
+   "seq": 2745,
    "id": "echo_arcade85",
    "file": "src/content/era/era1985.js",
    "line": 21,
@@ -49662,7 +50678,7 @@
    "themes": []
   },
   {
-   "seq": 2690,
+   "seq": 2746,
    "id": "echo_football85",
    "file": "src/content/era/era1985.js",
    "line": 22,
@@ -49680,7 +50696,7 @@
    "themes": []
   },
   {
-   "seq": 2691,
+   "seq": 2747,
    "id": "echo_shop85",
    "file": "src/content/era/era1985.js",
    "line": 23,
@@ -49698,7 +50714,7 @@
    "themes": []
   },
   {
-   "seq": 2692,
+   "seq": 2748,
    "id": "echo_car85",
    "file": "src/content/era/era1985.js",
    "line": 24,
@@ -49716,7 +50732,7 @@
    "themes": []
   },
   {
-   "seq": 2693,
+   "seq": 2749,
    "id": "echo_lb85",
    "file": "src/content/era/era1985.js",
    "line": 25,
@@ -49734,7 +50750,7 @@
    "themes": []
   },
   {
-   "seq": 2694,
+   "seq": 2750,
    "id": "echo_laidoff85",
    "file": "src/content/era/era1985.js",
    "line": 26,
@@ -49752,7 +50768,7 @@
    "themes": []
   },
   {
-   "seq": 2695,
+   "seq": 2751,
    "id": "echo_move85",
    "file": "src/content/era/era1985.js",
    "line": 27,
@@ -49770,7 +50786,7 @@
    "themes": []
   },
   {
-   "seq": 2696,
+   "seq": 2752,
    "id": "echo_addr85",
    "file": "src/content/era/era1985.js",
    "line": 31,
@@ -49788,7 +50804,7 @@
    "themes": []
   },
   {
-   "seq": 2697,
+   "seq": 2753,
    "id": "e85_001",
    "file": "src/content/era/era1985.js",
    "line": 32,
@@ -49806,7 +50822,7 @@
    "themes": []
   },
   {
-   "seq": 2698,
+   "seq": 2754,
    "id": "e85_002",
    "file": "src/content/era/era1985.js",
    "line": 33,
@@ -49824,7 +50840,7 @@
    "themes": []
   },
   {
-   "seq": 2699,
+   "seq": 2755,
    "id": "e85_003",
    "file": "src/content/era/era1985.js",
    "line": 35,
@@ -49842,7 +50858,7 @@
    "themes": []
   },
   {
-   "seq": 2700,
+   "seq": 2756,
    "id": "e85_004",
    "file": "src/content/era/era1985.js",
    "line": 36,
@@ -49860,7 +50876,7 @@
    "themes": []
   },
   {
-   "seq": 2701,
+   "seq": 2757,
    "id": "e85_006",
    "file": "src/content/era/era1985.js",
    "line": 37,
@@ -49880,7 +50896,7 @@
    ]
   },
   {
-   "seq": 2702,
+   "seq": 2758,
    "id": "e85_007",
    "file": "src/content/era/era1985.js",
    "line": 38,
@@ -49900,7 +50916,7 @@
    ]
   },
   {
-   "seq": 2703,
+   "seq": 2759,
    "id": "e85_005",
    "file": "src/content/era/era1985.js",
    "line": 39,
@@ -49918,7 +50934,7 @@
    "themes": []
   },
   {
-   "seq": 2704,
+   "seq": 2760,
    "id": "echo_palm95",
    "file": "src/content/era/era1995.js",
    "line": 16,
@@ -49936,7 +50952,7 @@
    "themes": []
   },
   {
-   "seq": 2705,
+   "seq": 2761,
    "id": "echo_autopen95",
    "file": "src/content/era/era1995.js",
    "line": 17,
@@ -49954,7 +50970,7 @@
    "themes": []
   },
   {
-   "seq": 2706,
+   "seq": 2762,
    "id": "echo_bus95",
    "file": "src/content/era/era1995.js",
    "line": 18,
@@ -49972,7 +50988,7 @@
    "themes": []
   },
   {
-   "seq": 2707,
+   "seq": 2763,
    "id": "echo_song95",
    "file": "src/content/era/era1995.js",
    "line": 19,
@@ -49990,7 +51006,7 @@
    "themes": []
   },
   {
-   "seq": 2708,
+   "seq": 2764,
    "id": "echo_skate95",
    "file": "src/content/era/era1995.js",
    "line": 20,
@@ -50008,7 +51024,7 @@
    "themes": []
   },
   {
-   "seq": 2709,
+   "seq": 2765,
    "id": "echo_game95",
    "file": "src/content/era/era1995.js",
    "line": 21,
@@ -50026,7 +51042,7 @@
    "themes": []
   },
   {
-   "seq": 2710,
+   "seq": 2766,
    "id": "echo_field95",
    "file": "src/content/era/era1995.js",
    "line": 22,
@@ -50044,7 +51060,7 @@
    "themes": []
   },
   {
-   "seq": 2711,
+   "seq": 2767,
    "id": "echo_tree95",
    "file": "src/content/era/era1995.js",
    "line": 23,
@@ -50062,7 +51078,7 @@
    "themes": []
   },
   {
-   "seq": 2712,
+   "seq": 2768,
    "id": "echo_fuwa95",
    "file": "src/content/era/era1995.js",
    "line": 24,
@@ -50080,7 +51096,7 @@
    "themes": []
   },
   {
-   "seq": 2713,
+   "seq": 2769,
    "id": "echo_campus95",
    "file": "src/content/era/era1995.js",
    "line": 25,
@@ -50098,7 +51114,7 @@
    "themes": []
   },
   {
-   "seq": 2714,
+   "seq": 2770,
    "id": "e95_001",
    "file": "src/content/era/era1995.js",
    "line": 27,
@@ -50118,7 +51134,7 @@
    ]
   },
   {
-   "seq": 2715,
+   "seq": 2771,
    "id": "e95_002",
    "file": "src/content/era/era1995.js",
    "line": 28,
@@ -50136,7 +51152,7 @@
    "themes": []
   },
   {
-   "seq": 2716,
+   "seq": 2772,
    "id": "e95_003",
    "file": "src/content/era/era1995.js",
    "line": 29,
@@ -50154,7 +51170,7 @@
    "themes": []
   },
   {
-   "seq": 2717,
+   "seq": 2773,
    "id": "e95_004",
    "file": "src/content/era/era1995.js",
    "line": 30,
@@ -50172,7 +51188,7 @@
    "themes": []
   },
   {
-   "seq": 2718,
+   "seq": 2774,
    "id": "e95_005",
    "file": "src/content/era/era1995.js",
    "line": 31,
@@ -50190,7 +51206,7 @@
    "themes": []
   },
   {
-   "seq": 2719,
+   "seq": 2775,
    "id": "e95_006",
    "file": "src/content/era/era1995.js",
    "line": 32,
@@ -50208,7 +51224,7 @@
    "themes": []
   },
   {
-   "seq": 2720,
+   "seq": 2776,
    "id": "e95_007",
    "file": "src/content/era/era1995.js",
    "line": 33,
@@ -50226,7 +51242,7 @@
    "themes": []
   },
   {
-   "seq": 2721,
+   "seq": 2777,
    "id": "e95_008",
    "file": "src/content/era/era1995.js",
    "line": 34,
@@ -50244,7 +51260,7 @@
    "themes": []
   },
   {
-   "seq": 2722,
+   "seq": 2778,
    "id": "e95_009",
    "file": "src/content/era/era1995.js",
    "line": 35,
@@ -50262,7 +51278,7 @@
    "themes": []
   },
   {
-   "seq": 2723,
+   "seq": 2779,
    "id": "e95_010",
    "file": "src/content/era/era1995.js",
    "line": 36,
@@ -50280,7 +51296,7 @@
    "themes": []
   },
   {
-   "seq": 2724,
+   "seq": 2780,
    "id": "e95_011",
    "file": "src/content/era/era1995.js",
    "line": 38,
@@ -50298,7 +51314,7 @@
    "themes": []
   },
   {
-   "seq": 2725,
+   "seq": 2781,
    "id": "e95_012",
    "file": "src/content/era/era1995.js",
    "line": 39,
@@ -50316,7 +51332,7 @@
    "themes": []
   },
   {
-   "seq": 2726,
+   "seq": 2782,
    "id": "e95_013",
    "file": "src/content/era/era1995.js",
    "line": 40,
@@ -50334,7 +51350,7 @@
    "themes": []
   },
   {
-   "seq": 2727,
+   "seq": 2783,
    "id": "e95_014",
    "file": "src/content/era/era1995.js",
    "line": 41,
@@ -50354,7 +51370,7 @@
    ]
   },
   {
-   "seq": 2728,
+   "seq": 2784,
    "id": "cb_family3",
    "file": "src/content/rare/synergy.js",
    "line": 10,
@@ -50372,7 +51388,7 @@
    "themes": []
   },
   {
-   "seq": 2729,
+   "seq": 2785,
    "id": "cb_solo_free",
    "file": "src/content/rare/synergy.js",
    "line": 11,
@@ -50390,7 +51406,7 @@
    "themes": []
   },
   {
-   "seq": 2730,
+   "seq": 2786,
    "id": "cb_care_near",
    "file": "src/content/rare/synergy.js",
    "line": 12,
@@ -50408,7 +51424,7 @@
    "themes": []
   },
   {
-   "seq": 2731,
+   "seq": 2787,
    "id": "cb_dink_plan",
    "file": "src/content/rare/synergy.js",
    "line": 13,
@@ -50426,7 +51442,7 @@
    "themes": []
   },
   {
-   "seq": 2732,
+   "seq": 2788,
    "id": "cb_old_couple",
    "file": "src/content/rare/synergy.js",
    "line": 14,
@@ -50444,7 +51460,7 @@
    "themes": []
   },
   {
-   "seq": 2733,
+   "seq": 2789,
    "id": "cb_sandwich",
    "file": "src/content/rare/synergy.js",
    "line": 15,
@@ -50462,7 +51478,7 @@
    "themes": []
   },
   {
-   "seq": 2734,
+   "seq": 2790,
    "id": "cb_rent_free",
    "file": "src/content/rare/synergy.js",
    "line": 16,
@@ -50480,7 +51496,7 @@
    "themes": []
   },
   {
-   "seq": 2735,
+   "seq": 2791,
    "id": "cb_hop_viral_base",
    "file": "src/content/rare/synergy.js",
    "line": 17,
@@ -50500,7 +51516,7 @@
    "themes": []
   },
   {
-   "seq": 2736,
+   "seq": 2792,
    "id": "r_startup",
    "file": "src/content/rare/synergy.js",
    "line": 21,
@@ -50520,7 +51536,7 @@
    "themes": []
   },
   {
-   "seq": 2737,
+   "seq": 2793,
    "id": "r_funding",
    "file": "src/content/rare/synergy.js",
    "line": 26,
@@ -50538,7 +51554,7 @@
    "themes": []
   },
   {
-   "seq": 2738,
+   "seq": 2794,
    "id": "r_ipo",
    "file": "src/content/rare/synergy.js",
    "line": 31,
@@ -50556,7 +51572,7 @@
    "themes": []
   },
   {
-   "seq": 2739,
+   "seq": 2795,
    "id": "r_drug1",
    "file": "src/content/rare/synergy.js",
    "line": 33,
@@ -50574,7 +51590,7 @@
    "themes": []
   },
   {
-   "seq": 2740,
+   "seq": 2796,
    "id": "r_drug2",
    "file": "src/content/rare/synergy.js",
    "line": 38,
@@ -50592,7 +51608,7 @@
    "themes": []
   },
   {
-   "seq": 2741,
+   "seq": 2797,
    "id": "r_school1",
    "file": "src/content/rare/synergy.js",
    "line": 40,
@@ -50614,7 +51630,7 @@
    "themes": []
   },
   {
-   "seq": 2742,
+   "seq": 2798,
    "id": "r_school2",
    "file": "src/content/rare/synergy.js",
    "line": 45,
@@ -50632,7 +51648,7 @@
    "themes": []
   },
   {
-   "seq": 2743,
+   "seq": 2799,
    "id": "r_book",
    "file": "src/content/rare/synergy.js",
    "line": 47,
@@ -50655,7 +51671,7 @@
    "themes": []
   },
   {
-   "seq": 2744,
+   "seq": 2800,
    "id": "r_viral",
    "file": "src/content/rare/synergy.js",
    "line": 48,
@@ -50675,7 +51691,7 @@
    "themes": []
   },
   {
-   "seq": 2745,
+   "seq": 2801,
    "id": "r_award",
    "file": "src/content/rare/synergy.js",
    "line": 50,
@@ -50693,7 +51709,7 @@
    "themes": []
   },
   {
-   "seq": 2746,
+   "seq": 2802,
    "id": "r_lottery",
    "file": "src/content/rare/synergy.js",
    "line": 52,
@@ -50711,7 +51727,7 @@
    "themes": []
   },
   {
-   "seq": 2747,
+   "seq": 2803,
    "id": "r_patent",
    "file": "src/content/rare/synergy.js",
    "line": 53,
@@ -50729,7 +51745,7 @@
    "themes": []
   },
   {
-   "seq": 2748,
+   "seq": 2804,
    "id": "r_oldhouse",
    "file": "src/content/rare/synergy.js",
    "line": 54,
@@ -50747,7 +51763,7 @@
    "themes": []
   },
   {
-   "seq": 2749,
+   "seq": 2805,
    "id": "r_marathon",
    "file": "src/content/rare/synergy.js",
    "line": 55,
@@ -50765,7 +51781,7 @@
    "themes": []
   },
   {
-   "seq": 2750,
+   "seq": 2806,
    "id": "r_rescue",
    "file": "src/content/rare/synergy.js",
    "line": 56,
@@ -50783,7 +51799,7 @@
    "themes": []
   },
   {
-   "seq": 2751,
+   "seq": 2807,
    "id": "r_antique",
    "file": "src/content/rare/synergy.js",
    "line": 57,
@@ -50801,7 +51817,7 @@
    "themes": []
   },
   {
-   "seq": 2752,
+   "seq": 2808,
    "id": "r_teacher_students",
    "file": "src/content/rare/synergy.js",
    "line": 59,
@@ -50819,7 +51835,7 @@
    "themes": []
   },
   {
-   "seq": 2753,
+   "seq": 2809,
    "id": "r_craft_apprentice",
    "file": "src/content/rare/synergy.js",
    "line": 60,
@@ -50837,7 +51853,7 @@
    "themes": []
   },
   {
-   "seq": 2754,
+   "seq": 2810,
    "id": "r_village_doc",
    "file": "src/content/rare/synergy.js",
    "line": 65,
@@ -50855,7 +51871,7 @@
    "themes": []
   },
   {
-   "seq": 2755,
+   "seq": 2811,
    "id": "r_captain_final",
    "file": "src/content/rare/synergy.js",
    "line": 70,
@@ -50873,7 +51889,7 @@
    "themes": []
   },
   {
-   "seq": 2756,
+   "seq": 2812,
    "id": "r_trucker_route",
    "file": "src/content/rare/synergy.js",
    "line": 71,
@@ -50891,7 +51907,7 @@
    "themes": []
   },
   {
-   "seq": 2757,
+   "seq": 2813,
    "id": "r_scam_big",
    "file": "src/content/rare/synergy.js",
    "line": 77,
@@ -50909,7 +51925,7 @@
    "themes": []
   },
   {
-   "seq": 2758,
+   "seq": 2814,
    "id": "r_industry_overnight",
    "file": "src/content/rare/synergy.js",
    "line": 78,
@@ -50927,7 +51943,7 @@
    "themes": []
   },
   {
-   "seq": 2759,
+   "seq": 2815,
    "id": "r_oldfriend_gone",
    "file": "src/content/rare/synergy.js",
    "line": 83,
@@ -50945,7 +51961,7 @@
    "themes": []
   },
   {
-   "seq": 2760,
+   "seq": 2816,
    "id": "r_friend_debt",
    "file": "src/content/rare/synergy.js",
    "line": 84,
@@ -50963,7 +51979,7 @@
    "themes": []
   },
   {
-   "seq": 2761,
+   "seq": 2817,
    "id": "r_health_operation",
    "file": "src/content/rare/synergy.js",
    "line": 89,
@@ -50981,7 +51997,7 @@
    "themes": []
   },
   {
-   "seq": 2762,
+   "seq": 2818,
    "id": "r_guarantee_trap",
    "file": "src/content/rare/synergy.js",
    "line": 90,
@@ -50999,7 +52015,7 @@
    "themes": []
   },
   {
-   "seq": 2763,
+   "seq": 2819,
    "id": "r_old_neighbor",
    "file": "src/content/rare/synergy.js",
    "line": 91,
@@ -51017,7 +52033,7 @@
    "themes": []
   },
   {
-   "seq": 2764,
+   "seq": 2820,
    "id": "lk_born",
    "file": "src/content/rare/synergy.js",
    "line": 94,
@@ -51035,7 +52051,7 @@
    "themes": []
   },
   {
-   "seq": 2765,
+   "seq": 2821,
    "id": "lk_none",
    "file": "src/content/rare/synergy.js",
    "line": 95,
@@ -51053,7 +52069,7 @@
    "themes": []
   },
   {
-   "seq": 2766,
+   "seq": 2822,
    "id": "lk_fade",
    "file": "src/content/rare/synergy.js",
    "line": 96,
@@ -51071,7 +52087,7 @@
    "themes": []
   },
   {
-   "seq": 2767,
+   "seq": 2823,
    "id": "end_richest",
    "file": "src/content/rare/synergy.js",
    "line": 99,
@@ -51089,7 +52105,7 @@
    "themes": []
   },
   {
-   "seq": 2768,
+   "seq": 2824,
    "id": "end_drug",
    "file": "src/content/rare/synergy.js",
    "line": 101,
@@ -51107,7 +52123,7 @@
    "themes": []
   },
   {
-   "seq": 2769,
+   "seq": 2825,
    "id": "end_academician",
    "file": "src/content/rare/synergy.js",
    "line": 103,
@@ -51125,7 +52141,7 @@
    "themes": []
   },
   {
-   "seq": 2770,
+   "seq": 2826,
    "id": "end_principal",
    "file": "src/content/rare/synergy.js",
    "line": 105,
@@ -51143,7 +52159,7 @@
    "themes": []
   },
   {
-   "seq": 2771,
+   "seq": 2827,
    "id": "end_bestseller",
    "file": "src/content/rare/synergy.js",
    "line": 107,
@@ -51165,7 +52181,7 @@
    "themes": []
   },
   {
-   "seq": 2772,
+   "seq": 2828,
    "id": "end_influencer",
    "file": "src/content/rare/synergy.js",
    "line": 109,
@@ -51183,7 +52199,7 @@
    "themes": []
   },
   {
-   "seq": 2773,
+   "seq": 2829,
    "id": "end_bigfamily",
    "file": "src/content/rare/synergy.js",
    "line": 111,
@@ -51201,7 +52217,7 @@
    "themes": []
   },
   {
-   "seq": 2774,
+   "seq": 2830,
    "id": "end_traveler",
    "file": "src/content/rare/synergy.js",
    "line": 118,
@@ -51219,7 +52235,7 @@
    "themes": []
   },
   {
-   "seq": 2775,
+   "seq": 2831,
    "id": "end_standard",
    "file": "src/content/rare/synergy.js",
    "line": 120,
@@ -51237,7 +52253,7 @@
    "themes": []
   },
   {
-   "seq": 2776,
+   "seq": 2832,
    "id": "end_localfounder",
    "file": "src/content/rare/synergy.js",
    "line": 122,
@@ -51257,7 +52273,7 @@
    "themes": []
   },
   {
-   "seq": 2777,
+   "seq": 2833,
    "id": "end_lottery",
    "file": "src/content/rare/synergy.js",
    "line": 124,
@@ -51275,7 +52291,7 @@
    "themes": []
   },
   {
-   "seq": 2778,
+   "seq": 2834,
    "id": "end_champion",
    "file": "src/content/rare/synergy.js",
    "line": 126,
@@ -51293,7 +52309,7 @@
    "themes": []
   },
   {
-   "seq": 2779,
+   "seq": 2835,
    "id": "end_teacher_taoli",
    "file": "src/content/rare/synergy.js",
    "line": 128,
@@ -51311,7 +52327,7 @@
    "themes": []
   },
   {
-   "seq": 2780,
+   "seq": 2836,
    "id": "end_craft_legacy",
    "file": "src/content/rare/synergy.js",
    "line": 130,
@@ -51329,7 +52345,7 @@
    "themes": []
   },
   {
-   "seq": 2781,
+   "seq": 2837,
    "id": "end_village_doctor",
    "file": "src/content/rare/synergy.js",
    "line": 132,
@@ -51347,7 +52363,7 @@
    "themes": []
   },
   {
-   "seq": 2782,
+   "seq": 2838,
    "id": "end_captain",
    "file": "src/content/rare/synergy.js",
    "line": 134,
@@ -51365,7 +52381,7 @@
    "themes": []
   },
   {
-   "seq": 2783,
+   "seq": 2839,
    "id": "end_trucker_million",
    "file": "src/content/rare/synergy.js",
    "line": 136,
@@ -51383,7 +52399,7 @@
    "themes": []
   },
   {
-   "seq": 2784,
+   "seq": 2840,
    "id": "end_care_parents",
    "file": "src/content/rare/synergy.js",
    "line": 145,
@@ -51401,7 +52417,7 @@
    "themes": []
   },
   {
-   "seq": 2785,
+   "seq": 2841,
    "id": "end_solo_free",
    "file": "src/content/rare/synergy.js",
    "line": 147,
@@ -51419,7 +52435,7 @@
    "themes": []
   },
   {
-   "seq": 2786,
+   "seq": 2842,
    "id": "end_two_home",
    "file": "src/content/rare/synergy.js",
    "line": 149,
@@ -51437,7 +52453,7 @@
    "themes": []
   },
   {
-   "seq": 2787,
+   "seq": 2843,
    "id": "end_late_partner",
    "file": "src/content/rare/synergy.js",
    "line": 151,
@@ -51455,7 +52471,7 @@
    "themes": []
   },
   {
-   "seq": 2788,
+   "seq": 2844,
    "id": "end_return_home",
    "file": "src/content/rare/synergy.js",
    "line": 153,
@@ -51473,7 +52489,7 @@
    "themes": []
   },
   {
-   "seq": 2789,
+   "seq": 2845,
    "id": "end_farm_life",
    "file": "src/content/rare/synergy.js",
    "line": 155,
@@ -51495,7 +52511,7 @@
    "themes": []
   },
   {
-   "seq": 2790,
+   "seq": 2846,
    "id": "end_comeback",
    "file": "src/content/rare/synergy.js",
    "line": 157,
@@ -51513,7 +52529,7 @@
    "themes": []
   },
   {
-   "seq": 2791,
+   "seq": 2847,
    "id": "end_rent_free",
    "file": "src/content/rare/synergy.js",
    "line": 159,
@@ -51531,7 +52547,7 @@
    "themes": []
   },
   {
-   "seq": 2792,
+   "seq": 2848,
    "id": "end_abroad_rest",
    "file": "src/content/rare/synergy.js",
    "line": 161,
@@ -51549,7 +52565,7 @@
    "themes": []
   },
   {
-   "seq": 2793,
+   "seq": 2849,
    "id": "end_old_hand",
    "file": "src/content/rare/synergy.js",
    "line": 163,
@@ -51567,7 +52583,7 @@
    "themes": []
   },
   {
-   "seq": 2794,
+   "seq": 2850,
    "id": "end_one_partner",
    "file": "src/content/rare/synergy.js",
    "line": 165,
@@ -51585,7 +52601,7 @@
    "themes": []
   },
   {
-   "seq": 2795,
+   "seq": 2851,
    "id": "end_long_life",
    "file": "src/content/rare/synergy.js",
    "line": 167,
@@ -51603,7 +52619,7 @@
    "themes": []
   },
   {
-   "seq": 2796,
+   "seq": 2852,
    "id": "end_steady_life",
    "file": "src/content/rare/synergy.js",
    "line": 169,
@@ -51621,7 +52637,7 @@
    "themes": []
   },
   {
-   "seq": 2797,
+   "seq": 2853,
    "id": "end_late_learner",
    "file": "src/content/rare/synergy.js",
    "line": 171,
@@ -51639,7 +52655,7 @@
    "themes": []
   },
   {
-   "seq": 2798,
+   "seq": 2854,
    "id": "end_early_full",
    "file": "src/content/rare/synergy.js",
    "line": 173,
@@ -51657,7 +52673,7 @@
    "themes": []
   },
   {
-   "seq": 2799,
+   "seq": 2855,
    "id": "cf_01",
    "file": "src/content/prologue/cards.js",
    "line": 42,
@@ -51675,7 +52691,7 @@
    "themes": []
   },
   {
-   "seq": 2800,
+   "seq": 2856,
    "id": "cf_02",
    "file": "src/content/prologue/cards.js",
    "line": 43,
@@ -51693,7 +52709,7 @@
    "themes": []
   },
   {
-   "seq": 2801,
+   "seq": 2857,
    "id": "cf_03",
    "file": "src/content/prologue/cards.js",
    "line": 44,
@@ -51711,7 +52727,7 @@
    "themes": []
   },
   {
-   "seq": 2802,
+   "seq": 2858,
    "id": "cf_04",
    "file": "src/content/prologue/cards.js",
    "line": 45,
@@ -51729,7 +52745,7 @@
    "themes": []
   },
   {
-   "seq": 2803,
+   "seq": 2859,
    "id": "cf_05",
    "file": "src/content/prologue/cards.js",
    "line": 47,
@@ -51747,7 +52763,7 @@
    "themes": []
   },
   {
-   "seq": 2804,
+   "seq": 2860,
    "id": "cf_06",
    "file": "src/content/prologue/cards.js",
    "line": 48,
@@ -51765,7 +52781,7 @@
    "themes": []
   },
   {
-   "seq": 2805,
+   "seq": 2861,
    "id": "cf_07",
    "file": "src/content/prologue/cards.js",
    "line": 49,
@@ -51783,7 +52799,7 @@
    "themes": []
   },
   {
-   "seq": 2806,
+   "seq": 2862,
    "id": "cf_08",
    "file": "src/content/prologue/cards.js",
    "line": 50,
@@ -51801,7 +52817,7 @@
    "themes": []
   },
   {
-   "seq": 2807,
+   "seq": 2863,
    "id": "cf_09",
    "file": "src/content/prologue/cards.js",
    "line": 51,
@@ -51819,7 +52835,7 @@
    "themes": []
   },
   {
-   "seq": 2808,
+   "seq": 2864,
    "id": "cf_10",
    "file": "src/content/prologue/cards.js",
    "line": 52,
@@ -51837,7 +52853,7 @@
    "themes": []
   },
   {
-   "seq": 2809,
+   "seq": 2865,
    "id": "cf_11",
    "file": "src/content/prologue/cards.js",
    "line": 53,
@@ -51855,7 +52871,7 @@
    "themes": []
   },
   {
-   "seq": 2810,
+   "seq": 2866,
    "id": "cf_12",
    "file": "src/content/prologue/cards.js",
    "line": 54,
@@ -51873,7 +52889,7 @@
    "themes": []
   },
   {
-   "seq": 2811,
+   "seq": 2867,
    "id": "cf_13",
    "file": "src/content/prologue/cards.js",
    "line": 56,
@@ -51891,7 +52907,7 @@
    "themes": []
   },
   {
-   "seq": 2812,
+   "seq": 2868,
    "id": "cf_14",
    "file": "src/content/prologue/cards.js",
    "line": 57,
@@ -51909,7 +52925,7 @@
    "themes": []
   },
   {
-   "seq": 2813,
+   "seq": 2869,
    "id": "cf_15",
    "file": "src/content/prologue/cards.js",
    "line": 58,
@@ -51927,7 +52943,7 @@
    "themes": []
   },
   {
-   "seq": 2814,
+   "seq": 2870,
    "id": "cf_16",
    "file": "src/content/prologue/cards.js",
    "line": 59,
@@ -51945,7 +52961,7 @@
    "themes": []
   },
   {
-   "seq": 2815,
+   "seq": 2871,
    "id": "ct_01",
    "file": "src/content/prologue/cards.js",
    "line": 63,
@@ -51963,7 +52979,7 @@
    "themes": []
   },
   {
-   "seq": 2816,
+   "seq": 2872,
    "id": "ct_02",
    "file": "src/content/prologue/cards.js",
    "line": 64,
@@ -51981,7 +52997,7 @@
    "themes": []
   },
   {
-   "seq": 2817,
+   "seq": 2873,
    "id": "ct_03",
    "file": "src/content/prologue/cards.js",
    "line": 65,
@@ -51999,7 +53015,7 @@
    "themes": []
   },
   {
-   "seq": 2818,
+   "seq": 2874,
    "id": "ct_04",
    "file": "src/content/prologue/cards.js",
    "line": 66,
@@ -52017,7 +53033,7 @@
    "themes": []
   },
   {
-   "seq": 2819,
+   "seq": 2875,
    "id": "ct_05",
    "file": "src/content/prologue/cards.js",
    "line": 68,
@@ -52035,7 +53051,7 @@
    "themes": []
   },
   {
-   "seq": 2820,
+   "seq": 2876,
    "id": "ct_06",
    "file": "src/content/prologue/cards.js",
    "line": 69,
@@ -52053,7 +53069,7 @@
    "themes": []
   },
   {
-   "seq": 2821,
+   "seq": 2877,
    "id": "ct_07",
    "file": "src/content/prologue/cards.js",
    "line": 70,
@@ -52071,7 +53087,7 @@
    "themes": []
   },
   {
-   "seq": 2822,
+   "seq": 2878,
    "id": "ct_08",
    "file": "src/content/prologue/cards.js",
    "line": 71,
@@ -52089,7 +53105,7 @@
    "themes": []
   },
   {
-   "seq": 2823,
+   "seq": 2879,
    "id": "ct_09",
    "file": "src/content/prologue/cards.js",
    "line": 72,
@@ -52107,7 +53123,7 @@
    "themes": []
   },
   {
-   "seq": 2824,
+   "seq": 2880,
    "id": "ct_10",
    "file": "src/content/prologue/cards.js",
    "line": 73,
@@ -52125,7 +53141,7 @@
    "themes": []
   },
   {
-   "seq": 2825,
+   "seq": 2881,
    "id": "ct_11",
    "file": "src/content/prologue/cards.js",
    "line": 74,
@@ -52143,7 +53159,7 @@
    "themes": []
   },
   {
-   "seq": 2826,
+   "seq": 2882,
    "id": "ct_12",
    "file": "src/content/prologue/cards.js",
    "line": 75,
@@ -52161,7 +53177,7 @@
    "themes": []
   },
   {
-   "seq": 2827,
+   "seq": 2883,
    "id": "ct_13",
    "file": "src/content/prologue/cards.js",
    "line": 77,
@@ -52179,7 +53195,7 @@
    "themes": []
   },
   {
-   "seq": 2828,
+   "seq": 2884,
    "id": "ct_14",
    "file": "src/content/prologue/cards.js",
    "line": 78,
@@ -52197,7 +53213,7 @@
    "themes": []
   },
   {
-   "seq": 2829,
+   "seq": 2885,
    "id": "ct_15",
    "file": "src/content/prologue/cards.js",
    "line": 79,
@@ -52215,7 +53231,7 @@
    "themes": []
   },
   {
-   "seq": 2830,
+   "seq": 2886,
    "id": "ct_16",
    "file": "src/content/prologue/cards.js",
    "line": 80,
@@ -52233,7 +53249,7 @@
    "themes": []
   },
   {
-   "seq": 2831,
+   "seq": 2887,
    "id": "ce55_01",
    "file": "src/content/prologue/cards.js",
    "line": 84,
@@ -52251,7 +53267,7 @@
    "themes": []
   },
   {
-   "seq": 2832,
+   "seq": 2888,
    "id": "ce55_02",
    "file": "src/content/prologue/cards.js",
    "line": 85,
@@ -52269,7 +53285,7 @@
    "themes": []
   },
   {
-   "seq": 2833,
+   "seq": 2889,
    "id": "ce55_03",
    "file": "src/content/prologue/cards.js",
    "line": 86,
@@ -52287,7 +53303,7 @@
    "themes": []
   },
   {
-   "seq": 2834,
+   "seq": 2890,
    "id": "ce55_04",
    "file": "src/content/prologue/cards.js",
    "line": 87,
@@ -52305,7 +53321,7 @@
    "themes": []
   },
   {
-   "seq": 2835,
+   "seq": 2891,
    "id": "ce55_05",
    "file": "src/content/prologue/cards.js",
    "line": 88,
@@ -52323,7 +53339,7 @@
    "themes": []
   },
   {
-   "seq": 2836,
+   "seq": 2892,
    "id": "ce55_06",
    "file": "src/content/prologue/cards.js",
    "line": 89,
@@ -52341,7 +53357,7 @@
    "themes": []
   },
   {
-   "seq": 2837,
+   "seq": 2893,
    "id": "ce65_01",
    "file": "src/content/prologue/cards.js",
    "line": 92,
@@ -52359,7 +53375,7 @@
    "themes": []
   },
   {
-   "seq": 2838,
+   "seq": 2894,
    "id": "ce65_02",
    "file": "src/content/prologue/cards.js",
    "line": 93,
@@ -52377,7 +53393,7 @@
    "themes": []
   },
   {
-   "seq": 2839,
+   "seq": 2895,
    "id": "ce65_03",
    "file": "src/content/prologue/cards.js",
    "line": 94,
@@ -52395,7 +53411,7 @@
    "themes": []
   },
   {
-   "seq": 2840,
+   "seq": 2896,
    "id": "ce65_04",
    "file": "src/content/prologue/cards.js",
    "line": 95,
@@ -52413,7 +53429,7 @@
    "themes": []
   },
   {
-   "seq": 2841,
+   "seq": 2897,
    "id": "ce65_05",
    "file": "src/content/prologue/cards.js",
    "line": 96,
@@ -52431,7 +53447,7 @@
    "themes": []
   },
   {
-   "seq": 2842,
+   "seq": 2898,
    "id": "ce65_06",
    "file": "src/content/prologue/cards.js",
    "line": 97,
@@ -52449,7 +53465,7 @@
    "themes": []
   },
   {
-   "seq": 2843,
+   "seq": 2899,
    "id": "ce78_01",
    "file": "src/content/prologue/cards.js",
    "line": 100,
@@ -52467,7 +53483,7 @@
    "themes": []
   },
   {
-   "seq": 2844,
+   "seq": 2900,
    "id": "ce78_02",
    "file": "src/content/prologue/cards.js",
    "line": 101,
@@ -52485,7 +53501,7 @@
    "themes": []
   },
   {
-   "seq": 2845,
+   "seq": 2901,
    "id": "ce78_03",
    "file": "src/content/prologue/cards.js",
    "line": 102,
@@ -52503,7 +53519,7 @@
    "themes": []
   },
   {
-   "seq": 2846,
+   "seq": 2902,
    "id": "ce78_04",
    "file": "src/content/prologue/cards.js",
    "line": 103,
@@ -52521,7 +53537,7 @@
    "themes": []
   },
   {
-   "seq": 2847,
+   "seq": 2903,
    "id": "ce78_05",
    "file": "src/content/prologue/cards.js",
    "line": 104,
@@ -52539,7 +53555,7 @@
    "themes": []
   },
   {
-   "seq": 2848,
+   "seq": 2904,
    "id": "ce78_06",
    "file": "src/content/prologue/cards.js",
    "line": 105,
@@ -52557,7 +53573,7 @@
    "themes": []
   },
   {
-   "seq": 2849,
+   "seq": 2905,
    "id": "ce85_01",
    "file": "src/content/prologue/cards.js",
    "line": 108,
@@ -52575,7 +53591,7 @@
    "themes": []
   },
   {
-   "seq": 2850,
+   "seq": 2906,
    "id": "ce85_02",
    "file": "src/content/prologue/cards.js",
    "line": 109,
@@ -52593,7 +53609,7 @@
    "themes": []
   },
   {
-   "seq": 2851,
+   "seq": 2907,
    "id": "ce85_03",
    "file": "src/content/prologue/cards.js",
    "line": 110,
@@ -52611,7 +53627,7 @@
    "themes": []
   },
   {
-   "seq": 2852,
+   "seq": 2908,
    "id": "ce85_04",
    "file": "src/content/prologue/cards.js",
    "line": 111,
@@ -52629,7 +53645,7 @@
    "themes": []
   },
   {
-   "seq": 2853,
+   "seq": 2909,
    "id": "ce85_05",
    "file": "src/content/prologue/cards.js",
    "line": 112,
@@ -52647,7 +53663,7 @@
    "themes": []
   },
   {
-   "seq": 2854,
+   "seq": 2910,
    "id": "ce85_06",
    "file": "src/content/prologue/cards.js",
    "line": 113,
@@ -52665,7 +53681,7 @@
    "themes": []
   },
   {
-   "seq": 2855,
+   "seq": 2911,
    "id": "ce95_01",
    "file": "src/content/prologue/cards.js",
    "line": 116,
@@ -52683,7 +53699,7 @@
    "themes": []
   },
   {
-   "seq": 2856,
+   "seq": 2912,
    "id": "ce95_02",
    "file": "src/content/prologue/cards.js",
    "line": 117,
@@ -52701,7 +53717,7 @@
    "themes": []
   },
   {
-   "seq": 2857,
+   "seq": 2913,
    "id": "ce95_03",
    "file": "src/content/prologue/cards.js",
    "line": 118,
@@ -52719,7 +53735,7 @@
    "themes": []
   },
   {
-   "seq": 2858,
+   "seq": 2914,
    "id": "ce95_04",
    "file": "src/content/prologue/cards.js",
    "line": 119,
@@ -52737,7 +53753,7 @@
    "themes": []
   },
   {
-   "seq": 2859,
+   "seq": 2915,
    "id": "ce95_05",
    "file": "src/content/prologue/cards.js",
    "line": 120,
@@ -52755,7 +53771,7 @@
    "themes": []
   },
   {
-   "seq": 2860,
+   "seq": 2916,
    "id": "ce95_06",
    "file": "src/content/prologue/cards.js",
    "line": 121,
@@ -52773,7 +53789,7 @@
    "themes": []
   },
   {
-   "seq": 2861,
+   "seq": 2917,
    "id": "ce00_01",
    "file": "src/content/prologue/cards.js",
    "line": 124,
@@ -52791,7 +53807,7 @@
    "themes": []
   },
   {
-   "seq": 2862,
+   "seq": 2918,
    "id": "ce00_02",
    "file": "src/content/prologue/cards.js",
    "line": 125,
@@ -52809,7 +53825,7 @@
    "themes": []
   },
   {
-   "seq": 2863,
+   "seq": 2919,
    "id": "ce00_03",
    "file": "src/content/prologue/cards.js",
    "line": 126,
@@ -52827,7 +53843,7 @@
    "themes": []
   },
   {
-   "seq": 2864,
+   "seq": 2920,
    "id": "ce00_04",
    "file": "src/content/prologue/cards.js",
    "line": 127,
@@ -52845,7 +53861,7 @@
    "themes": []
   },
   {
-   "seq": 2865,
+   "seq": 2921,
    "id": "ce00_05",
    "file": "src/content/prologue/cards.js",
    "line": 128,
@@ -52863,7 +53879,7 @@
    "themes": []
   },
   {
-   "seq": 2866,
+   "seq": 2922,
    "id": "ce00_06",
    "file": "src/content/prologue/cards.js",
    "line": 129,
@@ -52881,7 +53897,7 @@
    "themes": []
   },
   {
-   "seq": 2867,
+   "seq": 2923,
    "id": "pr_origin",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 98,
@@ -52899,7 +53915,7 @@
    "themes": []
   },
   {
-   "seq": 2868,
+   "seq": 2924,
    "id": "pr_child1",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 101,
@@ -52917,7 +53933,7 @@
    "themes": []
   },
   {
-   "seq": 2869,
+   "seq": 2925,
    "id": "pr_child2",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 116,
@@ -52935,7 +53951,7 @@
    "themes": []
   },
   {
-   "seq": 2870,
+   "seq": 2926,
    "id": "pr_child3",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 131,
@@ -52953,7 +53969,7 @@
    "themes": []
   },
   {
-   "seq": 2871,
+   "seq": 2927,
    "id": "pr_child4",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 140,
@@ -52971,7 +53987,7 @@
    "themes": []
   },
   {
-   "seq": 2872,
+   "seq": 2928,
    "id": "pr_teen1",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 149,
@@ -52989,7 +54005,7 @@
    "themes": []
   },
   {
-   "seq": 2873,
+   "seq": 2929,
    "id": "pr_teen2",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 164,
@@ -53007,7 +54023,7 @@
    "themes": []
   },
   {
-   "seq": 2874,
+   "seq": 2930,
    "id": "pr_fork16",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 208,
@@ -53025,7 +54041,7 @@
    "themes": []
   },
   {
-   "seq": 2875,
+   "seq": 2931,
    "id": "pr_y17",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 246,
@@ -53043,7 +54059,7 @@
    "themes": []
   },
   {
-   "seq": 2876,
+   "seq": 2932,
    "id": "pr_y18",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 286,
@@ -53061,7 +54077,7 @@
    "themes": []
   },
   {
-   "seq": 2877,
+   "seq": 2933,
    "id": "pr_y20",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 326,
@@ -53079,7 +54095,7 @@
    "themes": []
   },
   {
-   "seq": 2878,
+   "seq": 2934,
    "id": "pr_y21",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 366,
@@ -53097,7 +54113,7 @@
    "themes": []
   },
   {
-   "seq": 2879,
+   "seq": 2935,
    "id": "pr_kid6_55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 406,
@@ -53115,7 +54131,7 @@
    "themes": []
   },
   {
-   "seq": 2880,
+   "seq": 2936,
    "id": "pr_kid8_55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 419,
@@ -53133,7 +54149,7 @@
    "themes": []
   },
   {
-   "seq": 2881,
+   "seq": 2937,
    "id": "pr_kid10_55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 432,
@@ -53151,7 +54167,7 @@
    "themes": []
   },
   {
-   "seq": 2882,
+   "seq": 2938,
    "id": "pr_half1",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 449,
@@ -53169,7 +54185,7 @@
    "themes": []
   },
   {
-   "seq": 2883,
+   "seq": 2939,
    "id": "pr_half2",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 459,
@@ -53187,7 +54203,7 @@
    "themes": []
   },
   {
-   "seq": 2884,
+   "seq": 2940,
    "id": "pr_half3",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 472,
@@ -53205,7 +54221,7 @@
    "themes": []
   },
   {
-   "seq": 2885,
+   "seq": 2941,
    "id": "pr_never1",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 484,
@@ -53223,7 +54239,7 @@
    "themes": []
   },
   {
-   "seq": 2886,
+   "seq": 2942,
    "id": "pr_never2",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 497,
@@ -53241,7 +54257,7 @@
    "themes": []
   },
   {
-   "seq": 2887,
+   "seq": 2943,
    "id": "pr_never3",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 508,
@@ -53259,7 +54275,7 @@
    "themes": []
   },
   {
-   "seq": 2888,
+   "seq": 2944,
    "id": "mark_slate55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 32,
@@ -53277,7 +54293,7 @@
    "themes": []
   },
   {
-   "seq": 2889,
+   "seq": 2945,
    "id": "mark_pencil55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 33,
@@ -53295,7 +54311,7 @@
    "themes": []
   },
   {
-   "seq": 2890,
+   "seq": 2946,
    "id": "mark_bridge55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 34,
@@ -53313,7 +54329,7 @@
    "themes": []
   },
   {
-   "seq": 2891,
+   "seq": 2947,
    "id": "mark_satchel55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 35,
@@ -53331,7 +54347,7 @@
    "themes": []
   },
   {
-   "seq": 2892,
+   "seq": 2948,
    "id": "mark_bench55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 36,
@@ -53349,7 +54365,7 @@
    "themes": []
   },
   {
-   "seq": 2893,
+   "seq": 2949,
    "id": "mark_ink55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 37,
@@ -53367,7 +54383,7 @@
    "themes": []
   },
   {
-   "seq": 2894,
+   "seq": 2950,
    "id": "mark_hoop55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 38,
@@ -53385,7 +54401,7 @@
    "themes": []
   },
   {
-   "seq": 2895,
+   "seq": 2951,
    "id": "mark_comic55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 39,
@@ -53403,7 +54419,7 @@
    "themes": []
   },
   {
-   "seq": 2896,
+   "seq": 2952,
    "id": "mark_band55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 40,
@@ -53421,7 +54437,7 @@
    "themes": []
   },
   {
-   "seq": 2897,
+   "seq": 2953,
    "id": "mark_top55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 41,
@@ -53439,7 +54455,7 @@
    "themes": []
   },
   {
-   "seq": 2898,
+   "seq": 2954,
    "id": "mark_kite55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 42,
@@ -53457,7 +54473,7 @@
    "themes": []
   },
   {
-   "seq": 2899,
+   "seq": 2955,
    "id": "mark_slingshot55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 43,
@@ -53475,7 +54491,7 @@
    "themes": []
   },
   {
-   "seq": 2900,
+   "seq": 2956,
    "id": "mark_book55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 44,
@@ -53493,7 +54509,7 @@
    "themes": []
   },
   {
-   "seq": 2901,
+   "seq": 2957,
    "id": "mark_locust55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 45,
@@ -53511,7 +54527,7 @@
    "themes": []
   },
   {
-   "seq": 2902,
+   "seq": 2958,
    "id": "mark_movie55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 46,
@@ -53529,7 +54545,7 @@
    "themes": []
   },
   {
-   "seq": 2903,
+   "seq": 2959,
    "id": "mark_tablet55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 47,
@@ -53547,7 +54563,7 @@
    "themes": []
   },
   {
-   "seq": 2904,
+   "seq": 2960,
    "id": "mark_doorplate55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 48,
@@ -53565,7 +54581,7 @@
    "themes": []
   },
   {
-   "seq": 2905,
+   "seq": 2961,
    "id": "pr_origin",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 163,
@@ -53583,7 +54599,7 @@
    "themes": []
   },
   {
-   "seq": 2906,
+   "seq": 2962,
    "id": "pr_child1",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 166,
@@ -53601,7 +54617,7 @@
    "themes": []
   },
   {
-   "seq": 2907,
+   "seq": 2963,
    "id": "pr_child2",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 183,
@@ -53619,7 +54635,7 @@
    "themes": []
   },
   {
-   "seq": 2908,
+   "seq": 2964,
    "id": "pr_child3",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 199,
@@ -53637,7 +54653,7 @@
    "themes": []
   },
   {
-   "seq": 2909,
+   "seq": 2965,
    "id": "pr_child4",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 211,
@@ -53655,7 +54671,7 @@
    "themes": []
   },
   {
-   "seq": 2910,
+   "seq": 2966,
    "id": "pr_teen1",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 228,
@@ -53673,7 +54689,7 @@
    "themes": []
   },
   {
-   "seq": 2911,
+   "seq": 2967,
    "id": "pr_teen2",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 248,
@@ -53691,7 +54707,7 @@
    "themes": []
   },
   {
-   "seq": 2912,
+   "seq": 2968,
    "id": "pr_fork16",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 286,
@@ -53709,7 +54725,7 @@
    "themes": []
   },
   {
-   "seq": 2913,
+   "seq": 2969,
    "id": "pr_y17",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 322,
@@ -53727,7 +54743,7 @@
    "themes": []
   },
   {
-   "seq": 2914,
+   "seq": 2970,
    "id": "pr_y18",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 353,
@@ -53745,7 +54761,7 @@
    "themes": []
   },
   {
-   "seq": 2915,
+   "seq": 2971,
    "id": "pr_y20",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 384,
@@ -53763,7 +54779,7 @@
    "themes": []
   },
   {
-   "seq": 2916,
+   "seq": 2972,
    "id": "pr_y21",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 415,
@@ -53781,7 +54797,7 @@
    "themes": []
   },
   {
-   "seq": 2917,
+   "seq": 2973,
    "id": "pr_kid6_65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 444,
@@ -53799,7 +54815,7 @@
    "themes": []
   },
   {
-   "seq": 2918,
+   "seq": 2974,
    "id": "pr_kid8_65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 458,
@@ -53817,7 +54833,7 @@
    "themes": []
   },
   {
-   "seq": 2919,
+   "seq": 2975,
    "id": "pr_kid10_65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 471,
@@ -53835,7 +54851,7 @@
    "themes": []
   },
   {
-   "seq": 2920,
+   "seq": 2976,
    "id": "pr_half1",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 584,
@@ -53853,7 +54869,7 @@
    "themes": []
   },
   {
-   "seq": 2921,
+   "seq": 2977,
    "id": "pr_half2",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 592,
@@ -53871,7 +54887,7 @@
    "themes": []
   },
   {
-   "seq": 2922,
+   "seq": 2978,
    "id": "pr_half3",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 602,
@@ -53889,7 +54905,7 @@
    "themes": []
   },
   {
-   "seq": 2923,
+   "seq": 2979,
    "id": "pr_never1",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 614,
@@ -53907,7 +54923,7 @@
    "themes": []
   },
   {
-   "seq": 2924,
+   "seq": 2980,
    "id": "pr_never2",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 625,
@@ -53925,7 +54941,7 @@
    "themes": []
   },
   {
-   "seq": 2925,
+   "seq": 2981,
    "id": "pr_never3",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 635,
@@ -53943,7 +54959,7 @@
    "themes": []
   },
   {
-   "seq": 2926,
+   "seq": 2982,
    "id": "pr_fam_sentdown65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 500,
@@ -53961,7 +54977,7 @@
    "themes": []
   },
   {
-   "seq": 2927,
+   "seq": 2983,
    "id": "pool_move65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 540,
@@ -53979,7 +54995,7 @@
    "themes": []
   },
   {
-   "seq": 2928,
+   "seq": 2984,
    "id": "mark_pencil65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 94,
@@ -53997,7 +55013,7 @@
    "themes": []
   },
   {
-   "seq": 2929,
+   "seq": 2985,
    "id": "mark_eraser65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 95,
@@ -54015,7 +55031,7 @@
    "themes": []
   },
   {
-   "seq": 2930,
+   "seq": 2986,
    "id": "mark_river65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 96,
@@ -54033,7 +55049,7 @@
    "themes": []
   },
   {
-   "seq": 2931,
+   "seq": 2987,
    "id": "mark_satchel65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 97,
@@ -54051,7 +55067,7 @@
    "themes": []
   },
   {
-   "seq": 2932,
+   "seq": 2988,
    "id": "mark_bench65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 98,
@@ -54069,7 +55085,7 @@
    "themes": []
   },
   {
-   "seq": 2933,
+   "seq": 2989,
    "id": "mark_chalk65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 99,
@@ -54087,7 +55103,7 @@
    "themes": []
   },
   {
-   "seq": 2934,
+   "seq": 2990,
    "id": "mark_hoop65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 100,
@@ -54105,7 +55121,7 @@
    "themes": []
   },
   {
-   "seq": 2935,
+   "seq": 2991,
    "id": "mark_movie65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 101,
@@ -54123,7 +55139,7 @@
    "themes": []
   },
   {
-   "seq": 2936,
+   "seq": 2992,
    "id": "mark_wheat65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 102,
@@ -54141,7 +55157,7 @@
    "themes": []
   },
   {
-   "seq": 2937,
+   "seq": 2993,
    "id": "mark_redscarf65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 103,
@@ -54159,7 +55175,7 @@
    "themes": []
   },
   {
-   "seq": 2938,
+   "seq": 2994,
    "id": "mark_top65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 104,
@@ -54177,7 +55193,7 @@
    "themes": []
   },
   {
-   "seq": 2939,
+   "seq": 2995,
    "id": "mark_swim65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 105,
@@ -54195,7 +55211,7 @@
    "themes": []
   },
   {
-   "seq": 2940,
+   "seq": 2996,
    "id": "mark_books65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 106,
@@ -54213,7 +55229,7 @@
    "themes": []
   },
   {
-   "seq": 2941,
+   "seq": 2997,
    "id": "mark_tv65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 107,
@@ -54231,7 +55247,7 @@
    "themes": []
   },
   {
-   "seq": 2942,
+   "seq": 2998,
    "id": "mark_tree65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 108,
@@ -54249,7 +55265,7 @@
    "themes": []
   },
   {
-   "seq": 2943,
+   "seq": 2999,
    "id": "mark_table65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 109,
@@ -54267,7 +55283,7 @@
    "themes": []
   },
   {
-   "seq": 2944,
+   "seq": 3000,
    "id": "mark_desk65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 110,
@@ -54285,7 +55301,7 @@
    "themes": []
   },
   {
-   "seq": 2945,
+   "seq": 3001,
    "id": "mark_dawn65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 111,
@@ -54303,7 +55319,7 @@
    "themes": []
   },
   {
-   "seq": 2946,
+   "seq": 3002,
    "id": "mark_movebox65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 112,
@@ -54321,7 +55337,7 @@
    "themes": []
   },
   {
-   "seq": 2947,
+   "seq": 3003,
    "id": "mark_move65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 113,
@@ -54339,7 +55355,7 @@
    "themes": []
   },
   {
-   "seq": 2948,
+   "seq": 3004,
    "id": "pr_origin",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 122,
@@ -54357,7 +55373,7 @@
    "themes": []
   },
   {
-   "seq": 2949,
+   "seq": 3005,
    "id": "pr_child1",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 125,
@@ -54375,7 +55391,7 @@
    "themes": []
   },
   {
-   "seq": 2950,
+   "seq": 3006,
    "id": "pr_child2",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 142,
@@ -54393,7 +55409,7 @@
    "themes": []
   },
   {
-   "seq": 2951,
+   "seq": 3007,
    "id": "pr_child3",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 158,
@@ -54411,7 +55427,7 @@
    "themes": []
   },
   {
-   "seq": 2952,
+   "seq": 3008,
    "id": "pr_child4",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 168,
@@ -54429,7 +55445,7 @@
    "themes": []
   },
   {
-   "seq": 2953,
+   "seq": 3009,
    "id": "pr_teen1",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 177,
@@ -54447,7 +55463,7 @@
    "themes": []
   },
   {
-   "seq": 2954,
+   "seq": 3010,
    "id": "pr_fam78a",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 195,
@@ -54465,7 +55481,7 @@
    "themes": []
   },
   {
-   "seq": 2955,
+   "seq": 3011,
    "id": "pr_teen2",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 212,
@@ -54483,7 +55499,7 @@
    "themes": []
   },
   {
-   "seq": 2956,
+   "seq": 3012,
    "id": "pr_fork16",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 256,
@@ -54501,7 +55517,7 @@
    "themes": []
   },
   {
-   "seq": 2957,
+   "seq": 3013,
    "id": "pr_y17",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 284,
@@ -54519,7 +55535,7 @@
    "themes": []
   },
   {
-   "seq": 2958,
+   "seq": 3014,
    "id": "pr_y18",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 317,
@@ -54537,7 +55553,7 @@
    "themes": []
   },
   {
-   "seq": 2959,
+   "seq": 3015,
    "id": "pr_fam78b",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 366,
@@ -54555,7 +55571,7 @@
    "themes": []
   },
   {
-   "seq": 2960,
+   "seq": 3016,
    "id": "pr_y20",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 385,
@@ -54573,7 +55589,7 @@
    "themes": []
   },
   {
-   "seq": 2961,
+   "seq": 3017,
    "id": "pr_y21",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 424,
@@ -54591,7 +55607,7 @@
    "themes": []
   },
   {
-   "seq": 2962,
+   "seq": 3018,
    "id": "pr_kid6_78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 471,
@@ -54609,7 +55625,7 @@
    "themes": []
   },
   {
-   "seq": 2963,
+   "seq": 3019,
    "id": "pr_kid8_78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 484,
@@ -54627,7 +55643,7 @@
    "themes": []
   },
   {
-   "seq": 2964,
+   "seq": 3020,
    "id": "pr_kid10_78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 498,
@@ -54645,7 +55661,7 @@
    "themes": []
   },
   {
-   "seq": 2965,
+   "seq": 3021,
    "id": "pr_half1",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 515,
@@ -54663,7 +55679,7 @@
    "themes": []
   },
   {
-   "seq": 2966,
+   "seq": 3022,
    "id": "pr_half2",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 523,
@@ -54681,7 +55697,7 @@
    "themes": []
   },
   {
-   "seq": 2967,
+   "seq": 3023,
    "id": "pr_half3",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 533,
@@ -54699,7 +55715,7 @@
    "themes": []
   },
   {
-   "seq": 2968,
+   "seq": 3024,
    "id": "pr_never1",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 545,
@@ -54717,7 +55733,7 @@
    "themes": []
   },
   {
-   "seq": 2969,
+   "seq": 3025,
    "id": "pr_never2",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 556,
@@ -54735,7 +55751,7 @@
    "themes": []
   },
   {
-   "seq": 2970,
+   "seq": 3026,
    "id": "pr_never3",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 566,
@@ -54753,7 +55769,7 @@
    "themes": []
   },
   {
-   "seq": 2971,
+   "seq": 3027,
    "id": "pool_move78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 583,
@@ -54771,7 +55787,7 @@
    "themes": []
   },
   {
-   "seq": 2972,
+   "seq": 3028,
    "id": "mark_sharpener78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 50,
@@ -54789,7 +55805,7 @@
    "themes": []
   },
   {
-   "seq": 2973,
+   "seq": 3029,
    "id": "mark_egg78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 51,
@@ -54807,7 +55823,7 @@
    "themes": []
   },
   {
-   "seq": 2974,
+   "seq": 3030,
    "id": "mark_roster78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 52,
@@ -54825,7 +55841,7 @@
    "themes": []
   },
   {
-   "seq": 2975,
+   "seq": 3031,
    "id": "mark_crayon78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 53,
@@ -54843,7 +55859,7 @@
    "themes": []
   },
   {
-   "seq": 2976,
+   "seq": 3032,
    "id": "mark_satchel78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 54,
@@ -54861,7 +55877,7 @@
    "themes": []
   },
   {
-   "seq": 2977,
+   "seq": 3033,
    "id": "mark_stool78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 55,
@@ -54879,7 +55895,7 @@
    "themes": []
   },
   {
-   "seq": 2978,
+   "seq": 3034,
    "id": "mark_river78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 56,
@@ -54897,7 +55913,7 @@
    "themes": []
   },
   {
-   "seq": 2979,
+   "seq": 3035,
    "id": "mark_yanghua78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 57,
@@ -54915,7 +55931,7 @@
    "themes": []
   },
   {
-   "seq": 2980,
+   "seq": 3036,
    "id": "mark_band78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 58,
@@ -54933,7 +55949,7 @@
    "themes": []
   },
   {
-   "seq": 2981,
+   "seq": 3037,
    "id": "mark_shuttlecock78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 59,
@@ -54951,7 +55967,7 @@
    "themes": []
   },
   {
-   "seq": 2982,
+   "seq": 3038,
    "id": "mark_sandbag78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 60,
@@ -54969,7 +55985,7 @@
    "themes": []
   },
   {
-   "seq": 2983,
+   "seq": 3039,
    "id": "mark_hoop78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 61,
@@ -54987,7 +56003,7 @@
    "themes": []
   },
   {
-   "seq": 2984,
+   "seq": 3040,
    "id": "mark_panda78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 62,
@@ -55005,7 +56021,7 @@
    "themes": []
   },
   {
-   "seq": 2985,
+   "seq": 3041,
    "id": "mark_tree78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 63,
@@ -55023,7 +56039,7 @@
    "themes": []
   },
   {
-   "seq": 2986,
+   "seq": 3042,
    "id": "mark_colortv78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 64,
@@ -55041,7 +56057,7 @@
    "themes": []
   },
   {
-   "seq": 2987,
+   "seq": 3043,
    "id": "pr_origin",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 132,
@@ -55059,7 +56075,7 @@
    "themes": []
   },
   {
-   "seq": 2988,
+   "seq": 3044,
    "id": "pr_child1",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 135,
@@ -55077,7 +56093,7 @@
    "themes": []
   },
   {
-   "seq": 2989,
+   "seq": 3045,
    "id": "pr_child2",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 151,
@@ -55095,7 +56111,7 @@
    "themes": []
   },
   {
-   "seq": 2990,
+   "seq": 3046,
    "id": "pr_child3",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 168,
@@ -55113,7 +56129,7 @@
    "themes": []
   },
   {
-   "seq": 2991,
+   "seq": 3047,
    "id": "pr_child4",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 180,
@@ -55131,7 +56147,7 @@
    "themes": []
   },
   {
-   "seq": 2992,
+   "seq": 3048,
    "id": "pr_teen1",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 198,
@@ -55149,7 +56165,7 @@
    "themes": []
   },
   {
-   "seq": 2993,
+   "seq": 3049,
    "id": "pr_teen2",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 232,
@@ -55167,7 +56183,7 @@
    "themes": []
   },
   {
-   "seq": 2994,
+   "seq": 3050,
    "id": "pr_fork16",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 271,
@@ -55185,7 +56201,7 @@
    "themes": []
   },
   {
-   "seq": 2995,
+   "seq": 3051,
    "id": "pr_y17",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 284,
@@ -55203,7 +56219,7 @@
    "themes": []
   },
   {
-   "seq": 2996,
+   "seq": 3052,
    "id": "pr_y18",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 308,
@@ -55221,7 +56237,7 @@
    "themes": []
   },
   {
-   "seq": 2997,
+   "seq": 3053,
    "id": "pr_y20",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 336,
@@ -55239,7 +56255,7 @@
    "themes": []
   },
   {
-   "seq": 2998,
+   "seq": 3054,
    "id": "pr_y21",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 362,
@@ -55257,7 +56273,7 @@
    "themes": []
   },
   {
-   "seq": 2999,
+   "seq": 3055,
    "id": "pr_kid6_85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 386,
@@ -55275,7 +56291,7 @@
    "themes": []
   },
   {
-   "seq": 3000,
+   "seq": 3056,
    "id": "pr_kid8_85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 398,
@@ -55293,7 +56309,7 @@
    "themes": []
   },
   {
-   "seq": 3001,
+   "seq": 3057,
    "id": "pr_kid10_85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 410,
@@ -55311,7 +56327,7 @@
    "themes": []
   },
   {
-   "seq": 3002,
+   "seq": 3058,
    "id": "pr_half1",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 583,
@@ -55329,7 +56345,7 @@
    "themes": []
   },
   {
-   "seq": 3003,
+   "seq": 3059,
    "id": "pr_half2",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 591,
@@ -55347,7 +56363,7 @@
    "themes": []
   },
   {
-   "seq": 3004,
+   "seq": 3060,
    "id": "pr_half3",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 601,
@@ -55365,7 +56381,7 @@
    "themes": []
   },
   {
-   "seq": 3005,
+   "seq": 3061,
    "id": "pr_never1",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 613,
@@ -55383,7 +56399,7 @@
    "themes": []
   },
   {
-   "seq": 3006,
+   "seq": 3062,
    "id": "pr_never2",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 625,
@@ -55401,7 +56417,7 @@
    "themes": []
   },
   {
-   "seq": 3007,
+   "seq": 3063,
    "id": "pr_never3",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 635,
@@ -55419,7 +56435,7 @@
    "themes": []
   },
   {
-   "seq": 3008,
+   "seq": 3064,
    "id": "pool_lb85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 443,
@@ -55437,7 +56453,7 @@
    "themes": []
   },
   {
-   "seq": 3009,
+   "seq": 3065,
    "id": "pool_laidoff85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 469,
@@ -55455,7 +56471,7 @@
    "themes": []
   },
   {
-   "seq": 3010,
+   "seq": 3066,
    "id": "pool_move85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 496,
@@ -55473,7 +56489,7 @@
    "themes": []
   },
   {
-   "seq": 3011,
+   "seq": 3067,
    "id": "mark_case85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 63,
@@ -55491,7 +56507,7 @@
    "themes": []
   },
   {
-   "seq": 3012,
+   "seq": 3068,
    "id": "mark_flag85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 64,
@@ -55509,7 +56525,7 @@
    "themes": []
   },
   {
-   "seq": 3013,
+   "seq": 3069,
    "id": "mark_cover85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 65,
@@ -55527,7 +56543,7 @@
    "themes": []
   },
   {
-   "seq": 3014,
+   "seq": 3070,
    "id": "mark_marble85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 66,
@@ -55545,7 +56561,7 @@
    "themes": []
   },
   {
-   "seq": 3015,
+   "seq": 3071,
    "id": "mark_game85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 67,
@@ -55563,7 +56579,7 @@
    "themes": []
   },
   {
-   "seq": 3016,
+   "seq": 3072,
    "id": "mark_arcade85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 68,
@@ -55581,7 +56597,7 @@
    "themes": []
   },
   {
-   "seq": 3017,
+   "seq": 3073,
    "id": "mark_football85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 69,
@@ -55599,7 +56615,7 @@
    "themes": []
   },
   {
-   "seq": 3018,
+   "seq": 3074,
    "id": "mark_shop85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 71,
@@ -55617,7 +56633,7 @@
    "themes": []
   },
   {
-   "seq": 3019,
+   "seq": 3075,
    "id": "mark_car85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 72,
@@ -55635,7 +56651,7 @@
    "themes": []
   },
   {
-   "seq": 3020,
+   "seq": 3076,
    "id": "mark_bag85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 74,
@@ -55653,7 +56669,7 @@
    "themes": []
   },
   {
-   "seq": 3021,
+   "seq": 3077,
    "id": "mark_abacus85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 75,
@@ -55671,7 +56687,7 @@
    "themes": []
   },
   {
-   "seq": 3022,
+   "seq": 3078,
    "id": "mark_bench85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 76,
@@ -55689,7 +56705,7 @@
    "themes": []
   },
   {
-   "seq": 3023,
+   "seq": 3079,
    "id": "mark_top85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 77,
@@ -55707,7 +56723,7 @@
    "themes": []
   },
   {
-   "seq": 3024,
+   "seq": 3080,
    "id": "mark_kite85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 78,
@@ -55725,7 +56741,7 @@
    "themes": []
   },
   {
-   "seq": 3025,
+   "seq": 3081,
    "id": "mark_cicada85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 79,
@@ -55743,7 +56759,7 @@
    "themes": []
   },
   {
-   "seq": 3026,
+   "seq": 3082,
    "id": "pr_origin",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 127,
@@ -55761,7 +56777,7 @@
    "themes": []
   },
   {
-   "seq": 3027,
+   "seq": 3083,
    "id": "pr_child1",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 130,
@@ -55779,7 +56795,7 @@
    "themes": []
   },
   {
-   "seq": 3028,
+   "seq": 3084,
    "id": "pr_child2",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 146,
@@ -55797,7 +56813,7 @@
    "themes": []
   },
   {
-   "seq": 3029,
+   "seq": 3085,
    "id": "pr_child3",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 168,
@@ -55815,7 +56831,7 @@
    "themes": []
   },
   {
-   "seq": 3030,
+   "seq": 3086,
    "id": "pr_child4",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 179,
@@ -55833,7 +56849,7 @@
    "themes": []
   },
   {
-   "seq": 3031,
+   "seq": 3087,
    "id": "pr_teen1",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 188,
@@ -55851,7 +56867,7 @@
    "themes": []
   },
   {
-   "seq": 3032,
+   "seq": 3088,
    "id": "pr_teen2",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 204,
@@ -55869,7 +56885,7 @@
    "themes": []
   },
   {
-   "seq": 3033,
+   "seq": 3089,
    "id": "pr_fork16",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 244,
@@ -55887,7 +56903,7 @@
    "themes": []
   },
   {
-   "seq": 3034,
+   "seq": 3090,
    "id": "pr_y17",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 293,
@@ -55905,7 +56921,7 @@
    "themes": []
   },
   {
-   "seq": 3035,
+   "seq": 3091,
    "id": "pr_y18",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 321,
@@ -55923,7 +56939,7 @@
    "themes": []
   },
   {
-   "seq": 3036,
+   "seq": 3092,
    "id": "pr_y20",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 352,
@@ -55941,7 +56957,7 @@
    "themes": []
   },
   {
-   "seq": 3037,
+   "seq": 3093,
    "id": "pr_y21",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 383,
@@ -55959,7 +56975,7 @@
    "themes": []
   },
   {
-   "seq": 3038,
+   "seq": 3094,
    "id": "pr_duikou18",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 411,
@@ -55977,7 +56993,7 @@
    "themes": []
   },
   {
-   "seq": 3039,
+   "seq": 3095,
    "id": "pr_kid6_95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 424,
@@ -55995,7 +57011,7 @@
    "themes": []
   },
   {
-   "seq": 3040,
+   "seq": 3096,
    "id": "pr_kid8_95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 436,
@@ -56013,7 +57029,7 @@
    "themes": []
   },
   {
-   "seq": 3041,
+   "seq": 3097,
    "id": "pr_kid10_95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 457,
@@ -56031,7 +57047,7 @@
    "themes": []
   },
   {
-   "seq": 3042,
+   "seq": 3098,
    "id": "pr_cov_uni95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 470,
@@ -56051,7 +57067,7 @@
    ]
   },
   {
-   "seq": 3043,
+   "seq": 3099,
    "id": "pr_half1",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 484,
@@ -56069,7 +57085,7 @@
    "themes": []
   },
   {
-   "seq": 3044,
+   "seq": 3100,
    "id": "pr_half2",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 494,
@@ -56087,7 +57103,7 @@
    "themes": []
   },
   {
-   "seq": 3045,
+   "seq": 3101,
    "id": "pr_half3",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 506,
@@ -56105,7 +57121,7 @@
    "themes": []
   },
   {
-   "seq": 3046,
+   "seq": 3102,
    "id": "pr_never1",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 518,
@@ -56123,7 +57139,7 @@
    "themes": []
   },
   {
-   "seq": 3047,
+   "seq": 3103,
    "id": "pr_never2",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 530,
@@ -56141,7 +57157,7 @@
    "themes": []
   },
   {
-   "seq": 3048,
+   "seq": 3104,
    "id": "pr_never3",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 542,
@@ -56159,7 +57175,7 @@
    "themes": []
   },
   {
-   "seq": 3049,
+   "seq": 3105,
    "id": "mark_autopen95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 56,
@@ -56177,7 +57193,7 @@
    "themes": []
   },
   {
-   "seq": 3050,
+   "seq": 3106,
    "id": "mark_bus95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 57,
@@ -56195,7 +57211,7 @@
    "themes": []
   },
   {
-   "seq": 3051,
+   "seq": 3107,
    "id": "mark_song95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 58,
@@ -56213,7 +57229,7 @@
    "themes": []
   },
   {
-   "seq": 3052,
+   "seq": 3108,
    "id": "mark_skate95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 59,
@@ -56231,7 +57247,7 @@
    "themes": []
   },
   {
-   "seq": 3053,
+   "seq": 3109,
    "id": "mark_game95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 60,
@@ -56249,7 +57265,7 @@
    "themes": []
   },
   {
-   "seq": 3054,
+   "seq": 3110,
    "id": "mark_field95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 61,
@@ -56267,7 +57283,7 @@
    "themes": []
   },
   {
-   "seq": 3055,
+   "seq": 3111,
    "id": "mark_tree95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 62,
@@ -56285,7 +57301,7 @@
    "themes": []
   },
   {
-   "seq": 3056,
+   "seq": 3112,
    "id": "mark_fuwa95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 64,
@@ -56303,7 +57319,7 @@
    "themes": []
   },
   {
-   "seq": 3057,
+   "seq": 3113,
    "id": "mark_campus95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 65,
@@ -56321,7 +57337,7 @@
    "themes": []
   },
   {
-   "seq": 3058,
+   "seq": 3114,
    "id": "mark_paint95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 67,
@@ -56339,7 +57355,7 @@
    "themes": []
   },
   {
-   "seq": 3059,
+   "seq": 3115,
    "id": "mark_wrap95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 68,
@@ -56357,7 +57373,7 @@
    "themes": []
   },
   {
-   "seq": 3060,
+   "seq": 3116,
    "id": "mark_badge95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 69,
@@ -56375,7 +57391,7 @@
    "themes": []
   },
   {
-   "seq": 3061,
+   "seq": 3117,
    "id": "mark_yoyo95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 70,
@@ -56393,7 +57409,7 @@
    "themes": []
   },
   {
-   "seq": 3062,
+   "seq": 3118,
    "id": "mark_silk95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 71,
@@ -56411,7 +57427,7 @@
    "themes": []
   },
   {
-   "seq": 3063,
+   "seq": 3119,
    "id": "mark_shuttle95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 72,
@@ -56429,7 +57445,7 @@
    "themes": []
   },
   {
-   "seq": 3064,
+   "seq": 3120,
    "id": "pr_origin",
    "file": "src/content/prologue/prologue.js",
    "line": 221,
@@ -56447,7 +57463,7 @@
    "themes": []
   },
   {
-   "seq": 3065,
+   "seq": 3121,
    "id": "pr_child1",
    "file": "src/content/prologue/prologue.js",
    "line": 227,
@@ -56465,7 +57481,7 @@
    "themes": []
   },
   {
-   "seq": 3066,
+   "seq": 3122,
    "id": "pr_child2",
    "file": "src/content/prologue/prologue.js",
    "line": 245,
@@ -56483,7 +57499,7 @@
    "themes": []
   },
   {
-   "seq": 3067,
+   "seq": 3123,
    "id": "pr_child3",
    "file": "src/content/prologue/prologue.js",
    "line": 262,
@@ -56501,7 +57517,7 @@
    "themes": []
   },
   {
-   "seq": 3068,
+   "seq": 3124,
    "id": "pr_child4",
    "file": "src/content/prologue/prologue.js",
    "line": 274,
@@ -56519,7 +57535,7 @@
    "themes": []
   },
   {
-   "seq": 3069,
+   "seq": 3125,
    "id": "pr_teen1",
    "file": "src/content/prologue/prologue.js",
    "line": 294,
@@ -56537,7 +57553,7 @@
    "themes": []
   },
   {
-   "seq": 3070,
+   "seq": 3126,
    "id": "pr_teen2",
    "file": "src/content/prologue/prologue.js",
    "line": 310,
@@ -56555,7 +57571,7 @@
    "themes": []
   },
   {
-   "seq": 3071,
+   "seq": 3127,
    "id": "pr_fork16",
    "file": "src/content/prologue/prologue.js",
    "line": 359,
@@ -56573,7 +57589,7 @@
    "themes": []
   },
   {
-   "seq": 3072,
+   "seq": 3128,
    "id": "pr_y17",
    "file": "src/content/prologue/prologue.js",
    "line": 382,
@@ -56591,7 +57607,7 @@
    "themes": []
   },
   {
-   "seq": 3073,
+   "seq": 3129,
    "id": "pr_y18",
    "file": "src/content/prologue/prologue.js",
    "line": 417,
@@ -56609,7 +57625,7 @@
    "themes": []
   },
   {
-   "seq": 3074,
+   "seq": 3130,
    "id": "pr_y20",
    "file": "src/content/prologue/prologue.js",
    "line": 451,
@@ -56627,7 +57643,7 @@
    "themes": []
   },
   {
-   "seq": 3075,
+   "seq": 3131,
    "id": "pr_y21",
    "file": "src/content/prologue/prologue.js",
    "line": 477,
@@ -56645,7 +57661,7 @@
    "themes": []
   },
   {
-   "seq": 3076,
+   "seq": 3132,
    "id": "pr_l00_exam",
    "file": "src/content/prologue/prologue.js",
    "line": 504,
@@ -56663,7 +57679,7 @@
    "themes": []
   },
   {
-   "seq": 3077,
+   "seq": 3133,
    "id": "pr_l00_care",
    "file": "src/content/prologue/prologue.js",
    "line": 518,
@@ -56681,7 +57697,7 @@
    "themes": []
   },
   {
-   "seq": 3078,
+   "seq": 3134,
    "id": "pr_kid6_00",
    "file": "src/content/prologue/prologue.js",
    "line": 532,
@@ -56699,7 +57715,7 @@
    "themes": []
   },
   {
-   "seq": 3079,
+   "seq": 3135,
    "id": "pr_kid8_00",
    "file": "src/content/prologue/prologue.js",
    "line": 545,
@@ -56717,7 +57733,7 @@
    "themes": []
   },
   {
-   "seq": 3080,
+   "seq": 3136,
    "id": "pr_kid10_00",
    "file": "src/content/prologue/prologue.js",
    "line": 569,
@@ -56735,7 +57751,7 @@
    "themes": []
   },
   {
-   "seq": 3081,
+   "seq": 3137,
    "id": "pr_cov_kid20",
    "file": "src/content/prologue/prologue.js",
    "line": 588,
@@ -56755,7 +57771,7 @@
    ]
   },
   {
-   "seq": 3082,
+   "seq": 3138,
    "id": "pr_cov_kid21",
    "file": "src/content/prologue/prologue.js",
    "line": 597,
@@ -56775,7 +57791,7 @@
    ]
   },
   {
-   "seq": 3083,
+   "seq": 3139,
    "id": "pr_cov_mid20",
    "file": "src/content/prologue/prologue.js",
    "line": 603,
@@ -56795,7 +57811,7 @@
    ]
   },
   {
-   "seq": 3084,
+   "seq": 3140,
    "id": "pr_cov_exam20",
    "file": "src/content/prologue/prologue.js",
    "line": 622,
@@ -56815,7 +57831,7 @@
    ]
   },
   {
-   "seq": 3085,
+   "seq": 3141,
    "id": "pr_cov_grad22",
    "file": "src/content/prologue/prologue.js",
    "line": 632,
@@ -56835,7 +57851,7 @@
    ]
   },
   {
-   "seq": 3086,
+   "seq": 3142,
    "id": "pr_cov_uni20",
    "file": "src/content/prologue/prologue.js",
    "line": 641,
@@ -56855,7 +57871,7 @@
    ]
   },
   {
-   "seq": 3087,
+   "seq": 3143,
    "id": "pr_cov_uni22",
    "file": "src/content/prologue/prologue.js",
    "line": 651,
@@ -56875,7 +57891,7 @@
    ]
   },
   {
-   "seq": 3088,
+   "seq": 3144,
    "id": "pr_half1",
    "file": "src/content/prologue/prologue.js",
    "line": 666,
@@ -56893,7 +57909,7 @@
    "themes": []
   },
   {
-   "seq": 3089,
+   "seq": 3145,
    "id": "pr_half2",
    "file": "src/content/prologue/prologue.js",
    "line": 674,
@@ -56911,7 +57927,7 @@
    "themes": []
   },
   {
-   "seq": 3090,
+   "seq": 3146,
    "id": "pr_half3",
    "file": "src/content/prologue/prologue.js",
    "line": 684,
@@ -56929,7 +57945,7 @@
    "themes": []
   },
   {
-   "seq": 3091,
+   "seq": 3147,
    "id": "pr_never1",
    "file": "src/content/prologue/prologue.js",
    "line": 696,
@@ -56947,7 +57963,7 @@
    "themes": []
   },
   {
-   "seq": 3092,
+   "seq": 3148,
    "id": "pr_never2",
    "file": "src/content/prologue/prologue.js",
    "line": 704,
@@ -56965,7 +57981,7 @@
    "themes": []
   },
   {
-   "seq": 3093,
+   "seq": 3149,
    "id": "pr_never3",
    "file": "src/content/prologue/prologue.js",
    "line": 714,
@@ -56983,7 +57999,7 @@
    "themes": []
   },
   {
-   "seq": 3094,
+   "seq": 3150,
    "id": "pool_phonegame00",
    "file": "src/content/prologue/prologue.js",
    "line": 741,
@@ -57001,7 +58017,7 @@
    "themes": []
   },
   {
-   "seq": 3095,
+   "seq": 3151,
    "id": "pool_oldsign00",
    "file": "src/content/prologue/prologue.js",
    "line": 769,
@@ -57019,7 +58035,7 @@
    "themes": []
   },
   {
-   "seq": 3096,
+   "seq": 3152,
    "id": "pool_danmu00",
    "file": "src/content/prologue/prologue.js",
    "line": 796,
@@ -57037,7 +58053,7 @@
    "themes": []
   },
   {
-   "seq": 3097,
+   "seq": 3153,
    "id": "pool_move00",
    "file": "src/content/prologue/prologue.js",
    "line": 829,
@@ -57055,7 +58071,7 @@
    "themes": []
   },
   {
-   "seq": 3098,
+   "seq": 3154,
    "id": "mark_deskmate",
    "file": "src/content/prologue/prologue.js",
    "line": 50,
@@ -57073,7 +58089,7 @@
    "themes": []
   },
   {
-   "seq": 3099,
+   "seq": 3155,
    "id": "mark_candy",
    "file": "src/content/prologue/prologue.js",
    "line": 51,
@@ -57091,7 +58107,7 @@
    "themes": []
   },
   {
-   "seq": 3100,
+   "seq": 3156,
    "id": "mark_window",
    "file": "src/content/prologue/prologue.js",
    "line": 52,
@@ -57109,7 +58125,7 @@
    "themes": []
   },
   {
-   "seq": 3101,
+   "seq": 3157,
    "id": "mark_wrongline",
    "file": "src/content/prologue/prologue.js",
    "line": 53,
@@ -57127,7 +58143,7 @@
    "themes": []
   },
   {
-   "seq": 3102,
+   "seq": 3158,
    "id": "mark_pencil",
    "file": "src/content/prologue/prologue.js",
    "line": 54,
@@ -57145,7 +58161,7 @@
    "themes": []
   },
   {
-   "seq": 3103,
+   "seq": 3159,
    "id": "mark_namecall",
    "file": "src/content/prologue/prologue.js",
    "line": 55,
@@ -57163,7 +58179,7 @@
    "themes": []
   },
   {
-   "seq": 3104,
+   "seq": 3160,
    "id": "mark_river",
    "file": "src/content/prologue/prologue.js",
    "line": 56,
@@ -57181,7 +58197,7 @@
    "themes": []
   },
   {
-   "seq": 3105,
+   "seq": 3161,
    "id": "mark_hoop",
    "file": "src/content/prologue/prologue.js",
    "line": 57,
@@ -57199,7 +58215,7 @@
    "themes": []
   },
   {
-   "seq": 3106,
+   "seq": 3162,
    "id": "mark_corn",
    "file": "src/content/prologue/prologue.js",
    "line": 58,
@@ -57217,7 +58233,7 @@
    "themes": []
   },
   {
-   "seq": 3107,
+   "seq": 3163,
    "id": "mark_icepop",
    "file": "src/content/prologue/prologue.js",
    "line": 59,
@@ -57235,7 +58251,7 @@
    "themes": []
   },
   {
-   "seq": 3108,
+   "seq": 3164,
    "id": "mark_hopscotch",
    "file": "src/content/prologue/prologue.js",
    "line": 60,
@@ -57253,7 +58269,7 @@
    "themes": []
   },
   {
-   "seq": 3109,
+   "seq": 3165,
    "id": "mark_jumprope",
    "file": "src/content/prologue/prologue.js",
    "line": 61,
@@ -57271,7 +58287,7 @@
    "themes": []
   },
   {
-   "seq": 3110,
+   "seq": 3166,
    "id": "mark_tree",
    "file": "src/content/prologue/prologue.js",
    "line": 62,
@@ -57289,7 +58305,7 @@
    "themes": []
   },
   {
-   "seq": 3111,
+   "seq": 3167,
    "id": "mark_shop",
    "file": "src/content/prologue/prologue.js",
    "line": 63,
@@ -57307,7 +58323,7 @@
    "themes": []
   },
   {
-   "seq": 3112,
+   "seq": 3168,
    "id": "mark_yearbook",
    "file": "src/content/prologue/prologue.js",
    "line": 64,
@@ -57325,7 +58341,7 @@
    "themes": []
   },
   {
-   "seq": 3113,
+   "seq": 3169,
    "id": "mark_classphoto",
    "file": "src/content/prologue/prologue.js",
    "line": 65,
@@ -57343,7 +58359,7 @@
    "themes": []
   },
   {
-   "seq": 3114,
+   "seq": 3170,
    "id": "grab_wen",
    "file": "src/content/prologue/prologue.js",
    "line": 67,
@@ -57361,7 +58377,7 @@
    "themes": []
   },
   {
-   "seq": 3115,
+   "seq": 3171,
    "id": "grab_cai",
    "file": "src/content/prologue/prologue.js",
    "line": 68,
@@ -57379,7 +58395,7 @@
    "themes": []
   },
   {
-   "seq": 3116,
+   "seq": 3172,
    "id": "grab_gong",
    "file": "src/content/prologue/prologue.js",
    "line": 69,
@@ -57397,7 +58413,7 @@
    "themes": []
   },
   {
-   "seq": 3117,
+   "seq": 3173,
    "id": "grab_shi",
    "file": "src/content/prologue/prologue.js",
    "line": 70,
@@ -57415,7 +58431,7 @@
    "themes": []
   },
   {
-   "seq": 3118,
+   "seq": 3174,
    "id": "grab_yin",
    "file": "src/content/prologue/prologue.js",
    "line": 71,
@@ -57433,7 +58449,7 @@
    "themes": []
   },
   {
-   "seq": 3119,
+   "seq": 3175,
    "id": "grab_wan",
    "file": "src/content/prologue/prologue.js",
    "line": 72,
