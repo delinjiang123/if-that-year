@@ -373,8 +373,10 @@
   // 无头年步进本体：决策序与 engine.js step() 严格对齐（蓝图 5.1/5.2）——
   // 进程拍（父母 → 出生保送 → 首次露面保底 → 领证保送 → dating → 出国去向 → 退休相位）→ 分岔 →（瞥视跳过）→ planYear 内容槽。
   // 父母进程已在出生时建好，这里只调 parentsDue()，且至多一件/年（蓝图 5.3，两条人生节奏同构）。
-  // 不受控 Track 不瞥视、无反思、无呈现：GLIMPSE_AGES 年龄直接落进 planYear，与受控 Track 的
-  // 瞥视年不同——瞥视是玩家层的观看动作，不占被瞥视者的年份（它在那一年照常过日子）。
+  // 不受控 Track 不瞥视、无反思、无呈现：GLIMPSE_AGES 年龄直接落进 planYear。瞥视不占
+  // 年批后受控 Track 同形：站位年照常过完一整年，瞥视只是玩家层的观看动作、挂在受控
+  // 轨的收尾（advance() 拦截呈现），不占任何一条轨的年份；无头侧无呈现层可挂，到此
+  // 直接落 planYear，两侧决策序一致。
   function stepYearHeadless() {
     const S = IFY.S, D = IFY.D;
     if (!S || !S.route) return;
@@ -411,7 +413,8 @@
     let fork = D.forks.find((f) => f.age === S.age && !f.procOnly && (!f.route || f.route === S.route.id) && (!f.forbidRoute || f.forbidRoute !== S.route.id) && (!f.forbid || !S.flags[f.forbid]) && (!f.anyParentAlive || S.state.dad === "alive" || S.state.mom === "alive") && (!f.state || IFY.met(f))); // 与 step() 同式（含 fork58 互锁，下行）
     if (fork && fork.age === 58 && typeof IFY.retireDecidedThisYear === "function" && IFY.retireDecidedThisYear()) fork = null;
     if (fork) { resolveForkHeadless(fork); return; }
-    // 瞥视：跳过——不受控 Track 不瞥视任何人（蓝图 5.1 第 2 步注）
+    // 瞥视：跳过——不受控 Track 不瞥视任何人（蓝图 5.1 第 2 步注）；受控轨同位同样不
+    // 占年（瞥视挂其收尾、由 advance() 在内容之后拦截呈现），两侧自此同形。
     const plan = IFY.planYear();
     if (plan.kind === "crisis") { resolveCrisisHeadless(plan.crisis); return; }
     if (plan.kind === "rare") { resolveRareHeadless(plan.rare); return; }

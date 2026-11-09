@@ -35,6 +35,9 @@
 //   其余出生年回落同轨通用款（读者 trackText，opt-in）；时代牌 ce85_02/ce85_04 改公历叙事
 //   （见 cards.js）。pr_y21 home 农业税一句仍按在案裁定留原处。
 // 分根集成预留（蓝图 §七，评审后薄集成，本轮不写）：本代分根拍＝pr_fork16（F85，選擇分根）；结果文案位置＝pr_fork16 各选项 echo。
+// 瞥视不占年批追记（覆盖上方 G6 段的结构结论）：瞥视站位年不再独占——step() 判定后只落
+//   glimpseDue 挂起位、本年照常过完，advance() 在过年之前把瞥视作收尾屏呈现。上文「30 岁
+//   到不了 planYear、命中恒为 0」的结构已不存在；e85_003 的 1985 出生 30 岁格自此自然可达。
 (function () {
   "use strict";
   window.GAME_PROLOGUE_PACKS = window.GAME_PROLOGUE_PACKS || {};

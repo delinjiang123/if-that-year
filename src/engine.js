@@ -1,4 +1,4 @@
-// 《如果那年》引擎 v0.60.15 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
+// 《如果那年》引擎 v0.60.10 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
 //      / 判词按数值形状拼装 / 全程自动存档可续玩 / 种子可输入、可复制分享链接 / 在线零 LLM 调用
 // [模块]本引擎自 v0.20.0 起拆为各自独立的模块文件（独立包装器 + window.IFY 共享命名空间），按 index.html 的顺序加载：本文件（建 IFY + 编排）→ src/world/apply.js → src/record.js → src/world/processes/{parents,spouse,work,place,health}.js → src/scheduler.js → src/views/{stream,year,shadow,settlement,share}.js → src/engine-boot.js（收尾，调用 IFY.renderStart()）。跨模块引用一律 IFY.<名>，可变量收编为 IFY 属性。
 window.IFY = window.IFY || {};
@@ -205,6 +205,7 @@ window.IFY = window.IFY || {};
       usedEvents: [], flags: {}, state: IFY.initialState(), crisisUsed: {}, microUsed: [], usedRare: [], cards: [],
       glimpsesSeen: 0, glimpsesSkipped: 0, lastDelta: "", wageDelta: "", // wageDelta：工资年结的标注通道（fx-fix）——wageDue 每年结算时刷新（非零整数落账记「工资 ±N」、否则清空），deltaLine 与 lastDelta 拼行呈现；旧档无此字段按空读
       healthCrisisSeen: false, death: null, pendingFork: null,
+      glimpseDue: null, // 瞥视不占年（本批）：站位年 step() 判定呈现时只落此挂起位（站位下标），本年照常过完，advance() 在过年之前拦截呈现瞥视屏后清除；非站位年恒 null，旧档无此字段按 null 读
       // v0.17.0 地基字段：阶段机 phase/stage（origin/child/teen/youth/adult/late）、温度 temp（0–100）与节奏型 rhythm（只管质地，不做玩家可见数值）、
       // 童年记号 marks、fork38 立约 covenant、序章运行态 prologue、平年合并 flatCarry 与温度平淡年计数 flatYears
       phase: "adult", stage: "adult", temp: null, rhythm: null,
@@ -1246,9 +1247,14 @@ window.IFY = window.IFY || {};
       // 分家记账（丙案第一步）：第一瞥漂移——三站不动，第一瞥改取三站中第一个 ≥ 分家岁+5 的站；
       // 分家点 22（默认与旧档）时第一瞥仍是 30，与旧行为一致。早于第一瞥的站位不算一次瞥视：
       // 与 renderGlimpse 入口同口径先消费叙事流恰好 1 抽（裁定二不变式），本年照常往下过。
+      // 瞥视不占年（本批）：站位年不再被瞥视独占——判定呈现时只落 glimpseDue 挂起位，
+      // 本年照常往下走完内容时槽，过年之前由 advance() 拦截、把瞥视作收尾屏呈现（其入口
+      // 的 1 抽在那时消费，每站恰好 1 抽的账不变；站位规则与第一瞥判定一字未动）。
+      // 续玩回到本年且挂起位还在（内容已呈现过、瞥视还没看），直接补呈现、不重跑内容。
       const fg = IFY.firstGlimpseAge(IFY.S);
-      if (fg != null && IFY.S.age >= fg) { IFY.renderGlimpse(GLIMPSE_AGES[IFY.S.age]); return IFY.mountStream(); }
-      IFY.rng();
+      if (IFY.S.glimpseDue != null) { const gst = IFY.S.glimpseDue; IFY.S.glimpseDue = null; IFY.renderGlimpse(gst); return IFY.mountStream(); }
+      if (fg != null && IFY.S.age >= fg) IFY.S.glimpseDue = GLIMPSE_AGES[IFY.S.age];
+      else IFY.rng();
     }
     // 内容时槽五层仲裁（v0.20.0 M2，src/scheduler.js 的 planYear）：L1 危机抢占 → L2 稀有/链推进
     // → 温度平淡年 → L3 saliency 事件 → L4 微年填充。step() 只按计划分发呈现，不再自行抽取。
@@ -1261,6 +1267,14 @@ window.IFY = window.IFY || {};
 
   function advance() {
     if (IFY.S.death) return renderDeath();
+    // 瞥视不占年（本批）：站位年的内容已过完、过年之前先把瞥视作收尾屏呈现——清挂起位
+    // 后调 renderGlimpse，其出口照旧走 advance()（挂起位已清，正常过年、收口采样在那时
+    // 落）。死亡已在上方拦下：终局之年不补瞥视。内容各呈现的出口（事件/危机/稀有/平年/
+    // 微年挂起）全经本函数过年，故拦截点只此一处。
+    if (IFY.S.glimpseDue != null && (IFY.S.age in GLIMPSE_AGES)) {
+      const gst = IFY.S.glimpseDue; IFY.S.glimpseDue = null;
+      IFY.renderGlimpse(gst); return IFY.mountStream();
+    }
     sampleStatsPeak(); // 判词批 C：上一年收口采样——当年进程拍/事件/分岔/工资/住房诸写入已在 step 年内全部落定
     IFY.S.age += 1;
     IFY.S.wageDelta = ""; // fx-fix：跨年先清工资标注——新一年的进程拍屏在工资结算之前呈，不许读到去年的；本年结算后由 wageDue 重记
