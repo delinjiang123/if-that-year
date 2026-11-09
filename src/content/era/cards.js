@@ -81,7 +81,7 @@
   ];
   const ERAS = {
     c1955: [
-      { id: "ce55_01", name: "赶上恢复高考", needsSchooling: ["school", "half"], text: "一九七七年，广播里说恢复高考了。你把箱子底的课本翻出来，煤油灯芯剪了又剪。这件事把你这一茬人的日子，从中间劈成了两半。", effects: { growth: 1, wisdom: 1 } },
+      { id: "ce55_01", calFrom: 1977, name: "赶上恢复高考", needsSchooling: ["school", "half"], text: "一九七七年，广播里说恢复高考了。你把箱子底的课本翻出来，煤油灯芯剪了又剪。这件事把你这一茬人的日子，从中间劈成了两半。", effects: { growth: 1, wisdom: 1 } },
       { id: "ce55_02", name: "拜师学艺的年月", text: "那年月，十几岁的孩子拜师学手艺是常事：管吃管住，没工钱，师傅骂得凶，看家的本事倒不藏着掖着。谁家孩子出了师，巷口都要议论两天。", effects: { growth: 2, relation: 1 } },
       { id: "ce55_03", name: "粮票布票的年月", needsSchooling: ["school", "half"], text: "你记事起，买什么都要票。粮票、布票、肉票，你妈用手绢包着，压在箱子底。你小学就会算家里这个月还剩几两油。", effects: { wisdom: 1, money: -2, health: -1 } },
       { id: "ce55_04", name: "上山下乡那些年", text: "那几年，城里的年轻人一批批下乡，插队、落户，学着挑水、插秧。走的时候敲锣打鼓，回城的人，那顶草帽还留在老乡家的墙上。", effects: { health: 2, growth: -1, freedom: -1 } },
@@ -90,7 +90,7 @@
     ],
     c1965: [
       { id: "ce65_01", name: "家里买了电视机", needsSchooling: ["school", "half"], text: "你上初中那年，家里咬牙买了台电视机，黑白的。搬回来那天，全楼的人都来看。你负责每天上房顶转天线，手举酸了，画面就稳了。", effects: { relation: 2, growth: 1 } },
-      { id: "ce65_02", name: "考不考大学那阵子", text: "恢复高考以后，考不考大学是家家都要吵一回的事：考上了是条道，进厂接班也是条道，两边说得都有理。报名的日子一到，学校门口排起长队。", effects: { growth: 2, relation: -2, freedom: 1 } },
+      { id: "ce65_02", calFrom: 1978, name: "考不考大学那阵子", text: "恢复高考以后，考不考大学是家家都要吵一回的事：考上了是条道，进厂接班也是条道，两边说得都有理。报名的日子一到，学校门口排起长队。", effects: { growth: 2, relation: -2, freedom: 1 } },
       { id: "ce65_03", name: "万元户的新闻", needsSchooling: ["school", "half"], text: "你念书那几年，报纸上开始登万元户。老师把那页贴在教室后面。你回家算了算自家的存折，差着十万八千里，可心里有个数字，从此不一样了。", effects: { growth: 1, freedom: 1, relation: -1 } },
       { id: "ce65_04", name: "磁带和喇叭裤", text: "你年轻时攒钱买过一条喇叭裤、一台双卡录音机。磁带转起来，整条街都听得见。你为这个被你爸说了半个月，裤子还是穿出去了。", effects: { freedom: 2, money: -2, relation: 1 }, set: "hook_era_tape" },
       { id: "ce65_05", name: "亲戚下海赔过", needsSchooling: ["school", "half"], text: "你上中学时，有个亲戚辞职下海，头两年风光，后来赔了。过年他坐在角落里不说话，你爸把烟递过去，两个人抽了半宿。", effects: { money: -2, relation: -1, wisdom: 1 } },
@@ -106,17 +106,17 @@
     ],
     c1985: [
       { id: "ce85_01", name: "网吧那几年", text: "那几年，街口的网吧一家挨着一家，两块钱一小时，通宵还有包夜价。放学绕路去看一眼的人不少；家里添了电脑的人家，孩子就去得少了。", effects: { growth: 2, health: -1 } },
-      { id: "ce85_02", name: "非典那年", needsSchooling: ["school", "half"], text: "二〇〇三年，非典那年。街上空了好些日子，进出都要量体温，学校封了校门。你妈把口罩洗了又洗，挂在阳台上晾着。", effects: { growth: 1, wisdom: 1 } },
+      { id: "ce85_02", calFrom: 2003, name: "非典那年", needsSchooling: ["school", "half"], text: "二〇〇三年，非典那年。街上空了好些日子，进出都要量体温，学校封了校门。你妈把口罩洗了又洗，挂在阳台上晾着。", effects: { growth: 1, wisdom: 1 } },
       { id: "ce85_03", name: "扩招那阵子", text: "你十八九岁那几年正赶上扩招，大学一年比一年招得多。考上的欢天喜地；等他们毕业才发现，找工作的人也一年比一年多。", effects: { growth: 1, freedom: 1, relation: -1 } },
-      { id: "ce85_04", name: "申奥那晚", text: "二〇〇一年，申奥成功那晚，你跟着大人在街上站了半宿，锣鼓响到后半夜。那股热乎劲，你后来好多年没再见过。", effects: { relation: 2 } },
+      { id: "ce85_04", calFrom: 2001, name: "申奥那晚", text: "二〇〇一年，申奥成功那晚，你跟着大人在街上站了半宿，锣鼓响到后半夜。那股热乎劲，你后来好多年没再见过。", effects: { relation: 2 } },
       { id: "ce85_05", name: "你爸的呼机", text: "你爸腰里别着个呼机，响了就满街找电话回。你把要回的号码抄在小本子上，字写得又大又端正，怕他看不清。", effects: { relation: 1, money: -2 }, set: "hook_era_pager" },
       { id: "ce85_06", name: "MP3 不离耳", text: "你攒钱买了台 MP3，歌是从同学电脑里拷的。耳机戴了一年多，体检时医生让你少戴。你嘴上答应，转头又塞上了。", effects: { freedom: 2, health: -1, money: -1 } },
     ],
     c1995: [
-      { id: "ce95_01", name: "奥运那年", text: "二〇〇八年，北京开了奥运会。学校组织看开幕式，那年夏天，家里的电视几乎没关过。福娃那首歌，你听得都会唱了。", effects: { relation: 1, growth: 1 }, set: "hook_era_olympic" },
+      { id: "ce95_01", calFrom: 2008, name: "奥运那年", text: "二〇〇八年，北京开了奥运会。学校组织看开幕式，那年夏天，家里的电视几乎没关过。福娃那首歌，你听得都会唱了。", effects: { relation: 1, growth: 1 }, set: "hook_era_olympic" },
       { id: "ce95_02", name: "半夜起来偷菜", needsSchooling: ["school", "half"], text: "你上初中时班里都玩种菜偷菜。你定了半夜的闹钟起来收菜，第二天上课直点头。你妈发现后，把电脑设了密码。", effects: { freedom: 1, growth: -1, health: -1 } },
       { id: "ce95_03", name: "第一部智能手机", text: "那几年，大人换手机换得勤，家里换下来的旧机子就到了你手里。屏幕不大，看新闻、听歌都够用。你慢慢习惯了，睡前先看一眼手机才睡。", effects: { freedom: 1, relation: 1, health: -1 } },
-      { id: "ce95_04", name: "双十一帮着抢", text: "双十一刚热闹起来那几年，你帮你妈在电脑上抢东西，零点一过，手比翻书还快。包裹一个接一个送到家，你妈拆着拆着说，这个月说啥也不能再买了。", effects: { relation: 1, money: -1 } },
+      { id: "ce95_04", calFrom: 2011, name: "双十一帮着抢", text: "双十一刚热闹起来那几年，你帮你妈在电脑上抢东西，零点一过，手比翻书还快。包裹一个接一个送到家，你妈拆着拆着说，这个月说啥也不能再买了。", effects: { relation: 1, money: -1 } },
       { id: "ce95_05", name: "村里开了网店", needsSchooling: ["school", "half"], text: "你上中学时，村里有人开网店卖山货。你帮着拍过照、打过包，头一回知道，货还能这么卖。", effects: { growth: 2, freedom: -1 } },
       { id: "ce95_06", name: "眼睛先坏了", text: "你小学就迷上了电脑，眼镜三年换了四副。体检表上视力那栏，你妈看一次叹一回气，后来把电脑设了密码。", effects: { health: -3, growth: 1 } },
     ],

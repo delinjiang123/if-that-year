@@ -32,6 +32,11 @@ window.GAME_REGISTRY_EXTRA = (window.GAME_REGISTRY_EXTRA || []).concat([{
     "covid95_days": { "setters": ["e95_001"], "note": "疫情当下旗（c1995）：e95_001 呈现即立；消费者 p1_039/p1_040 的 forbid（持有本旗则两拍不出现）" },
   },
   enumFacts: {
+    "examResult": {
+      "values": ["admit", "miss"],
+      "host": "track",
+      "note": "高考结果（FIX-01 学业主线修复）：admit=考上 / miss=落榜（下游口径＝复读一年、第二年考上）；写手只有序章 rollExamResult（派生流掷定，按 examBand 分档 high 0.90/mid 0.65/low 0.35 为设计参数、无统计出处），只给 study 轨的人；band 缺失但已在 study 轨的（没进过校门/退学者经对口口转入）按 0.50 掷；对口升学线（craftForm95=upgrade）不掷、其结果由 pr_y20 既有 factTexts 兑现。消费者：各包 19 岁平年 textByFact、pr_y18（仅 c1965）/pr_y20/pr_y21 的 factTexts 分文。c1955 无 examBand 表、永不掷（该代学业轨＝高中毕业回乡，本无高考环）"
+    },
     "craftForm95": {
       "values": ["upgrade", "job"],
       "host": "track",

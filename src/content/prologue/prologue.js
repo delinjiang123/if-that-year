@@ -215,7 +215,13 @@
         "十九岁这一年，你把头发剪短了，剪完对着镜子看了半天，不太习惯。家里人说精神，你也就留下了，没再往长里续。",
         "十九岁这一年，你头回去银行给自己存钱，单子填错了两回，柜台的人让你重填。办完，你把回执折好放进口袋，出门时觉得，走路都比平时稳当。",
         "十九岁这一年，你开始记账，挣多少、花多少，一笔一笔写在本子上。记了半年你发现，钱大半花在吃上了。你看着账本笑了笑，第二天照旧。",
-      ] },
+      ],
+      // FIX-01：学业轨的结果年——高考与录取/落榜就落在这一年（examResult 分文，整段换文；
+      // 非学业轨无此事实、照旧读平年文）。本代 pr_y18 只有备考文，高考本体在此补叙。
+      textByFact: { examResult: {
+        admit: "高考那两天，你妈在考场外头站了半个上午，说手心全是汗。分数出来，比你估的高一些。通知书到家那天，你爸把信封摊在桌上，看了好几遍。秋天你背着行李去学校报到，六人间的宿舍，你睡靠窗的上铺。",
+        miss: "高考那两天，你有两道大题没写完。分数出来，差了本科线一截。你在家里闷了几天，去报了复读班。开学那天，你背着书包又走进教室，后墙的倒计时，从三百多天重新开始撕。",
+      } } },
   };
   const ACTS = [
     { id: "pr_origin", age: 5, log: "家里是这样开始的", setState: { schooling: "school" },
@@ -470,6 +476,12 @@
           home: "你在家里这一摊，越来越顶事：进货、记账、跟人谈价钱，都是你。村里人说，这孩子留下来，家里算是后继有人了。你听着，心里一半踏实，一半说不上来。",
         } },
       ],
+      // FIX-01：结果承接——admit 补叙通知书与报到再接大二原意；miss＝复读一年第二年考上，
+      // 如今大一（与 pr_y21 的 miss 分文同口径），不再无声预设已入学。
+      factTexts: [
+        { fact: "examResult", is: "admit", text: "高考完那个暑假，通知书到了，你收拾行李，秋天去学校报了到。转眼大二，课排得满，你在一家小公司做兼职文案，一千字三十块，改三遍。第一笔钱到账，你截了图，没发给任何人。" },
+        { fact: "examResult", is: "miss", text: "头一年，你差了本科线一截，复读了一年。第二年分数过了线，秋天你背着行李去了学校。如今大一，课排得满，你在一家小公司做兼职文案，一千字三十块，改三遍。第一笔钱到账，你截了图，没发给任何人。" },
+      ],
       choices: [
         { label: "挣的钱先存起来，存折上的数慢慢往上涨", effects: { money: 2 }, echo: "存折你藏在抽屉最里面，数到整数时，心里会稳一下。" },
         { label: "挣的钱先紧着家里，剩下的才是自己的", effects: { relation: 2, money: -1 }, echo: "你妈收下钱，转头给你买了双新鞋，说旧的那双早该扔了。" },
@@ -495,6 +507,10 @@
           craft: "你把师傅教的东西，整理成了一个小本子，画了图，标了尺寸。师傅看见了，翻了翻，说，你这比我那会儿强，我都是靠脑子记，记岔了就挨打。",
           home: "这一年，家里的地流转出去了一部分，钱不多，可省了力气。你在镇上的零工越干越稳，家里商量着，往后是不是在镇上租个门面，做点小买卖。",
         } },
+      ],
+      // FIX-01：落榜复读的人 21 岁才大二，本幕的毕业季/答辩文对他们不成立，整段换文。
+      factTexts: [
+        { fact: "examResult", is: "miss", text: "大二这一年，你把该考的证考了两个。宿舍里有人准备考研，有人忙着实习，你夹在中间，先把简历投了几家试试。日子不闲，心里倒比刚进校时稳当些。" },
       ],
       choices: null }, // 无选项：看完点「到 22 岁」，汇入五路线
     // v0.23 WP5 家庭层拍（L00-考/L00-护）：wp5Beat=true 的两拍不进缺省幕序——每局至多入序一拍，
@@ -933,6 +949,34 @@
     for (const b of bands) { if (roll < (row[b] || 0)) { setFact(S, "examBand", b); return b; } roll -= (row[b] || 0); }
     setFact(S, "examBand", "low");
     return "low";
+  }
+
+  // FIX-01（学业主线完整性）：高考结果掷定。学业轨的人到 18 岁（c1985 是高二、高考在 19 岁，
+  // 结果同样在 20 岁幕前落定）必须有一个落盘的结果——此前全树没有任何结果事实，y18 只有
+  // 备考/考场文、19 岁是无关平年、y20 直接预设已入学，用户实测「高三和大一都没提到高考和
+  // 报名入学，然后就大二了」。掷定走派生流（derivedRoll，种子字符串＋"#examResult"），
+  // 不消费序章自有流、不平移任何既有定款；概率按 examBand 分档（设计参数，无统计出处，
+  // 与 examBandTables 同性质）：high 0.90 / mid 0.65 / low 0.35。落榜（miss）的下游口径＝
+  // 复读一年、第二年考上（各包 flat@19 与 pr_y20/pr_y21 的 examResult 分文按此写），
+  // 使 y20/y21 既有在校文不自相矛盾。不掷的人：非 study 轨、无 band 表的年代（c1955：
+  // 学业轨＝高中毕业回乡、本无高考环）、对口升学线（craftForm95=upgrade 的结果由 pr_y20
+  // 既有 factTexts「对口高考放榜」兑现，不另掷普通高考结果）。band 缺失但人已在 study
+  // 轨的（没进过校门/退学者经 18 岁对口口转入——band 按设计不掷，但他们同样参加了
+  // 对口升学考试）按 0.50 掷，结果不能缺席。
+  const EXAM_RESULT_ADMIT = { high: 0.90, mid: 0.65, low: 0.35 };
+  function rollExamResult(S) {
+    if (factOf(S, "examResult") !== "absent") return factOf(S, "examResult");
+    if (!S.state || S.state.track !== "study") return null;
+    if (factOf(S, "craftForm95") === "upgrade") return null;
+    const REG = window.GAME_REGISTRY || {};
+    if (!((REG.examBandTables || {})[S.era])) return null;
+    const band = factOf(S, "examBand");
+    const p = Object.prototype.hasOwnProperty.call(EXAM_RESULT_ADMIT, band) ? EXAM_RESULT_ADMIT[band] : 0.5;
+    const seedStr = S.prologue && S.prologue.seedStr != null ? S.prologue.seedStr : S.seedStr;
+    if (seedStr == null) return null;
+    const v = derivedRoll(seedStr, "#examResult") < p ? "admit" : "miss";
+    setFact(S, "examResult", v);
+    return v;
   }
 
   // ---- v0.23 WP5（c2000 补课：F00＋L00-考/L00-护＋证据包②③） ----
@@ -1580,6 +1624,10 @@
       P.presented = P.idx;
       // band 掷定：带 rollBand 的幕在物化点、选项门过滤之前掷定一次（序章自有流）；已掷定（续玩/读档）不重掷。
       if (act.rollBand && factOf(S, "examBand") === "absent") rollExamBand(S, act);
+      // FIX-01：高考结果掷定（examResult）——18/20 岁幕物化点、文本定版之前掷定一次
+      // （派生流、零序章流消费，细则见 rollExamResult）；19 岁平年的 textByFact 与
+      // 20/21 岁幕的 factTexts 按此事实分文，高考与录取/落榜不再被无声跳过。
+      if ((act.id === "pr_y18" || act.id === "pr_y20") && factOf(S, "examResult") === "absent") rollExamResult(S);
       // never 变体（v0.20.1 W6）：没进过校门的人，7 岁那拍不落同桌记号（mark_deskmate 的影子回响写的是开学事实，落了会自相矛盾）；12 岁那拍仍路过校门口，老梧桐记号照落。
       refreshTemperAct(S, act); // 选幕制片一：旧档性子幕补齐 frames（须赶在落账行算框名之前；新局幕自带 frames、此调用空转）
       const neverAlt = P.situation === "never" && (act.id === "pr_child1" || act.id === "pr_child4");
@@ -1765,6 +1813,12 @@
         // fix3 B1（子类 2b）：时代牌带 needsSchooling 时，当前 schooling 不在列则不拼牌文
         // （牌文是第一人称传记预付，没进过校门的人读到即自相矛盾）；牌的数值/钩子在 22 岁汇入结算，不在此处。
         let era = eraCard && !(eraCard.needsSchooling && S.state && !eraCard.needsSchooling.includes(S.state.schooling)) ? eraCard.text : "";
+        // FIX-01（opt-in）：时代牌带 calFrom（公历年下限）时，呈现公历（出生年＋幕龄）早于该年
+        // 不拼牌文——牌文把某个公历年的事写成已发生的经历，事件还没到就讲即串年（如奥运牌
+        // 在 1993 出生局 13 岁＝2006 年呈现「二〇〇八年北京开了奥运会」）。与变体 calYear 同
+        // 口径：出生年非数字时带门的牌一律不拼；牌的数值/钩子不受影响（仍在 22 岁汇入结算），
+        // 开局选牌面（注脚式展示）也不受影响。未声明 calFrom 的牌行为逐字不变。
+        if (era && eraCard && typeof eraCard.calFrom === "number" && !(typeof S.birthYear === "number" && S.birthYear + act.age >= eraCard.calFrom)) era = "";
         // fix2（opt-in）：变体带 textBySchooling 命中当前 schooling 时整段换文，且不再拼时代牌
         // （时代牌文本可能预设在校，与换文处境相冲）；未命中时拼牌口径不变。
         const sitAlt = (v && v.textBySchooling && S.state && condText(P.seedStr, act.id, "textBySchooling", (v.key || "") + "|" + S.state.schooling, v.textBySchooling[S.state.schooling]))
@@ -2052,7 +2106,7 @@
 
   const PRO_API = { sitActs: SIT_ACTS, flatsByAge: FLATS_BY_AGE, situationW: SITUATION_W, start, present, choose, stageFor, prng, packFor, hasPack,
     early2KeyFor, early34KeyFor, flatKeyFor, actVariantKeyFor, child4KeyFor, condText, // 变体扩容批：定款函数验收读口（与 wp5BeatFor 同例）；condText 为读者最小扩展批读口
-    factOf, setFact, rollExamBand, gateNoteSample: GATE_NOTE_SAMPLE,
+    factOf, setFact, rollExamBand, rollExamResult, gateNoteSample: GATE_NOTE_SAMPLE,
     wp5BeatFor, rebuildSeq, migrantFamilies: MIGRANT_FAMILIES, careFamilies: CARE_FAMILIES }; // v0.23 WP5：验收脚本读口（选拍与 seq 重建）
   // acts / marks 惰性合并全年代包：校验与影子瞥视按 id 查全集（id 跨代唯一，集成时核过）；无包文件被加载的环境（单文件校验沙箱）自动退回 c2000 集。
   Object.defineProperty(PRO_API, "acts", { enumerable: true, get() {

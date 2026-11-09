@@ -39,7 +39,7 @@ window.GAME_PACKS=(window.GAME_PACKS||[]).concat([
 {"id":"p1_036","minYear":2012,"min":26,"max":40,"text":"基金群里天天有人晒收益，你追着买了几只热门的。半年后打开账户，绿的多红的少。","choices":[{"label":"割了，认下这笔学费","effects":{"money":-2,"wisdom":6},"echo":"退出来那笔钱，你给家里添了台洗衣机，带烘干。","set":"cut_loss_once"},{"label":"放着不动，眼不见心不烦","effects":{"money":-1,"health":-1,"wisdom":5},"echo":"它就在那儿趴着，你每个季度瞄一眼，心跳一次。"}]},
 {"id":"p1_037","minYear":2012,"min":24,"max":38,"text":"同学在群里说币又涨了，附了张截图。另一个同学说，上轮他就是在最高点接的，现在还没回本。"},
 {"id":"p1_038","minYear":2018,"min":25,"max":45,"text":"大家开始聊消费降级：临期食品店排起了队，二手平台上你的闲置卖出去三件。"},
-{"id":"p1_039","ctx":{"form":["employee","public"],"notMainLine":["med_work","med_hosp","nurse_work","img_work"]},"forbid":"covid95_days","minYear":2020,"min":28,"max":38,"text":"疫情最紧的那阵，你在家办公。工位是餐桌，会议背景是晾衣架，猫在镜头前走了三个来回。","stateNot":{"cat":"gone"}},
+{"id":"p1_039","ctx":{"form":["employee","public"],"notMainLine":["med_work","med_hosp","nurse_work","img_work"]},"forbid":"covid95_days","minYear":2020,"maxYear":2022,"min":28,"max":38,"text":"疫情最紧的那阵，你在家办公。工位是餐桌，会议背景是晾衣架，猫在镜头前走了三个来回。","stateNot":{"cat":"gone"}},
 {"id":"p1_040","forbid":"covid95_days","min":28,"max":38,"minYear":2020,"maxYear":2022,"text":"楼被封了十四天。团购群里接龙接到深夜，你学会了用面粉做出六种吃法。","effects":{"health":1,"relation":1}},
 {"id":"p1_041","ctx":{"employed":true,"form":["employee"],"mainLine":["dev_work","fin_work","acct_work","press_work","grad_work"]},"minYear":2020,"min":29,"max":40,"text":"公司改成混合办公，一周去三天。省下的通勤时间，你补了觉，楼下新开的菜场也逛熟了。","effects":{"freedom":2,"health":1}},
 {"id":"p1_042","min":22,"max":30,"minYear":2013,"text":"移动支付刚铺开那会儿，你教爸妈绑卡。视频里举着手机对了半天焦，付款码终于扫上了。","stateAll":{"dad":"alive","mom":"alive"}},
