@@ -88,6 +88,31 @@
       const sw = typeof IFY.entrySwitchAge === "function" ? IFY.entrySwitchAge() : null;
       if (sw == null || IFY.S.age - sw > ctx.lineSwitchWithin) return false;
     }
+    // 职业履历门（第 2 期 P2-3，设计 §4.5 键族子集）：ctx.careerTrade / careerVia /
+    // careerTenureIn——当前段行当 / 来处 / 在段年数（当岁 − from）读 career 账现算：
+    // 行当与年数走 career.js 的只读派生 careerOf，来处取未收尾段的 via（careerOf 的
+    // 形状不带 via，故读 careerSpells 的未收尾段，与 careerOf 同源同段）。fail-closed：
+    // 无当前段（未入行 / 待业 / 已退休）或 career 账、派生函数不在场，三键全不过。
+    // 值形：careerTrade/careerVia 为 id 或其数组（命中任一即过，与 form 同口径）、
+    // careerTenureIn 为 [lo,hi] 闭区间。此组键只许职业族新拍（cr_ 前缀）用，存量
+    // 条目零回填——validate-storylet 静态检查把门（career 键出现在非 cr_ 条目即红）。
+    if (ctx.careerTrade !== undefined || ctx.careerVia !== undefined || ctx.careerTenureIn !== undefined) {
+      const co = typeof IFY.careerOf === "function" ? IFY.careerOf(IFY.S) : null;
+      if (!co) return false;
+      if (ctx.careerTrade !== undefined && ![].concat(ctx.careerTrade).includes(co.trade)) return false;
+      if (ctx.careerVia !== undefined) {
+        let via = null;
+        if (typeof IFY.careerSpells === "function") {
+          const sps = IFY.careerSpells(IFY.S);
+          for (let i = sps.length - 1; i >= 0; i--) if (sps[i] && sps[i].to == null) { via = sps[i].via; break; }
+        }
+        if (via == null || ![].concat(ctx.careerVia).includes(via)) return false;
+      }
+      if (ctx.careerTenureIn !== undefined) {
+        const y = co.years;
+        if (typeof y !== "number" || y < ctx.careerTenureIn[0] || y > ctx.careerTenureIn[1]) return false;
+      }
+    }
     // 研究在行门（AN-3 D-5c）：ctx.gradGate=true——须已立研究旗 grad_work，或旧档宽门：
     // 已走过药研轨迹旗 traj_drug1/traj_drug2。grad_work 是新立的旗，旧档局内年龄窗已过、
     // 永远补不上立旗拍，只认新旗会把旧档研究者终身挡在实验室文本之外，故留轨迹旗回落。

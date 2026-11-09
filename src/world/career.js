@@ -111,9 +111,10 @@
   }
 
   // 唯一写点：挂在立入行旗的应用序同一步（紧贴 houseOnBuyFlag 之后，呈现层与无头
-  // 解决器镜像同位）。P1-6 激活后兼三件事：关口推后项只记推后账（gateDefers/
+  // 解决器镜像同位）。P1-6 激活后兼数件事：关口推后项只记推后账（gateDefers/
   // gateDeferAge，gateCooling 读）、关口兑现项按选项上的来源字段落 via/viaNote/
-  // coldKind、其余一律 chain（既有挂点行为一字不变）。
+  // coldKind、干出感情项按 careerFond 声明给当前段置 fond（第 2 期 P2-3）、其余
+  // 一律 chain（既有挂点行为一字不变）。
   function careerNote(S, src) {
     try {
       if (!S || typeof S !== "object" || !src || typeof src !== "object") return;
@@ -123,6 +124,16 @@
           c.gateDefers = (typeof c.gateDefers === "number" ? c.gateDefers : 0) + 1;
           if (typeof S.age === "number") c.gateDeferAge = S.age;
         }
+        return;
+      }
+      // 干出感情（第 2 期 P2-3）：选项带 careerFond 声明（如 cr_fond_cold 的「长干
+      // 下去」）即给当前未收尾段置 fond=true。形状照 gateDefer 分支（声明在选项上、
+      // 本点只落这一笔、落完即回），但只读现有账找当前段——无当前段（未入行/待业/
+      // 已退休）即无段可记，不许为一面感情旗建空壳（§1.1 空壳纪律）。
+      if (src.careerFond === true) {
+        const c = (S.career && typeof S.career === "object" && !Array.isArray(S.career) && Array.isArray(S.career.spells)) ? S.career : null;
+        const cur = c ? openSpell(c) : null;
+        if (cur) cur.fond = true;
         return;
       }
       let via = "chain", viaNote = null, coldKind = null;

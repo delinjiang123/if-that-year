@@ -49,6 +49,14 @@
      unit（单位房口径，含 c1955 公房纠偏）/ any（三者居一）；car ∈ now（现在有车）/ ever
      （曾经有过）/ none（从没买过）；settle ∈ home/city/abroad（当前定居地＝轨迹终点）。
      求值在 record.js ctxOk；tools/validate-state.js 核对值域。
+   - ctx.careerTrade / ctx.careerVia / ctx.careerTenureIn（条目级，第 2 期 P2-3 登记，设计
+     §4.5 键族子集）：职业履历门——当前段行当（career.js careerOf 派生）/ 当前段来处
+     （未收尾段的 via，值域 seed/inherit/cold/chain/legacy）/ 当前段年数（当岁 − from）
+     落闭区间，三者皆派生量、现算不进存档；fail-closed：无当前段（未入行/待业/已退休/
+     career 账不在场）全不过。求值在 record.js ctxOk。红线（§4.5）：此组键只许职业族
+     新拍（id 前缀 cr_）用，存量条目一律不许回填——tools/validate-storylet.js 静态检查
+     把门（career 六键 careerTrade/careerVia/careerTenureIn/careerWas/careerIdle/
+     careerNone 出现在非 cr_ 条目上即红；后三键本批未落地，出现同样即红）。
    - textDist（条目级）/ echoDist（选项级，v0.24.4 AN-2 登记）：{ far: 文本 }——与父母距离变体：
      本局与父母距离派生（place.js distToParentsOf）为 far（出国定居）时用此文本，未命中回落
      原文。父母住院/信号拍的在场叙事专用（远版＝赶回去/电话问诊口径）；解析点 views/year.js
@@ -1755,6 +1763,13 @@ window.GAME_REGISTRY.milestones = {
    "setters": [
     "e65_037"
    ]
+  },
+  "switch_wanted": {
+   "setters": [
+    "cr_want_cold",
+    "cr_want_seed"
+   ],
+   "note": "在职想走（第 2 期 P2-3 立）：后段想走拍 cr_want_cold（冷门来处）与 cr_want_seed（种子/承继来处）的「想换」选项立旗，两拍自身以 forbid 本旗关门防复读。消费者：world/career.js 的 gateSwitchDue——待业段满 1 年且想走、或在职想走（已立旗且不在待业段）两条支路开 gate_switch（框走 want；unit_gone 硬推走 fact 框）。立旗不清空：想走而没走（关口里又选了原行或推掉）旗仍在，冷却后再开（设计 §3.5，中年转行的口子留得住）"
   },
   "switched_to_walk": {
    "setters": [

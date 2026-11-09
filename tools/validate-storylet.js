@@ -17,7 +17,7 @@
 "use strict";
 const fs = require("fs"), vm = require("vm"), path = require("path");
 const ROOT = path.join(__dirname, "..");
-const PACK_FILES = ["src/content/pool/pack1.js", "src/content/pool/pack2.js", "src/content/pool/pack3.js", "src/content/pool/pack4.js", "src/content/pool/pack5.js", "src/content/pool/pack6.js", "src/content/pool/pack9.js", "src/content/pool/pack10.js", "src/content/pool/pack11.js", "src/content/pool/pack12.js", "src/content/lines/side-and-steady.js", "src/content/pool/pack14.js", "src/content/pool/pack15.js", "src/content/lines/exam.js", "src/content/pool/pack17.js", "src/content/pool/pack18.js", "src/content/pool/pack19.js", "src/content/pool/pack20.js", "src/content/pool/pack21.js", "src/content/pool/pack22.js", "src/content/pool/pack23.js", "src/content/lines/late-life.js", "src/content/pool/pack25.js", "src/content/pool/pack26.js", "src/content/pool/pack27.js", "src/content/pool/pack28.js", "src/content/pool/pack29.js", "src/content/pool/pack30.js", "src/content/pool/pack33.js", "src/content/pool/pack31.js", "src/content/pool/pack32.js", "src/content/pool/pack34.js", "src/content/pool/pack35.js", "src/content/lines/covenant.js", "src/content/lines/process-beats.js", "src/content/lines/abroad.js", "src/content/era/era1955.js", "src/content/era/era1965.js", "src/content/era/era1978.js", "src/content/era/era1985.js", "src/content/era/era1995.js"];
+const PACK_FILES = ["src/content/pool/pack1.js", "src/content/pool/pack2.js", "src/content/pool/pack3.js", "src/content/pool/pack4.js", "src/content/pool/pack5.js", "src/content/pool/pack6.js", "src/content/pool/pack9.js", "src/content/pool/pack10.js", "src/content/pool/pack11.js", "src/content/pool/pack12.js", "src/content/lines/side-and-steady.js", "src/content/pool/pack14.js", "src/content/pool/pack15.js", "src/content/lines/exam.js", "src/content/pool/pack17.js", "src/content/pool/pack18.js", "src/content/pool/pack19.js", "src/content/pool/pack20.js", "src/content/pool/pack21.js", "src/content/pool/pack22.js", "src/content/pool/pack23.js", "src/content/lines/late-life.js", "src/content/pool/pack25.js", "src/content/pool/pack26.js", "src/content/pool/pack27.js", "src/content/pool/pack28.js", "src/content/pool/pack29.js", "src/content/pool/pack30.js", "src/content/pool/pack33.js", "src/content/pool/pack31.js", "src/content/pool/pack32.js", "src/content/pool/pack34.js", "src/content/pool/pack35.js", "src/content/pool/pack36.js", "src/content/lines/covenant.js", "src/content/lines/process-beats.js", "src/content/lines/abroad.js", "src/content/era/era1955.js", "src/content/era/era1965.js", "src/content/era/era1978.js", "src/content/era/era1985.js", "src/content/era/era1995.js"];
 
 const sandbox = { window: {}, console };
 sandbox.window = sandbox;
@@ -346,6 +346,55 @@ else {
   })(path.join(ROOT, "src"));
   for (const h of hits) err(`种子读取点越白名单: ${h}`);
   console.log(`  种子读取点白名单: src 全扫，越界 ${hits.length} 处（白名单 career.js / engine.js 状态管道）`);
+}
+
+// ---- 职业 ctx 键族静态检查（第 2 期 P2-3，设计 §4.5）：career 键族只许职业族 ----
+// 新拍（id 前缀 cr_）用，存量条目零回填——六键（careerTrade/careerVia/
+// careerTenureIn/careerWas/careerIdle/careerNone）出现在任何非 cr_ 条目（含选项/
+// 变体递归）上即红；本批只在 record.js 落地前三键，后三键未落地，出现在任何
+// 条目（含 cr_）上同样即红（不许先用未落地的门）。cr_ 条目上前三键形状一并核：
+// careerTrade 须为注册表行当 id 或其非空数组、careerVia 须为来处值域
+// （seed/inherit/cold/chain/legacy）或其非空数组、careerTenureIn 须为 lo<=hi
+// 的两元有限数数组（与 record.js ctxOk 求值口径一致）。
+{
+  const CAREER_KEYS = ["careerTrade", "careerVia", "careerTenureIn", "careerWas", "careerIdle", "careerNone"];
+  const LANDED_KEYS = ["careerTrade", "careerVia", "careerTenureIn"];
+  const VIA_VALUES = ["seed", "inherit", "cold", "chain", "legacy"];
+  const TR2 = sandbox.GAME_TRADES || {};
+  let careerBeats = 0;
+  function scanCareer(o, at, rootId) {
+    if (!o || typeof o !== "object") return;
+    if (o.ctx && typeof o.ctx === "object") {
+      const hit = CAREER_KEYS.filter((k) => o.ctx[k] !== undefined);
+      if (hit.length) {
+        if (!/^cr_/.test(rootId || "")) err(`${at} ctx 含 career 键（${hit.join("/")}）但 id 非职业族前缀 cr_——career 键只许职业族新拍用，存量条目零回填`);
+        else {
+          careerBeats++;
+          for (const k of ["careerWas", "careerIdle", "careerNone"]) if (o.ctx[k] !== undefined) err(`${at} ctx.${k} 尚未在 record.js 落地（P2-3 只接 careerTrade/careerVia/careerTenureIn 子集），不许先用`);
+          if (o.ctx.careerTrade !== undefined) {
+            const arr = Array.isArray(o.ctx.careerTrade) ? o.ctx.careerTrade : [o.ctx.careerTrade];
+            if (!arr.length || arr.some((x) => typeof x !== "string" || !x)) err(`${at} ctx.careerTrade 应为行当 id 或其非空数组`);
+            else for (const fv of arr) if (!TR2[fv]) err(`${at} ctx.careerTrade 含未登记行当 ${fv}`);
+          }
+          if (o.ctx.careerVia !== undefined) {
+            const arr = Array.isArray(o.ctx.careerVia) ? o.ctx.careerVia : [o.ctx.careerVia];
+            if (!arr.length || arr.some((x) => typeof x !== "string" || !x)) err(`${at} ctx.careerVia 应为来处值或其非空数组`);
+            else for (const fv of arr) if (!VIA_VALUES.includes(fv)) err(`${at} ctx.careerVia 含非法来处值 ${fv}`);
+          }
+          if (o.ctx.careerTenureIn !== undefined) {
+            const v = o.ctx.careerTenureIn;
+            if (!(Array.isArray(v) && v.length === 2 && Number.isFinite(v[0]) && Number.isFinite(v[1]) && v[0] <= v[1])) err(`${at} ctx.careerTenureIn 应为 [lo,hi] 两元有限数且 lo<=hi`);
+          }
+        }
+      }
+    }
+    for (const c of o.choices || []) scanCareer(c, at, rootId);
+    for (const v of o.variants || []) scanCareer(v, at, rootId);
+    for (const v of o.altTexts || []) scanCareer(v, at, rootId);
+  }
+  for (const [name, arr] of collections) for (const e of arr) scanCareer(e, `${name}:${e.id || "(无 id)"}`, e.id);
+  for (const e of D.endings || []) scanCareer(e, `endings:${e.id}`, e.id);
+  console.log(`  职业 ctx 键族: 职业族（cr_）带 career 门条目 ${careerBeats} 个；非 cr_ 条目带 career 键即红（存量零回填），未落地三键（careerWas/Idle/None）出现即红`);
 }
 
 console.log(`validate-storylet: 条目 ${total}（events ${(D.events || []).length} / rare ${(D.rare || []).length} / forks ${(D.forks || []).length} / prologue ${((PRO && PRO.acts) || []).length} / crisis ${Object.keys(D.crisis || {}).length}）| id 唯一 ${seen.size}`);
