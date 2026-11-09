@@ -1,6 +1,6 @@
 {
- "totalRows": 3175,
- "uniqueIds": 3085,
+ "totalRows": 3211,
+ "uniqueIds": 3121,
  "duplicateIds": [
   {
    "id": "pr_origin",
@@ -259,6 +259,7 @@
   "src/content/prologue/prologue-c1955.js": 38,
   "src/content/prologue/prologue-c1995.js": 38,
   "src/content/pool/pack37.js": 36,
+  "src/content/pool/pack43.js": 36,
   "src/content/pool/pack39.js": 34,
   "src/content/pool/pack38.js": 30,
   "src/content/lines/abroad.js": 29,
@@ -279,7 +280,7 @@
   "src/content/pool/pack36.js": 3
  },
  "byCategory": {
-  "普通池": 2090,
+  "普通池": 2126,
   "具名线": 332,
   "年代包": 309,
   "童年记号": 104,
@@ -294,11 +295,11 @@
   "分岔": 7
  },
  "byEra": {
-  "全年代": 2132,
+  "全年代": 2147,
   "c1955": 241,
   "c1965": 237,
+  "c2000": 208,
   "c1978": 205,
-  "c2000": 187,
   "c1995": 68,
   "c1985": 66,
   "c1978+c2000": 28,
@@ -308,13 +309,13 @@
   "c1978+c1985+c1995+c2000": 1
  },
  "byGate": {
-  "状态门": 2157,
+  "状态门": 2193,
   "无门": 554,
   "序章幕": 321,
   "链条": 143
  },
  "byRoute": {
-  "不限": 3041,
+  "不限": 3077,
   "abroad": 53,
   "home": 25,
   "farm": 15,
@@ -334,7 +335,7 @@
   "home+corp+abroad+study+gap": 1
  },
  "introducedKnown": 153,
- "lineResolved": 3175,
+ "lineResolved": 3211,
  "withOccupation": 308,
  "withTrade": 287,
  "byTrade": {
@@ -374,24 +375,24 @@
   ]
  },
  "themeDupesRemoved": 0,
- "runtimeGamePacks": 2731,
+ "runtimeGamePacks": 2767,
  "runtimeGameDataEvents": 45,
  "textCounts": {
   "contentJsonStyle": {
-   "unique": 2660,
-   "occurrences": 2660
+   "unique": 2696,
+   "occurrences": 2696
   },
   "contentJsStyle": {
    "unique": 288,
    "occurrences": 479
   },
   "contentBothStyles": {
-   "unique": 2961,
-   "occurrences": 3171
+   "unique": 2997,
+   "occurrences": 3207
   },
   "srcBothStyles": {
-   "unique": 3074,
-   "occurrences": 3327
+   "unique": 3110,
+   "occurrences": 3363
   }
  },
  "lineMissing": [],
