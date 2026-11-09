@@ -51,7 +51,7 @@
       autoMode: (src && src.autoMode) || IFY.DEFAULT_AUTO_MODE || "off",
       speed: (src && src.speed) || "mid",
       swapped: false, swap: null,
-      controlLog: [], shownFacts: [], policyV: 1,
+      controlLog: [], shownFacts: [], policyV: 2,
     };
   }
 

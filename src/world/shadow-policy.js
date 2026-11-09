@@ -1,4 +1,4 @@
-// 《如果那年》v0.21 一期 WP3：「另一个你」决策政策（纯函数）——蓝图第四节落点，policyV=1。
+// 《如果那年》v0.21 一期 WP3：「另一个你」决策政策（纯函数）——蓝图第四节落点，policyV=2（v2 于 2026-11-09 随孩子线 S5 升版：fork_kid 具名规则登记＋两条删除，见 docs/SHADOW-POLICY.md 与 DEVLOG v0.60.18）。
 // 纯度纪律（硬约束 6）：本模块零可变模块级状态（只有冻结的常量表）、零随机流消费、
 // 不调用任何随机函数、不读时钟、不读另一条 Track、不设备忘缓存。F 不修改任何入参。
 // 入参只有三个来源：该 Track 自己的状态（State）、性子向量（W）、路线倾向（A）；
@@ -10,7 +10,7 @@
   var IFY = root.IFY || (root.IFY = {});
 
   var KEYS = ["health", "money", "growth", "freedom", "relation", "wisdom"];
-  var POLICY_V = 1;
+  var POLICY_V = 2;
 
   function vec(h, m, g, f, r, w) { return { health: h, money: m, growth: g, freedom: f, relation: r, wisdom: w }; }
   // 性子缺失时的中性向量（蓝图 4.1 兜底）：六维都取 1，不偏向任何一边。
@@ -82,7 +82,6 @@
     study: { affinity: vec(1, 0.5, 3, 1.5, 1, 3), stances: Object.freeze([
       { fork: "fork25", match: { set: "stay_put" }, bonus: 6, text: "读下去这条路，25 岁先偏向留下把手头的事做深。" },
       { fork: "fork33", match: { set: "renting" }, bonus: 5, text: "33 岁住在哪儿，这条路是同学里最晚买房的一批，先偏向继续租。" },
-      { fork: "fork38", match: { set: "cov38_wait" }, bonus: 4, text: "38 岁要不要孩子，这条路站稳得晚，先偏向再等等、看看身体和钱包。" },
     ]) },
     // gap「先停一年」：stats 签名 freedom+12/health+4——亲和压在自由与健康上。
     gap: { affinity: vec(2.5, 0.5, 0.5, 3, 1, 1.5), stances: Object.freeze([
@@ -157,7 +156,9 @@
   }
 
   // ---------- 4.3 第 1 级：具名分岔规则表 FORKS ----------
-  // 覆盖 D.forks 全部 10 条（键 = 引擎记账 id 口径：fork.id 或 "fork"+age；28 岁两条靠 id 区分）。
+  // 覆盖 D.forks 十一条中的九条（键 = 引擎记账 id 口径：fork.id 或 "fork"+age；28 岁两条靠 id 区分）。
+  // fork28f/fork33f 自 farm 线加入起无具名规则（纯打分岔，既成状态）；fork38/fork45 已随孩子线 S4
+  // 退役，其规则于 S5 按新岔 id 移植登记到 fork_kid（见该表头注释的逐条对应）。
   // 每条规则 = 状态/数值条件（when，只读 view）→ 选项匹配子（match）；命中才生效，第一匹配优先。
   // 互斥纪律：同岔内指向不同选项的规则，条件里写明对前序触发条件的否定（守卫），
   // 构造上不可能同真——单元测试用网格枚举机械复核（sim-v021/scripts/policy-unit.js）。
@@ -205,15 +206,34 @@
       { id: "F33-4", text: "33 岁：还没买房、手里宽裕（金钱不低于 62）又不把自由看得最重（自由合算不高于 2.5）的人，咬牙买一套，先上车。", match: { set: "bought_house" },
         when: function (v) { return !v.flags.bought_house && v.T.relation < 5 && v.stats.money >= 62 && v.T.freedom <= 2.5; } },
     ]),
-    fork38: Object.freeze([
-      { id: "F38-1", text: "38 岁：身边有人、最看重关系（合算不低于 5）、身体也还行（健康高于 35）的人，要孩子，日子会变样，心里有数。", match: { set: "cov38_has" },
-        when: function (v) { return (v.dom.spouse === "partnered" || v.dom.spouse === "dating") && v.T.relation >= 5 && v.stats.health > 35; } },
-      { id: "F38-2", text: "38 岁：健康已经不高于 35 的人，再等等，先看看身体和钱包。", match: { set: "cov38_wait" },
-        when: function (v) { return v.stats.health <= 35; } },
-      { id: "F38-3", text: "38 岁：最看重自由（合算不低于 5.5）、关系牵挂不重（合算低于 5）的人，不要，两个人的日子也完整。", match: { set: "cov38_none" },
-        when: function (v) { return v.stats.health > 35 && v.T.relation < 5 && v.T.freedom >= 5.5; } },
-      { id: "F38-4", text: "38 岁：钱包已经见紧（金钱不高于 25）且把钱看得不轻（金钱合算不低于 3）的人，再等等，看看身体和钱包。", match: { set: "cov38_wait" },
-        when: function (v) { return v.stats.health > 35 && v.T.relation < 5 && v.T.freedom < 5.5 && v.stats.money <= 25 && v.T.money >= 3; } },
+    // fork_kid（孩子线 S4 的新岔；具名规则于 S5 在此登记）：呈现由 kidGateDue 说了算（定下满 2 年／
+    // 处满 7 年首问；首问选「再等等」立约、到期再问），政策只管摆出后怎么选。同一岔两副面孔，
+    // 规则按立约状态分两班、班间以约状态互斥：无约在身＝首问（FK-1..FK-5），有「再等等」的约
+    // 在身＝再问（FK-6..FK-9）。逐条对应：FK-2..FK-5 ← 原 F38-1..F38-4（条件照搬，另加首问班
+    // 的约状态守卫），落点 cov38_has/none/wait → kid_yes/kid_no/kid_wait；FK-6..FK-9 ← 原
+    // F45-1/F45-2/F45-3（条件照搬，另加再问班的约状态守卫），落点 late_settle/late_try 岔 id
+    // 不变、直接沿用。FK-1 与 FK-8 是 S5 新规（公司线路线键，细案 4.2 修 1/修 2）：公司线合算
+    // 关系上限 4.0，够不着 FK-2 的「合算不低于 5」与 FK-7 的「不低于 4.5」，故以路线+伴侣+
+    // 健康+钱包立规；FK-4/FK-9 的条件里写明对这两条新规触发条件的否定（守卫），照本表纪律。
+    fork_kid: Object.freeze([
+      { id: "FK-1", text: "孩子的事：走公司线、身边有人、身体还行（健康高于 35）、钱包也撑得住（金钱不低于 30）的人，要孩子，日子会变样，心里有数。", match: { set: "kid_yes" },
+        when: function (v) { return !(v.covenant && v.covenant.kind === "wait") && v.routeId === "corp" && (v.dom.spouse === "partnered" || v.dom.spouse === "dating") && v.stats.health > 35 && v.stats.money >= 30; } },
+      { id: "FK-2", text: "孩子的事：身边有人、最看重关系（合算不低于 5）、身体也还行（健康高于 35）的人，要孩子，日子会变样，心里有数。", match: { set: "kid_yes" },
+        when: function (v) { return !(v.covenant && v.covenant.kind === "wait") && (v.dom.spouse === "partnered" || v.dom.spouse === "dating") && v.T.relation >= 5 && v.stats.health > 35; } },
+      { id: "FK-3", text: "孩子的事：健康已经不高于 35 的人，再等等，先看看身体和钱包。", match: { set: "kid_wait" },
+        when: function (v) { return !(v.covenant && v.covenant.kind === "wait") && v.stats.health <= 35; } },
+      { id: "FK-4", text: "孩子的事：最看重自由（合算不低于 5.5）、关系牵挂不重（合算低于 5）的人，不要，两个人的日子也完整。", match: { set: "kid_no" },
+        when: function (v) { return !(v.covenant && v.covenant.kind === "wait") && v.stats.health > 35 && v.T.relation < 5 && v.T.freedom >= 5.5 && !(v.routeId === "corp" && (v.dom.spouse === "partnered" || v.dom.spouse === "dating") && v.stats.money >= 30); } },
+      { id: "FK-5", text: "孩子的事：钱包已经见紧（金钱不高于 25）且把钱看得不轻（金钱合算不低于 3）的人，再等等，看看身体和钱包。", match: { set: "kid_wait" },
+        when: function (v) { return !(v.covenant && v.covenant.kind === "wait") && v.stats.health > 35 && v.T.relation < 5 && v.T.freedom < 5.5 && v.stats.money <= 25 && v.T.money >= 3; } },
+      { id: "FK-6", text: "孩子的事：先前那份「再等等」的约到期了，健康已经不高于 40 的人，就这样定下来，两个人好好过。", match: { set: "late_settle" },
+        when: function (v) { return !!v.covenant && v.covenant.kind === "wait" && v.stats.health <= 40; } },
+      { id: "FK-7", text: "孩子的事：最看重关系（合算不低于 4.5）、身体还行（健康不低于 45）、钱包也撑得住（金钱不低于 30）的人，再试一回，这次正经去治。", match: { set: "late_try" },
+        when: function (v) { return !!v.covenant && v.covenant.kind === "wait" && v.T.relation >= 4.5 && v.stats.health >= 45 && v.stats.money >= 30; } },
+      { id: "FK-8", text: "孩子的事：走公司线、身边有人、身体还行（健康不低于 45）、钱包也撑得住（金钱不低于 30）的人，再试一回，这次正经去治。", match: { set: "late_try" },
+        when: function (v) { return !!v.covenant && v.covenant.kind === "wait" && v.routeId === "corp" && (v.dom.spouse === "partnered" || v.dom.spouse === "dating") && v.stats.health >= 45 && v.stats.money >= 30; } },
+      { id: "FK-9", text: "孩子的事：最看重自由（合算不低于 5）、关系牵挂没那么重（合算低于 4.5）的人，就这样定下来，两个人好好过。", match: { set: "late_settle" },
+        when: function (v) { return !!v.covenant && v.covenant.kind === "wait" && v.T.freedom >= 5 && v.T.relation < 4.5 && !(v.routeId === "corp" && (v.dom.spouse === "partnered" || v.dom.spouse === "dating") && v.stats.money >= 30 && v.stats.health >= 45); } },
     ]),
     fork44: Object.freeze([
       { id: "F44-1", text: "44 岁：健康已经不高于 35 的人，稳住主业，把身体找回来。", match: { set: "steady_job" },
@@ -222,16 +242,6 @@
         when: function (v) { return v.stats.health > 35 && v.T.freedom >= 5; } },
       { id: "F44-3", text: "44 岁：金钱已经不高于 30 且把钱看得不轻（金钱合算不低于 3.5）的人，搞个副业，给自己留条后路。", match: { set: "side_job" },
         when: function (v) { return v.stats.health > 35 && v.T.freedom < 5 && v.stats.money <= 30 && v.T.money >= 3.5; } },
-    ]),
-    // fork45 是 fork38「再等等」的立约到期点：门（kids 未定 + 有伴侣）由引擎判定，政策只管摆出后怎么选；
-    // 没有立约在身（covenant 为空）时 F45-1 不成立，其余规则照常求值，不假设任何「不该出现」的状态。
-    fork45: Object.freeze([
-      { id: "F45-1", text: "45 岁：38 岁那份「再等等」的约到期了，健康已经不高于 40 的人，就这样定下来，两个人好好过。", match: { set: "late_settle" },
-        when: function (v) { return !!v.covenant && v.covenant.kind === "wait" && v.stats.health <= 40; } },
-      { id: "F45-2", text: "45 岁：最看重关系（合算不低于 4.5）、身体还行（健康不低于 45）、钱包也撑得住（金钱不低于 30）的人，再试一回，这次正经去治。", match: { set: "late_try" },
-        when: function (v) { return v.T.relation >= 4.5 && v.stats.health >= 45 && v.stats.money >= 30; } },
-      { id: "F45-3", text: "45 岁：最看重自由（合算不低于 5）、关系牵挂没那么重（合算低于 4.5）的人，就这样定下来，两个人好好过。", match: { set: "late_settle" },
-        when: function (v) { return v.T.freedom >= 5 && v.T.relation < 4.5; } },
     ]),
     fork52: Object.freeze([
       { id: "F52-1", text: "52 岁：走家乡线的人，父母需要人时，调整工作，自己多回去陪。", match: { set: "care_self" },
