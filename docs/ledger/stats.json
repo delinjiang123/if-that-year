@@ -1,6 +1,6 @@
 {
- "totalRows": 2957,
- "uniqueIds": 2867,
+ "totalRows": 2989,
+ "uniqueIds": 2899,
  "duplicateIds": [
   {
    "id": "pr_origin",
@@ -154,8 +154,8 @@
     "src/content/prologue/prologue-c1965.js:584",
     "src/content/prologue/prologue-c1978.js:515",
     "src/content/prologue/prologue-c1985.js:583",
-    "src/content/prologue/prologue-c1995.js:473",
-    "src/content/prologue/prologue.js:593"
+    "src/content/prologue/prologue-c1995.js:484",
+    "src/content/prologue/prologue.js:666"
    ]
   },
   {
@@ -166,8 +166,8 @@
     "src/content/prologue/prologue-c1965.js:592",
     "src/content/prologue/prologue-c1978.js:523",
     "src/content/prologue/prologue-c1985.js:591",
-    "src/content/prologue/prologue-c1995.js:483",
-    "src/content/prologue/prologue.js:601"
+    "src/content/prologue/prologue-c1995.js:494",
+    "src/content/prologue/prologue.js:674"
    ]
   },
   {
@@ -178,8 +178,8 @@
     "src/content/prologue/prologue-c1965.js:602",
     "src/content/prologue/prologue-c1978.js:533",
     "src/content/prologue/prologue-c1985.js:601",
-    "src/content/prologue/prologue-c1995.js:495",
-    "src/content/prologue/prologue.js:611"
+    "src/content/prologue/prologue-c1995.js:506",
+    "src/content/prologue/prologue.js:684"
    ]
   },
   {
@@ -190,8 +190,8 @@
     "src/content/prologue/prologue-c1965.js:614",
     "src/content/prologue/prologue-c1978.js:545",
     "src/content/prologue/prologue-c1985.js:613",
-    "src/content/prologue/prologue-c1995.js:507",
-    "src/content/prologue/prologue.js:623"
+    "src/content/prologue/prologue-c1995.js:518",
+    "src/content/prologue/prologue.js:696"
    ]
   },
   {
@@ -202,8 +202,8 @@
     "src/content/prologue/prologue-c1965.js:625",
     "src/content/prologue/prologue-c1978.js:556",
     "src/content/prologue/prologue-c1985.js:625",
-    "src/content/prologue/prologue-c1995.js:519",
-    "src/content/prologue/prologue.js:631"
+    "src/content/prologue/prologue-c1995.js:530",
+    "src/content/prologue/prologue.js:704"
    ]
   },
   {
@@ -214,16 +214,16 @@
     "src/content/prologue/prologue-c1965.js:635",
     "src/content/prologue/prologue-c1978.js:566",
     "src/content/prologue/prologue-c1985.js:635",
-    "src/content/prologue/prologue-c1995.js:531",
-    "src/content/prologue/prologue.js:641"
+    "src/content/prologue/prologue-c1995.js:542",
+    "src/content/prologue/prologue.js:714"
    ]
   }
  ],
  "byFile": {
+  "src/content/pool/pack1.js": 131,
   "src/content/pool/pack25.js": 126,
-  "src/content/pool/pack1.js": 113,
   "src/content/lines/late-life.js": 109,
-  "src/content/era/era1955.js": 103,
+  "src/content/era/era1955.js": 106,
   "src/content/era/era1965.js": 96,
   "src/content/pool/pack4.js": 90,
   "src/content/pool/pack5.js": 89,
@@ -249,21 +249,21 @@
   "src/content/pool/pack20.js": 70,
   "src/content/prologue/cards.js": 68,
   "src/content/era/era1978.js": 63,
+  "src/content/prologue/prologue.js": 56,
   "src/events.js": 52,
-  "src/content/prologue/prologue.js": 49,
   "src/content/prologue/prologue-c1965.js": 43,
   "src/content/prologue/prologue-c1978.js": 39,
   "src/content/prologue/prologue-c1985.js": 39,
   "src/content/prologue/prologue-c1955.js": 38,
-  "src/content/prologue/prologue-c1995.js": 37,
+  "src/content/prologue/prologue-c1995.js": 38,
   "src/content/pool/pack37.js": 36,
   "src/content/lines/abroad.js": 29,
   "src/content/pool/pack29.js": 28,
   "src/content/lines/process-beats.js": 26,
+  "src/content/era/era1995.js": 24,
   "src/content/pool/pack33.js": 23,
-  "src/content/era/era1995.js": 23,
   "src/content/pool/pack30.js": 22,
-  "src/content/era/era1985.js": 18,
+  "src/content/era/era1985.js": 20,
   "src/content/lines/covenant.js": 16,
   "src/content/pool/pack27.js": 13,
   "src/content/pool/pack35.js": 13,
@@ -274,11 +274,11 @@
   "src/content/pool/pack36.js": 3
  },
  "byCategory": {
-  "普通池": 1886,
+  "普通池": 1904,
   "具名线": 332,
-  "年代包": 303,
+  "年代包": 309,
   "童年记号": 104,
-  "序章幕": 95,
+  "序章幕": 103,
   "出身牌": 68,
   "基础事件": 45,
   "序章处境幕": 36,
@@ -289,27 +289,27 @@
   "分岔": 7
  },
  "byEra": {
-  "全年代": 1975,
-  "c1955": 238,
+  "全年代": 1992,
+  "c1955": 241,
   "c1965": 237,
   "c1978": 205,
-  "c2000": 134,
-  "c1995": 66,
-  "c1985": 64,
+  "c2000": 141,
+  "c1995": 68,
+  "c1985": 66,
   "c1978+c2000": 28,
   "c1955+c1965+c1978+c1985+c1995+c2000": 5,
-  "c1995+c2000": 2,
+  "c1995+c2000": 3,
   "c1965+c1978+c1985": 2,
   "c1978+c1985+c1995+c2000": 1
  },
  "byGate": {
-  "状态门": 1986,
+  "状态门": 2010,
   "无门": 515,
-  "序章幕": 313,
+  "序章幕": 321,
   "链条": 143
  },
  "byRoute": {
-  "不限": 2823,
+  "不限": 2855,
   "abroad": 53,
   "home": 25,
   "farm": 15,
@@ -329,7 +329,7 @@
   "home+corp+abroad+study+gap": 1
  },
  "introducedKnown": 129,
- "lineResolved": 2957,
+ "lineResolved": 2989,
  "withOccupation": 280,
  "withTrade": 252,
  "byTrade": {
@@ -360,24 +360,33 @@
   "med": 1,
   "truck": 1
  },
- "runtimeGamePacks": 2521,
+ "byTheme": {
+  "新冠": 39
+ },
+ "themeFacts": {
+  "新冠": [
+   "wfh_normalized"
+  ]
+ },
+ "themeDupesRemoved": 0,
+ "runtimeGamePacks": 2545,
  "runtimeGameDataEvents": 45,
  "textCounts": {
   "contentJsonStyle": {
-   "unique": 2450,
-   "occurrences": 2450
+   "unique": 2474,
+   "occurrences": 2474
   },
   "contentJsStyle": {
-   "unique": 280,
-   "occurrences": 471
+   "unique": 288,
+   "occurrences": 479
   },
   "contentBothStyles": {
-   "unique": 2743,
-   "occurrences": 2953
+   "unique": 2775,
+   "occurrences": 2985
   },
   "srcBothStyles": {
-   "unique": 2855,
-   "occurrences": 3108
+   "unique": 2888,
+   "occurrences": 3141
   }
  },
  "lineMissing": [],
@@ -470,6 +479,7 @@
    "sent_down",
    "spouse>partnered",
    "study",
+   "wfh_normalized",
    "winter_begun",
    "中",
    "几年",

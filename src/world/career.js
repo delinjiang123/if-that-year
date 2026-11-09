@@ -844,5 +844,25 @@
     } catch (e) { return null; }
   }
 
-  Object.assign(IFY, { careerNote, careerOf, careerSpells, seedsOf, plantSeed, inheritSeedsAtBirth, careerRng, backfillCareer, careerIdleOf, gateDue, gateForkView, gateEchoLine, seedStrengthOf });
+  // ---------- 职业层事实账（新冠簇尾巴，2026-11-09 施工） ----------
+  // careerNote 的记账位只记 spells/idle/gateDefers，没有自由事实位；本簇尾巴
+  // （初入职面与白领/IT 面共用的同一条事实账）按本文件的既有纪律落一张声明式
+  // 事实表：只落账、本批无消费者，第 2 期行当后段拍按 trade 读表＋workFactOf。
+  // 两个读面（初入职／白领 IT）是同一条账，不许拆两条各记一遍。
+  // 读口 fail-closed：出生年或年龄不可知（旧档）时恒假，与全游戏公历门口径一致
+  // （呈现公历＝出生年＋年龄，唯一定义）。本批只读不写、不改任何现行行为。
+  const WORK_FACTS = [
+    { id: "wfh_normalized", fromYear: 2023, trades: ["dev", "fin", "acct", "press", "grad"],
+      note: "2023 年起，远程/混合办公在白领与 IT 岗位上留了下来，成为常态工作形态的一部分。初入职与在职白领两个读面同源此账。（新冠簇尾巴落账；无比例数字，不作统计宣称。）" },
+  ];
+  function workFactOf(S, id) {
+    try {
+      if (!S || typeof S.birthYear !== "number" || typeof S.age !== "number") return false;
+      const f = WORK_FACTS.find((x) => x.id === id);
+      if (!f) return false;
+      return S.birthYear + S.age >= f.fromYear;
+    } catch (e) { return false; }
+  }
+
+  Object.assign(IFY, { careerNote, careerOf, careerSpells, seedsOf, plantSeed, inheritSeedsAtBirth, careerRng, backfillCareer, careerIdleOf, gateDue, gateForkView, gateEchoLine, seedStrengthOf, workFactOf, WORK_FACTS });
 })(window.IFY);

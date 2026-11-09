@@ -37,6 +37,14 @@
  * trades.js 的 GAME_TRADES，flag→trade id 一一对应）对照打「职业族」标签，
  * 与职业/行当标签并行——前者是文案向的粗分类，后者是职业层注册表的行当 id。
  * tree.md 另出「职业族 → 年代 → 年龄段」查询树，只收挂上职业族的条目。
+ *
+ * 主题标（新冠簇批增）：主题不是条目自身字段，是编辑口径的横切索引（同一
+ * 条目可挂多主题）。映射表 themes.json 与生成器同目录、人工维护；台账行加
+ * themes 列，ledger.md 加「主题」列，tree.md 加查询树三（主题 → 年代 →
+ * 年龄段），stats 加 byTheme。两条校验：① 映射表里的 id 必须能在台账行
+ * 里找到（或属于 src/world/career.js 的 WORK_FACTS 职业层事实 id——事实账
+ * 不是台账行、无呈现，但主题可以指它，stats 单记 themeFacts），否则报错
+ * 停机；② 同一主题内重复 id 去重并计数（stats.themeDupesRemoved）。
  */
 "use strict";
 const fs = require("fs");
@@ -283,6 +291,39 @@ for (const era of ERAS) {
   for (const mid of Object.keys(pack.marks || {})) addRow({ id: mid }, file, "童年记号", era);
 }
 
+/* ---------- 6.5. 主题标（themes.json 手维护映射；校验两条，见文件头注） ---------- */
+const THEMES_PATH = path.join(OUT, "themes.json");
+let themesRaw = {};
+if (fs.existsSync(THEMES_PATH)) {
+  try { themesRaw = JSON.parse(fs.readFileSync(THEMES_PATH, "utf8")); }
+  catch (e) { console.error("themes.json 解析失败：" + e.message); process.exit(1); }
+}
+const careerSrcForFacts = fs.readFileSync(path.join(ROOT, "src/world/career.js"), "utf8");
+const wfBlock = careerSrcForFacts.match(/const WORK_FACTS = \[([\s\S]*?)\n  \];/);
+const workFactIds = wfBlock ? [...wfBlock[1].matchAll(/\bid:\s*"([^"]+)"/g)].map((m) => m[1]) : [];
+const themeById = new Map();
+const themeFacts = {};
+let themeDupesRemoved = 0;
+const themeErrors = [];
+const rowIdSet = new Set(rows.map((r) => r.id));
+for (const [theme, ids] of Object.entries(themesRaw)) {
+  const seen = new Set();
+  for (const id of ids || []) {
+    if (seen.has(id)) { themeDupesRemoved++; continue; }
+    seen.add(id);
+    if (rowIdSet.has(id)) {
+      if (!themeById.has(id)) themeById.set(id, []);
+      themeById.get(id).push(theme);
+    } else if (workFactIds.includes(id)) {
+      (themeFacts[theme] = themeFacts[theme] || []).push(id);
+    } else {
+      themeErrors.push(`主题「${theme}」挂了台账里不存在的 id：${id}`);
+    }
+  }
+}
+if (themeErrors.length) { console.error("themes.json 校验失败：\n" + themeErrors.join("\n")); process.exit(1); }
+for (const r of rows) r.themes = themeById.get(r.id) || [];
+
 /* ---------- 7. 校验统计 ---------- */
 const byId = new Map();
 for (const r of rows) { if (!byId.has(r.id)) byId.set(r.id, []); byId.get(r.id).push(r); }
@@ -340,6 +381,9 @@ const stats = {
   withOccupation: rows.filter((r) => r.occupations.length).length,
   withTrade: rows.filter((r) => r.trades.length).length,
   byTrade: (() => { const m = {}; for (const r of rows) for (const t of r.trades) m[t] = (m[t] || 0) + 1; return Object.fromEntries(Object.entries(m).sort((a, b) => b[1] - a[1])); })(),
+  byTheme: (() => { const m = {}; for (const r of rows) for (const t of r.themes || []) m[t] = (m[t] || 0) + 1; return Object.fromEntries(Object.entries(m).sort((a, b) => b[1] - a[1])); })(),
+  themeFacts,
+  themeDupesRemoved,
   runtimeGamePacks: (w.GAME_PACKS || []).length,
   runtimeGameDataEvents: ((w.GAME_DATA || {}).events || []).length,
   textCounts: {
@@ -378,6 +422,7 @@ fs.writeFileSync(path.join(OUT, "ledger.json"), JSON.stringify({
     root: ROOT,
     scope: "带 id 的可玩内容条目：GAME_DATA.events/forks(带id) + GAME_PACKS + GAME_SYNERGY + GAME_CARDS + 序章六代包",
     gateRules: "序章幕（序章包/出身牌）> 链条（chain 字段或被 chain 指向）> 状态门（带门槛字段）> 无门",
+    themes: "主题列来自 docs/ledger/themes.json 手维护映射（横切索引，一条目可挂多主题）；生成器校验：映射 id 不在台账行且非 career.js 的 WORK_FACTS 事实 id 时报错停机，同主题内重复 id 去重计数（stats.themeDupesRemoved），职业层事实挂载见 stats.themeFacts",
     totalRows: stats.totalRows, uniqueIds: stats.uniqueIds,
   },
   entries: rows,
@@ -386,9 +431,9 @@ fs.writeFileSync(path.join(OUT, "ledger.json"), JSON.stringify({
 const esc = (s) => String(s).replace(/\|/g, "\\|");
 let md = "# 《如果那年》事件编号台账（机读 JSON 的人读版；由 gen-ledger.js 生成，禁止手改）\n\n";
 md += `共 ${stats.totalRows} 条（唯一 id ${stats.uniqueIds} 个）。引入版本对不上 registry 登记的记 unknown。\n\n`;
-md += "| # | id | 源文件:行 | 大类 | 职业/行当 | 职业族 | 年代 | 路线 | 年龄段 | 门槛 | 引入 | 状态 |\n|---|---|---|---|---|---|---|---|---|---|---|---|\n";
+md += "| # | id | 源文件:行 | 大类 | 职业/行当 | 职业族 | 主题 | 年代 | 路线 | 年龄段 | 门槛 | 引入 | 状态 |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|\n";
 for (const r of rows) {
-  md += `| ${r.seq} | ${esc(r.id)} | ${esc(r.file.replace("src/content/", "").replace("src/", ""))}:${r.line === null ? "?" : r.line} | ${r.category} | ${r.occupations.join("、") || "—"} | ${r.trades.join("、") || "—"} | ${esc(r.era)} | ${esc(r.route)} | ${r.ageBand} | ${r.gate} | ${r.introduced} | ${r.status} |\n`;
+  md += `| ${r.seq} | ${esc(r.id)} | ${esc(r.file.replace("src/content/", "").replace("src/", ""))}:${r.line === null ? "?" : r.line} | ${r.category} | ${r.occupations.join("、") || "—"} | ${r.trades.join("、") || "—"} | ${r.themes.join("、") || "—"} | ${esc(r.era)} | ${esc(r.route)} | ${r.ageBand} | ${r.gate} | ${r.introduced} | ${r.status} |\n`;
 }
 fs.writeFileSync(path.join(OUT, "ledger.md"), md);
 
@@ -442,6 +487,26 @@ for (const node of [...tradeTree.values()].sort((a, b) => a.key.join("/").locale
   if (t2 !== tc2) { tm += `\n### ${t2}\n`; tc2 = t2; }
   const ids = [...new Set(node.ids)].sort();
   tm += `- ${t3}（${ids.length}）：${ids.join(", ")}\n`;
+}
+// 查询树三：主题 → 年代 → 年龄段（新冠簇批增；只收挂上主题的条目，主题见 themes.json）
+const themeTree = new Map();
+for (const r of rows) {
+  for (const t of r.themes || []) {
+    const key = [t, r.era, bandOf(r)];
+    const k = key.join("\x00");
+    if (!themeTree.has(k)) themeTree.set(k, { key, ids: [] });
+    themeTree.get(k).ids.push(r.id);
+  }
+}
+tm += "\n# 查询树三：主题 → 年代 → 年龄段（gen-ledger.js 生成）\n\n";
+tm += "主题＝themes.json 手维护的横切索引（同一条目可挂多主题）；只收挂上主题的条目。职业层事实（career.js 的 WORK_FACTS，如 wfh_normalized）不是台账行、不进本树，挂载见 stats.json 的 themeFacts。\n";
+let th1 = null, th2 = null;
+for (const node of [...themeTree.values()].sort((a, b) => a.key.join("/").localeCompare(b.key.join("/"), "zh"))) {
+  const [h1, h2, h3] = node.key;
+  if (h1 !== th1) { tm += `\n## ${h1}\n`; th1 = h1; th2 = null; }
+  if (h2 !== th2) { tm += `\n### ${h2}\n`; th2 = h2; }
+  const ids = [...new Set(node.ids)].sort();
+  tm += `- ${h3}（${ids.length}）：${ids.join(", ")}\n`;
 }
 fs.writeFileSync(path.join(OUT, "tree.md"), tm);
 fs.writeFileSync(path.join(OUT, "stats.json"), JSON.stringify(stats, null, 1));
