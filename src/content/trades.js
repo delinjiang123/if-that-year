@@ -44,9 +44,20 @@
 //                  took_quota65 落点，关口再加一遍是重复。
 //   seedEcho / inheritEcho = 回指句模板位（§3.4）：本批只占位（null），模板文案随
 //                  P1-6 文案审定稿后填；null 时回指回落通用句的口径在 §3.4 已定。
+//   family       = 同族分区 id（第 2 期 P2-1 落数据，DESIGN-41 §4.1.0 与 FAMILY-TABLE
+//                  冻结版）：26 行当恰属一族——land 田土（farm/township/farm_returned，
+//                  T3 裁定 township 归田土）、plant 厂矿（factory/heavy/miner）、
+//                  hand 手艺（craft）、road 路上（truck/driver_taxi/courier）、
+//                  medic 医护（med_hosp/med/nurse/img/care）、word 文教（teach/
+//                  grad/press/write/exam_landed）、counter 柜台数（acct/fin）、
+//                  market 营生（shop/gig）、tech 技术（dev/fab）。只供 career.js 的
+//                  同族外溢现算（seedStrengthOf），改族籍＝改点亮分布，须走裁定；
+//                  完备性由 tools/validate-state.js 的分区校验守（恰属一族、族 id
+//                  合法、每族至少一行 gateDirect=true）。
 window.GAME_TRADES = {
   "farm": {
     "flag": "farm_work", "form": "farm",
+    "family": "land",
     "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
     "eduGate": null, "gateDirect": true,
     "coldOk": true, "coldKinds": ["near"], "coldWeight": 2,
@@ -56,6 +67,7 @@ window.GAME_TRADES = {
   },
   "township": {
     "flag": "township_work", "form": "employee",
+    "family": "land",
     "eraIn": ["c1965", "c1978", "c1985"],
     "eduGate": null, "gateDirect": false,
     "coldOk": false, "coldKinds": [], "coldWeight": 0,
@@ -65,6 +77,7 @@ window.GAME_TRADES = {
   },
   "farm_returned": {
     "flag": "farm_returned", "form": "farm",
+    "family": "land",
     "eraIn": ["c1965", "c1978", "c1985"],
     "eduGate": null, "gateDirect": false,
     "coldOk": false, "coldKinds": [], "coldWeight": 0,
@@ -74,6 +87,7 @@ window.GAME_TRADES = {
   },
   "exam_landed": {
     "flag": "exam_landed", "form": "public",
+    "family": "word",
     "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
     "eduGate": "half", "gateDirect": false,
     "coldOk": false, "coldKinds": [], "coldWeight": 0,
@@ -83,6 +97,7 @@ window.GAME_TRADES = {
   },
   "shop": {
     "flag": "shop_work", "form": "self",
+    "family": "market",
     "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
     "eduGate": null, "gateDirect": true,
     "coldOk": true, "coldKinds": ["follow", "near", "wage"], "coldWeight": 3,
@@ -92,6 +107,7 @@ window.GAME_TRADES = {
   },
   "gig": {
     "flag": "gig_work", "form": "flex",
+    "family": "market",
     "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
     "eduGate": null, "gateDirect": true,
     "coldOk": true, "coldKinds": ["recruit", "follow", "near", "wage"], "coldWeight": 4,
@@ -101,6 +117,7 @@ window.GAME_TRADES = {
   },
   "courier": {
     "flag": "courier_work", "form": "flex",
+    "family": "road",
     "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
     "eduGate": null, "gateDirect": true,
     "coldOk": true, "coldKinds": ["recruit", "follow", "wage"], "coldWeight": 4,
@@ -110,6 +127,7 @@ window.GAME_TRADES = {
   },
   "care": {
     "flag": "care_work", "form": "flex",
+    "family": "medic",
     "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
     "eduGate": null, "gateDirect": true,
     "coldOk": true, "coldKinds": ["recruit", "follow", "near"], "coldWeight": 3,
@@ -119,6 +137,7 @@ window.GAME_TRADES = {
   },
   "write": {
     "flag": "write_work", "form": "flex",
+    "family": "word",
     "eraIn": ["c1965", "c1978", "c1985", "c1995", "c2000"],
     "eduGate": null, "gateDirect": true,
     "coldOk": true, "coldKinds": ["follow", "near"], "coldWeight": 2,
@@ -128,6 +147,7 @@ window.GAME_TRADES = {
   },
   "factory": {
     "flag": "factory_work", "form": "employee",
+    "family": "plant",
     "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
     "eduGate": null, "gateDirect": true,
     "coldOk": true, "coldKinds": ["assign", "recruit", "follow", "near", "wage"], "coldWeight": 5,
@@ -137,6 +157,7 @@ window.GAME_TRADES = {
   },
   "fab": {
     "flag": "fab_work", "form": "employee",
+    "family": "tech",
     "eraIn": ["c2000"],
     "eduGate": null, "gateDirect": true,
     "coldOk": true, "coldKinds": ["recruit", "wage"], "coldWeight": 3,
@@ -146,6 +167,7 @@ window.GAME_TRADES = {
   },
   "craft": {
     "flag": "craft_work", "form": "employee",
+    "family": "hand",
     "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
     "eduGate": null, "gateDirect": true,
     "coldOk": true, "coldKinds": ["follow", "recruit", "near"], "coldWeight": 4,
@@ -155,6 +177,7 @@ window.GAME_TRADES = {
   },
   "heavy": {
     "flag": "heavy_work", "form": "employee",
+    "family": "plant",
     "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
     "eduGate": null, "gateDirect": true,
     "coldOk": true, "coldKinds": ["assign", "recruit", "follow", "wage"], "coldWeight": 3,
@@ -164,6 +187,7 @@ window.GAME_TRADES = {
   },
   "miner": {
     "flag": "miner_work", "form": "employee",
+    "family": "plant",
     "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
     "eduGate": null, "gateDirect": true,
     "coldOk": true, "coldKinds": ["assign", "recruit", "follow", "wage"], "coldWeight": 3,
@@ -173,6 +197,7 @@ window.GAME_TRADES = {
   },
   "truck": {
     "flag": "truck_work", "form": "employee",
+    "family": "road",
     "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
     "eduGate": null, "gateDirect": true,
     "coldOk": true, "coldKinds": ["follow", "recruit", "wage"], "coldWeight": 4,
@@ -182,6 +207,7 @@ window.GAME_TRADES = {
   },
   "med_hosp": {
     "flag": "med_hosp", "form": "employee",
+    "family": "medic",
     "eraIn": ["c2000"],
     "eduGate": null, "gateDirect": true,
     "coldOk": true, "coldKinds": ["recruit", "assign"], "coldWeight": 3,
@@ -191,6 +217,7 @@ window.GAME_TRADES = {
   },
   "med": {
     "flag": "med_work", "form": "employee",
+    "family": "medic",
     "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
     "eduGate": null, "gateDirect": true,
     "coldOk": true, "coldKinds": ["assign", "recruit", "near"], "coldWeight": 3,
@@ -200,6 +227,7 @@ window.GAME_TRADES = {
   },
   "nurse": {
     "flag": "nurse_work", "form": "employee",
+    "family": "medic",
     "eraIn": ["c2000"],
     "eduGate": null, "gateDirect": false,
     "coldOk": false, "coldKinds": [], "coldWeight": 0,
@@ -209,6 +237,7 @@ window.GAME_TRADES = {
   },
   "img": {
     "flag": "img_work", "form": "employee",
+    "family": "medic",
     "eraIn": ["c2000"],
     "eduGate": null, "gateDirect": false,
     "coldOk": false, "coldKinds": [], "coldWeight": 0,
@@ -218,6 +247,7 @@ window.GAME_TRADES = {
   },
   "teach": {
     "flag": "teach_work", "form": "employee",
+    "family": "word",
     "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
     "eduGate": null, "gateDirect": true,
     "coldOk": true, "coldKinds": ["assign", "recruit", "near"], "coldWeight": 3,
@@ -227,6 +257,7 @@ window.GAME_TRADES = {
   },
   "acct": {
     "flag": "acct_work", "form": "employee",
+    "family": "counter",
     "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
     "eduGate": null, "gateDirect": true,
     "coldOk": true, "coldKinds": ["recruit", "near"], "coldWeight": 3,
@@ -236,6 +267,7 @@ window.GAME_TRADES = {
   },
   "fin": {
     "flag": "fin_work", "form": "employee",
+    "family": "counter",
     "eraIn": ["c1965"],
     "eduGate": null, "gateDirect": true,
     "coldOk": true, "coldKinds": ["recruit", "wage"], "coldWeight": 3,
@@ -245,6 +277,7 @@ window.GAME_TRADES = {
   },
   "press": {
     "flag": "press_work", "form": "employee",
+    "family": "word",
     "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
     "eduGate": null, "gateDirect": true,
     "coldOk": true, "coldKinds": ["recruit", "assign"], "coldWeight": 3,
@@ -254,6 +287,7 @@ window.GAME_TRADES = {
   },
   "dev": {
     "flag": "dev_work", "form": "employee",
+    "family": "tech",
     "eraIn": ["c2000"],
     "eduGate": null, "gateDirect": true,
     "coldOk": true, "coldKinds": ["recruit", "wage"], "coldWeight": 3,
@@ -263,6 +297,7 @@ window.GAME_TRADES = {
   },
   "driver_taxi": {
     "flag": "driver_taxi", "form": "employee",
+    "family": "road",
     "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
     "eduGate": null, "gateDirect": true,
     "coldOk": true, "coldKinds": ["recruit", "wage", "near"], "coldWeight": 3,
@@ -272,6 +307,7 @@ window.GAME_TRADES = {
   },
   "grad": {
     "flag": "grad_work", "form": "employee",
+    "family": "word",
     "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
     "eduGate": "gate", "gateDirect": true,
     "coldOk": false, "coldKinds": [], "coldWeight": 0,

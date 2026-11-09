@@ -599,6 +599,24 @@ else {
     else for (const src of t.inheritFrom) if (!(src in FAMILY_FACTS) && !(CARDS && CARDS.byId && src in CARDS.byId)) err(`行当 ${tid}: inheritFrom 来源 ${src} 既非家庭事实旗也非出身牌`);
     if (!("seedEcho" in t) || !("inheritEcho" in t)) err(`行当 ${tid}: seedEcho/inheritEcho 模板位缺失（P1-1 占位也须在场）`);
   }
+  // 同族分区完备校验（第 2 期 P2-1，DESIGN-41 §4.1.0／FAMILY-TABLE 冻结版）：26 行当
+  // 恰属一族——family 字段必须在场且是 9 族名单内的标量 id（缺失/非法/非标量即红）；
+  // 9 族每族须有成员，且至少一行 gateDirect=true（全 false 的族是死族：外溢进不去
+  // 也点不亮，落数据即红）。族籍冻结后改动＝改点亮分布，须走裁定（见 FAMILY-TABLE）。
+  const TRADE_FAMILIES = ["land", "plant", "hand", "road", "medic", "word", "counter", "market", "tech"];
+  const famMembers = new Map(); // family -> { n, direct }
+  for (const [tid, t] of Object.entries(TRADES)) {
+    if (!t || typeof t !== "object") continue;
+    if (typeof t.family !== "string" || !TRADE_FAMILIES.includes(t.family)) { err(`行当 ${tid}: family ${JSON.stringify(t.family)} 缺失或不在 9 族名单内（同族分区：每行当恰属一族）`); continue; }
+    if (!famMembers.has(t.family)) famMembers.set(t.family, { n: 0, direct: 0 });
+    const fm = famMembers.get(t.family);
+    fm.n++; if (t.gateDirect === true) fm.direct++;
+  }
+  for (const fam of TRADE_FAMILIES) {
+    const fm = famMembers.get(fam);
+    if (!fm || fm.n === 0) err(`同族分区：族 ${fam} 无任何成员（分区须覆盖冻结族表 9 族）`);
+    else if (fm.direct === 0) err(`同族分区：族 ${fam} 无 gateDirect=true 成员（死族：外溢无处点亮）`);
+  }
   for (const f of Object.keys(FORM_OF_FLAG_CHK)) if (!seenFlags.has(f)) err(`入行旗 ${f} 未在行当注册表登记（FORM_OF_FLAG 与 GAME_TRADES 须双向一致）`);
   const regTrades = REG.trades || {};
   for (const tid of tradeIds) if (!(tid in regTrades)) err(`行当 ${tid}: 未经 GAME_REGISTRY_EXTRA 合入 GAME_REGISTRY.trades`);

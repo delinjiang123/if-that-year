@@ -527,21 +527,54 @@
     return "job";
   }
 
-  // 种子强度（§4.1，只读派生）：choice 记 1、seen 记 0.5，同拍同行当只记一颗
-  // （读侧按 beatId 去重，与 plantSeed 的写侧纪律互为保险）；≥2 强点亮、
-  // 1–1.5 弱点亮、<1 不点亮。earliest = 最早一颗的埋种年龄（同强度排序用）。
+  // 种子强度三账（第 2 期 P2-1，DESIGN-41 §4.1.0 修订；只读派生、现算不落存档）：
+  //   direct = 指向本行当的记录权重（choice 记 1、seen 记 0.5，同拍同行当按
+  //     beatId 去重——与第 1 期口径逐字同，plantSeed 写侧纪律互为保险）；
+  //   spill = 0.5 × 指向同族其他行当的记录条数（不挑 kind，choice 与 seen 同价；
+  //     按 (beatId, 来源行当) 去重——同一拍给同族两行各埋一颗时各算各的，
+  //     §4.1.0 账规矩 3）；spillEarliest = 最早一颗外溢来源的埋种年龄（排序用）；
+  //   total = direct + min(spill, SPILL_CAP)——外溢封顶 1.0（账规矩 2：防种密
+  //     行当把全族平推高位、配额被同族轮流坐满；封顶是标定参数、不是门槛）。
+  // 外溢只在读时算、永不写进 S.seeds（账规矩 1）：spillRecs 只是本次现算的来源
+  // 记录引用；回指与 viaNote 只许认 recs（直系），外溢天然进不了履历账。
+  // 族籍读 trades.js 的 family 字段（FAMILY-TABLE 冻结版，T3 裁定 township 归
+  // 田土族）；注册表不在场或本行无族籍时 spill 恒 0（fail-closed，回落直系
+  // 口径）。strength 保留为 total 的兼容别名，earliest/recs 语义与第 1 期逐字同。
+  const SPILL_PER = 0.5, SPILL_CAP = 1.0;
+  function tradeFamilyOf(T, tid) {
+    const row = T && typeof tid === "string" ? T[tid] : null;
+    return row && typeof row.family === "string" && row.family ? row.family : null;
+  }
   function seedStrengthOf(S, tradeId) {
-    let strength = 0, earliest = null;
+    let direct = 0, earliest = null;
     const seenBeats = new Set(), recs = [];
     for (const r of seedsOf(S)) {
       if (!r || r.trade !== tradeId) continue;
       const w = r.kind === "choice" ? 1 : r.kind === "seen" ? 0.5 : 0;
       if (w <= 0) continue;
       if (r.beatId != null) { if (seenBeats.has(r.beatId)) continue; seenBeats.add(r.beatId); }
-      strength += w; recs.push(r);
+      direct += w; recs.push(r);
       if (typeof r.age === "number") earliest = earliest == null ? r.age : Math.min(earliest, r.age);
     }
-    return { strength, earliest, recs };
+    let spill = 0, spillEarliest = null;
+    const spillSeen = new Set(), spillRecs = [];
+    const T = tradesTable();
+    const fam = tradeFamilyOf(T, tradeId);
+    if (fam) {
+      for (const r of seedsOf(S)) {
+        if (!r || typeof r.trade !== "string" || r.trade === tradeId) continue;
+        if (tradeFamilyOf(T, r.trade) !== fam) continue;
+        if (r.beatId != null) {
+          const key = r.beatId + "|" + r.trade;
+          if (spillSeen.has(key)) continue;
+          spillSeen.add(key);
+        }
+        spill += SPILL_PER; spillRecs.push(r);
+        if (typeof r.age === "number") spillEarliest = spillEarliest == null ? r.age : Math.min(spillEarliest, r.age);
+      }
+    }
+    const total = direct + Math.min(spill, SPILL_CAP);
+    return { direct, spill, total, strength: total, earliest, recs, spillEarliest, spillRecs };
   }
   // 承继命中：来源 id 是出身牌时认 S.prologue.family；是家庭事实时认事实在账。
   // famQuota65 例外（P1-4 裁，见 trades.js 表头）：名额定下且归我才算承继机会——
@@ -587,6 +620,18 @@
       ? `${name}这一行，你早年动过心思，只是它要读过书——正经读完，或是夜校、自考补出来。你眼下还差这一样，这一回先摆不出来。`
       : `${name}这一行，你早年动过心思，只是它要文凭——得正经读完书，或是夜校、自考补出来。你眼下还差这一样，这一回先摆不出来。`;
   }
+  // 配额溢出回响行（第 2 期 P2-1，DESIGN-41 §4.1.3）：被配额裁掉的点亮项不许
+  // 无声——菜单外留一行「惦记」（与 D5 的「规则」行分工：D5 说为什么不行，
+  // 本行说它来过）。一次关口只一行：行内列被裁行当的菜单名（按 §4.1.2 排序
+  // 取前 3 个，多出以「等」收尾）；措辞不点名出处——直系与只有外溢的项混列
+  // 时同句照用，不给外溢项编来历。工作文案取 DESIGN-41 示例语义，正式文案另审。
+  const GATE_ECHO_OVERFLOW = "还有没摆上桌的：{names}——小时候那点心思在这儿响了一声，这回先紧着眼前的。";
+  function gateOverflowLine(overflow) {
+    const names = overflow.slice(0, 3).map((x) => GATE_TRADE_LABEL[x.trade] || x.trade);
+    let s = names.join("、");
+    if (overflow.length > 3) s += "等";
+    return GATE_ECHO_OVERFLOW.replace("{names}", s);
+  }
   // 回指句填槽：模板只许 {age}/{note} 两槽，任一被引用的槽无值即整句作废
   // （指不出处不许现编）。
   function fillEcho(tmpl, slots) {
@@ -600,8 +645,11 @@
     return bad ? null : out;
   }
   // 回指句纯函数（§3.4）：零随机、只读账。item = { via, trade, seed?, factId?,
-  // strength? }。via=seed：种子记录缺 seedNote 或缺埋种年龄 → 不拼（返 null）；
+  // direct? }。via=seed：种子记录缺 seedNote 或缺埋种年龄 → 不拼（返 null）；
   // 模板优先读注册表 seedEcho（本批全 null），回落工作骨架，强弱点亮分版。
+  // 口气只认直系账（第 2 期 P2-1，DESIGN-41 §4.1.2）：强弱由 item.direct 定
+  // （≥2 陈述式、其余试探式），外溢再高也不升格；item.strength 是旧调用点的
+  // 入参名，仅在 direct 缺席时回落读它（旧单测兼容），新调用点一律传 direct。
   // via=inherit：说明只认出身牌名（GAME_CARDS.byId 的 name 是玩家文案）；
   // familyFacts 的 note 是登记说明、含元信息，不许直接上屏——认不出干净
   // 来源（如 famQuota65）即不拼。via=cold：定法无回指，恒 null。
@@ -614,8 +662,9 @@
         const rec = item.seed;
         if (!rec || typeof rec.seedNote !== "string" || !rec.seedNote) return null;
         if (typeof rec.age !== "number") return null;
+        const toneBase = typeof item.direct === "number" ? item.direct : item.strength;
         const tmpl = (row && typeof row.seedEcho === "string" && row.seedEcho)
-          || (typeof item.strength === "number" && item.strength >= 2 ? GATE_ECHO_SEED_STRONG : GATE_ECHO_SEED_WEAK);
+          || (typeof toneBase === "number" && toneBase >= 2 ? GATE_ECHO_SEED_STRONG : GATE_ECHO_SEED_WEAK);
         return fillEcho(tmpl, { age: rec.age, note: rec.seedNote });
       }
       if (item.via === "inherit") {
@@ -644,16 +693,21 @@
     return items[idx];
   }
 
-  // 菜单组装（§3.3 + §3.5）：构成序＝承继（≤2）→ 种子点亮（≤3，强度降序、
-  // 同强度最早埋种在前）→ 冷门（2–4，职业自有流加权抽）→ 兜底（本体自带，
-  // 恒 1），总选项 ≤8；溢出裁剪序：先裁冷门到 2、再裁种子到 2（承继与兜底
-  // 不裁）。处境推入只改开门时机与框（gateDue/gateFrameOf），不占选项位。
+  // 菜单组装（§3.3 + §3.5；点亮口径第 2 期 P2-1 按 DESIGN-41 §4.1.1–4.1.3
+  // 修订）：构成序＝承继（≤2）→ 种子点亮（≤3，§4.1.2 排序：total 降序、同分
+  // 有直系者在前、再按最早记录年龄、仍同分按注册表行序）→ 冷门（2–4，职业
+  // 自有流加权抽）→ 兜底（本体自带，恒 1），总选项 ≤8；溢出裁剪序：先裁冷门
+  // 到 2、再裁种子到 2（承继与兜底不裁）。处境推入只改开门时机与框
+  // （gateDue/gateFrameOf），不占选项位。
   // 同一行当承继与种子同时命中时只出承继项（来处以承继为准，种子不再单列，
-  // 也不另出 D5 行——它已经在菜单上）。D5：种子点亮被学历门挡者进 gateNotes
-  // （菜单外），承继被学历门挡者照 §3.3 其余不可行例不摆、无声。
+  // 也不另出 D5 行——它已经在菜单上）。D5 分直系/外溢：种子候选含直系
+  // （direct ≥0.5）被学历门挡者进 gateNotes（菜单外）；只有外溢的候选被挡
+  // 不出行（§4.1.3 衔接修订）。承继被学历门挡者照 §3.3 其余不可行例不摆、无声。
+  // 被配额裁掉的点亮项（配额外＋挤压被裁）收进溢出集，在 gateEchoes 留一行
+  // 回响（§4.1.3），与 gateNotes 平行、数据与计数都分开。
   // 返回形状与 kidForkView 同构：本体副本 + age 实岁戳 + 组装 choices（每项带
   // group: "lit"|"cold"|"defer" 供 D4 分组呈现，标题在 gateGroupTitles）+
-  // gateFrame + gateNotes。本体永不被改动。
+  // gateFrame + gateNotes + gateEchoes。本体永不被改动。
   function gateForkView(S, kind) {
     try {
       if (!S || typeof S !== "object" || !S.flags || !S.state) return null;
@@ -678,18 +732,30 @@
         if (inheritItems.length >= 2) break;
       }
       const litTrades = new Set(inheritItems.map((x) => x.trade));
-      // 上层二：种子点亮
+      // 上层二：种子点亮（第 2 期 P2-1，DESIGN-41 §4.1.1）：候选门槛统一放低
+      // 为 total ≥ 0.5——一颗直系 choice、直系 seen 半颗、或只有外溢，都进候选。
+      const regOrder = {};
+      Object.keys(T).forEach((tid, i) => { regOrder[tid] = i; });
+      const seedAgeKey = (x) => {
+        const a = x.direct > 0 ? x.earliest : x.spillEarliest;
+        return a == null ? Number.MAX_SAFE_INTEGER : a;
+      };
       const seedLit = [];
       for (const [tid, row] of Object.entries(T)) {
         if (!row || row.gateDirect !== true || litTrades.has(tid)) continue;
         if (!gateRowCommon(S, row)) continue;
         const agg = seedStrengthOf(S, tid);
-        if (agg.strength < 1) continue;
-        if (!gateEduPass(S, row)) { notes.push(gateEduNote(tid, row)); continue; } // D5
-        seedLit.push({ trade: tid, row, strength: agg.strength, earliest: agg.earliest, agg });
+        if (agg.total < 0.5) continue;
+        if (!gateEduPass(S, row)) {
+          if (agg.direct >= 0.5) notes.push(gateEduNote(tid, row)); // D5：只认直系（§4.1.3）
+          continue;
+        }
+        seedLit.push({ trade: tid, row, direct: agg.direct, spill: agg.spill, total: agg.total, earliest: agg.earliest, spillEarliest: agg.spillEarliest, agg });
       }
-      seedLit.sort((a, b) => (b.strength - a.strength) ||
-        ((a.earliest == null ? Number.MAX_SAFE_INTEGER : a.earliest) - (b.earliest == null ? Number.MAX_SAFE_INTEGER : b.earliest)));
+      seedLit.sort((a, b) => (b.total - a.total) ||
+        ((b.direct > 0 ? 1 : 0) - (a.direct > 0 ? 1 : 0)) ||
+        (seedAgeKey(a) - seedAgeKey(b)) ||
+        ((regOrder[a.trade] || 0) - (regOrder[b.trade] || 0)));
       const seedItems = seedLit.slice(0, 3);
       for (const it of seedItems) litTrades.add(it.trade);
       // 下层：冷门（先按默认 3 抽，溢出再按裁剪序收）
@@ -728,12 +794,16 @@
         });
       }
       for (const it of seedItems) {
+        // 回指只认直系记录（§4.1.2）：echoRec 只从直系 recs 里取带 seedNote 的
+        // 那条；只有外溢点亮的项 recs 为空 → echoRec 恒 null → seedBeat/
+        // seedAge 恒 null、sub 恒 null（分组标题就是它的说明，不许编出处）。
+        // 口气入参传 direct：外溢再高也不升格（§4.1.2 不变量的呈现面）。
         const echoRec = it.agg.recs.find((r) => typeof r.seedNote === "string" && r.seedNote) || it.agg.recs[0] || null;
         choices.push({
           label: GATE_TRADE_LABEL[it.trade] || it.trade, effects: gateFx(it.trade), set: it.row.flag,
           via: "seed", trade: it.trade, group: "lit",
           seedBeat: echoRec ? echoRec.beatId : null, seedAge: echoRec ? echoRec.age : null,
-          sub: gateEchoLine(S, { via: "seed", trade: it.trade, seed: echoRec, strength: it.strength }),
+          sub: gateEchoLine(S, { via: "seed", trade: it.trade, seed: echoRec, direct: it.direct }),
         });
       }
       for (const it of coldItems) {
@@ -745,8 +815,16 @@
       }
       const fb = (def.choices || []).find((c) => c && c.gateDefer) || (def.choices || [])[0];
       if (fb) choices.push(Object.assign({}, fb, { group: "defer" }));
+      // 溢出回响（§4.1.3）：点亮候选里最终没摆上桌的（配额 3 之外＋8 项挤压时
+      // 被裁的——挤压裁掉的已不在 seedItems 里，按「候选集减上桌集」一并收）
+      // 不许无声，按 §4.1.2 排序（seedLit 原序）收成一行 gateEchoes。上桌集
+      // 含冷门项：候选若被冷门层抽上桌，它就在桌上，回响行再说它「没摆上」
+      // 是假话——故按最终上桌集减（只改回响的收集面，不动任何抽取与随机）。
+      const tabledSeed = new Set([...seedItems, ...coldItems].map((x) => x.trade));
+      const overflow = seedLit.filter((x) => !tabledSeed.has(x.trade));
+      const gateEchoes = overflow.length ? [gateOverflowLine(overflow)] : [];
       const view = Object.assign({}, def, {
-        age: S.age, choices, gateFrame: frame, gateNotes: notes,
+        age: S.age, choices, gateFrame: frame, gateNotes: notes, gateEchoes,
         gateGroupTitles: { lit: "有来处的", cold: "眼下的" },
       });
       if (def.gateFrames && def.gateFrames[frame]) view.text = def.gateFrames[frame];

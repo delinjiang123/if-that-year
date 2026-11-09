@@ -219,6 +219,9 @@
     // 分段——种子点亮组（承继＋点亮，按钮内带回指/来处副文案 sub）与冷门组各用真实
     // 标题元素分隔，推后项不带组题排在最后；学历门说明行（gateNotes）排在选项区
     // 之外、不进任何按钮。普通分岔无此字段，走原样单列，呈现一字不变。
+    // 配额溢出回响行（第 2 期 P2-1，DESIGN-41 §4.1.3）：view 的 gateEchoes 与
+    // gateNotes 平行，排在其后单独成段，class 独立（gate-echo）——数据、呈现、
+    // 验收计数都与 D5 行分开：D5 是规则、回响是惦记，同屏不许串味。
     const gateGrouped = !!(fork.gateGroupTitles && typeof fork.gateGroupTitles === "object");
     const gateBtn = ([c, i]) => `<button class="choice" data-i="${i}">${IFY.esc(labelText(c))}${c.sub ? `<span class="choice-sub">${IFY.esc(c.sub)}</span>` : ""}</button>`;
     let choicesHtml;
@@ -236,8 +239,10 @@
     }
     const gateNotesHtml = gateGrouped && Array.isArray(fork.gateNotes) && fork.gateNotes.length
       ? fork.gateNotes.map((n) => `<p class="gate-note">${IFY.esc(n)}</p>`).join("") : "";
+    const gateEchoesHtml = gateGrouped && Array.isArray(fork.gateEchoes) && fork.gateEchoes.length
+      ? fork.gateEchoes.map((n) => `<p class="gate-note gate-echo">${IFY.esc(n)}</p>`).join("") : "";
     IFY.app().innerHTML = `<section class="card">${IFY.head()}<h2>${IFY.esc(fork.title)}</h2>${covPrefix}<p>${IFY.esc(forkText)}</p>
-      <div class="choices">${choicesHtml}</div>${gateNotesHtml}</section>`;
+      <div class="choices">${choicesHtml}</div>${gateNotesHtml}${gateEchoesHtml}</section>`;
     IFY.finishRender();
     const chooseForkChoice = (c, autoSelected) => {
       IFY.clearAuto();
