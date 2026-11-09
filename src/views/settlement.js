@@ -620,12 +620,120 @@
     return n;
   }
 
-  function specialEnding() {
+  // ---------- 结局落定：同档多命中的贴合加权抽（结局抽选批） ----------
+  // 背景：此前 specialEnding 在同档多命中时恒取目录第一（hits[0]），与这一局的实际
+  // 形状无关。用户裁定（2026-11-09）：多结局同达标时按贴合度加权、用本局种子抽——
+  // 是抽，不是确定；完全均匀乱抽不许。落法（本批边界）：
+  //   · 档位优先一字不动：legendary/epic 手写特殊结局仍在顶层，低档永不压高档；
+  //     抽只发生在「最高档候选池」内部，单命中池照旧直落。
+  //   · 回老家链（end_return_home）不参加抽选：它在池首时（即现行规则下本就落它）
+  //     照旧落定；在池中其他位置时从抽池剔除——它落定的局集合与改前逐局相同。
+  //   · 权重全由本局真账算（见 endingWeight 的五面片口径），不用 Math.random、
+  //     不耗主随机流：抽数走 seedStr 派生子流（与判词 "#verdict" 同法），同种子
+  //     必同结局，结算页重渲染/回放多次调用结果恒一致（本文件纯函数纪律）。
+  //   · 权重只许倾斜不许独裁：池内权重比封顶 ENDING_DRAW_RATIO（2.5）——两候选时
+  //     最高权重者至多约 71%，永不保送；每条已达标结局都留真实机会。
+  const ENDING_DRAW_RATIO = 2.5;
+  const ENDING_HOME_ID = "end_return_home";
+  // 数值维 → 面片（与九槽读法同源：growth 是手艺事业、money 的收场即住房落脚、
+  // health/wisdom/freedom 是晚年形状、relation 是关系）。
+  const ENDING_STAT_FACET = { growth: "career", money: "home", health: "late", wisdom: "late", freedom: "late", relation: "relation" };
+  // 事实 id → 面片：只按事实所属的生活域归类（登记一次、全结局统一适用；不给任何
+  // 单条结局设专属数值）。未列入的通用事件/稀有 id 是叙事质地、不计面片贴合。
+  const ENDING_FACT_FACET = {
+    retired_full: "late", r_marathon: "late",
+    c_house: "home", c_rent: "home", renting: "home", bought_house: "home",
+    back_home_stay: "home", moved_city: "home", stayed_city: "home", r_abroad_pr: "home",
+    side_job: "career", mentor_bond: "career", legacy_sharing_done: "career",
+    r_ipo: "career", r_funding: "career", r_drug1: "career", r_drug2: "career",
+    r_award: "career", r_school1: "career", r_school2: "career", r_book: "career",
+    r_viral: "career", r_craft_apprentice: "career", r_village_doc: "career",
+    r_trucker_route: "career", r_teacher_students: "career", r_captain_final: "relation",
+    care_self: "family", late_parent: "family", kid_no: "family", kid_abroad: "family",
+  };
+  function endingFactFacet(id) {
+    if (Object.prototype.hasOwnProperty.call(ENDING_FACT_FACET, id)) return ENDING_FACT_FACET[id];
+    if (id.startsWith("c_") || id.startsWith("cb_")) return "family"; // 立约/伴侣/子女事实族
+    if (id.endsWith("_work")) return "career"; // 行当旗族（factory_work/teach_work/…）
+    if (id.startsWith("traj_")) return id === "traj_captain" ? "relation" : id === "traj_lottery" ? null : "career"; // 轨迹链主体是行当线；队长链是队伍关系、彩票链是运气，都不冒充行当
+    return null;
+  }
+  // 证据组在本局是否命中、命中备选归哪个面片：命中判法与 evidenceCount/segEvidenceCount
+  // 同口径（本局身体 ∪ 段视图见证），取组内第一个命中的备选归面。
+  function endingEvidenceFacet(group, view) {
+    for (const alt of group) {
+      let hit = false, facet = null;
+      if (typeof alt === "string") { hit = IFY.hasFact(alt) || !!(view && (view.hasFact(alt) || view.flagWitnessed(alt))); facet = endingFactFacet(alt); }
+      else if (alt && alt.stat) { const v = IFY.S.stats[alt.stat.k]; hit = alt.stat.gt !== undefined ? v > alt.stat.gt : v < alt.stat.lt; facet = ENDING_STAT_FACET[alt.stat.k] || null; }
+      else if (alt && alt.state) {
+        hit = Object.entries(alt.state).every(([dom, v]) => (IFY.S.state && IFY.S.state[dom] === v) || (view && (view.domainEnd(dom) === v || view.stateWitnessed(dom, v))));
+        const doms = Object.keys(alt.state);
+        facet = doms.some((d) => d === "spouse" || d === "kids" || d === "dad" || d === "mom") ? "family" : doms.includes("workPhase") ? "late" : "career";
+      }
+      else if (alt && alt.rec) { hit = IFY.hasRec(alt.rec) || !!(view && view.hasFact(alt.rec)); facet = endingFactFacet(alt.rec); }
+      if (hit) return facet;
+    }
+    return undefined; // 整组未命中：不计分（与达标判定一致，组未命中本就不算证据）
+  }
+  // 贴合度：结局自己的声明（数值门＋证据组）被这一局的账应答的程度，按五面片分账。
+  // 每面片满分 1：该面片的应答量（数值门按越过门槛的纵深计 [0,1]、证据组命中计 1）
+  // 累计到 2 即满——一处应答算半贴（0.5），两处以上算这面真对上了。权重 = 1 + 五面之和。
+  function endingWeight(e, view) {
+    const sums = { career: 0, family: 0, home: 0, late: 0, relation: 0 };
+    for (const c of e.stats || []) {
+      const F = ENDING_STAT_FACET[c.k]; if (!F) continue;
+      const v = (IFY.S.stats || {})[c.k]; if (typeof v !== "number") continue;
+      const m = c.lt !== undefined ? (c.lt - v) / Math.max(1, c.lt) : (v - (c.gt || 0)) / Math.max(1, 100 - (c.gt || 0));
+      sums[F] += Math.min(1, Math.max(0, m));
+    }
+    for (const group of e.evidence || []) {
+      const F = endingEvidenceFacet(group, view);
+      if (F) sums[F] += 1;
+    }
+    let w = 1;
+    for (const k of Object.keys(sums)) w += Math.min(1, sums[k] / 2);
+    return { w, facets: sums };
+  }
+  function boundEndingWeights(ws) {
+    const lo = Math.min.apply(null, ws), hi = Math.max.apply(null, ws);
+    if (!(hi > lo * ENDING_DRAW_RATIO)) return ws.slice();
+    const target = lo * ENDING_DRAW_RATIO;
+    return ws.map((w) => lo + (w - lo) * ((target - lo) / (hi - lo)));
+  }
+  // 池内落定：hits 已按档位排好序。返回 { hit, pool, via, weights }（weights 仅抽选时非空）。
+  function pickEnding(hits, view) {
+    const topTier = IFY.TIER_ORDER[hits[0].tier];
+    const pool = hits.filter((e) => IFY.TIER_ORDER[e.tier] === topTier);
+    if (pool.length === 1) return { hit: pool[0], pool, via: "single", weights: null };
+    if (pool[0].id === ENDING_HOME_ID) return { hit: pool[0], pool, via: "returnHome", weights: null };
+    const drawPool = pool.filter((e) => e.id !== ENDING_HOME_ID);
+    if (drawPool.length === 1) return { hit: drawPool[0], pool, via: "single", weights: null };
+    const raw = drawPool.map((e) => endingWeight(e, view).w);
+    const bounded = boundEndingWeights(raw);
+    const weights = {};
+    drawPool.forEach((e, i) => { weights[e.id] = bounded[i]; });
+    const total = bounded.reduce((a, b) => a + b, 0);
+    const dst = { a: IFY.seedFromString(String(IFY.S.seedStr || "") + "#ending") };
+    let r = IFY.mulberry(dst) * total;
+    for (let i = 0; i < drawPool.length; i++) { r -= bounded[i]; if (r < 0) return { hit: drawPool[i], pool, via: "draw", weights }; }
+    return { hit: drawPool[drawPool.length - 1], pool, via: "draw", weights };
+  }
+  // 诊断出口（普查/台架用）：本局达标全集、最高档池、抽选权重与落定，与 specialEnding 同源。
+  function endingDrawInfo() {
+    if (!IFY.S) return null;
+    const view = playerFacts();
+    const hits = endingHits(view);
+    if (!hits.length) return { hits: [], pool: [], weights: null, picked: null, via: "none" };
+    const sorted = hits.slice().sort((a, b) => IFY.TIER_ORDER[a.tier] - IFY.TIER_ORDER[b.tier]);
+    const p = pickEnding(sorted, view);
+    return { hits: hits.map((e) => e.id), pool: p.pool.map((e) => e.id), weights: p.weights, picked: p.hit ? p.hit.id : null, via: p.via };
+  }
+
+  function endingHits(view) {
     // F3/F4（v0.17.0）：met() 条件之外还须凑满 2 个独立证据点（evidence，见 src/content/rare/synergy.js）；凑不满就不出——一局可以没有特殊结局
     const hits = (IFY.D.endings || []).filter((e) => IFY.met(e) && IFY.evidenceCount(e) >= 2);
     // v0.22 WP7：交换局补一条段事实通道（口径边界见上方注释）——终局身体未命中、未满项全部是事实类且被段视图满足、
     // 且证据点经段补后凑满 2 点的结局，算命中；与终局命中同池按 tier 排序。未交换（视图为 null）时本段恒不触发。
-    const view = playerFacts();
     if (view) {
       for (const e of IFY.D.endings || []) {
         if (hits.includes(e)) continue;
@@ -699,9 +807,15 @@
         }
       }
     }
+    return hits;
+  }
+
+  function specialEnding() {
+    const view = playerFacts();
+    const hits = endingHits(view);
     if (!hits.length) return null;
     hits.sort((a, b) => IFY.TIER_ORDER[a.tier] - IFY.TIER_ORDER[b.tier]);
-    const hit = hits[0];
+    const hit = pickEnding(hits, view).hit;
     // 内容修复批（第 8 条 b）：子孙满堂的四代说法须有代际算术支撑——按子女落点（kidsBornAt ?? kidsAt，
     // 与 scheduler 的 kidAgeTrue 同锚）推 65 岁时子女年龄：≥40 出四代原文；32–39 出三代文（textThree）；
     // 更小、或读不到落点时出儿孙满堂文（textFull，不提孙辈）。只换文本——命中、档位、证据一概不动，
@@ -1968,7 +2082,7 @@
     // 一字不动，本钩子只做 DOM 追加；模块缺席（旧缓存）时静默跳过。
     if (typeof IFY.mountKeepsakeDesk === "function") IFY.mountKeepsakeDesk();
   }
-  Object.assign(IFY, { verdict, verdictTone, verdictCouncil, lifeTags, specialEnding, settlementMapHtml, renderLives, settlementSlots, renderEnd, occupationTrail, kidPresenceCount, nearMisses, chosenOfFork,
+  Object.assign(IFY, { verdict, verdictTone, verdictCouncil, lifeTags, specialEnding, endingDrawInfo, settlementMapHtml, renderLives, settlementSlots, renderEnd, occupationTrail, kidPresenceCount, nearMisses, chosenOfFork,
     // v0.22 WP7 新增导出：段事实视图、段版分岔反查、对面终局短句与结算快进（分享卡与断言复用同一口径）
     playerFacts, chosenOfForkIn, uncontrolledFinalLine, fastForwardUncontrolled,
     // 判词批 B 新增导出：伴侣史回放派生（断言与后续槽位复用同一口径）
