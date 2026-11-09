@@ -1,6 +1,8 @@
 // 《如果那年》行当注册表（第 1 期 P1-1 登记批）——职业层的单一事实源（数据面）。
-// 本批只登记已有行当：全表 26 行与 src/world/processes/work.js 的 FORM_OF_FLAG 逐行对应
-// （tools/validate-state.js 双向核对，不一致即报错）。新行当留第 2 期，禁止在本表先造。
+// 本批只登记已有行当：全表 28 行与 src/world/processes/work.js 的 FORM_OF_FLAG 逐行对应
+// （tools/validate-state.js 双向核对，不一致即报错）。其中 26 行是 P1-1 的存量登记；
+// photo/builder 两行是第 2 期注册片按用户 2026-11-09 裁定先行登记（只注册、不写内容
+// 拍，两行 note 里写明 eraIn 口径与重扫约定），FORM_OF_FLAG 同步加两旗。
 // P1-1 时本文件不进加载序、无运行时引用（零行为变化）；第 1 期 P1-2 起进入
 // index.html 加载序，与其它登记数据文件同位（src/world/state.js 之前）——纯数据面，
 // 登记经 GAME_REGISTRY_EXTRA 合入（registry.js 尾部合入器认 trades 键，先登记者胜），
@@ -45,9 +47,9 @@
 //   seedEcho / inheritEcho = 回指句模板位（§3.4）：本批只占位（null），模板文案随
 //                  P1-6 文案审定稿后填；null 时回指回落通用句的口径在 §3.4 已定。
 //   family       = 同族分区 id（第 2 期 P2-1 落数据，DESIGN-41 §4.1.0 与 FAMILY-TABLE
-//                  冻结版）：26 行当恰属一族——land 田土（farm/township/farm_returned，
-//                  T3 裁定 township 归田土）、plant 厂矿（factory/heavy/miner）、
-//                  hand 手艺（craft）、road 路上（truck/driver_taxi/courier）、
+//                  冻结版）：28 行当恰属一族——land 田土（farm/township/farm_returned，
+//                  T3 裁定 township 归田土）、plant 厂矿（factory/heavy/miner/builder）、
+//                  hand 手艺（craft/photo）、road 路上（truck/driver_taxi/courier）、
 //                  medic 医护（med_hosp/med/nurse/img/care）、word 文教（teach/
 //                  grad/press/write/exam_landed）、counter 柜台数（acct/fin）、
 //                  market 营生（shop/gig）、tech 技术（dev/fab）。只供 career.js 的
@@ -314,6 +316,26 @@ window.GAME_TRADES = {
     "inheritFrom": [],
     "seedEcho": null, "inheritEcho": null,
     "note": "研究在行：深造路线课题组入行拍 e_grad_start 立旗——全表唯一带 ctx.eduGate（严口径）＋studyLine 的入行拍，故 eduGate 登记 gate；工资 A 档高薪组＋grad 溢价"
+  },
+  "photo": {
+    "flag": "photo_work", "form": "employee",
+    "family": "hand",
+    "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
+    "eduGate": null, "gateDirect": true,
+    "coldOk": true, "coldKinds": ["follow", "recruit", "near"], "coldWeight": 4,
+    "inheritFrom": [],
+    "seedEcho": null, "inheritEcho": null,
+    "note": "摄影师（第 2 期注册片先行登记，用户 2026-11-09 裁定立行当、族籍归 hand 手艺族）：照相馆六代都在，eraIn 按行当存续六代全开——非现行 setter 实扫（本片只注册不写内容拍，入行拍随摄影师线施工批补，届时按文件头口径随 setter 重扫 eraIn/eduGate）；form 照照相馆学徒/职工的入行形态登 employee，gateDirect/coldKinds/coldWeight 与同族 craft 同档"
+  },
+  "builder": {
+    "flag": "builder_work", "form": "employee",
+    "family": "plant",
+    "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
+    "eduGate": null, "gateDirect": true,
+    "coldOk": true, "coldKinds": ["assign", "recruit", "follow", "wage"], "coldWeight": 3,
+    "inheritFrom": [],
+    "seedEcho": null, "inheritEcho": null,
+    "note": "建筑工人（第 2 期注册片先行登记，用户 2026-11-09 裁定立行当）：建筑工六代都有、包工头脸是内容层的事，eraIn 按行当存续六代全开——非现行 setter 实扫（本片只注册不写内容拍，入行拍随后补，届时按文件头口径随 setter 重扫）；族籍归 plant 厂矿（工地与厂矿同属重工业现场，总指挥定），coldKinds/coldWeight 与同族 heavy/miner 同档"
   },
 };
 

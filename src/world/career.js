@@ -334,7 +334,7 @@
     factory: "进厂", fab: "进半导体厂", craft: "学门手艺", heavy: "进钢铁厂", miner: "下矿",
     truck: "跑长途货车", med_hosp: "进医院", med: "当医生", nurse: "当护士", img: "去影像科",
     teach: "去教书", acct: "做财会", fin: "去证券营业部", press: "进报社", dev: "做软件开发",
-    driver_taxi: "开出租车", grad: "进课题组深造",
+    driver_taxi: "开出租车", grad: "进课题组深造", photo: "当摄影师", builder: "上工地",
   };
   // 关口选项的六维效果（P1-6 激活批定实，§5.2 硬要求：影子无头轨政策 F 第 3 级
   // 靠 effects 打分，空对象会让关口选项对影子恒 0 分、政策退化到位置兜底）。
@@ -353,6 +353,7 @@
     fin: { money: 4, growth: 2, wisdom: 1, health: -1 }, press: { growth: 3, wisdom: 3, relation: 1, money: 1 },
     dev: { money: 4, growth: 4, health: -2, freedom: 1 }, driver_taxi: { money: 3, freedom: 3, health: -2 },
     grad: { growth: 5, wisdom: 4, money: 1, freedom: -1 },
+    photo: { growth: 4, money: 2, freedom: 2 }, builder: { money: 3, health: -4, freedom: 1 },
   };
   function gateFx(trade) { return Object.assign({}, GATE_TRADE_FX[trade] || {}); }
   const GATE_KIND_SUB = {

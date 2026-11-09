@@ -59,7 +59,7 @@
     miner_work: "employee", truck_work: "employee", med_hosp: "employee", med_work: "employee",
     nurse_work: "employee", img_work: "employee", teach_work: "employee", acct_work: "employee",
     fin_work: "employee", press_work: "employee", dev_work: "employee", driver_taxi: "employee",
-    grad_work: "employee",
+    grad_work: "employee", photo_work: "employee", builder_work: "employee", // 第 2 期注册片新增两行当（摄影师/建筑工人，与 trades.js 双向对应，validate-state 守）
   };
   const FORM_SIDE_FLAGS = ["side_job", "xiahai"];
   const FORM_TIE_ORDER = ["farm", "public", "self", "flex", "employee"]; // R1 同龄同序时的表序
