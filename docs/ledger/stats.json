@@ -1,6 +1,6 @@
 {
- "totalRows": 2989,
- "uniqueIds": 2899,
+ "totalRows": 3019,
+ "uniqueIds": 2929,
  "duplicateIds": [
   {
    "id": "pr_origin",
@@ -257,6 +257,7 @@
   "src/content/prologue/prologue-c1955.js": 38,
   "src/content/prologue/prologue-c1995.js": 38,
   "src/content/pool/pack37.js": 36,
+  "src/content/pool/pack38.js": 30,
   "src/content/lines/abroad.js": 29,
   "src/content/pool/pack29.js": 28,
   "src/content/lines/process-beats.js": 26,
@@ -274,7 +275,7 @@
   "src/content/pool/pack36.js": 3
  },
  "byCategory": {
-  "普通池": 1904,
+  "普通池": 1934,
   "具名线": 332,
   "年代包": 309,
   "童年记号": 104,
@@ -289,7 +290,7 @@
   "分岔": 7
  },
  "byEra": {
-  "全年代": 1992,
+  "全年代": 2022,
   "c1955": 241,
   "c1965": 237,
   "c1978": 205,
@@ -303,13 +304,13 @@
   "c1978+c1985+c1995+c2000": 1
  },
  "byGate": {
-  "状态门": 2010,
-  "无门": 515,
+  "状态门": 2034,
+  "无门": 521,
   "序章幕": 321,
   "链条": 143
  },
  "byRoute": {
-  "不限": 2855,
+  "不限": 2885,
   "abroad": 53,
   "home": 25,
   "farm": 15,
@@ -328,10 +329,10 @@
   "corp+gap+home": 1,
   "home+corp+abroad+study+gap": 1
  },
- "introducedKnown": 129,
- "lineResolved": 2989,
+ "introducedKnown": 134,
+ "lineResolved": 3019,
  "withOccupation": 280,
- "withTrade": 252,
+ "withTrade": 259,
  "byTrade": {
   "factory": 59,
   "farm": 34,
@@ -342,6 +343,7 @@
   "gig": 13,
   "courier": 9,
   "heavy": 9,
+  "press": 9,
   "exam_landed": 6,
   "miner": 5,
   "img": 4,
@@ -352,7 +354,6 @@
   "acct": 2,
   "fin": 2,
   "dev": 2,
-  "press": 2,
   "driver_taxi": 2,
   "township": 2,
   "grad": 1,
@@ -369,24 +370,24 @@
   ]
  },
  "themeDupesRemoved": 0,
- "runtimeGamePacks": 2545,
+ "runtimeGamePacks": 2575,
  "runtimeGameDataEvents": 45,
  "textCounts": {
   "contentJsonStyle": {
-   "unique": 2474,
-   "occurrences": 2474
+   "unique": 2504,
+   "occurrences": 2504
   },
   "contentJsStyle": {
    "unique": 288,
    "occurrences": 479
   },
   "contentBothStyles": {
-   "unique": 2775,
-   "occurrences": 2985
+   "unique": 2805,
+   "occurrences": 3015
   },
   "srcBothStyles": {
-   "unique": 2888,
-   "occurrences": 3141
+   "unique": 2918,
+   "occurrences": 3171
   }
  },
  "lineMissing": [],
