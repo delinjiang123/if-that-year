@@ -1,6 +1,6 @@
 {
- "totalRows": 3211,
- "uniqueIds": 3121,
+ "totalRows": 3269,
+ "uniqueIds": 3179,
  "duplicateIds": [
   {
    "id": "pr_origin",
@@ -249,6 +249,7 @@
   "src/content/pool/pack20.js": 70,
   "src/content/prologue/cards.js": 68,
   "src/content/era/era1978.js": 63,
+  "src/content/pool/pack44.js": 58,
   "src/content/pool/pack42.js": 56,
   "src/content/prologue/prologue.js": 56,
   "src/events.js": 52,
@@ -280,7 +281,7 @@
   "src/content/pool/pack36.js": 3
  },
  "byCategory": {
-  "普通池": 2126,
+  "普通池": 2184,
   "具名线": 332,
   "年代包": 309,
   "童年记号": 104,
@@ -295,7 +296,7 @@
   "分岔": 7
  },
  "byEra": {
-  "全年代": 2147,
+  "全年代": 2205,
   "c1955": 241,
   "c1965": 237,
   "c2000": 208,
@@ -309,13 +310,13 @@
   "c1978+c1985+c1995+c2000": 1
  },
  "byGate": {
-  "状态门": 2193,
+  "状态门": 2251,
   "无门": 554,
   "序章幕": 321,
   "链条": 143
  },
  "byRoute": {
-  "不限": 3077,
+  "不限": 3135,
   "abroad": 53,
   "home": 25,
   "farm": 15,
@@ -335,7 +336,7 @@
   "home+corp+abroad+study+gap": 1
  },
  "introducedKnown": 153,
- "lineResolved": 3211,
+ "lineResolved": 3269,
  "withOccupation": 308,
  "withTrade": 287,
  "byTrade": {
@@ -375,24 +376,24 @@
   ]
  },
  "themeDupesRemoved": 0,
- "runtimeGamePacks": 2767,
+ "runtimeGamePacks": 2825,
  "runtimeGameDataEvents": 45,
  "textCounts": {
   "contentJsonStyle": {
-   "unique": 2696,
-   "occurrences": 2696
+   "unique": 2754,
+   "occurrences": 2754
   },
   "contentJsStyle": {
    "unique": 288,
    "occurrences": 479
   },
   "contentBothStyles": {
-   "unique": 2997,
-   "occurrences": 3207
+   "unique": 3055,
+   "occurrences": 3265
   },
   "srcBothStyles": {
-   "unique": 3110,
-   "occurrences": 3363
+   "unique": 3168,
+   "occurrences": 3421
   }
  },
  "lineMissing": [],
