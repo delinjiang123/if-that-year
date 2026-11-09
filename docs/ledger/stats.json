@@ -1,227 +1,227 @@
 {
- "totalRows": 2914,
- "uniqueIds": 2824,
+ "totalRows": 2921,
+ "uniqueIds": 2831,
  "duplicateIds": [
   {
    "id": "pr_origin",
    "count": 6,
    "at": [
-    "src/content/prologue/prologue-c1955.js:95",
-    "src/content/prologue/prologue-c1965.js:161",
-    "src/content/prologue/prologue-c1978.js:116",
-    "src/content/prologue/prologue-c1985.js:115",
-    "src/content/prologue/prologue-c1995.js:113",
-    "src/content/prologue/prologue.js:210"
+    "src/content/prologue/prologue-c1955.js:98",
+    "src/content/prologue/prologue-c1965.js:163",
+    "src/content/prologue/prologue-c1978.js:122",
+    "src/content/prologue/prologue-c1985.js:132",
+    "src/content/prologue/prologue-c1995.js:127",
+    "src/content/prologue/prologue.js:221"
    ]
   },
   {
    "id": "pr_child1",
    "count": 6,
    "at": [
-    "src/content/prologue/prologue-c1955.js:98",
-    "src/content/prologue/prologue-c1965.js:164",
-    "src/content/prologue/prologue-c1978.js:119",
-    "src/content/prologue/prologue-c1985.js:118",
-    "src/content/prologue/prologue-c1995.js:116",
-    "src/content/prologue/prologue.js:216"
+    "src/content/prologue/prologue-c1955.js:101",
+    "src/content/prologue/prologue-c1965.js:166",
+    "src/content/prologue/prologue-c1978.js:125",
+    "src/content/prologue/prologue-c1985.js:135",
+    "src/content/prologue/prologue-c1995.js:130",
+    "src/content/prologue/prologue.js:227"
    ]
   },
   {
    "id": "pr_child2",
    "count": 6,
    "at": [
-    "src/content/prologue/prologue-c1955.js:113",
-    "src/content/prologue/prologue-c1965.js:181",
-    "src/content/prologue/prologue-c1978.js:136",
-    "src/content/prologue/prologue-c1985.js:134",
-    "src/content/prologue/prologue-c1995.js:132",
-    "src/content/prologue/prologue.js:234"
+    "src/content/prologue/prologue-c1955.js:116",
+    "src/content/prologue/prologue-c1965.js:183",
+    "src/content/prologue/prologue-c1978.js:142",
+    "src/content/prologue/prologue-c1985.js:151",
+    "src/content/prologue/prologue-c1995.js:146",
+    "src/content/prologue/prologue.js:245"
    ]
   },
   {
    "id": "pr_child3",
    "count": 6,
    "at": [
-    "src/content/prologue/prologue-c1955.js:128",
-    "src/content/prologue/prologue-c1965.js:197",
-    "src/content/prologue/prologue-c1978.js:152",
-    "src/content/prologue/prologue-c1985.js:151",
-    "src/content/prologue/prologue-c1995.js:154",
-    "src/content/prologue/prologue.js:251"
+    "src/content/prologue/prologue-c1955.js:131",
+    "src/content/prologue/prologue-c1965.js:199",
+    "src/content/prologue/prologue-c1978.js:158",
+    "src/content/prologue/prologue-c1985.js:168",
+    "src/content/prologue/prologue-c1995.js:168",
+    "src/content/prologue/prologue.js:262"
    ]
   },
   {
    "id": "pr_child4",
    "count": 6,
    "at": [
-    "src/content/prologue/prologue-c1955.js:137",
-    "src/content/prologue/prologue-c1965.js:209",
-    "src/content/prologue/prologue-c1978.js:162",
-    "src/content/prologue/prologue-c1985.js:163",
-    "src/content/prologue/prologue-c1995.js:165",
-    "src/content/prologue/prologue.js:263"
+    "src/content/prologue/prologue-c1955.js:140",
+    "src/content/prologue/prologue-c1965.js:211",
+    "src/content/prologue/prologue-c1978.js:168",
+    "src/content/prologue/prologue-c1985.js:180",
+    "src/content/prologue/prologue-c1995.js:179",
+    "src/content/prologue/prologue.js:274"
    ]
   },
   {
    "id": "pr_teen1",
    "count": 6,
    "at": [
-    "src/content/prologue/prologue-c1955.js:146",
-    "src/content/prologue/prologue-c1965.js:226",
-    "src/content/prologue/prologue-c1978.js:171",
-    "src/content/prologue/prologue-c1985.js:181",
-    "src/content/prologue/prologue-c1995.js:174",
-    "src/content/prologue/prologue.js:283"
+    "src/content/prologue/prologue-c1955.js:149",
+    "src/content/prologue/prologue-c1965.js:228",
+    "src/content/prologue/prologue-c1978.js:177",
+    "src/content/prologue/prologue-c1985.js:198",
+    "src/content/prologue/prologue-c1995.js:188",
+    "src/content/prologue/prologue.js:294"
    ]
   },
   {
    "id": "pr_teen2",
    "count": 6,
    "at": [
-    "src/content/prologue/prologue-c1955.js:161",
-    "src/content/prologue/prologue-c1965.js:246",
-    "src/content/prologue/prologue-c1978.js:206",
-    "src/content/prologue/prologue-c1985.js:215",
-    "src/content/prologue/prologue-c1995.js:190",
-    "src/content/prologue/prologue.js:299"
+    "src/content/prologue/prologue-c1955.js:164",
+    "src/content/prologue/prologue-c1965.js:248",
+    "src/content/prologue/prologue-c1978.js:212",
+    "src/content/prologue/prologue-c1985.js:232",
+    "src/content/prologue/prologue-c1995.js:204",
+    "src/content/prologue/prologue.js:310"
    ]
   },
   {
    "id": "pr_fork16",
    "count": 6,
    "at": [
-    "src/content/prologue/prologue-c1955.js:205",
-    "src/content/prologue/prologue-c1965.js:284",
-    "src/content/prologue/prologue-c1978.js:250",
-    "src/content/prologue/prologue-c1985.js:254",
-    "src/content/prologue/prologue-c1995.js:230",
-    "src/content/prologue/prologue.js:348"
+    "src/content/prologue/prologue-c1955.js:208",
+    "src/content/prologue/prologue-c1965.js:286",
+    "src/content/prologue/prologue-c1978.js:256",
+    "src/content/prologue/prologue-c1985.js:271",
+    "src/content/prologue/prologue-c1995.js:244",
+    "src/content/prologue/prologue.js:359"
    ]
   },
   {
    "id": "pr_y17",
    "count": 6,
    "at": [
-    "src/content/prologue/prologue-c1955.js:243",
-    "src/content/prologue/prologue-c1965.js:320",
-    "src/content/prologue/prologue-c1978.js:278",
-    "src/content/prologue/prologue-c1985.js:267",
-    "src/content/prologue/prologue-c1995.js:279",
-    "src/content/prologue/prologue.js:371"
+    "src/content/prologue/prologue-c1955.js:246",
+    "src/content/prologue/prologue-c1965.js:322",
+    "src/content/prologue/prologue-c1978.js:284",
+    "src/content/prologue/prologue-c1985.js:284",
+    "src/content/prologue/prologue-c1995.js:293",
+    "src/content/prologue/prologue.js:382"
    ]
   },
   {
    "id": "pr_y18",
    "count": 6,
    "at": [
-    "src/content/prologue/prologue-c1955.js:283",
-    "src/content/prologue/prologue-c1965.js:351",
-    "src/content/prologue/prologue-c1978.js:311",
-    "src/content/prologue/prologue-c1985.js:291",
-    "src/content/prologue/prologue-c1995.js:307",
-    "src/content/prologue/prologue.js:406"
+    "src/content/prologue/prologue-c1955.js:286",
+    "src/content/prologue/prologue-c1965.js:353",
+    "src/content/prologue/prologue-c1978.js:317",
+    "src/content/prologue/prologue-c1985.js:308",
+    "src/content/prologue/prologue-c1995.js:321",
+    "src/content/prologue/prologue.js:417"
    ]
   },
   {
    "id": "pr_y20",
    "count": 6,
    "at": [
-    "src/content/prologue/prologue-c1955.js:323",
-    "src/content/prologue/prologue-c1965.js:382",
-    "src/content/prologue/prologue-c1978.js:360",
-    "src/content/prologue/prologue-c1985.js:319",
-    "src/content/prologue/prologue-c1995.js:338",
-    "src/content/prologue/prologue.js:440"
+    "src/content/prologue/prologue-c1955.js:326",
+    "src/content/prologue/prologue-c1965.js:384",
+    "src/content/prologue/prologue-c1978.js:385",
+    "src/content/prologue/prologue-c1985.js:336",
+    "src/content/prologue/prologue-c1995.js:352",
+    "src/content/prologue/prologue.js:451"
    ]
   },
   {
    "id": "pr_y21",
    "count": 6,
    "at": [
-    "src/content/prologue/prologue-c1955.js:363",
-    "src/content/prologue/prologue-c1965.js:413",
-    "src/content/prologue/prologue-c1978.js:392",
-    "src/content/prologue/prologue-c1985.js:345",
-    "src/content/prologue/prologue-c1995.js:369",
-    "src/content/prologue/prologue.js:466"
+    "src/content/prologue/prologue-c1955.js:366",
+    "src/content/prologue/prologue-c1965.js:415",
+    "src/content/prologue/prologue-c1978.js:424",
+    "src/content/prologue/prologue-c1985.js:362",
+    "src/content/prologue/prologue-c1995.js:383",
+    "src/content/prologue/prologue.js:477"
    ]
   },
   {
    "id": "pr_half1",
    "count": 6,
    "at": [
-    "src/content/prologue/prologue-c1955.js:446",
-    "src/content/prologue/prologue-c1965.js:578",
-    "src/content/prologue/prologue-c1978.js:466",
-    "src/content/prologue/prologue-c1985.js:566",
-    "src/content/prologue/prologue-c1995.js:450",
-    "src/content/prologue/prologue.js:570"
+    "src/content/prologue/prologue-c1955.js:449",
+    "src/content/prologue/prologue-c1965.js:584",
+    "src/content/prologue/prologue-c1978.js:515",
+    "src/content/prologue/prologue-c1985.js:583",
+    "src/content/prologue/prologue-c1995.js:473",
+    "src/content/prologue/prologue.js:593"
    ]
   },
   {
    "id": "pr_half2",
    "count": 6,
    "at": [
-    "src/content/prologue/prologue-c1955.js:456",
-    "src/content/prologue/prologue-c1965.js:586",
-    "src/content/prologue/prologue-c1978.js:474",
-    "src/content/prologue/prologue-c1985.js:574",
-    "src/content/prologue/prologue-c1995.js:460",
-    "src/content/prologue/prologue.js:578"
+    "src/content/prologue/prologue-c1955.js:459",
+    "src/content/prologue/prologue-c1965.js:592",
+    "src/content/prologue/prologue-c1978.js:523",
+    "src/content/prologue/prologue-c1985.js:591",
+    "src/content/prologue/prologue-c1995.js:483",
+    "src/content/prologue/prologue.js:601"
    ]
   },
   {
    "id": "pr_half3",
    "count": 6,
    "at": [
-    "src/content/prologue/prologue-c1955.js:469",
-    "src/content/prologue/prologue-c1965.js:596",
-    "src/content/prologue/prologue-c1978.js:484",
-    "src/content/prologue/prologue-c1985.js:584",
-    "src/content/prologue/prologue-c1995.js:472",
-    "src/content/prologue/prologue.js:588"
+    "src/content/prologue/prologue-c1955.js:472",
+    "src/content/prologue/prologue-c1965.js:602",
+    "src/content/prologue/prologue-c1978.js:533",
+    "src/content/prologue/prologue-c1985.js:601",
+    "src/content/prologue/prologue-c1995.js:495",
+    "src/content/prologue/prologue.js:611"
    ]
   },
   {
    "id": "pr_never1",
    "count": 6,
    "at": [
-    "src/content/prologue/prologue-c1955.js:481",
-    "src/content/prologue/prologue-c1965.js:608",
-    "src/content/prologue/prologue-c1978.js:496",
-    "src/content/prologue/prologue-c1985.js:596",
-    "src/content/prologue/prologue-c1995.js:484",
-    "src/content/prologue/prologue.js:600"
+    "src/content/prologue/prologue-c1955.js:484",
+    "src/content/prologue/prologue-c1965.js:614",
+    "src/content/prologue/prologue-c1978.js:545",
+    "src/content/prologue/prologue-c1985.js:613",
+    "src/content/prologue/prologue-c1995.js:507",
+    "src/content/prologue/prologue.js:623"
    ]
   },
   {
    "id": "pr_never2",
    "count": 6,
    "at": [
-    "src/content/prologue/prologue-c1955.js:494",
-    "src/content/prologue/prologue-c1965.js:619",
-    "src/content/prologue/prologue-c1978.js:507",
-    "src/content/prologue/prologue-c1985.js:608",
-    "src/content/prologue/prologue-c1995.js:496",
-    "src/content/prologue/prologue.js:608"
+    "src/content/prologue/prologue-c1955.js:497",
+    "src/content/prologue/prologue-c1965.js:625",
+    "src/content/prologue/prologue-c1978.js:556",
+    "src/content/prologue/prologue-c1985.js:625",
+    "src/content/prologue/prologue-c1995.js:519",
+    "src/content/prologue/prologue.js:631"
    ]
   },
   {
    "id": "pr_never3",
    "count": 6,
    "at": [
-    "src/content/prologue/prologue-c1955.js:505",
-    "src/content/prologue/prologue-c1965.js:629",
-    "src/content/prologue/prologue-c1978.js:517",
-    "src/content/prologue/prologue-c1985.js:618",
-    "src/content/prologue/prologue-c1995.js:508",
-    "src/content/prologue/prologue.js:618"
+    "src/content/prologue/prologue-c1955.js:508",
+    "src/content/prologue/prologue-c1965.js:635",
+    "src/content/prologue/prologue-c1978.js:566",
+    "src/content/prologue/prologue-c1985.js:635",
+    "src/content/prologue/prologue-c1995.js:531",
+    "src/content/prologue/prologue.js:641"
    ]
   }
  ],
  "byFile": {
   "src/content/pool/pack25.js": 126,
-  "src/content/pool/pack1.js": 111,
+  "src/content/pool/pack1.js": 113,
   "src/content/lines/late-life.js": 109,
   "src/content/era/era1955.js": 103,
   "src/content/era/era1965.js": 96,
@@ -249,7 +249,7 @@
   "src/content/pool/pack20.js": 70,
   "src/content/prologue/cards.js": 68,
   "src/content/era/era1978.js": 63,
-  "src/events.js": 50,
+  "src/events.js": 52,
   "src/content/prologue/prologue.js": 49,
   "src/content/prologue/prologue-c1965.js": 43,
   "src/content/prologue/prologue-c1978.js": 39,
@@ -269,10 +269,11 @@
   "src/content/pool/pack28.js": 10,
   "src/content/pool/pack34.js": 10,
   "src/content/pool/pack31.js": 3,
-  "src/content/pool/pack32.js": 3
+  "src/content/pool/pack32.js": 3,
+  "src/content/pool/pack36.js": 3
  },
  "byCategory": {
-  "普通池": 1845,
+  "普通池": 1850,
   "具名线": 332,
   "年代包": 303,
   "童年记号": 104,
@@ -284,10 +285,10 @@
   "稀有事件": 31,
   "序章随时池": 10,
   "协同组合": 8,
-  "分岔": 5
+  "分岔": 7
  },
  "byEra": {
-  "全年代": 1932,
+  "全年代": 1939,
   "c1955": 238,
   "c1965": 237,
   "c1978": 205,
@@ -301,13 +302,13 @@
   "c1978+c1985+c1995+c2000": 1
  },
  "byGate": {
-  "状态门": 1946,
-  "无门": 512,
+  "状态门": 1962,
+  "无门": 503,
   "序章幕": 313,
   "链条": 143
  },
  "byRoute": {
-  "不限": 2780,
+  "不限": 2787,
   "abroad": 53,
   "home": 25,
   "farm": 15,
@@ -327,7 +328,7 @@
   "home+corp+abroad+study+gap": 1
  },
  "introducedKnown": 124,
- "lineResolved": 2914,
+ "lineResolved": 2921,
  "withOccupation": 273,
  "withTrade": 245,
  "byTrade": {
@@ -358,24 +359,24 @@
   "med": 1,
   "truck": 1
  },
- "runtimeGamePacks": 2480,
+ "runtimeGamePacks": 2485,
  "runtimeGameDataEvents": 45,
  "textCounts": {
   "contentJsonStyle": {
-   "unique": 2409,
-   "occurrences": 2409
+   "unique": 2414,
+   "occurrences": 2414
   },
   "contentJsStyle": {
-   "unique": 282,
-   "occurrences": 380
+   "unique": 280,
+   "occurrences": 471
   },
   "contentBothStyles": {
-   "unique": 2704,
-   "occurrences": 2821
+   "unique": 2707,
+   "occurrences": 2917
   },
   "srcBothStyles": {
-   "unique": 2812,
-   "occurrences": 2970
+   "unique": 2817,
+   "occurrences": 3070
   }
  },
  "lineMissing": [],
@@ -436,8 +437,6 @@
    "exam",
    "exam_landed",
    "farm",
-   "fork_gate_first",
-   "fork_gate_switch",
    "gap",
    "garden_begun",
    "home",
@@ -486,7 +485,7 @@
   "microStages": 8,
   "prologueOriginOpen": 24,
   "prologueFlatsAges": 30,
-  "registryMilestones": 509,
-  "registryFlagsTotal": 544
+  "registryMilestones": 510,
+  "registryFlagsTotal": 545
  }
 }

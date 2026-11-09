@@ -268,7 +268,7 @@
           { label: "上中职，报对口升学班", requiresFact: { examBand: ["high", "mid"] }, requiresState: { schooling: ["school", "half"] }, setState: { track: "craft" }, setFact: { craftForm95: "upgrade" }, echo: "报名那天，你在专业表上挑了能对口升学的那个班。老师说，这条道窄是窄，好歹还通着往上走的口。" },
           { label: "上中职，报就业班", setState: { track: "craft" }, setFact: { craftForm95: "job" }, echo: "你选了就业班，学的是上手就能干的活。开学头一天，实训车间的机器声，你听了一上午。" },
           { label: "出去打工，先挣钱", setState: { track: "work" }, echo: "介绍人是早出去的表哥。临走那晚，你妈往行李箱里塞了吃的，又在最上头压了件厚外套。你坐上大巴，心里没底。" },
-          { label: "留在家里，帮家里这一摊", setState: { track: "home" }, echo: "你爸没说什么，第二天带你去看了家里的店和地，说，往后家里的事，你得跟着拿主意了。" },
+          { label: "留在家里，帮家里这一摊", setState: { track: "home" }, echo: "你爸没说什么，第二天带你去看了家里的店和地，说，往后家里的事，你得跟着拿主意了。", seed: "farm", seedNote: "你留在家里，家里的地和事，往后你都得跟着拿主意" },
         ],
         // fix2 二修：never/left 的选项组与缺省组同门同效，只换就业班回声——never 者入就业班走注册入学
         // （没考试、填表按手印，给出过程交代，18 岁对口小链的在读前提由此成立）；left 者写隔年再进校门。
@@ -279,7 +279,7 @@
             { label: "上中职，报对口升学班", requiresFact: { examBand: ["high", "mid"] }, requiresState: { schooling: ["school", "half"] }, setState: { track: "craft" }, setFact: { craftForm95: "upgrade" }, echo: "报名那天，你在专业表上挑了能对口升学的那个班。老师说，这条道窄是窄，好歹还通着往上走的口。" },
             { label: "上中职，报就业班", setState: { track: "craft" }, setFact: { craftForm95: "job" }, echo: "你选了就业班。报名时人家没要你考试，填了张表，按了手印，就把你收下了。开学头一天，实训车间的机器声，你听了一上午。" },
             { label: "出去打工，先挣钱", setState: { track: "work" }, echo: "介绍人是早出去的表哥。临走那晚，你妈往行李箱里塞了吃的，又在最上头压了件厚外套。你坐上大巴，心里没底。" },
-            { label: "留在家里，帮家里这一摊", setState: { track: "home" }, echo: "你爸没说什么，第二天带你去看了家里的店和地，说，往后家里的事，你得跟着拿主意了。" },
+            { label: "留在家里，帮家里这一摊", setState: { track: "home" }, echo: "你爸没说什么，第二天带你去看了家里的店和地，说，往后家里的事，你得跟着拿主意了。", seed: "farm", seedNote: "你留在家里，家里的地和事，往后你都得跟着拿主意" },
           ],
           left: [
             { label: "上高中，往高考那条道走", requiresFact: { examBand: "high" }, requiresState: { schooling: ["school", "half"] }, setState: { track: "study" }, setFact: { studyForm: "putong" }, echo: "录取通知书到家那天，你妈挨个给亲戚打了电话。开学前，家里给你买了部新手机，说有事往家里打。" },
@@ -287,7 +287,7 @@
             { label: "上中职，报对口升学班", requiresFact: { examBand: ["high", "mid"] }, requiresState: { schooling: ["school", "half"] }, setState: { track: "craft" }, setFact: { craftForm95: "upgrade" }, echo: "报名那天，你在专业表上挑了能对口升学的那个班。老师说，这条道窄是窄，好歹还通着往上走的口。" },
             { label: "上中职，报就业班", setState: { track: "craft" }, setFact: { craftForm95: "job" }, echo: "你选了就业班，学的是上手就能干的活。隔了一年多再进校门，你有点不习惯。开学头一天，实训车间的机器声，你听了一上午。" },
             { label: "出去打工，先挣钱", setState: { track: "work" }, echo: "介绍人是早出去的表哥。临走那晚，你妈往行李箱里塞了吃的，又在最上头压了件厚外套。你坐上大巴，心里没底。" },
-            { label: "留在家里，帮家里这一摊", setState: { track: "home" }, echo: "你爸没说什么，第二天带你去看了家里的店和地，说，往后家里的事，你得跟着拿主意了。" },
+            { label: "留在家里，帮家里这一摊", setState: { track: "home" }, echo: "你爸没说什么，第二天带你去看了家里的店和地，说，往后家里的事，你得跟着拿主意了。", seed: "farm", seedNote: "你留在家里，家里的地和事，往后你都得跟着拿主意" },
           ],
         } },
       { id: "pr_y17", age: 17, log: "十七岁",
@@ -558,12 +558,12 @@
             echo: "爷爷做的饭，和放学后没人催你的那段路，你一直记得挺清楚。",
             choices: [
               { label: "把爸妈的电话号码抄在文具盒里", effects: { relation: 1 }, echo: "想他们的时候，你就把文具盒打开看一眼。那个号码，你背得比乘法口诀还熟。" },
-              { label: "跟爷爷学着生灶火，抢着干活", effects: { wisdom: 1 }, echo: "灶膛的火你生得起来了，柴也是你劈的。爷爷说，这孩子手上有活，心里有数。" },
+              { label: "跟爷爷学着生灶火，抢着干活", effects: { wisdom: 1 }, echo: "灶膛的火你生得起来了，柴也是你劈的。爷爷说，这孩子手上有活，心里有数。", seed: "farm", seedNote: "在爷爷奶奶家，你学着生灶火、劈柴，抢着帮家里干活" },
               { label: "把想说的话写在本子最后一页，又涂掉", effects: { relation: -1, wisdom: 1 }, echo: "那页纸涂得看不清字了。电话打来，你只说都挺好的，别的没提。" },
             ],
             choicesBySit: { never: [
               { label: "把爸妈的电话号码抄在小本子上", effects: { relation: 1 }, echo: "想他们的时候，你就把本子翻开看一眼。那个号码，你背得比认的字还熟。" },
-              { label: "跟爷爷学着生灶火，抢着干活", effects: { wisdom: 1 }, echo: "灶膛的火你生得起来了，柴也是你劈的。爷爷说，这孩子手上有活，心里有数。" },
+              { label: "跟爷爷学着生灶火，抢着干活", effects: { wisdom: 1 }, echo: "灶膛的火你生得起来了，柴也是你劈的。爷爷说，这孩子手上有活，心里有数。", seed: "farm", seedNote: "在爷爷奶奶家，你学着生灶火、劈柴，抢着帮家里干活" },
               { label: "把想说的话写在本子最后一页，又涂掉", effects: { relation: -1, wisdom: 1 }, echo: "那页纸涂得看不清字了。电话打来，你只说都挺好的，别的没提。" },
             ] } },
           { segment: "low", form: "migrant", familyBeat: true, familyFact: "originLB", log: "留还是带",
