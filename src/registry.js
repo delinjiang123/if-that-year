@@ -1783,7 +1783,10 @@ window.GAME_REGISTRY.milestones = {
     "cr_shop_087",
     "cr_craft_075",
     "cr_craft_076",
-    "cr_craft_077"
+    "cr_craft_077",
+    "cr_shop_091",
+    "cr_shop_099",
+    "cr_shop_100",
    ],
    "note": "在职想走（第 2 期 P2-3 立）：后段想走拍 cr_want_cold（冷门来处）与 cr_want_seed（种子/承继来处）的「想换」选项立旗，两拍自身以 forbid 本旗关门防复读。消费者：world/career.js 的 gateSwitchDue——待业段满 1 年且想走、或在职想走（已立旗且不在待业段）两条支路开 gate_switch（框走 want；unit_gone 硬推走 fact 框）。立旗不清空：想走而没走（关口里又选了原行或推掉）旗仍在，冷却后再开（设计 §3.5，中年转行的口子留得住）"
   },
@@ -2041,7 +2044,8 @@ window.GAME_REGISTRY.milestones = {
     "e_truck_start",
     "p39_013",
     "p39_014",
-    "p39_015"
+    "p39_015",
+    "cr_shop_093",
    ],
    "note": "长途职业线入行（v0.18.0，职业语境门）：跟车入行拍立旗。CL-03（v0.60.24）补登 pack39 三条入行拍 p39_013–015（车队招工学徒/物流干线招司机/买车挂靠夫妻同车）"
   },
@@ -2067,7 +2071,8 @@ window.GAME_REGISTRY.milestones = {
    "setters": [
     "p15_071"
    ,
-    "farm_exit_settle"
+    "farm_exit_settle",
+    "cr_shop_092",
    ],
    "note": "工厂制造入行（v0.19.0，职业语境门）：招工入行拍立旗，工厂主簇以此为门"
   },
@@ -2076,7 +2081,8 @@ window.GAME_REGISTRY.milestones = {
     "p20_001",
     "p20_002",
     "p20_003",
-    "p20_008"
+    "p20_008",
+    "cr_shop_098",
    ],
    "note": "技工入行（v0.19.0）：钳/焊/机修/家电维修学徒拍立旗，技工簇以此为门"
   },
@@ -2166,14 +2172,16 @@ window.GAME_REGISTRY.milestones = {
   },
   "gig_work": {
    "setters": [
-    "p22_071"
+    "p22_071",
+    "cr_shop_095",
    ],
    "note": "零工/自由职业入行（v0.19.0）：劳务市场报名接活拍立旗，零工簇以此为门；与 side_job（副业）分家"
   },
   "courier_work": {
    "setters": [
     "p22_002",
-    "p22_072"
+    "p22_072",
+    "cr_shop_097",
    ],
    "note": "快递物流入行（v0.19.0）：转运分拣/站点招工拍立旗，快递簇以此为门"
   },
@@ -2182,7 +2190,8 @@ window.GAME_REGISTRY.milestones = {
     "p29_001",
     "p29_002",
     "farm_entry_new",
-    "farm_entry_main"
+    "farm_entry_main",
+    "cr_shop_094",
    ],
    "note": "种地入行（v0.19.0）：分家单过/分地到户拍立旗，种地簇以此为门；农民路线立项后此旗为该路线立线旗（入口含 pack35 接班拍）"
   },
@@ -2229,7 +2238,8 @@ window.GAME_REGISTRY.milestones = {
   },
   "care_work": {
    "setters": [
-    "p21_073"
+    "p21_073",
+    "cr_shop_096",
    ],
    "note": "职业陪护入行（v0.19.0）：陪护接活入行拍立旗；与家庭照护旗 care_ss_gap/care_self 分家"
   },
