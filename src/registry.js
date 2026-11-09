@@ -2022,9 +2022,12 @@ window.GAME_REGISTRY.milestones = {
   },
   "truck_work": {
    "setters": [
-    "e_truck_start"
+    "e_truck_start",
+    "p39_013",
+    "p39_014",
+    "p39_015"
    ],
-   "note": "长途职业线入行（v0.18.0，职业语境门）：跟车入行拍立旗"
+   "note": "长途职业线入行（v0.18.0，职业语境门）：跟车入行拍立旗。CL-03（v0.60.24）补登 pack39 三条入行拍 p39_013–015（车队招工学徒/物流干线招司机/买车挂靠夫妻同车）"
   },
   "truck_veteran": {
    "setters": [
@@ -2266,9 +2269,12 @@ window.GAME_REGISTRY.milestones = {
   },
   "driver_taxi": {
    "setters": [
-    "p30_021"
+    "p30_021",
+    "p39_016",
+    "p39_017",
+    "p39_018"
    ],
-   "note": "出租车入行（v0.19.0）：出租车公司招工入行拍立旗"
+   "note": "出租车入行（v0.19.0）：出租车公司招工入行拍立旗。CL-03（v0.60.24）补登 pack39 三条入行拍 p39_016–018（出租承包/退伍安置/网约车注册）"
   },
   "fin_work": {
    "setters": [
