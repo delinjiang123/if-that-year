@@ -347,6 +347,16 @@ window.GAME_TRADES = {
     "seedEcho": null, "inheritEcho": null,
     "note": "出海（第 2 期 CL-27 新线，用户 2026-11-10 亲点）：捕捞/海水养殖/海上体验三脸共用 sea_work 一旗；form 按自家船/自家水面的自营形态登 self（跟船学徒是入行前段，本线落点在自营）；族籍归 land 田土（耕海与种地同族，与 farm 互溢）；非正规口径（不在 WORK_FORMAL_FLAGS、入 WORK_INFORMAL_FLAGS，退休窗 63–68 与 farm 同族）；eraIn 六代全开（捕捞全年代、养殖规模化脸与体验脸由条目公历门分开）；inheritFrom 空——承继走线内入行拍（接家里的船/顶替），现行出身牌无渔家来源"
   },
+  "forestry": {
+    "flag": "forestry_work", "form": "employee",
+    "family": "land",
+    "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
+    "eduGate": null, "gateDirect": true,
+    "coldOk": true, "coldKinds": ["recruit", "assign"], "coldWeight": 3,
+    "inheritFrom": [],
+    "seedEcho": null, "inheritEcho": null,
+    "note": "林业（CL-47 开线，总指挥注册裁定）：森工/营林/林农/林站/生态护林五脸共用 forestry_work 一旗，脸靠公历门与 ctx 分；form 按单位制登 employee（森工局/国营林场/林业站是单位，命三林农与命五公益岗的脸在条目层自洽，不另立旗）；正规口径（入 WORK_FORMAL_FLAGS，退休窗 55–60，本片不写退休段）；族籍归 land 田土（山与田同族，与 farm/sea 互溢，照 sea 先例）；eraIn 六代全开（顶替脸止 1986、分配脸止 2003、选聘脸 2016 起，由条目公历门分开）；inheritFrom 空——承继（顶替）走线内入行拍 p75_015，现行出身牌无林业子弟来源"
+  },
 };
 
 // 冷门类型 × 年代可用表（COLD_KIND_ERA，§4.3）：机制只查表，格子内容是登记事实。

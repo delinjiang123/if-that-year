@@ -14,7 +14,7 @@
   // （变体选择只能在本函数做：呈现时 applyState 已先行流转，textState 无可分辨的域——口径见 sim-v0201/logs/w2-retire.md）。
   // 无当前单位事实者（买断离厂 laid_off 后再无入行/返聘事实）走条目声明的 textNoUnit/echoNoUnit 不点名单位变体。
   // 钱进程接口：未来养老金标定读 S.state.workPhase、S.retiredAt（退休落点年龄）与 S.retirePlan.form（退休前活计形态），定义见 docs/WORK-PHASE.md。
-  const WORK_FORMAL_FLAGS = ["factory_work", "fab_work", "craft_work", "heavy_work", "miner_work", "truck_work", "med_hosp", "teach_work", "acct_work", "fin_work", "press_work", "dev_work"];
+  const WORK_FORMAL_FLAGS = ["factory_work", "fab_work", "craft_work", "heavy_work", "miner_work", "truck_work", "med_hosp", "teach_work", "acct_work", "fin_work", "press_work", "dev_work", "forestry_work"];
   const WORK_INFORMAL_FLAGS = ["shop_work", "gig_work", "farm_work", "courier_work", "care_work", "write_work", "sea_work"];
 
   function workForm() {
@@ -59,7 +59,7 @@
     miner_work: "employee", truck_work: "employee", med_hosp: "employee", med_work: "employee",
     nurse_work: "employee", img_work: "employee", teach_work: "employee", acct_work: "employee",
     fin_work: "employee", press_work: "employee", dev_work: "employee", driver_taxi: "employee",
-    grad_work: "employee", photo_work: "employee", builder_work: "employee", sea_work: "self", // 第 2 期注册片新增行当（摄影师/建筑工人＋CL-27 出海，与 trades.js 双向对应，validate-state 守）
+    grad_work: "employee", photo_work: "employee", builder_work: "employee", sea_work: "self", forestry_work: "employee", // 第 2 期注册片新增行当（摄影师/建筑工人＋CL-27 出海，与 trades.js 双向对应，validate-state 守）；forestry_work 为 CL-47 林业开线新增（总指挥裁定 form=employee）
   };
   const FORM_SIDE_FLAGS = ["side_job", "xiahai"];
   const FORM_TIE_ORDER = ["farm", "public", "self", "flex", "employee"]; // R1 同龄同序时的表序
