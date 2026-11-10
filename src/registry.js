@@ -525,7 +525,8 @@ window.GAME_REGISTRY.milestones = {
   "exam_landed": {
    "setters": [
     "p16_072",
-    "cr_teach_105"
+    "cr_teach_105",
+    "cr_press_095"
    ],
    "note": "体制内上岸落点（v0.20.1 W6 改链）：面试（p16_005）只落 exam_passed，录取（p16_071）→报到（p16_072）链尾才落本旗，后续体制内在行文本以此为据"
   },
@@ -1799,6 +1800,10 @@ window.GAME_REGISTRY.milestones = {
     "cr_press_084",
     "cr_press_085",
     "cr_press_086",
+    "cr_press_090",
+    "cr_press_091",
+    "cr_press_093",
+    "cr_press_096",
    ],
    "note": "在职想走（第 2 期 P2-3 立）：后段想走拍 cr_want_cold（冷门来处）与 cr_want_seed（种子/承继来处）的「想换」选项立旗，两拍自身以 forbid 本旗关门防复读。消费者：world/career.js 的 gateSwitchDue——待业段满 1 年且想走、或在职想走（已立旗且不在待业段）两条支路开 gate_switch（框走 want；unit_gone 硬推走 fact 框）。立旗不清空：想走而没走（关口里又选了原行或推掉）旗仍在，冷却后再开（设计 §3.5，中年转行的口子留得住）"
   },
@@ -2264,7 +2269,8 @@ window.GAME_REGISTRY.milestones = {
     "p37_017",
     "p37_018",
     "p37_019",
-    "cr_craft_086"
+    "cr_craft_086",
+    "cr_press_097"
    ],
    "note": "教师入行（v0.19.0）：r_school1 分配到校呈现即立（两选项均为教书），教师簇以此为门；traj_school 仍为轨迹旗。v0.60.20 补登 pack37 五条入行拍（代课/接班/考编/特岗/临聘，均 ctx entry 立 teach_work）"
   },
@@ -2295,7 +2301,8 @@ window.GAME_REGISTRY.milestones = {
   "write_work": {
    "setters": [
     "p2_086",
-    "cr_teach_107"
+    "cr_teach_107",
+    "cr_press_092"
    ],
    "note": "写作入行（v0.19.0）：副业写作留用拍立旗，r_book/end_bestseller 以此为证据门"
   },
