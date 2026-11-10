@@ -1617,6 +1617,11 @@ window.GAME_REGISTRY.milestones = {
     "p12_039"
    ]
   },
+  "photo_work": {
+   "setters": [
+   ],
+   "note": "摄影入行（CL-78 注册落地片）：行当与旗已在 trades.js／work.js FORM_OF_FLAG 登记，本条目为注册占位——现池无任何条目立此旗（setters 空集，validate-state 双向对账空集自洽），入行拍随摄影师线开线批补入后逐条补登。形态 flex 机会层（ENTRY_OPPORTUNITY_FLAGS 在册、退休 informal 63–68），族籍 hand 与 craft 同族；与爱好旗 hobby_photo（p10_005）、出片旗 photo_show 分家——爱好是种子土壤不是入行"
+  },
   "photo_show": {
    "setters": [
     "p10_006"

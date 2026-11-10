@@ -318,14 +318,14 @@ window.GAME_TRADES = {
     "note": "研究在行：深造路线课题组入行拍 e_grad_start 立旗——全表唯一带 ctx.eduGate（严口径）＋studyLine 的入行拍，故 eduGate 登记 gate；工资 A 档高薪组＋grad 溢价"
   },
   "photo": {
-    "flag": "photo_work", "form": "employee",
+    "flag": "photo_work", "form": "flex",
     "family": "hand",
     "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
     "eduGate": null, "gateDirect": true,
     "coldOk": true, "coldKinds": ["follow", "recruit", "near"], "coldWeight": 4,
     "inheritFrom": [],
     "seedEcho": null, "inheritEcho": null,
-    "note": "摄影师（第 2 期注册片先行登记，用户 2026-11-09 裁定立行当、族籍归 hand 手艺族）：照相馆六代都在，eraIn 按行当存续六代全开——非现行 setter 实扫（本片只注册不写内容拍，入行拍随摄影师线施工批补，届时按文件头口径随 setter 重扫 eraIn/eduGate）；form 照照相馆学徒/职工的入行形态登 employee，gateDirect/coldKinds/coldWeight 与同族 craft 同档"
+    "note": "摄影师（第 2 期注册片先行登记，用户 2026-11-09 裁定立行当、族籍归 hand 手艺族；CL-78 注册落地片定 form）：四张脸里婚礼跟拍是接活、风光是自由投稿、开影楼是自己的店，只有新闻一脸是稳定受雇，早年代照相馆职工脸是年代脸——入行主形状是爱好起步（相机/摄影社种子）后接活吃饭，与 write 同型，form 定 flex 机会层（配额 150 是内容量不是层级，照 write/care 先例），入 ENTRY_OPPORTUNITY_FLAGS、退休走 WORK_INFORMAL_FLAGS 的 63–68 窗；eraIn 六代全开的论证：照相馆作为国营/集体服务行当在县城自 1950 年代起不断线（c1955 出生者青年正赶上学徒招工），行当先于最早一代人的从业年存在，与 1993 年才出生的 courier 收窄情形不同——胶片/数码只是换脸，脸由条目公历门分；eraIn 仍非现行 setter 实扫（本片只注册不写内容拍，入行拍随摄影师线施工批补，届时按文件头口径随 setter 重扫 eraIn/eduGate）；coldKinds/coldWeight 与 flex 同侪同档（care 同 kinds、courier 同权重）"
   },
   "builder": {
     "flag": "builder_work", "form": "employee",

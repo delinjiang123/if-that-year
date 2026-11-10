@@ -15,7 +15,7 @@
   // 无当前单位事实者（买断离厂 laid_off 后再无入行/返聘事实）走条目声明的 textNoUnit/echoNoUnit 不点名单位变体。
   // 钱进程接口：未来养老金标定读 S.state.workPhase、S.retiredAt（退休落点年龄）与 S.retirePlan.form（退休前活计形态），定义见 docs/WORK-PHASE.md。
   const WORK_FORMAL_FLAGS = ["factory_work", "fab_work", "craft_work", "heavy_work", "miner_work", "truck_work", "med_hosp", "teach_work", "acct_work", "fin_work", "press_work", "dev_work", "forestry_work"];
-  const WORK_INFORMAL_FLAGS = ["shop_work", "gig_work", "farm_work", "courier_work", "care_work", "write_work", "sea_work"];
+  const WORK_INFORMAL_FLAGS = ["shop_work", "gig_work", "farm_work", "courier_work", "care_work", "write_work", "sea_work", "photo_work"]; // photo_work：CL-78 注册落地定 flex 机会层，退休窗随 informal 63–68
 
   function workForm() {
     if (WORK_FORMAL_FLAGS.some((f) => IFY.S.flags[f])) return "formal";
@@ -54,19 +54,19 @@
     farm_returned: "farm", // 厂散回落（farm_township_back 立）：落点年龄晚于 township_work，R1 按落点裁定把形态拽回 farm
     exam_landed: "public",
     shop_work: "self",
-    gig_work: "flex", courier_work: "flex", care_work: "flex", write_work: "flex",
+    gig_work: "flex", courier_work: "flex", care_work: "flex", write_work: "flex", photo_work: "flex",
     factory_work: "employee", fab_work: "employee", craft_work: "employee", heavy_work: "employee",
     miner_work: "employee", truck_work: "employee", med_hosp: "employee", med_work: "employee",
     nurse_work: "employee", img_work: "employee", teach_work: "employee", acct_work: "employee",
     fin_work: "employee", press_work: "employee", dev_work: "employee", driver_taxi: "employee",
-    grad_work: "employee", photo_work: "employee", builder_work: "employee", sea_work: "self", forestry_work: "employee", // 第 2 期注册片新增行当（摄影师/建筑工人＋CL-27 出海，与 trades.js 双向对应，validate-state 守）；forestry_work 为 CL-47 林业开线新增（总指挥裁定 form=employee）
+    grad_work: "employee", builder_work: "employee", sea_work: "self", forestry_work: "employee", // 第 2 期注册片新增行当（建筑工人＋CL-27 出海，与 trades.js 双向对应，validate-state 守）；forestry_work 为 CL-47 林业开线新增（总指挥裁定 form=employee）；photo_work 的 form 已由 CL-78 注册落地片改定 flex（见上行 flex 组与 trades.js photo 注）
   };
   const FORM_SIDE_FLAGS = ["side_job", "xiahai"];
   const FORM_TIE_ORDER = ["farm", "public", "self", "flex", "employee"]; // R1 同龄同序时的表序
   // 主线资格分层（AN-3 D-8）：机会层入行旗（写稿/照护/零工/快递——过渡活计口径，
   // r_gap_work 等条目自带此读法）只在本局没有任何正职层入行旗时才算主线；正职层
   // （其余全部入行旗）一旦落定，机会层后到不夺主线（先开店后写稿，主线仍是开店）。
-  const ENTRY_OPPORTUNITY_FLAGS = ["write_work", "care_work", "gig_work", "courier_work"];
+  const ENTRY_OPPORTUNITY_FLAGS = ["write_work", "care_work", "gig_work", "courier_work", "photo_work"];
 
   // 主入行旗（v0.20.0 M2 形态补修第二批）：R1 的「最近入行旗」单独导出为可读量——
   // formOf() 的形态与 ctx.mainLine 门都读它。返回值是入行旗 id（如 "teach_work"），

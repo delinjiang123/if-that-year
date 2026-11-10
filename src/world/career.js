@@ -22,7 +22,7 @@
   const IDLE_EVENT_IDS = { p7_034: true, p13_023: true };
   // 机会层入行旗：与 work.js ENTRY_OPPORTUNITY_FLAGS 逐字同步（回填候选口径要用）。
   // work.js 那份是主线派生的源头；本处漂移会被 validate-state 的回填对账测试逮住。
-  const OPPORTUNITY_FLAGS = { write_work: true, care_work: true, gig_work: true, courier_work: true };
+  const OPPORTUNITY_FLAGS = { write_work: true, care_work: true, gig_work: true, courier_work: true, photo_work: true };
 
   // 职业流的哈希/步进优先用 engine.js 的 IFY.seedFromString / IFY.mulberry（同种子同
   // 序列的正主）；两者不在场（隔离工具沙盒）时回落本文件内的同算法副本——算法与
