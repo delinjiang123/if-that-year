@@ -81,6 +81,9 @@ button.big{width:100%;margin-bottom:14px}
 #foldbody .setblock:first-of-type{border-top:none;margin-top:10px;padding-top:0}
 .foldguide{margin:10px 0 0}
 .actions .primary,.actions .ghost{width:100%;margin-top:0}
+.foldstartrow{margin:14px 0 2px}
+.foldstartrow .primary,.foldstartrow .ghost{width:100%}
+.foldstartrow .primary{min-height:52px;padding:13px 22px;font-size:16px;font-weight:700;letter-spacing:.03em;box-shadow:0 8px 22px rgba(47,74,60,.30)}
 /* 出身牌（v0.13.0）：三行九张、每行预选第一张；静态呈现，无翻牌动效；窄屏纵列 */
 .carddeck{margin-top:16px}
 .cardrow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:6px 0 4px}

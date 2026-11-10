@@ -1,4 +1,4 @@
-// 《如果那年》引擎 v0.60.43 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
+// 《如果那年》引擎 v0.60.44 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
 //      / 判词按数值形状拼装 / 全程自动存档可续玩 / 种子可输入、可复制分享链接 / 在线零 LLM 调用
 // [模块]本引擎自 v0.20.0 起拆为各自独立的模块文件（独立包装器 + window.IFY 共享命名空间），按 index.html 的顺序加载：本文件（建 IFY + 编排）→ src/world/apply.js → src/record.js → src/world/processes/{parents,spouse,work,place,health}.js → src/scheduler.js → src/views/{stream,year,shadow,settlement,share}.js → src/engine-boot.js（收尾，调用 IFY.renderStart()）。跨模块引用一律 IFY.<名>，可变量收编为 IFY 属性。
 window.IFY = window.IFY || {};
@@ -792,6 +792,7 @@ window.IFY = window.IFY || {};
               <p class="hint" id="dailyline"></p>
               <p class="hint tomorrow-note">明天一局：${tomDaily.era.label} · ${hasPrologue(tomDaily.era.id) ? "从小时候开始" : esc(tomDaily.route.name)}。</p>
             </div>
+            <div class="foldstartrow"><button type="button" id="startgo2" class="${liveSaved ? "ghost" : "primary"}">${liveSaved ? "重新开始一局" : "开始这一生"}</button></div>
             <div class="foldcloserow"><button type="button" class="ghost" id="foldclose">收起</button></div>
           </div>
         </div>
@@ -898,6 +899,7 @@ window.IFY = window.IFY || {};
     const eraObj = () => ERAS.find((e) => e.id === selEra()) || ERAS[ERAS.length - 1];
     const birthYears = () => { const e = eraObj(); const ys = []; for (let y = e.win[0]; y <= e.win[1]; y++) ys.push(y); return ys; };
     const shownBirth = () => { const ys = birthYears(); return birthOverride != null && ys.includes(birthOverride) ? birthOverride : drawBirthYear(effSeed(), eraObj()); };
+    const setStartLabels = (txt) => { const a = el("startgo"); if (a) a.textContent = txt; const b = el("startgo2"); if (b) b.textContent = txt; }; // 顶部主按钮与折叠区内开始钮（startgo2）文案恒一致
     const syncBirth = () => {
       const e = eraObj(); if (!e.win) return;
       const ys = birthYears();
@@ -908,7 +910,7 @@ window.IFY = window.IFY || {};
       if (strip) strip.innerHTML = ys.map((yy) => `<button type="button" class="yearbtn${yy === y ? " sel" : ""}" data-year="${yy}" aria-label="生在${yy}年">${String(yy % 100).padStart(2, "0")}</button>`).join("");
       const bh = el("birthhint");
       if (bh) bh.textContent = birthOverride != null && ys.includes(birthOverride) ? "就定在这一年了。点别的数字，可以再换。" : "这一年，你出生了。点一个数字，就能换一年。";
-      const sg0 = el("startgo"); if (sg0 && !liveSaved) sg0.textContent = `从${y}年开始这一生`;
+      if (!liveSaved) setStartLabels(`从${y}年开始这一生`);
     };
     const stripEl = el("yearstrip");
     if (stripEl) stripEl.addEventListener("click", (ev) => { const b = ev.target.closest(".yearbtn"); if (!b) return; birthOverride = Number(b.dataset.year); syncBirth(); });
@@ -937,7 +939,7 @@ window.IFY = window.IFY || {};
       const t = el("starttitle"); if (t) t.textContent = "你没走的那条路，过得怎么样？";
       const db = el("deckblock"); if (db) db.hidden = pro;
       const ed = el("eradesc"); if (ed) { const pool = (eraObj().descs || []); if (pool.length) ed.textContent = pool[seedFromString(effSeed() + "#eradesc:" + eraObj().id) % pool.length]; } // 年代说明行：按种子+年代选条——同一开局恒同一条（与「同种子同人生」一致），换种子才换条；纯呈现，不入局不入存档
-      const sg = el("startgo"); if (sg) sg.textContent = startLabel();
+      setStartLabels(startLabel());
     };
     document.querySelectorAll("#erapick .segbtn").forEach((b) => b.addEventListener("click", eraToggle));
     eraToggle();
@@ -975,6 +977,8 @@ window.IFY = window.IFY || {};
       seIn.addEventListener("keydown", (ev) => { if (ev.key === "Enter") { ev.preventDefault(); seGo.click(); } });
     }
     // 统一开局按钮：序章年代走序章开局；无序章年代先落出身、路线留到局内 22 岁汇入拍选（newGame 只建局不落路线）
+    const sg2 = el("startgo2"); // 折叠区内的同路开始钮：在「设置与对局」里备好（今日一局/种子码/推进）就能直接进局，不必滚回顶部（与 seedentrygo 同式，转发统一开局按钮，不另起开局逻辑）
+    if (sg2) sg2.addEventListener("click", () => { const sg = el("startgo"); if (sg) sg.click(); });
     el("startgo").addEventListener("click", () => {
       if (startLock) return;
       startLock = true;
