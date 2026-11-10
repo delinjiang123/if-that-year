@@ -2087,6 +2087,11 @@ window.GAME_REGISTRY.milestones = {
     "p39_015",
     "cr_shop_093",
     "cr_farm_118",
+    "cr_truck_045",
+    "cr_truck_046",
+    "cr_truck_048",
+    "cr_truck_049",
+    "cr_truck_050",
    ],
    "note": "长途职业线入行（v0.18.0，职业语境门）：跟车入行拍立旗。CL-03（v0.60.24）补登 pack39 三条入行拍 p39_013–015（车队招工学徒/物流干线招司机/买车挂靠夫妻同车）"
   },
@@ -2126,6 +2131,7 @@ window.GAME_REGISTRY.milestones = {
     "p20_003",
     "p20_008",
     "cr_shop_098",
+    "cr_truck_063",
    ],
    "note": "技工入行（v0.19.0）：钳/焊/机修/家电维修学徒拍立旗，技工簇以此为门"
   },
@@ -2214,7 +2220,8 @@ window.GAME_REGISTRY.milestones = {
     "cr_craft_081",
     "cr_farm_115",
     "cr_teach_104",
-    "cr_write_110"
+    "cr_write_110",
+    "cr_driver_taxi_038"
    ],
    "note": "店主入行（v0.19.0）：批发学徒/接手家店/开网店拍立旗，商户簇以此为门"
   },
@@ -2445,7 +2452,11 @@ window.GAME_REGISTRY.milestones = {
     "p30_021",
     "p39_016",
     "p39_017",
-    "p39_018"
+    "p39_018",
+    "cr_driver_taxi_026",
+    "cr_driver_taxi_027",
+    "cr_driver_taxi_029",
+    "cr_driver_taxi_037"
    ],
    "note": "出租车入行（v0.19.0）：出租车公司招工入行拍立旗。CL-03（v0.60.24）补登 pack39 三条入行拍 p39_016–018（出租承包/退伍安置/网约车注册）"
   },
