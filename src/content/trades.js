@@ -337,6 +337,16 @@ window.GAME_TRADES = {
     "seedEcho": null, "inheritEcho": null,
     "note": "建筑工人（第 2 期注册片先行登记，用户 2026-11-09 裁定立行当）：建筑工六代都有、包工头脸是内容层的事，eraIn 按行当存续六代全开——非现行 setter 实扫（本片只注册不写内容拍，入行拍随后补，届时按文件头口径随 setter 重扫）；族籍归 plant 厂矿（工地与厂矿同属重工业现场，总指挥定），coldKinds/coldWeight 与同族 heavy/miner 同档"
   },
+  "sea": {
+    "flag": "sea_work", "form": "self",
+    "family": "land",
+    "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
+    "eduGate": null, "gateDirect": true,
+    "coldOk": true, "coldKinds": ["assign", "recruit", "follow", "wage"], "coldWeight": 3,
+    "inheritFrom": [],
+    "seedEcho": null, "inheritEcho": null,
+    "note": "出海（第 2 期 CL-27 新线，用户 2026-11-10 亲点）：捕捞/海水养殖/海上体验三脸共用 sea_work 一旗；form 按自家船/自家水面的自营形态登 self（跟船学徒是入行前段，本线落点在自营）；族籍归 land 田土（耕海与种地同族，与 farm 互溢）；非正规口径（不在 WORK_FORMAL_FLAGS、入 WORK_INFORMAL_FLAGS，退休窗 63–68 与 farm 同族）；eraIn 六代全开（捕捞全年代、养殖规模化脸与体验脸由条目公历门分开）；inheritFrom 空——承继走线内入行拍（接家里的船/顶替），现行出身牌无渔家来源"
+  },
 };
 
 // 冷门类型 × 年代可用表（COLD_KIND_ERA，§4.3）：机制只查表，格子内容是登记事实。
