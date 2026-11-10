@@ -325,7 +325,7 @@ window.GAME_TRADES = {
     "coldOk": true, "coldKinds": ["follow", "recruit", "near"], "coldWeight": 4,
     "inheritFrom": [],
     "seedEcho": null, "inheritEcho": null,
-    "note": "摄影师（第 2 期注册片先行登记，用户 2026-11-09 裁定立行当、族籍归 hand 手艺族；CL-78 注册落地片定 form）：四张脸里婚礼跟拍是接活、风光是自由投稿、开影楼是自己的店，只有新闻一脸是稳定受雇，早年代照相馆职工脸是年代脸——入行主形状是爱好起步（相机/摄影社种子）后接活吃饭，与 write 同型，form 定 flex 机会层（配额 150 是内容量不是层级，照 write/care 先例），入 ENTRY_OPPORTUNITY_FLAGS、退休走 WORK_INFORMAL_FLAGS 的 63–68 窗；eraIn 六代全开的论证：照相馆作为国营/集体服务行当在县城自 1950 年代起不断线（c1955 出生者青年正赶上学徒招工），行当先于最早一代人的从业年存在，与 1993 年才出生的 courier 收窄情形不同——胶片/数码只是换脸，脸由条目公历门分；eraIn 仍非现行 setter 实扫（本片只注册不写内容拍，入行拍随摄影师线施工批补，届时按文件头口径随 setter 重扫 eraIn/eduGate）；coldKinds/coldWeight 与 flex 同侪同档（care 同 kinds、courier 同权重）"
+    "note": "摄影师（第 2 期注册片先行登记，用户 2026-11-09 裁定立行当、族籍归 hand 手艺族；CL-78 注册落地片定 form）：四张脸里婚礼跟拍是接活、风光是自由投稿、开影楼是自己的店，只有新闻一脸是稳定受雇，早年代照相馆职工脸是年代脸——入行主形状是爱好起步（相机/摄影社种子）后接活吃饭，与 write 同型，form 定 flex 机会层（配额 150 是内容量不是层级，照 write/care 先例），入 ENTRY_OPPORTUNITY_FLAGS、退休走 WORK_INFORMAL_FLAGS 的 63–68 窗；eraIn 六代全开的论证：照相馆作为国营/集体服务行当在县城自 1950 年代起不断线（c1955 出生者青年正赶上学徒招工），行当先于最早一代人的从业年存在，与 1993 年才出生的 courier 收窄情形不同——胶片/数码只是换脸，脸由条目公历门分；eraIn 仍非现行 setter 实扫（本片只注册不写内容拍，入行拍随摄影师线施工批补，届时按文件头口径随 setter 重扫 eraIn/eduGate）；coldKinds/coldWeight 与 flex 同侪同档（care 同 kinds、courier 同权重）；CL-84 开线批随五门 setter（p100_014–018）实扫复核：六代各有至少一扇可达门——c1955/c1965 走 014 馆学徒（≤1998、16–22 岁）与 016 通讯员（≤1998、19–30 岁），c1978/c1985 走 015 影楼助理（2000 起）、017 卖图起步（1998–2008）与 018 器材店转入（2005 起），c1995/c2000 走 015/018 并有 019 手机先行土壤面（2016 起），eraIn 六代全开复核维持；eduGate 复核维持 null（五门均无学历门，影楼助理与通讯员皆以手艺与作品入行）"
   },
   "builder": {
     "flag": "builder_work", "form": "employee",

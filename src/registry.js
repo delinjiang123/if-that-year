@@ -1619,8 +1619,13 @@ window.GAME_REGISTRY.milestones = {
   },
   "photo_work": {
    "setters": [
+    "p100_014",
+    "p100_015",
+    "p100_016",
+    "p100_017",
+    "p100_018"
    ],
-   "note": "摄影入行（CL-78 注册落地片）：行当与旗已在 trades.js／work.js FORM_OF_FLAG 登记，本条目为注册占位——现池无任何条目立此旗（setters 空集，validate-state 双向对账空集自洽），入行拍随摄影师线开线批补入后逐条补登。形态 flex 机会层（ENTRY_OPPORTUNITY_FLAGS 在册、退休 informal 63–68），族籍 hand 与 craft 同族；与爱好旗 hobby_photo（p10_005）、出片旗 photo_show 分家——爱好是种子土壤不是入行"
+   "note": "摄影入行（CL-78 注册落地片）：行当与旗已在 trades.js／work.js FORM_OF_FLAG 登记，本条目为注册占位——现池无任何条目立此旗（setters 空集，validate-state 双向对账空集自洽），入行拍随摄影师线开线批补入后逐条补登。形态 flex 机会层（ENTRY_OPPORTUNITY_FLAGS 在册、退休 informal 63–68），族籍 hand 与 craft 同族；与爱好旗 hobby_photo（p10_005）、出片旗 photo_show 分家——爱好是种子土壤不是入行。CL-84 开线第一片（pack100）补登五门 setters：p100_014 馆学徒进暗房／p100_015 影楼化妆助理／p100_016 报社通讯员转／p100_017 爱好卖图起步／p100_018 器材店店员转跟拍；五门之外的立旗者仍为零（关口入行走 career.js 机制不入本表）"
   },
   "photo_show": {
    "setters": [
