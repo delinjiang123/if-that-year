@@ -265,17 +265,17 @@ window.GAME_TRADES = {
     "coldOk": true, "coldKinds": ["recruit", "near"], "coldWeight": 3,
     "inheritFrom": [],
     "seedEcho": null, "inheritEcho": null,
-    "note": "财会入行：第一份出纳活拍 p16_016 立旗"
+    "note": "财会入行：第一份出纳活拍 p16_016 立旗；CL-46 开线补四门 p74_004–007（供销社学徒/乡办厂出纳/支行培训/事务所分配，各以公历窗分代）"
   },
   "fin": {
     "flag": "fin_work", "form": "employee",
     "family": "counter",
-    "eraIn": ["c1965"],
+    "eraIn": ["c1965", "c1978", "c1985", "c1995", "c2000"],
     "eduGate": null, "gateDirect": true,
     "coldOk": true, "coldKinds": ["recruit", "wage"], "coldWeight": 3,
     "inheritFrom": [],
     "seedEcho": null, "inheritEcho": null,
-    "note": "证券柜台入行（年代内小线）：营业部柜台拍 p18_021 立旗，该拍 era=c1965 独占（注记「仅 c1965 两条」）"
+    "note": "证券柜台入行：营业部柜台拍 p18_021 立旗（该拍 era=c1965 独占）；CL-46 开线（总指挥裁定）：eraIn 自 c1965 扩为 c1965–c2000，入行门 p74_008 以公历窗 1990–2000 把可达面收在柜台年代内，在行拍按公历门与年龄窗分代"
   },
   "press": {
     "flag": "press_work", "form": "employee",
