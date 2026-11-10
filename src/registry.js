@@ -1789,6 +1789,8 @@ window.GAME_REGISTRY.milestones = {
     "cr_shop_100",
     "cr_factory_121",
     "cr_factory_128",
+    "cr_craft_087",
+    "cr_craft_088",
    ],
    "note": "在职想走（第 2 期 P2-3 立）：后段想走拍 cr_want_cold（冷门来处）与 cr_want_seed（种子/承继来处）的「想换」选项立旗，两拍自身以 forbid 本旗关门防复读。消费者：world/career.js 的 gateSwitchDue——待业段满 1 年且想走、或在职想走（已立旗且不在待业段）两条支路开 gate_switch（框走 want；unit_gone 硬推走 fact 框）。立旗不清空：想走而没走（关口里又选了原行或推掉）旗仍在，冷却后再开（设计 §3.5，中年转行的口子留得住）"
   },
@@ -2075,6 +2077,7 @@ window.GAME_REGISTRY.milestones = {
    ,
     "farm_exit_settle",
     "cr_shop_092",
+    "cr_craft_083",
    ],
    "note": "工厂制造入行（v0.19.0，职业语境门）：招工入行拍立旗，工厂主簇以此为门"
   },
@@ -2169,7 +2172,8 @@ window.GAME_REGISTRY.milestones = {
     "p19_005",
     "p19_025",
     "p19_055",
-    "cr_factory_122"
+    "cr_factory_122",
+    "cr_craft_081"
    ],
    "note": "店主入行（v0.19.0）：批发学徒/接手家店/开网店拍立旗，商户簇以此为门"
   },
@@ -2197,6 +2201,7 @@ window.GAME_REGISTRY.milestones = {
     "farm_entry_new",
     "farm_entry_main",
     "cr_shop_094",
+    "cr_craft_084",
    ],
    "note": "种地入行（v0.19.0）：分家单过/分地到户拍立旗，种地簇以此为门；农民路线立项后此旗为该路线立线旗（入口含 pack35 接班拍）"
   },
@@ -2232,7 +2237,8 @@ window.GAME_REGISTRY.milestones = {
     "p37_016",
     "p37_017",
     "p37_018",
-    "p37_019"
+    "p37_019",
+    "cr_craft_086"
    ],
    "note": "教师入行（v0.19.0）：r_school1 分配到校呈现即立（两选项均为教书），教师簇以此为门；traj_school 仍为轨迹旗。v0.60.20 补登 pack37 五条入行拍（代课/接班/考编/特岗/临聘，均 ctx entry 立 teach_work）"
   },
@@ -2244,7 +2250,8 @@ window.GAME_REGISTRY.milestones = {
   },
   "builder_work": {
    "setters": [
-    "cr_factory_126"
+    "cr_factory_126",
+    "cr_craft_082"
    ],
    "note": "建筑工人入行（第 2 期注册扩版 v0.60.19 立行当，先有 trades/FORM_OF_FLAG 登记；CL-19 工厂线转行段 cr_factory_126 为首个立旗条目，本条目随之新建）"
   },
@@ -2253,6 +2260,7 @@ window.GAME_REGISTRY.milestones = {
     "p21_073",
     "cr_shop_096",
     "cr_factory_124",
+    "cr_craft_085",
    ],
    "note": "职业陪护入行（v0.19.0）：陪护接活入行拍立旗；与家庭照护旗 care_ss_gap/care_self 分家"
   },
