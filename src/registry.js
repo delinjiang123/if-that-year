@@ -1816,6 +1816,7 @@ window.GAME_REGISTRY.milestones = {
     "cr_dev_056",
     "cr_med_042",
     "cr_img_015",
+    "cr_forest_051",
    ],
    "note": "在职想走（第 2 期 P2-3 立）：后段想走拍 cr_want_cold（冷门来处）与 cr_want_seed（种子/承继来处）的「想换」选项立旗，两拍自身以 forbid 本旗关门防复读。消费者：world/career.js 的 gateSwitchDue——待业段满 1 年且想走、或在职想走（已立旗且不在待业段）两条支路开 gate_switch（框走 want；unit_gone 硬推走 fact 框）。立旗不清空：想走而没走（关口里又选了原行或推掉）旗仍在，冷却后再开（设计 §3.5，中年转行的口子留得住）。CL-49 补登（v0.60.70）：cr_dev_056 想走面立旗"
   },
