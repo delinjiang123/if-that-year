@@ -2324,7 +2324,12 @@ window.GAME_REGISTRY.milestones = {
    "setters": [
     "cr_factory_126",
     "cr_craft_082",
-    "cr_farm_116"
+    "cr_farm_116",
+    "p99_013",
+    "p99_014",
+    "p99_015",
+    "p99_016",
+    "p99_017"
    ],
    "note": "建筑工人入行（第 2 期注册扩版 v0.60.19 立行当，先有 trades/FORM_OF_FLAG 登记；CL-19 工厂线转行段 cr_factory_126 为首个立旗条目，本条目随之新建）"
   },
