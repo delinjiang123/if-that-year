@@ -241,6 +241,10 @@
     if (!c) return;
     IFY.applyEffects(c.effects);
     if (c.set) S.flags[c.set] = true;
+    // 陪伴延寿镜像补齐（CL-42）：v0.60.59 的进程拍延寿此前只落呈现层，此处与呈现层 chooseProcChoice 同位同值补上（care_self +3 / care_hired +1，走共享函数）。
+    if ((who === "dad" || who === "mom") && (beat === "care" || beat === "hosp") && (c.set === "care_self" || c.set === "care_hired") && typeof IFY.parentCareExtend === "function") IFY.parentCareExtend(who, c.set === "care_self" ? 3 : 1);
+    // 进程拍选项 care 声明镜像（CL-42，与呈现层 chooseProcChoice 同位）：寿辰拍操办选项走同一共享函数。
+    if (c.care && typeof IFY.parentCareExtend === "function") IFY.parentCareExtend(c.care.who, c.care.yrs);
     if (typeof IFY.houseOnBuyFlag === "function") IFY.houseOnBuyFlag(S, c.set, c);
     if (typeof IFY.careerNote === "function") IFY.careerNote(S, c);
     if (typeof IFY.plantSeed === "function") IFY.plantSeed(S, c, item.id);
@@ -363,6 +367,8 @@
     if (!c) return;
     IFY.applyEffects(c.effects);
     if (c.set) S.flags[c.set] = true;
+    // 陪伴延寿（CL-42）：与呈现层 chooseEventChoice 镜像同位——选项 care 声明走共享函数 parentCareExtend。
+    if (c.care && typeof IFY.parentCareExtend === "function") IFY.parentCareExtend(c.care.who, c.care.yrs);
     if (typeof IFY.houseOnBuyFlag === "function") IFY.houseOnBuyFlag(S, c.set, c);
     if (typeof IFY.careerNote === "function") IFY.careerNote(S, c);
     if (typeof IFY.plantSeed === "function") IFY.plantSeed(S, c, e.id);

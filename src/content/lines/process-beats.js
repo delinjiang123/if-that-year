@@ -40,6 +40,39 @@ window.GAME_PACKS = (window.GAME_PACKS || []).concat([
     effects: { relation: 2 } },
   { id: "proc_mom_century", min: 22, max: 110, procOnly: true, text: "你妈一百岁了。家里摆了几桌，老姐妹里还有走得动的，也拄着拐来了。她穿了件红褂子，坐在上首，眼睛有点花，可认人还认得清。她拉着你的手说，这辈子，值了。一百年，她把日子过成了这个样子。",
     effects: { relation: 2 } },
+  // —— 整十寿辰拍（CL-42，用户亲定成系统）：60/70/80/90 恰满当年由 parentsDue 发作，一寿一次；「正经操办」挂 care 延寿 +1，「简单过」不延寿。文面不预设另一位父母存亡、不预设子孙 ——
+  { id: "proc_dad_bday60", min: 22, max: 110, procOnly: true, text: "你爸这年整六十。老话说六十花甲，他自己不当回事，说该干啥干啥。可你发现，他把日历翻到生日那页，拿笔在边上划了个小道道。",
+    choices: [
+      { label: "给他办个六十大寿，请老同事老伙计坐一坐", care: { who: "dad", yrs: 1 }, effects: { money: -2, relation: 2 }, echo: "摆了三桌。他穿了件新衬衫挨个敬酒，话头比平时足。散了席他说，这六十年，没白过。" },
+      { label: "不张扬，一家人吃碗长寿面", effects: { relation: 1 }, echo: "面是他自己擀的，卧了两个鸡蛋。他说，六十就这么过，挺好。" } ] },
+  { id: "proc_mom_bday60", min: 22, max: 110, procOnly: true, text: "你妈六十了。她说女同志不兴过整寿，让你别听外头的规矩——可她把年轻时那件红毛衣都找出来了，搭在椅背上，穿不穿还没定。",
+    choices: [
+      { label: "办一场，喊上她的老姐妹热热闹闹", care: { who: "mom", yrs: 1 }, effects: { money: -2, relation: 2 }, echo: "红毛衣她到底穿了。老姐妹们围着她说话，她笑得眼角全是褶子。回家的路上她说，今天，是真高兴。" },
+      { label: "依她，一家人吃顿饭就行", effects: { relation: 1 }, echo: "饭桌上她把红毛衣的事说漏了嘴，自己先笑了。说穿不穿的吧，心里有，就够了。" } ] },
+  { id: "proc_dad_bday70", min: 22, max: 110, procOnly: true, text: "你爸七十了。他嘴上说这个岁数有什么好过的，早上起来还是先去把那几盆花浇了。说起生日，他说随你们，眼睛却往日历上瞟了两回。",
+    choices: [
+      { label: "正经操办，在家里摆几桌", care: { who: "dad", yrs: 1 }, effects: { money: -2, relation: 2 }, echo: "老伙计来了大半，酒没多喝，话说了不少。他坐在上首挨个看过去，说，能坐到一块儿，就是福气。" },
+      { label: "这年家里事多，简单过过", effects: { relation: 1 }, echo: "一碗面，两个菜，他说这样清净。可你看见，他把送他的那个寿字摆在了柜子上，摆得端端正正。" } ] },
+  { id: "proc_mom_bday70", min: 22, max: 110, procOnly: true, text: "你妈七十了。她念叨自己这辈子没出过远门，也没拍过一张像样的照片。生日快到了，她把压箱底的布料拿出来，说想做件新衣裳。",
+    choices: [
+      { label: "给她办个七十大寿，热闹热闹", care: { who: "mom", yrs: 1 }, effects: { money: -2, relation: 2 }, echo: "她穿了新衣裳，拉着老姐妹拍了张合影，洗出来摆在镜子旁边。她说这辈子第一张正经照片，是七十岁照的。" },
+      { label: "买件现成的衣裳，一家人吃顿饭", effects: { relation: 1 }, echo: "衣裳她穿上了，说等过年再穿出去。照片的事她没再提，你却记在了心里。" } ] },
+  { id: "proc_dad_bday80", min: 22, max: 110, procOnly: true, text: "你爸八十了。这个岁数，在他那一辈人里，是闯过了一道大关。他耳朵背了，可谁提起他生日，他听得比什么都清。家里商量着，这寿怎么办。",
+    choices: [
+      { label: "大办一场，四邻八舍都请来", care: { who: "dad", yrs: 1 }, effects: { money: -3, relation: 2 }, echo: "院子里摆了六桌，他坐在上首，逢人就点头。有人喊他老寿星，他摆摆手，眼睛却笑成了一条缝。" },
+      { label: "年纪大了怕吵，就家里人聚聚", effects: { relation: 1 }, echo: "就一桌，都是自家人。他吃得不多，看得不少，看完一圈点点头，像在清点什么宝贝。" } ] },
+  { id: "proc_mom_bday80", min: 22, max: 110, procOnly: true, text: "你妈八十了。八十在老辈人那里是大寿。她这几天把家里收拾得格外利索，连窗台上的花都挪了位置，说怕来人看着乱。",
+    choices: [
+      { label: "给她大办，亲戚街坊都请来", care: { who: "mom", yrs: 1 }, effects: { money: -3, relation: 2 }, echo: "那天她坐在上首，红褂子穿得整整齐齐，谁敬酒她都应。散席了她还坐着，说，再坐一会儿，这热闹，舍不得散。" },
+      { label: "她身子怕闹，在家里小办一下", effects: { relation: 1 }, echo: "小小一桌，她还是把新褂子穿上了。吃完她靠着椅背说，够了，一家人齐齐整整，就是寿了。" } ] },
+  { id: "proc_dad_bday90", min: 22, max: 110, procOnly: true, text: "你爸九十了。这个岁数，整条街都找不出第二个。他自己也稀罕，没事就跟人说，我今年九十了，说的时候腰板挺得笔直。这一年的寿，怎么办都不为过。",
+    choices: [
+      { label: "大办九十大寿，让他高兴个够", care: { who: "dad", yrs: 1 }, effects: { money: -3, relation: 2 }, echo: "摆了八桌，他坐在上首，来的人他大半还认得，认不得的，就笑着点头。散席时他说，今天这觉，能睡得香。" },
+      { label: "他经不起闹，在家里摆一桌", effects: { relation: 1 }, echo: "就一桌至亲。他吃了一小碗寿面，剩下的时间就看着你们笑。九十岁的人，热闹在心里。" } ] },
+  { id: "proc_mom_bday90", min: 22, max: 110, procOnly: true, text: "你妈九十了。九十岁的老太太，耳朵有点背，眼睛有点花，可谁进门，她先问人家吃了没。街坊都说，这样的老人，是家里的宝。她的九十大寿，惦记的人比你还多。",
+    choices: [
+      { label: "大办，让她风风光光过这个寿", care: { who: "mom", yrs: 1 }, effects: { money: -3, relation: 2 }, echo: "她穿了红褂子坐在上首，拉着这个的手，拍拍那个的背。一天下来她累了，靠在椅子上眯着眼笑，像晒着了太阳。" },
+      { label: "就在家里过，一家人守着她", effects: { relation: 1 }, echo: "一桌人，她挨个看过去，慢慢吃了一碗面。吃完她说，人老了，不图热闹，图个全乎。" } ] },
   // —— dating 到期结算：处满 7 年未定，由进程拍给出三条路（推迟至多两次） ——
   { id: "proc_dating", min: 22, max: 80, procOnly: true, stateAll: { spouse: "dating" }, text: "处了这些年，周围人都默认你们是一对。可这事一直没个正式的说法。这一回，得有个决定了。",
     choices: [

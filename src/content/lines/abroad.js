@@ -59,8 +59,8 @@ window.GAME_PACKS = (window.GAME_PACKS || []).concat([
     effects: { relation: 1, wisdom: 2 } },
   { id: "ab37_016", w: 2, min: 44, max: 56, route: "abroad", eraIn: ["c1978", "c2000"], state: { abroadKind: ["anglo", "europe"] }, stateAll: { dad: "alive" }, text: "你爸住院的消息传过来时，你这边是半夜。请假的信写好了又删，机票改签的费用比平时贵一截。最后你先把钱打回去，请了护工，自己订了最近的一班。",
     choices: [
-      { label: "订最近的一班，赶回去", effects: { money: -4, relation: 3 }, echo: "赶到病房时他刚睡醒，看见你，先问你吃饭了没有。你说吃了，其实一路没顾上。" },
-      { label: "先请护工盯着，过几天再回", effects: { money: -2, relation: 1 }, echo: "护工每天发来消息，几点吃的药、睡得怎么样。你盯着手机，心里还是悬着。" },
+      {care: { who: "dad", yrs: 2 },  label: "订最近的一班，赶回去", effects: { money: -4, relation: 3 }, echo: "赶到病房时他刚睡醒，看见你，先问你吃饭了没有。你说吃了，其实一路没顾上。" },
+      {care: { who: "dad", yrs: 1 },  label: "先请护工盯着，过几天再回", effects: { money: -2, relation: 1 }, echo: "护工每天发来消息，几点吃的药、睡得怎么样。你盯着手机，心里还是悬着。" },
     ] },
   { id: "ab37_017", w: 2, min: 42, max: 54, route: "abroad", eraIn: ["c1978", "c2000"], state: { abroadKind: "eastasia" }, stateAll: { mom: "alive" }, text: "你妈说想来你这边住一阵，看看你过得怎么样。离得近，票好买，她拎着一箱吃的就来了。住了一周，她把你的厨房摸了个遍，说你这锅该换了。走时她说，知道你过得还行，她就放心了。",
     effects: { relation: 3, money: -1 } },

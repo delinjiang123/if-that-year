@@ -424,6 +424,8 @@
       IFY.clearAuto();
       IFY.applyEffects(c.effects);
       if (c.set) IFY.S.flags[c.set] = true;
+      // 陪伴延寿（CL-42，用户亲定）：选项声明 care {who, yrs} 时，玩家对这位父母的照护投入换成其实在年头（共享函数 parentCareExtend，在世才移、封顶 105）。
+      if (c.care && typeof IFY.parentCareExtend === "function") IFY.parentCareExtend(c.care.who, c.care.yrs);
       if (typeof IFY.houseOnBuyFlag === "function") IFY.houseOnBuyFlag(IFY.S, c.set, c);
       if (typeof IFY.careerNote === "function") IFY.careerNote(IFY.S, c);
       if (typeof IFY.plantSeed === "function") IFY.plantSeed(IFY.S, c, e.id);

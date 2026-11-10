@@ -49,7 +49,7 @@
     const deathAge = Math.max(26, life - age0); // 换算成主角年龄口径的离世点；下限保证此事不出在童年段（序章不处理）
     const careAge = Math.max(24, deathAge - (2 + Math.floor(d() * 4))); // 需照护段起点：离世前 2–5 年
     const hospAge = deathAge - careAge >= 2 ? careAge + 1 + Math.floor(d() * (deathAge - careAge - 1)) : null;
-    return { age0, deathAge, careAge, hospAge, stage: "well", signalAge: signalAgeOf({ careAge, deathAge }), signalShown: false, centuryShown: false }; // stage: well → care → hosp → dead；signal 为 care 前的呈现层前置标记（进程内部状态，不进存档状态域、不改 care/hosp/dead 时点）；centuryShown 为百岁拍已呈现标记（同 signal 口径，老档缺字段读时按未呈现）
+    return { age0, deathAge, careAge, hospAge, stage: "well", signalAge: signalAgeOf({ careAge, deathAge }), signalShown: false, centuryShown: false, bdayShown: [] }; // stage: well → care → hosp → dead；signal 为 care 前的呈现层前置标记（进程内部状态，不进存档状态域、不改 care/hosp/dead 时点）；centuryShown 为百岁拍已呈现标记、bdayShown 为已呈现过的整十寿辰岁数数组（CL-42，同 signal 口径，老档缺字段读时按未呈现）
   }
 
   function one(ageBand, lifeBand, draw) {
@@ -77,12 +77,20 @@
       const P = IFY.S.parents[who];
       if (!P || IFY.S.state[who] !== "alive") continue;
       const stage = fork52Done && P.stage === "well" ? "care" : P.stage; // fork52 已落账时 well 视同 care（仅本函数判定用，不写回）
+      const page = IFY.S.age + P.age0; // 父母今年的实岁
+      const bday = [60, 70, 80, 90].includes(page) && !(P.bdayShown || []).includes(page) ? page : 0; // 整十寿辰（CL-42）：恰满该岁数、当年未呈现过才发
       if (IFY.S.age >= P.deathAge) due.push({ pr: 0, item: "proc_" + who + "_dead", who, beat: "dead" });
-      else if (P.hospAge !== null && IFY.S.age >= P.hospAge && stage === "hosp") { /* 已呈现 */ }
+      else if (P.hospAge !== null && IFY.S.age >= P.hospAge && stage === "hosp") {
+        // 住院拍已呈现：衰老段本年无新拍，但喜事拍不被这一档吞没——百岁/寿辰在此续查（同为 pr 4 档，
+        // 排在衰老拍之后；不续查的话，住过院的父母将永远等不到寿辰与百岁拍）。
+        if (!P.centuryShown && page >= 100) due.push({ pr: 4, item: "proc_" + who + "_century", who, beat: "century" });
+        else if (bday) due.push({ pr: 4, item: "proc_" + who + "_bday" + bday, who, beat: "bday" + bday });
+      }
       else if (P.hospAge !== null && IFY.S.age >= P.hospAge && stage === "care") due.push({ pr: 1, item: "proc_" + who + "_hosp", who, beat: "hosp" });
       else if (IFY.S.age >= P.careAge && stage === "well") due.push({ pr: 2, item: "proc_" + who + "_care", who, beat: "care" });
       else if (stage === "well" && !P.signalShown && IFY.S.age >= signalAgeOf(P) && IFY.S.age < P.careAge) due.push({ pr: 3, item: "proc_" + who + "_signal", who, beat: "signal" }); // 预警信号：care 之前、每位父母至多一次，优先级最低
-      else if (!P.centuryShown && IFY.S.age + P.age0 >= 100) due.push({ pr: 4, item: "proc_" + who + "_century", who, beat: "century" }); // 百岁彩蛋拍：父母年满一百且在世时发作一次（能活着到这一年，本身就是长寿抽命中的人）；排在一切衰老拍之后，喜事不抢丧事的位
+      else if (!P.centuryShown && page >= 100) due.push({ pr: 4, item: "proc_" + who + "_century", who, beat: "century" }); // 百岁彩蛋拍：父母年满一百且在世时发作一次（能活着到这一年，本身就是长寿抽命中的人）；排在一切衰老拍之后，喜事不抢丧事的位
+      else if (bday) due.push({ pr: 4, item: "proc_" + who + "_bday" + bday, who, beat: "bday" + bday }); // 整十寿辰拍（CL-42，用户亲定）：60/70/80/90 恰满当年发作一次，与百岁同档、排在衰老拍之后；呈现完回到本年，当年分岔/事件照常
     }
     if (!due.length) return null;
     due.sort((a, b) => a.pr - b.pr);
@@ -96,11 +104,28 @@
     if (beat && IFY.S.parents && IFY.S.parents[who]) { // 节拍呈现即推进父母进程段位（离世的状态流转走条目自身的 setState）
       if (beat === "signal") { IFY.S.parents[who].signalShown = true; } // 信号拍只记呈现过：不推进段位、不立 care_stage 旗
       else if (beat === "century") { IFY.S.parents[who].centuryShown = true; } // 百岁拍同 signal 口径：只记呈现过，不推进段位
+      else if (typeof beat === "string" && beat.indexOf("bday") === 0) { const P = IFY.S.parents[who]; const arr = P.bdayShown || (P.bdayShown = []); const n = Number(beat.slice(4)); if (!arr.includes(n)) arr.push(n); } // 寿辰拍（CL-42）同 signal 口径：只记该岁数已呈现，不推进段位
       else {
         IFY.S.parents[who].stage = beat === "dead" ? "dead" : beat === "hosp" ? "hosp" : "care";
         if (beat === "care") IFY.S.flags.care_stage = true;
       }
     }
+  }
+
+  // 陪伴延寿共享函数（v0.60.59 落点、CL-42 一般化，用户亲定）：玩家在一位父母身上的照护投入，
+  // 换成这位父母实实在在的年头——在世才移，总寿命封顶 105 岁（deathAge 口径封顶 105−age0）。
+  // 返回实际后移年数（0＝未移：在世不满足/年数不正/已到封顶）。玩家侧不显示数字，效果就是父母真的还在。
+  // 调用方：进程拍落定（chooseProcChoice / resolveProcHeadless）与普通事件选项的 care 声明（chooseEventChoice / 无头事件解决）。
+  function parentCareExtend(who, years) {
+    if (who !== "dad" && who !== "mom") return 0;
+    if (!IFY.S || !IFY.S.parents || !IFY.S.parents[who] || IFY.S.state[who] !== "alive") return 0;
+    const n = Math.floor(Number(years));
+    if (!Number.isFinite(n) || n <= 0) return 0;
+    const P = IFY.S.parents[who];
+    const cap = 105 - P.age0;
+    const before = P.deathAge;
+    if (before < cap) P.deathAge = Math.min(cap, before + n);
+    return P.deathAge - before;
   }
 
   // 进程条目呈现（pack36 的 proc_* 条目）：与事件年同形，但过完回到本年 step（进程拍不独占这一年，年内的分岔/瞥视照常）
@@ -134,14 +159,14 @@
       IFY.clearAuto();
       IFY.applyEffects(c.effects);
       if (c.set) IFY.S.flags[c.set] = true;
-      // 陪伴延寿（v0.60.59，用户亲定）：父母照护/住院拍里，玩家亲自回去陪（care_self）要让这位父母
-      // 实实在在多活几年，不只涨关系——离世点后移 3 年；请护工照护（care_hired）也有照护之功，后移 1 年；
-      // 「先观察」不移。总寿命封顶 105 岁。玩家侧不显示数字，效果就是父母真的还在。
-      if ((who === "dad" || who === "mom") && (beat === "care" || beat === "hosp") && IFY.S.parents && IFY.S.parents[who] && IFY.S.state[who] === "alive" && (c.set === "care_self" || c.set === "care_hired")) {
-        const P = IFY.S.parents[who];
-        const cap = 105 - P.age0;
-        if (P.deathAge < cap) P.deathAge = Math.min(cap, P.deathAge + (c.set === "care_self" ? 3 : 1));
+      // 陪伴延寿（v0.60.59，用户亲定）：父母照护/住院拍里，玩家亲自回去陪（care_self）让这位父母
+      // 实实在在多活 3 年，不只涨关系；请护工照护（care_hired）也有照护之功，多活 1 年；
+      // 「先观察」不移。数值与封顶都在共享函数 parentCareExtend 里（CL-42 一般化，本处只传档位）。
+      if ((who === "dad" || who === "mom") && (beat === "care" || beat === "hosp") && (c.set === "care_self" || c.set === "care_hired")) {
+        parentCareExtend(who, c.set === "care_self" ? 3 : 1);
       }
+      // 进程拍选项的 care 声明（CL-42，寿辰拍「正经操办」用）：与普通事件同字段同函数，who 以选项声明为准。
+      if (c.care) parentCareExtend(c.care.who, c.care.yrs);
       if (typeof IFY.houseOnBuyFlag === "function") IFY.houseOnBuyFlag(IFY.S, c.set, c);
       if (typeof IFY.careerNote === "function") IFY.careerNote(IFY.S, c);
       if (typeof IFY.plantSeed === "function") IFY.plantSeed(IFY.S, c, item.id);
@@ -173,5 +198,5 @@
       IFY.autoPhase2 = setTimeout(() => { IFY.autoPhase2 = null; chooseProcChoice(visChoices[p][0], true); }, 400);
     }, "choice");
   }
-  Object.assign(IFY, { PARENT_CAL, triW, signalAgeOf, initParents, parentsDue, renderProcItem, advanceParentStage, parentOne: one, parentFate });
+  Object.assign(IFY, { PARENT_CAL, triW, signalAgeOf, initParents, parentsDue, renderProcItem, advanceParentStage, parentOne: one, parentFate, parentCareExtend });
 })(window.IFY);
