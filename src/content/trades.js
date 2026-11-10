@@ -140,12 +140,12 @@ window.GAME_TRADES = {
   "write": {
     "flag": "write_work", "form": "flex",
     "family": "word",
-    "eraIn": ["c1965", "c1978", "c1985", "c1995", "c2000"],
+    "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
     "eduGate": null, "gateDirect": true,
-    "coldOk": true, "coldKinds": ["follow", "near"], "coldWeight": 2,
+    "coldOk": true, "coldKinds": ["follow", "near"], "coldWeight": 3,
     "inheritFrom": [],
     "seedEcho": null, "inheritEcho": null,
-    "note": "写作（机会层）：副业写作留用拍 p2_086 立旗（minYear 2005、年龄窗 26–40，c1955 出生窗＋40 岁＜2005 故不可达）"
+    "note": "写作（机会层）：副业写作留用拍 p2_086 立旗（minYear 2005、年龄窗 26–40，c1955 出生窗＋40 岁＜2005 故不可达）；CL-37 开线（v0.60.61，总指挥三裁）：认机会层大线不升正职层（160 是内容配额非入行层级，与 care/gig/courier 同规）、eraIn 补 c1955（传统作家脸原生代际）、coldWeight 2 升 3"
   },
   "factory": {
     "flag": "factory_work", "form": "employee",
