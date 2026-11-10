@@ -35,6 +35,11 @@ window.GAME_PACKS = (window.GAME_PACKS || []).concat([
     effects: { relation: -2, health: -1 } },
   { id: "proc_mom_dead", min: 22, max: 80, procOnly: true, stateAll: { mom: "alive" }, setState: { mom: "dead" }, text: "你妈走了。走得还算安稳。葬礼办完，亲戚们陆续散了，你一个人把她的屋子收拾了一遍：针线盒还在老地方，里头的顶针磨得发亮。",
     effects: { relation: -2, health: -1 } },
+  // —— 百岁彩蛋拍（v0.60.59，用户亲定）：父母年满一百且在世时由 parentsDue 发作，一生至多一次；文面不预设另一位父母存亡、不预设子孙 ——
+  { id: "proc_dad_century", min: 22, max: 110, procOnly: true, text: "你爸一百岁了。家里摆了几桌，街道和社区的人也来了。他穿了件新褂子，坐在上首，耳朵有点背，可谁来敬酒他都应，还自己端起杯子抿了一小口。有人问他长寿的秘诀，他摆摆手：没啥秘诀，就是把日子一天一天过。一百年，他就这么过下来了。",
+    effects: { relation: 2 } },
+  { id: "proc_mom_century", min: 22, max: 110, procOnly: true, text: "你妈一百岁了。家里摆了几桌，老姐妹里还有走得动的，也拄着拐来了。她穿了件红褂子，坐在上首，眼睛有点花，可认人还认得清。她拉着你的手说，这辈子，值了。一百年，她把日子过成了这个样子。",
+    effects: { relation: 2 } },
   // —— dating 到期结算：处满 7 年未定，由进程拍给出三条路（推迟至多两次） ——
   { id: "proc_dating", min: 22, max: 80, procOnly: true, stateAll: { spouse: "dating" }, text: "处了这些年，周围人都默认你们是一对。可这事一直没个正式的说法。这一回，得有个决定了。",
     choices: [

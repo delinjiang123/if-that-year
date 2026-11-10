@@ -41,6 +41,8 @@
     { id: "proc_mom_hosp", who: "mom", beat: "hosp" },
     { id: "proc_dad_dead", who: "dad", beat: "dead" },
     { id: "proc_mom_dead", who: "mom", beat: "dead" },
+    { id: "proc_dad_century", who: "dad", beat: "century" },
+    { id: "proc_mom_century", who: "mom", beat: "century" },
     { id: "proc_dating", kind: "dating" },
     { id: "proc_kid_debut", kind: "kidDebut" },
     { id: "proc_retire_node", kind: "retire" },

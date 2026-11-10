@@ -6,10 +6,22 @@
   // 出生时父母年龄、父母一代人寿命均值与散布按年代标定（标定说明见 docs/PARENTS-PROCESS.md）；
   // 需照护、住院、离世由进程越线发作成动静（pack36 的 proc_* 条目），不再等事件抽中。主角自身死亡曲线不在此列，一字未动。
   const PARENT_CAL = {
-    c1955: { dadAge: [27, 35], momAge: [25, 33], dadLife: [66, 9], momLife: [71, 9] },
-    c1965: { dadAge: [27, 35], momAge: [25, 33], dadLife: [69, 9], momLife: [74, 9] },
-    c1978: { dadAge: [26, 34], momAge: [24, 32], dadLife: [73, 9], momLife: [78, 9] },
-    c2000: { dadAge: [25, 33], momAge: [23, 31], dadLife: [79, 10], momLife: [85, 10] },
+    // 2026-11-10 重标（v0.60.59，用户母亲亲测点出）：旧均值取的是父母那代人「从出生算的平均寿命」，
+    // 被没活到当父母就去世的人拉低了——能把孩子拉扯大的父母，是已经活过三四十岁的人，
+    // 他们的寿命要按「活到生育年龄之后」的口径算。旧标定下 c1955 的父亲在主角中位 35 岁离世、
+    // c1965 中位 38 岁，等于大多数局里主角三十多岁就送走父亲，失真且伤人。新均值按条件寿命重标、
+    // 再按用户亲定的暖向与高寿口径上浮放宽，并补 c1985/c1995 两行（此前缺行、借用 c2000 行）。
+    // 标定与实测见 docs/PARENTS-PROCESS.md 修订节。
+    c1955: { dadAge: [27, 35], momAge: [25, 33], dadLife: [79, 11], momLife: [83, 11] },
+    c1965: { dadAge: [27, 35], momAge: [25, 33], dadLife: [81, 11], momLife: [86, 11] },
+    c1978: { dadAge: [26, 34], momAge: [24, 32], dadLife: [83, 11], momLife: [88, 11] },
+    c1985: { dadAge: [26, 34], momAge: [24, 32], dadLife: [84, 11], momLife: [89, 11] },
+    c1995: { dadAge: [25, 33], momAge: [24, 32], dadLife: [85, 12], momLife: [90, 12] },
+    c2000: { dadAge: [25, 33], momAge: [23, 31], dadLife: [84, 12], momLife: [90, 12] },
+    // 用户 2026-11-10 亲定方向：这条线宁可暖过头，不再拿「真实分布」压着——父母活到八九十是常景，
+    // 主角六十岁上下、父母八十多岁还在，是这游戏该有的寻常画面。最终口径按父母自己的年纪放：
+    // 父亲那代往八十上下想、母亲往八十五去想，尾巴留厚（散布放宽到 ±11/12，长寿抽把 94–99 这段接上，
+    // 不留 89–95 的断档）。抽法与百岁彩蛋的切法在 parentFate 内，百岁有专属进程拍。
   };
 
   function triW(draw) { const d = draw || (() => IFY.rngW()); return (d() + d() + d() - 1.5) / 1.5; } // [-1,1] 近正态扰动（进程流；v0.21 WP1：抽取函数可注入，缺省即进程流 rngW，公式不动）
@@ -28,11 +40,16 @@
   // 进程流上重掷 deathAge/careAge/hospAge（命运各自），掷序与 one() 的后半段逐位同构。
   function parentFate(age0, lifeBand, draw) {
     const d = draw || (() => IFY.rngW());
-    const life = Math.round(lifeBand[0] + triW(d) * lifeBand[1]);
+    let life = Math.round(lifeBand[0] + triW(d) * lifeBand[1]);
+    // 长寿抽（v0.60.59，用户亲定，含当晚回调）：3% 的父母寿命抬进 94–99 岁——留厚尾巴，把常规散布上沿
+    // 与高寿段接上、不留断档；其中再约一成半抬进 100–102 岁，这才是百岁彩蛋本体：折算约 0.45%/人、
+    // 每局约 1% 至少一位——是稀罕事，不是常景（用户当晚回调：「百岁又太多了」，初版 1.75%/人过密）。
+    // 百岁当年由 parentsDue 发专属拍。
+    if (d() < 0.03) { life = 94 + Math.floor(d() * 6); if (d() < 0.15) life = 100 + Math.floor(d() * 3); }
     const deathAge = Math.max(26, life - age0); // 换算成主角年龄口径的离世点；下限保证此事不出在童年段（序章不处理）
     const careAge = Math.max(24, deathAge - (2 + Math.floor(d() * 4))); // 需照护段起点：离世前 2–5 年
     const hospAge = deathAge - careAge >= 2 ? careAge + 1 + Math.floor(d() * (deathAge - careAge - 1)) : null;
-    return { age0, deathAge, careAge, hospAge, stage: "well", signalAge: signalAgeOf({ careAge, deathAge }), signalShown: false }; // stage: well → care → hosp → dead；signal 为 care 前的呈现层前置标记（进程内部状态，不进存档状态域、不改 care/hosp/dead 时点）
+    return { age0, deathAge, careAge, hospAge, stage: "well", signalAge: signalAgeOf({ careAge, deathAge }), signalShown: false, centuryShown: false }; // stage: well → care → hosp → dead；signal 为 care 前的呈现层前置标记（进程内部状态，不进存档状态域、不改 care/hosp/dead 时点）；centuryShown 为百岁拍已呈现标记（同 signal 口径，老档缺字段读时按未呈现）
   }
 
   function one(ageBand, lifeBand, draw) {
@@ -65,6 +82,7 @@
       else if (P.hospAge !== null && IFY.S.age >= P.hospAge && stage === "care") due.push({ pr: 1, item: "proc_" + who + "_hosp", who, beat: "hosp" });
       else if (IFY.S.age >= P.careAge && stage === "well") due.push({ pr: 2, item: "proc_" + who + "_care", who, beat: "care" });
       else if (stage === "well" && !P.signalShown && IFY.S.age >= signalAgeOf(P) && IFY.S.age < P.careAge) due.push({ pr: 3, item: "proc_" + who + "_signal", who, beat: "signal" }); // 预警信号：care 之前、每位父母至多一次，优先级最低
+      else if (!P.centuryShown && IFY.S.age + P.age0 >= 100) due.push({ pr: 4, item: "proc_" + who + "_century", who, beat: "century" }); // 百岁彩蛋拍：父母年满一百且在世时发作一次（能活着到这一年，本身就是长寿抽命中的人）；排在一切衰老拍之后，喜事不抢丧事的位
     }
     if (!due.length) return null;
     due.sort((a, b) => a.pr - b.pr);
@@ -77,6 +95,7 @@
   function advanceParentStage(who, beat) {
     if (beat && IFY.S.parents && IFY.S.parents[who]) { // 节拍呈现即推进父母进程段位（离世的状态流转走条目自身的 setState）
       if (beat === "signal") { IFY.S.parents[who].signalShown = true; } // 信号拍只记呈现过：不推进段位、不立 care_stage 旗
+      else if (beat === "century") { IFY.S.parents[who].centuryShown = true; } // 百岁拍同 signal 口径：只记呈现过，不推进段位
       else {
         IFY.S.parents[who].stage = beat === "dead" ? "dead" : beat === "hosp" ? "hosp" : "care";
         if (beat === "care") IFY.S.flags.care_stage = true;
@@ -115,6 +134,14 @@
       IFY.clearAuto();
       IFY.applyEffects(c.effects);
       if (c.set) IFY.S.flags[c.set] = true;
+      // 陪伴延寿（v0.60.59，用户亲定）：父母照护/住院拍里，玩家亲自回去陪（care_self）要让这位父母
+      // 实实在在多活几年，不只涨关系——离世点后移 3 年；请护工照护（care_hired）也有照护之功，后移 1 年；
+      // 「先观察」不移。总寿命封顶 105 岁。玩家侧不显示数字，效果就是父母真的还在。
+      if ((who === "dad" || who === "mom") && (beat === "care" || beat === "hosp") && IFY.S.parents && IFY.S.parents[who] && IFY.S.state[who] === "alive" && (c.set === "care_self" || c.set === "care_hired")) {
+        const P = IFY.S.parents[who];
+        const cap = 105 - P.age0;
+        if (P.deathAge < cap) P.deathAge = Math.min(cap, P.deathAge + (c.set === "care_self" ? 3 : 1));
+      }
       if (typeof IFY.houseOnBuyFlag === "function") IFY.houseOnBuyFlag(IFY.S, c.set, c);
       if (typeof IFY.careerNote === "function") IFY.careerNote(IFY.S, c);
       if (typeof IFY.plantSeed === "function") IFY.plantSeed(IFY.S, c, item.id);

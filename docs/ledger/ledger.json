@@ -5,8 +5,8 @@
   "scope": "带 id 的可玩内容条目：GAME_DATA.events/forks(带id) + GAME_PACKS + GAME_SYNERGY + GAME_CARDS + 序章六代包",
   "gateRules": "序章幕（序章包/出身牌）> 链条（chain 字段或被 chain 指向）> 状态门（带门槛字段）> 无门",
   "themes": "主题列来自 docs/ledger/themes.json 手维护映射（横切索引，一条目可挂多主题）；生成器校验：映射 id 不在台账行且非 career.js 的 WORK_FACTS 事实 id 时报错停机，同主题内重复 id 去重计数（stats.themeDupesRemoved），职业层事实挂载见 stats.themeFacts",
-  "totalRows": 4039,
-  "uniqueIds": 3949
+  "totalRows": 4041,
+  "uniqueIds": 3951
  },
  "entries": [
   {
@@ -60619,7 +60619,7 @@
   },
   {
    "seq": 3292,
-   "id": "proc_dating",
+   "id": "proc_dad_century",
    "file": "src/content/lines/process-beats.js",
    "line": 39,
    "category": "具名线",
@@ -60628,18 +60628,36 @@
    "era": "全年代",
    "route": "不限",
    "ageMin": 22,
-   "ageMax": 80,
-   "ageBand": "22–80",
-   "gate": "状态门",
+   "ageMax": 110,
+   "ageBand": "22–110",
+   "gate": "无门",
    "introduced": "unknown",
    "status": "在用",
    "themes": []
   },
   {
    "seq": 3293,
-   "id": "proc_kid_debut",
+   "id": "proc_mom_century",
    "file": "src/content/lines/process-beats.js",
-   "line": 50,
+   "line": 41,
+   "category": "具名线",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 22,
+   "ageMax": 110,
+   "ageBand": "22–110",
+   "gate": "无门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 3294,
+   "id": "proc_dating",
+   "file": "src/content/lines/process-beats.js",
+   "line": 44,
    "category": "具名线",
    "occupations": [],
    "trades": [],
@@ -60654,10 +60672,28 @@
    "themes": []
   },
   {
-   "seq": 3294,
+   "seq": 3295,
+   "id": "proc_kid_debut",
+   "file": "src/content/lines/process-beats.js",
+   "line": 55,
+   "category": "具名线",
+   "occupations": [],
+   "trades": [],
+   "era": "全年代",
+   "route": "不限",
+   "ageMin": 22,
+   "ageMax": 80,
+   "ageBand": "22–80",
+   "gate": "状态门",
+   "introduced": "unknown",
+   "status": "在用",
+   "themes": []
+  },
+  {
+   "seq": 3296,
    "id": "e_med_start",
    "file": "src/content/lines/process-beats.js",
-   "line": 60,
+   "line": 65,
    "category": "具名线",
    "occupations": [
     "医护"
@@ -60676,10 +60712,10 @@
    "themes": []
   },
   {
-   "seq": 3295,
+   "seq": 3297,
    "id": "e_med_years",
    "file": "src/content/lines/process-beats.js",
-   "line": 65,
+   "line": 70,
    "category": "具名线",
    "occupations": [],
    "trades": [],
@@ -60694,10 +60730,10 @@
    "themes": []
   },
   {
-   "seq": 3296,
+   "seq": 3298,
    "id": "e_truck_start",
    "file": "src/content/lines/process-beats.js",
-   "line": 67,
+   "line": 72,
    "category": "具名线",
    "occupations": [
     "司机/运输"
@@ -60716,10 +60752,10 @@
    "themes": []
   },
   {
-   "seq": 3297,
+   "seq": 3299,
    "id": "e_truck_years",
    "file": "src/content/lines/process-beats.js",
-   "line": 72,
+   "line": 77,
    "category": "具名线",
    "occupations": [],
    "trades": [],
@@ -60734,10 +60770,10 @@
    "themes": []
   },
   {
-   "seq": 3298,
+   "seq": 3300,
    "id": "e_lit_echo1",
    "file": "src/content/lines/process-beats.js",
-   "line": 75,
+   "line": 80,
    "category": "具名线",
    "occupations": [],
    "trades": [],
@@ -60752,10 +60788,10 @@
    "themes": []
   },
   {
-   "seq": 3299,
+   "seq": 3301,
    "id": "e_lit_echo2",
    "file": "src/content/lines/process-beats.js",
-   "line": 77,
+   "line": 82,
    "category": "具名线",
    "occupations": [],
    "trades": [],
@@ -60770,10 +60806,10 @@
    "themes": []
   },
   {
-   "seq": 3300,
+   "seq": 3302,
    "id": "e_half_echo",
    "file": "src/content/lines/process-beats.js",
-   "line": 79,
+   "line": 84,
    "category": "具名线",
    "occupations": [],
    "trades": [],
@@ -60788,10 +60824,10 @@
    "themes": []
   },
   {
-   "seq": 3301,
+   "seq": 3303,
    "id": "e_work_echo",
    "file": "src/content/lines/process-beats.js",
-   "line": 81,
+   "line": 86,
    "category": "具名线",
    "occupations": [],
    "trades": [],
@@ -60806,10 +60842,10 @@
    "themes": []
   },
   {
-   "seq": 3302,
+   "seq": 3304,
    "id": "e_never_work",
    "file": "src/content/lines/process-beats.js",
-   "line": 83,
+   "line": 88,
    "category": "具名线",
    "occupations": [],
    "trades": [],
@@ -60824,10 +60860,10 @@
    "themes": []
   },
   {
-   "seq": 3303,
+   "seq": 3305,
    "id": "proc_retire_node",
    "file": "src/content/lines/process-beats.js",
-   "line": 86,
+   "line": 91,
    "category": "具名线",
    "occupations": [],
    "trades": [],
@@ -60842,10 +60878,10 @@
    "themes": []
   },
   {
-   "seq": 3304,
+   "seq": 3306,
    "id": "proc_retire_full",
    "file": "src/content/lines/process-beats.js",
-   "line": 93,
+   "line": 98,
    "category": "具名线",
    "occupations": [],
    "trades": [],
@@ -60860,10 +60896,10 @@
    "themes": []
   },
   {
-   "seq": 3305,
+   "seq": 3307,
    "id": "proc_retire_auto",
    "file": "src/content/lines/process-beats.js",
-   "line": 97,
+   "line": 102,
    "category": "具名线",
    "occupations": [],
    "trades": [],
@@ -60878,10 +60914,10 @@
    "themes": []
   },
   {
-   "seq": 3306,
+   "seq": 3308,
    "id": "e_retire_firstmonth",
    "file": "src/content/lines/process-beats.js",
-   "line": 100,
+   "line": 105,
    "category": "具名线",
    "occupations": [],
    "trades": [],
@@ -60896,10 +60932,10 @@
    "themes": []
   },
   {
-   "seq": 3307,
+   "seq": 3309,
    "id": "e_retire_farewell",
    "file": "src/content/lines/process-beats.js",
-   "line": 102,
+   "line": 107,
    "category": "具名线",
    "occupations": [],
    "trades": [],
@@ -60914,10 +60950,10 @@
    "themes": []
   },
   {
-   "seq": 3308,
+   "seq": 3310,
    "id": "e_rehire_1",
    "file": "src/content/lines/process-beats.js",
-   "line": 105,
+   "line": 110,
    "category": "具名线",
    "occupations": [],
    "trades": [],
@@ -60932,10 +60968,10 @@
    "themes": []
   },
   {
-   "seq": 3309,
+   "seq": 3311,
    "id": "e_rehire_2",
    "file": "src/content/lines/process-beats.js",
-   "line": 111,
+   "line": 116,
    "category": "具名线",
    "occupations": [],
    "trades": [],
@@ -60950,7 +60986,7 @@
    "themes": []
   },
   {
-   "seq": 3310,
+   "seq": 3312,
    "id": "proc_abroad_kind",
    "file": "src/content/lines/abroad.js",
    "line": 16,
@@ -60968,7 +61004,7 @@
    "themes": []
   },
   {
-   "seq": 3311,
+   "seq": 3313,
    "id": "ab37_001",
    "file": "src/content/lines/abroad.js",
    "line": 26,
@@ -60986,7 +61022,7 @@
    "themes": []
   },
   {
-   "seq": 3312,
+   "seq": 3314,
    "id": "ab37_002",
    "file": "src/content/lines/abroad.js",
    "line": 28,
@@ -61004,7 +61040,7 @@
    "themes": []
   },
   {
-   "seq": 3313,
+   "seq": 3315,
    "id": "ab37_003",
    "file": "src/content/lines/abroad.js",
    "line": 30,
@@ -61022,7 +61058,7 @@
    "themes": []
   },
   {
-   "seq": 3314,
+   "seq": 3316,
    "id": "ab37_004",
    "file": "src/content/lines/abroad.js",
    "line": 32,
@@ -61040,7 +61076,7 @@
    "themes": []
   },
   {
-   "seq": 3315,
+   "seq": 3317,
    "id": "ab37_005",
    "file": "src/content/lines/abroad.js",
    "line": 34,
@@ -61058,7 +61094,7 @@
    "themes": []
   },
   {
-   "seq": 3316,
+   "seq": 3318,
    "id": "ab37_006",
    "file": "src/content/lines/abroad.js",
    "line": 36,
@@ -61076,7 +61112,7 @@
    "themes": []
   },
   {
-   "seq": 3317,
+   "seq": 3319,
    "id": "ab37_007",
    "file": "src/content/lines/abroad.js",
    "line": 38,
@@ -61094,7 +61130,7 @@
    "themes": []
   },
   {
-   "seq": 3318,
+   "seq": 3320,
    "id": "ab37_008",
    "file": "src/content/lines/abroad.js",
    "line": 40,
@@ -61112,7 +61148,7 @@
    "themes": []
   },
   {
-   "seq": 3319,
+   "seq": 3321,
    "id": "ab37_009",
    "file": "src/content/lines/abroad.js",
    "line": 45,
@@ -61130,7 +61166,7 @@
    "themes": []
   },
   {
-   "seq": 3320,
+   "seq": 3322,
    "id": "ab37_010",
    "file": "src/content/lines/abroad.js",
    "line": 47,
@@ -61148,7 +61184,7 @@
    "themes": []
   },
   {
-   "seq": 3321,
+   "seq": 3323,
    "id": "ab37_011",
    "file": "src/content/lines/abroad.js",
    "line": 50,
@@ -61166,7 +61202,7 @@
    "themes": []
   },
   {
-   "seq": 3322,
+   "seq": 3324,
    "id": "ab37_012",
    "file": "src/content/lines/abroad.js",
    "line": 52,
@@ -61184,7 +61220,7 @@
    "themes": []
   },
   {
-   "seq": 3323,
+   "seq": 3325,
    "id": "ab37_013",
    "file": "src/content/lines/abroad.js",
    "line": 54,
@@ -61202,7 +61238,7 @@
    "themes": []
   },
   {
-   "seq": 3324,
+   "seq": 3326,
    "id": "ab37_014",
    "file": "src/content/lines/abroad.js",
    "line": 56,
@@ -61220,7 +61256,7 @@
    "themes": []
   },
   {
-   "seq": 3325,
+   "seq": 3327,
    "id": "ab37_015",
    "file": "src/content/lines/abroad.js",
    "line": 58,
@@ -61238,7 +61274,7 @@
    "themes": []
   },
   {
-   "seq": 3326,
+   "seq": 3328,
    "id": "ab37_016",
    "file": "src/content/lines/abroad.js",
    "line": 60,
@@ -61256,7 +61292,7 @@
    "themes": []
   },
   {
-   "seq": 3327,
+   "seq": 3329,
    "id": "ab37_017",
    "file": "src/content/lines/abroad.js",
    "line": 65,
@@ -61274,7 +61310,7 @@
    "themes": []
   },
   {
-   "seq": 3328,
+   "seq": 3330,
    "id": "ab37_018",
    "file": "src/content/lines/abroad.js",
    "line": 67,
@@ -61292,7 +61328,7 @@
    "themes": []
   },
   {
-   "seq": 3329,
+   "seq": 3331,
    "id": "ab37_019",
    "file": "src/content/lines/abroad.js",
    "line": 69,
@@ -61310,7 +61346,7 @@
    "themes": []
   },
   {
-   "seq": 3330,
+   "seq": 3332,
    "id": "ab37_020",
    "file": "src/content/lines/abroad.js",
    "line": 71,
@@ -61328,7 +61364,7 @@
    "themes": []
   },
   {
-   "seq": 3331,
+   "seq": 3333,
    "id": "ab37_021",
    "file": "src/content/lines/abroad.js",
    "line": 77,
@@ -61346,7 +61382,7 @@
    "themes": []
   },
   {
-   "seq": 3332,
+   "seq": 3334,
    "id": "ab37_022",
    "file": "src/content/lines/abroad.js",
    "line": 79,
@@ -61364,7 +61400,7 @@
    "themes": []
   },
   {
-   "seq": 3333,
+   "seq": 3335,
    "id": "ab37_023",
    "file": "src/content/lines/abroad.js",
    "line": 81,
@@ -61382,7 +61418,7 @@
    "themes": []
   },
   {
-   "seq": 3334,
+   "seq": 3336,
    "id": "ab37_024",
    "file": "src/content/lines/abroad.js",
    "line": 86,
@@ -61400,7 +61436,7 @@
    "themes": []
   },
   {
-   "seq": 3335,
+   "seq": 3337,
    "id": "ab37_025",
    "file": "src/content/lines/abroad.js",
    "line": 91,
@@ -61418,7 +61454,7 @@
    "themes": []
   },
   {
-   "seq": 3336,
+   "seq": 3338,
    "id": "ab37_026",
    "file": "src/content/lines/abroad.js",
    "line": 93,
@@ -61436,7 +61472,7 @@
    "themes": []
   },
   {
-   "seq": 3337,
+   "seq": 3339,
    "id": "ab37_027",
    "file": "src/content/lines/abroad.js",
    "line": 95,
@@ -61454,7 +61490,7 @@
    "themes": []
   },
   {
-   "seq": 3338,
+   "seq": 3340,
    "id": "ab37_028",
    "file": "src/content/lines/abroad.js",
    "line": 97,
@@ -61472,7 +61508,7 @@
    "themes": []
   },
   {
-   "seq": 3339,
+   "seq": 3341,
    "id": "e55_001",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61490,7 +61526,7 @@
    "themes": []
   },
   {
-   "seq": 3340,
+   "seq": 3342,
    "id": "e55_002",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61508,7 +61544,7 @@
    "themes": []
   },
   {
-   "seq": 3341,
+   "seq": 3343,
    "id": "e55_003",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61526,7 +61562,7 @@
    "themes": []
   },
   {
-   "seq": 3342,
+   "seq": 3344,
    "id": "e55_004",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61544,7 +61580,7 @@
    "themes": []
   },
   {
-   "seq": 3343,
+   "seq": 3345,
    "id": "e55_005",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61562,7 +61598,7 @@
    "themes": []
   },
   {
-   "seq": 3344,
+   "seq": 3346,
    "id": "e55_006",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61580,7 +61616,7 @@
    "themes": []
   },
   {
-   "seq": 3345,
+   "seq": 3347,
    "id": "e55_007",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61598,7 +61634,7 @@
    "themes": []
   },
   {
-   "seq": 3346,
+   "seq": 3348,
    "id": "e55_008",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61616,7 +61652,7 @@
    "themes": []
   },
   {
-   "seq": 3347,
+   "seq": 3349,
    "id": "e55_009",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61634,7 +61670,7 @@
    "themes": []
   },
   {
-   "seq": 3348,
+   "seq": 3350,
    "id": "e55_010",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61652,7 +61688,7 @@
    "themes": []
   },
   {
-   "seq": 3349,
+   "seq": 3351,
    "id": "e55_011",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61670,7 +61706,7 @@
    "themes": []
   },
   {
-   "seq": 3350,
+   "seq": 3352,
    "id": "e55_012",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61688,7 +61724,7 @@
    "themes": []
   },
   {
-   "seq": 3351,
+   "seq": 3353,
    "id": "e55_013",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61706,7 +61742,7 @@
    "themes": []
   },
   {
-   "seq": 3352,
+   "seq": 3354,
    "id": "e55_014",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61724,7 +61760,7 @@
    "themes": []
   },
   {
-   "seq": 3353,
+   "seq": 3355,
    "id": "e55_015",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61742,7 +61778,7 @@
    "themes": []
   },
   {
-   "seq": 3354,
+   "seq": 3356,
    "id": "e55_016",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61760,7 +61796,7 @@
    "themes": []
   },
   {
-   "seq": 3355,
+   "seq": 3357,
    "id": "e55_017",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61778,7 +61814,7 @@
    "themes": []
   },
   {
-   "seq": 3356,
+   "seq": 3358,
    "id": "e55_018",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61796,7 +61832,7 @@
    "themes": []
   },
   {
-   "seq": 3357,
+   "seq": 3359,
    "id": "e55_019",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61814,7 +61850,7 @@
    "themes": []
   },
   {
-   "seq": 3358,
+   "seq": 3360,
    "id": "e55_020",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61832,7 +61868,7 @@
    "themes": []
   },
   {
-   "seq": 3359,
+   "seq": 3361,
    "id": "e55_021",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61850,7 +61886,7 @@
    "themes": []
   },
   {
-   "seq": 3360,
+   "seq": 3362,
    "id": "e55_022",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61868,7 +61904,7 @@
    "themes": []
   },
   {
-   "seq": 3361,
+   "seq": 3363,
    "id": "e55_023",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61886,7 +61922,7 @@
    "themes": []
   },
   {
-   "seq": 3362,
+   "seq": 3364,
    "id": "e55_024",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61904,7 +61940,7 @@
    "themes": []
   },
   {
-   "seq": 3363,
+   "seq": 3365,
    "id": "e55_025",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61922,7 +61958,7 @@
    "themes": []
   },
   {
-   "seq": 3364,
+   "seq": 3366,
    "id": "e55_026",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61940,7 +61976,7 @@
    "themes": []
   },
   {
-   "seq": 3365,
+   "seq": 3367,
    "id": "e55_027",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61958,7 +61994,7 @@
    "themes": []
   },
   {
-   "seq": 3366,
+   "seq": 3368,
    "id": "e55_028",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61976,7 +62012,7 @@
    "themes": []
   },
   {
-   "seq": 3367,
+   "seq": 3369,
    "id": "e55_029",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -61994,7 +62030,7 @@
    "themes": []
   },
   {
-   "seq": 3368,
+   "seq": 3370,
    "id": "e55_030",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62012,7 +62048,7 @@
    "themes": []
   },
   {
-   "seq": 3369,
+   "seq": 3371,
    "id": "e55_031",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62030,7 +62066,7 @@
    "themes": []
   },
   {
-   "seq": 3370,
+   "seq": 3372,
    "id": "e55_032",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62048,7 +62084,7 @@
    "themes": []
   },
   {
-   "seq": 3371,
+   "seq": 3373,
    "id": "e55_033",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62066,7 +62102,7 @@
    "themes": []
   },
   {
-   "seq": 3372,
+   "seq": 3374,
    "id": "e55_034",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62084,7 +62120,7 @@
    "themes": []
   },
   {
-   "seq": 3373,
+   "seq": 3375,
    "id": "e55_035",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62102,7 +62138,7 @@
    "themes": []
   },
   {
-   "seq": 3374,
+   "seq": 3376,
    "id": "e55_036",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62120,7 +62156,7 @@
    "themes": []
   },
   {
-   "seq": 3375,
+   "seq": 3377,
    "id": "e55_037",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62138,7 +62174,7 @@
    "themes": []
   },
   {
-   "seq": 3376,
+   "seq": 3378,
    "id": "e55_038",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62156,7 +62192,7 @@
    "themes": []
   },
   {
-   "seq": 3377,
+   "seq": 3379,
    "id": "e55_039",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62174,7 +62210,7 @@
    "themes": []
   },
   {
-   "seq": 3378,
+   "seq": 3380,
    "id": "e55_040",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62192,7 +62228,7 @@
    "themes": []
   },
   {
-   "seq": 3379,
+   "seq": 3381,
    "id": "e55_041",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62210,7 +62246,7 @@
    "themes": []
   },
   {
-   "seq": 3380,
+   "seq": 3382,
    "id": "e55_042",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62228,7 +62264,7 @@
    "themes": []
   },
   {
-   "seq": 3381,
+   "seq": 3383,
    "id": "e55_043",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62246,7 +62282,7 @@
    "themes": []
   },
   {
-   "seq": 3382,
+   "seq": 3384,
    "id": "e55_044",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62264,7 +62300,7 @@
    "themes": []
   },
   {
-   "seq": 3383,
+   "seq": 3385,
    "id": "e55_045",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62282,7 +62318,7 @@
    "themes": []
   },
   {
-   "seq": 3384,
+   "seq": 3386,
    "id": "e55_046",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62300,7 +62336,7 @@
    "themes": []
   },
   {
-   "seq": 3385,
+   "seq": 3387,
    "id": "e55_047",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62318,7 +62354,7 @@
    "themes": []
   },
   {
-   "seq": 3386,
+   "seq": 3388,
    "id": "e55_048",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62336,7 +62372,7 @@
    "themes": []
   },
   {
-   "seq": 3387,
+   "seq": 3389,
    "id": "e55_049",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62354,7 +62390,7 @@
    "themes": []
   },
   {
-   "seq": 3388,
+   "seq": 3390,
    "id": "e55_050",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62372,7 +62408,7 @@
    "themes": []
   },
   {
-   "seq": 3389,
+   "seq": 3391,
    "id": "e55_051",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62390,7 +62426,7 @@
    "themes": []
   },
   {
-   "seq": 3390,
+   "seq": 3392,
    "id": "e55_052",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62408,7 +62444,7 @@
    "themes": []
   },
   {
-   "seq": 3391,
+   "seq": 3393,
    "id": "e55_053",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62426,7 +62462,7 @@
    "themes": []
   },
   {
-   "seq": 3392,
+   "seq": 3394,
    "id": "e55_054",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62444,7 +62480,7 @@
    "themes": []
   },
   {
-   "seq": 3393,
+   "seq": 3395,
    "id": "e55_055",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62462,7 +62498,7 @@
    "themes": []
   },
   {
-   "seq": 3394,
+   "seq": 3396,
    "id": "e55_056",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62480,7 +62516,7 @@
    "themes": []
   },
   {
-   "seq": 3395,
+   "seq": 3397,
    "id": "e55_057",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62498,7 +62534,7 @@
    "themes": []
   },
   {
-   "seq": 3396,
+   "seq": 3398,
    "id": "e55_005w",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62516,7 +62552,7 @@
    "themes": []
   },
   {
-   "seq": 3397,
+   "seq": 3399,
    "id": "e55_006w",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62534,7 +62570,7 @@
    "themes": []
   },
   {
-   "seq": 3398,
+   "seq": 3400,
    "id": "e55_058",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62552,7 +62588,7 @@
    "themes": []
   },
   {
-   "seq": 3399,
+   "seq": 3401,
    "id": "e55_059",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62570,7 +62606,7 @@
    "themes": []
   },
   {
-   "seq": 3400,
+   "seq": 3402,
    "id": "e55_060",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62588,7 +62624,7 @@
    "themes": []
   },
   {
-   "seq": 3401,
+   "seq": 3403,
    "id": "e55_061",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62606,7 +62642,7 @@
    "themes": []
   },
   {
-   "seq": 3402,
+   "seq": 3404,
    "id": "e55_062",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62624,7 +62660,7 @@
    "themes": []
   },
   {
-   "seq": 3403,
+   "seq": 3405,
    "id": "e55_063",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62642,7 +62678,7 @@
    "themes": []
   },
   {
-   "seq": 3404,
+   "seq": 3406,
    "id": "e55_064",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62660,7 +62696,7 @@
    "themes": []
   },
   {
-   "seq": 3405,
+   "seq": 3407,
    "id": "e55_065",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62678,7 +62714,7 @@
    "themes": []
   },
   {
-   "seq": 3406,
+   "seq": 3408,
    "id": "e55_066",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62696,7 +62732,7 @@
    "themes": []
   },
   {
-   "seq": 3407,
+   "seq": 3409,
    "id": "e55_067",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62714,7 +62750,7 @@
    "themes": []
   },
   {
-   "seq": 3408,
+   "seq": 3410,
    "id": "e55_068",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62732,7 +62768,7 @@
    "themes": []
   },
   {
-   "seq": 3409,
+   "seq": 3411,
    "id": "e55_069",
    "file": "src/content/era/era1955.js",
    "line": 2,
@@ -62750,7 +62786,7 @@
    "themes": []
   },
   {
-   "seq": 3410,
+   "seq": 3412,
    "id": "e55_070",
    "file": "src/content/era/era1955.js",
    "line": 5,
@@ -62768,7 +62804,7 @@
    "themes": []
   },
   {
-   "seq": 3411,
+   "seq": 3413,
    "id": "e55_071",
    "file": "src/content/era/era1955.js",
    "line": 6,
@@ -62786,7 +62822,7 @@
    "themes": []
   },
   {
-   "seq": 3412,
+   "seq": 3414,
    "id": "e55_072",
    "file": "src/content/era/era1955.js",
    "line": 11,
@@ -62804,7 +62840,7 @@
    "themes": []
   },
   {
-   "seq": 3413,
+   "seq": 3415,
    "id": "e55_073",
    "file": "src/content/era/era1955.js",
    "line": 12,
@@ -62822,7 +62858,7 @@
    "themes": []
   },
   {
-   "seq": 3414,
+   "seq": 3416,
    "id": "e55_074",
    "file": "src/content/era/era1955.js",
    "line": 13,
@@ -62840,7 +62876,7 @@
    "themes": []
   },
   {
-   "seq": 3415,
+   "seq": 3417,
    "id": "e55_075",
    "file": "src/content/era/era1955.js",
    "line": 14,
@@ -62858,7 +62894,7 @@
    "themes": []
   },
   {
-   "seq": 3416,
+   "seq": 3418,
    "id": "e55_076",
    "file": "src/content/era/era1955.js",
    "line": 15,
@@ -62876,7 +62912,7 @@
    "themes": []
   },
   {
-   "seq": 3417,
+   "seq": 3419,
    "id": "e55_077",
    "file": "src/content/era/era1955.js",
    "line": 16,
@@ -62894,7 +62930,7 @@
    "themes": []
   },
   {
-   "seq": 3418,
+   "seq": 3420,
    "id": "e55_078",
    "file": "src/content/era/era1955.js",
    "line": 17,
@@ -62912,7 +62948,7 @@
    "themes": []
   },
   {
-   "seq": 3419,
+   "seq": 3421,
    "id": "e55_079",
    "file": "src/content/era/era1955.js",
    "line": 18,
@@ -62930,7 +62966,7 @@
    "themes": []
   },
   {
-   "seq": 3420,
+   "seq": 3422,
    "id": "e55_080",
    "file": "src/content/era/era1955.js",
    "line": 19,
@@ -62948,7 +62984,7 @@
    "themes": []
   },
   {
-   "seq": 3421,
+   "seq": 3423,
    "id": "e55_081",
    "file": "src/content/era/era1955.js",
    "line": 20,
@@ -62966,7 +63002,7 @@
    "themes": []
   },
   {
-   "seq": 3422,
+   "seq": 3424,
    "id": "e55_082",
    "file": "src/content/era/era1955.js",
    "line": 21,
@@ -62984,7 +63020,7 @@
    "themes": []
   },
   {
-   "seq": 3423,
+   "seq": 3425,
    "id": "e55_083",
    "file": "src/content/era/era1955.js",
    "line": 22,
@@ -63002,7 +63038,7 @@
    "themes": []
   },
   {
-   "seq": 3424,
+   "seq": 3426,
    "id": "e55_084",
    "file": "src/content/era/era1955.js",
    "line": 23,
@@ -63020,7 +63056,7 @@
    "themes": []
   },
   {
-   "seq": 3425,
+   "seq": 3427,
    "id": "e55_085",
    "file": "src/content/era/era1955.js",
    "line": 24,
@@ -63038,7 +63074,7 @@
    "themes": []
   },
   {
-   "seq": 3426,
+   "seq": 3428,
    "id": "e55_086",
    "file": "src/content/era/era1955.js",
    "line": 25,
@@ -63056,7 +63092,7 @@
    "themes": []
   },
   {
-   "seq": 3427,
+   "seq": 3429,
    "id": "e55_087",
    "file": "src/content/era/era1955.js",
    "line": 26,
@@ -63074,7 +63110,7 @@
    "themes": []
   },
   {
-   "seq": 3428,
+   "seq": 3430,
    "id": "e55_088",
    "file": "src/content/era/era1955.js",
    "line": 27,
@@ -63092,7 +63128,7 @@
    "themes": []
   },
   {
-   "seq": 3429,
+   "seq": 3431,
    "id": "e55_089",
    "file": "src/content/era/era1955.js",
    "line": 28,
@@ -63110,7 +63146,7 @@
    "themes": []
   },
   {
-   "seq": 3430,
+   "seq": 3432,
    "id": "e55_090",
    "file": "src/content/era/era1955.js",
    "line": 29,
@@ -63128,7 +63164,7 @@
    "themes": []
   },
   {
-   "seq": 3431,
+   "seq": 3433,
    "id": "e55_091",
    "file": "src/content/era/era1955.js",
    "line": 30,
@@ -63146,7 +63182,7 @@
    "themes": []
   },
   {
-   "seq": 3432,
+   "seq": 3434,
    "id": "e55_092",
    "file": "src/content/era/era1955.js",
    "line": 31,
@@ -63164,7 +63200,7 @@
    "themes": []
   },
   {
-   "seq": 3433,
+   "seq": 3435,
    "id": "e55_093",
    "file": "src/content/era/era1955.js",
    "line": 32,
@@ -63182,7 +63218,7 @@
    "themes": []
   },
   {
-   "seq": 3434,
+   "seq": 3436,
    "id": "e55_094",
    "file": "src/content/era/era1955.js",
    "line": 33,
@@ -63200,7 +63236,7 @@
    "themes": []
   },
   {
-   "seq": 3435,
+   "seq": 3437,
    "id": "e55_095",
    "file": "src/content/era/era1955.js",
    "line": 34,
@@ -63218,7 +63254,7 @@
    "themes": []
   },
   {
-   "seq": 3436,
+   "seq": 3438,
    "id": "e55_096",
    "file": "src/content/era/era1955.js",
    "line": 35,
@@ -63236,7 +63272,7 @@
    "themes": []
   },
   {
-   "seq": 3437,
+   "seq": 3439,
    "id": "e55_097",
    "file": "src/content/era/era1955.js",
    "line": 36,
@@ -63254,7 +63290,7 @@
    "themes": []
   },
   {
-   "seq": 3438,
+   "seq": 3440,
    "id": "e55_098",
    "file": "src/content/era/era1955.js",
    "line": 37,
@@ -63272,7 +63308,7 @@
    "themes": []
   },
   {
-   "seq": 3439,
+   "seq": 3441,
    "id": "e55_099",
    "file": "src/content/era/era1955.js",
    "line": 38,
@@ -63290,7 +63326,7 @@
    "themes": []
   },
   {
-   "seq": 3440,
+   "seq": 3442,
    "id": "e55_100",
    "file": "src/content/era/era1955.js",
    "line": 39,
@@ -63308,7 +63344,7 @@
    "themes": []
   },
   {
-   "seq": 3441,
+   "seq": 3443,
    "id": "e55_101",
    "file": "src/content/era/era1955.js",
    "line": 40,
@@ -63326,7 +63362,7 @@
    "themes": []
   },
   {
-   "seq": 3442,
+   "seq": 3444,
    "id": "e55_102",
    "file": "src/content/era/era1955.js",
    "line": 41,
@@ -63346,7 +63382,7 @@
    ]
   },
   {
-   "seq": 3443,
+   "seq": 3445,
    "id": "e55_103",
    "file": "src/content/era/era1955.js",
    "line": 42,
@@ -63366,7 +63402,7 @@
    ]
   },
   {
-   "seq": 3444,
+   "seq": 3446,
    "id": "e55_104",
    "file": "src/content/era/era1955.js",
    "line": 43,
@@ -63386,7 +63422,7 @@
    ]
   },
   {
-   "seq": 3445,
+   "seq": 3447,
    "id": "e65_001",
    "file": "src/content/era/era1965.js",
    "line": 3,
@@ -63404,7 +63440,7 @@
    "themes": []
   },
   {
-   "seq": 3446,
+   "seq": 3448,
    "id": "e65_002",
    "file": "src/content/era/era1965.js",
    "line": 4,
@@ -63422,7 +63458,7 @@
    "themes": []
   },
   {
-   "seq": 3447,
+   "seq": 3449,
    "id": "e65_003",
    "file": "src/content/era/era1965.js",
    "line": 5,
@@ -63440,7 +63476,7 @@
    "themes": []
   },
   {
-   "seq": 3448,
+   "seq": 3450,
    "id": "e65_004",
    "file": "src/content/era/era1965.js",
    "line": 6,
@@ -63458,7 +63494,7 @@
    "themes": []
   },
   {
-   "seq": 3449,
+   "seq": 3451,
    "id": "e65_005",
    "file": "src/content/era/era1965.js",
    "line": 7,
@@ -63476,7 +63512,7 @@
    "themes": []
   },
   {
-   "seq": 3450,
+   "seq": 3452,
    "id": "e65_006",
    "file": "src/content/era/era1965.js",
    "line": 8,
@@ -63494,7 +63530,7 @@
    "themes": []
   },
   {
-   "seq": 3451,
+   "seq": 3453,
    "id": "e65_007",
    "file": "src/content/era/era1965.js",
    "line": 9,
@@ -63512,7 +63548,7 @@
    "themes": []
   },
   {
-   "seq": 3452,
+   "seq": 3454,
    "id": "e65_008",
    "file": "src/content/era/era1965.js",
    "line": 10,
@@ -63530,7 +63566,7 @@
    "themes": []
   },
   {
-   "seq": 3453,
+   "seq": 3455,
    "id": "e65_009",
    "file": "src/content/era/era1965.js",
    "line": 11,
@@ -63548,7 +63584,7 @@
    "themes": []
   },
   {
-   "seq": 3454,
+   "seq": 3456,
    "id": "e65_010",
    "file": "src/content/era/era1965.js",
    "line": 12,
@@ -63566,7 +63602,7 @@
    "themes": []
   },
   {
-   "seq": 3455,
+   "seq": 3457,
    "id": "e65_011",
    "file": "src/content/era/era1965.js",
    "line": 13,
@@ -63584,7 +63620,7 @@
    "themes": []
   },
   {
-   "seq": 3456,
+   "seq": 3458,
    "id": "e65_012",
    "file": "src/content/era/era1965.js",
    "line": 14,
@@ -63602,7 +63638,7 @@
    "themes": []
   },
   {
-   "seq": 3457,
+   "seq": 3459,
    "id": "e65_013",
    "file": "src/content/era/era1965.js",
    "line": 15,
@@ -63620,7 +63656,7 @@
    "themes": []
   },
   {
-   "seq": 3458,
+   "seq": 3460,
    "id": "e65_014",
    "file": "src/content/era/era1965.js",
    "line": 16,
@@ -63638,7 +63674,7 @@
    "themes": []
   },
   {
-   "seq": 3459,
+   "seq": 3461,
    "id": "e65_015",
    "file": "src/content/era/era1965.js",
    "line": 17,
@@ -63656,7 +63692,7 @@
    "themes": []
   },
   {
-   "seq": 3460,
+   "seq": 3462,
    "id": "e65_016",
    "file": "src/content/era/era1965.js",
    "line": 18,
@@ -63674,7 +63710,7 @@
    "themes": []
   },
   {
-   "seq": 3461,
+   "seq": 3463,
    "id": "e65_017",
    "file": "src/content/era/era1965.js",
    "line": 19,
@@ -63692,7 +63728,7 @@
    "themes": []
   },
   {
-   "seq": 3462,
+   "seq": 3464,
    "id": "e65_018",
    "file": "src/content/era/era1965.js",
    "line": 20,
@@ -63710,7 +63746,7 @@
    "themes": []
   },
   {
-   "seq": 3463,
+   "seq": 3465,
    "id": "e65_019",
    "file": "src/content/era/era1965.js",
    "line": 21,
@@ -63728,7 +63764,7 @@
    "themes": []
   },
   {
-   "seq": 3464,
+   "seq": 3466,
    "id": "e65_020",
    "file": "src/content/era/era1965.js",
    "line": 22,
@@ -63746,7 +63782,7 @@
    "themes": []
   },
   {
-   "seq": 3465,
+   "seq": 3467,
    "id": "e65_021",
    "file": "src/content/era/era1965.js",
    "line": 23,
@@ -63764,7 +63800,7 @@
    "themes": []
   },
   {
-   "seq": 3466,
+   "seq": 3468,
    "id": "e65_022",
    "file": "src/content/era/era1965.js",
    "line": 24,
@@ -63782,7 +63818,7 @@
    "themes": []
   },
   {
-   "seq": 3467,
+   "seq": 3469,
    "id": "e65_023",
    "file": "src/content/era/era1965.js",
    "line": 25,
@@ -63800,7 +63836,7 @@
    "themes": []
   },
   {
-   "seq": 3468,
+   "seq": 3470,
    "id": "e65_024",
    "file": "src/content/era/era1965.js",
    "line": 26,
@@ -63818,7 +63854,7 @@
    "themes": []
   },
   {
-   "seq": 3469,
+   "seq": 3471,
    "id": "e65_025",
    "file": "src/content/era/era1965.js",
    "line": 27,
@@ -63836,7 +63872,7 @@
    "themes": []
   },
   {
-   "seq": 3470,
+   "seq": 3472,
    "id": "e65_026",
    "file": "src/content/era/era1965.js",
    "line": 28,
@@ -63854,7 +63890,7 @@
    "themes": []
   },
   {
-   "seq": 3471,
+   "seq": 3473,
    "id": "e65_027",
    "file": "src/content/era/era1965.js",
    "line": 29,
@@ -63872,7 +63908,7 @@
    "themes": []
   },
   {
-   "seq": 3472,
+   "seq": 3474,
    "id": "e65_028",
    "file": "src/content/era/era1965.js",
    "line": 30,
@@ -63890,7 +63926,7 @@
    "themes": []
   },
   {
-   "seq": 3473,
+   "seq": 3475,
    "id": "e65_029",
    "file": "src/content/era/era1965.js",
    "line": 31,
@@ -63908,7 +63944,7 @@
    "themes": []
   },
   {
-   "seq": 3474,
+   "seq": 3476,
    "id": "e65_030",
    "file": "src/content/era/era1965.js",
    "line": 32,
@@ -63926,7 +63962,7 @@
    "themes": []
   },
   {
-   "seq": 3475,
+   "seq": 3477,
    "id": "e65_031",
    "file": "src/content/era/era1965.js",
    "line": 33,
@@ -63944,7 +63980,7 @@
    "themes": []
   },
   {
-   "seq": 3476,
+   "seq": 3478,
    "id": "e65_032",
    "file": "src/content/era/era1965.js",
    "line": 34,
@@ -63962,7 +63998,7 @@
    "themes": []
   },
   {
-   "seq": 3477,
+   "seq": 3479,
    "id": "e65_033",
    "file": "src/content/era/era1965.js",
    "line": 35,
@@ -63980,7 +64016,7 @@
    "themes": []
   },
   {
-   "seq": 3478,
+   "seq": 3480,
    "id": "e65_034",
    "file": "src/content/era/era1965.js",
    "line": 36,
@@ -63998,7 +64034,7 @@
    "themes": []
   },
   {
-   "seq": 3479,
+   "seq": 3481,
    "id": "e65_035",
    "file": "src/content/era/era1965.js",
    "line": 37,
@@ -64016,7 +64052,7 @@
    "themes": []
   },
   {
-   "seq": 3480,
+   "seq": 3482,
    "id": "e65_036",
    "file": "src/content/era/era1965.js",
    "line": 38,
@@ -64034,7 +64070,7 @@
    "themes": []
   },
   {
-   "seq": 3481,
+   "seq": 3483,
    "id": "e65_037",
    "file": "src/content/era/era1965.js",
    "line": 39,
@@ -64052,7 +64088,7 @@
    "themes": []
   },
   {
-   "seq": 3482,
+   "seq": 3484,
    "id": "e65_038",
    "file": "src/content/era/era1965.js",
    "line": 40,
@@ -64070,7 +64106,7 @@
    "themes": []
   },
   {
-   "seq": 3483,
+   "seq": 3485,
    "id": "e65_039",
    "file": "src/content/era/era1965.js",
    "line": 41,
@@ -64088,7 +64124,7 @@
    "themes": []
   },
   {
-   "seq": 3484,
+   "seq": 3486,
    "id": "e65_040",
    "file": "src/content/era/era1965.js",
    "line": 42,
@@ -64106,7 +64142,7 @@
    "themes": []
   },
   {
-   "seq": 3485,
+   "seq": 3487,
    "id": "e65_041",
    "file": "src/content/era/era1965.js",
    "line": 43,
@@ -64124,7 +64160,7 @@
    "themes": []
   },
   {
-   "seq": 3486,
+   "seq": 3488,
    "id": "e65_042",
    "file": "src/content/era/era1965.js",
    "line": 44,
@@ -64142,7 +64178,7 @@
    "themes": []
   },
   {
-   "seq": 3487,
+   "seq": 3489,
    "id": "e65_043",
    "file": "src/content/era/era1965.js",
    "line": 45,
@@ -64160,7 +64196,7 @@
    "themes": []
   },
   {
-   "seq": 3488,
+   "seq": 3490,
    "id": "e65_044",
    "file": "src/content/era/era1965.js",
    "line": 46,
@@ -64178,7 +64214,7 @@
    "themes": []
   },
   {
-   "seq": 3489,
+   "seq": 3491,
    "id": "e65_045",
    "file": "src/content/era/era1965.js",
    "line": 47,
@@ -64196,7 +64232,7 @@
    "themes": []
   },
   {
-   "seq": 3490,
+   "seq": 3492,
    "id": "e65_046",
    "file": "src/content/era/era1965.js",
    "line": 48,
@@ -64214,7 +64250,7 @@
    "themes": []
   },
   {
-   "seq": 3491,
+   "seq": 3493,
    "id": "e65_047",
    "file": "src/content/era/era1965.js",
    "line": 49,
@@ -64234,7 +64270,7 @@
    ]
   },
   {
-   "seq": 3492,
+   "seq": 3494,
    "id": "e65_048",
    "file": "src/content/era/era1965.js",
    "line": 50,
@@ -64252,7 +64288,7 @@
    "themes": []
   },
   {
-   "seq": 3493,
+   "seq": 3495,
    "id": "e65_049",
    "file": "src/content/era/era1965.js",
    "line": 51,
@@ -64270,7 +64306,7 @@
    "themes": []
   },
   {
-   "seq": 3494,
+   "seq": 3496,
    "id": "e65_050",
    "file": "src/content/era/era1965.js",
    "line": 52,
@@ -64288,7 +64324,7 @@
    "themes": []
   },
   {
-   "seq": 3495,
+   "seq": 3497,
    "id": "e65_051",
    "file": "src/content/era/era1965.js",
    "line": 53,
@@ -64306,7 +64342,7 @@
    "themes": []
   },
   {
-   "seq": 3496,
+   "seq": 3498,
    "id": "e65_052",
    "file": "src/content/era/era1965.js",
    "line": 54,
@@ -64324,7 +64360,7 @@
    "themes": []
   },
   {
-   "seq": 3497,
+   "seq": 3499,
    "id": "e65_053",
    "file": "src/content/era/era1965.js",
    "line": 55,
@@ -64342,7 +64378,7 @@
    "themes": []
   },
   {
-   "seq": 3498,
+   "seq": 3500,
    "id": "e65_054",
    "file": "src/content/era/era1965.js",
    "line": 56,
@@ -64360,7 +64396,7 @@
    "themes": []
   },
   {
-   "seq": 3499,
+   "seq": 3501,
    "id": "e65_055",
    "file": "src/content/era/era1965.js",
    "line": 57,
@@ -64378,7 +64414,7 @@
    "themes": []
   },
   {
-   "seq": 3500,
+   "seq": 3502,
    "id": "e65_056",
    "file": "src/content/era/era1965.js",
    "line": 58,
@@ -64396,7 +64432,7 @@
    "themes": []
   },
   {
-   "seq": 3501,
+   "seq": 3503,
    "id": "e65_057",
    "file": "src/content/era/era1965.js",
    "line": 59,
@@ -64414,7 +64450,7 @@
    "themes": []
   },
   {
-   "seq": 3502,
+   "seq": 3504,
    "id": "e65_058",
    "file": "src/content/era/era1965.js",
    "line": 60,
@@ -64432,7 +64468,7 @@
    "themes": []
   },
   {
-   "seq": 3503,
+   "seq": 3505,
    "id": "e65_059",
    "file": "src/content/era/era1965.js",
    "line": 61,
@@ -64450,7 +64486,7 @@
    "themes": []
   },
   {
-   "seq": 3504,
+   "seq": 3506,
    "id": "e65_060",
    "file": "src/content/era/era1965.js",
    "line": 62,
@@ -64468,7 +64504,7 @@
    "themes": []
   },
   {
-   "seq": 3505,
+   "seq": 3507,
    "id": "e65_061",
    "file": "src/content/era/era1965.js",
    "line": 63,
@@ -64486,7 +64522,7 @@
    "themes": []
   },
   {
-   "seq": 3506,
+   "seq": 3508,
    "id": "e65_062",
    "file": "src/content/era/era1965.js",
    "line": 64,
@@ -64504,7 +64540,7 @@
    "themes": []
   },
   {
-   "seq": 3507,
+   "seq": 3509,
    "id": "e65_063",
    "file": "src/content/era/era1965.js",
    "line": 65,
@@ -64522,7 +64558,7 @@
    "themes": []
   },
   {
-   "seq": 3508,
+   "seq": 3510,
    "id": "e65_064",
    "file": "src/content/era/era1965.js",
    "line": 66,
@@ -64540,7 +64576,7 @@
    "themes": []
   },
   {
-   "seq": 3509,
+   "seq": 3511,
    "id": "e65_065",
    "file": "src/content/era/era1965.js",
    "line": 67,
@@ -64558,7 +64594,7 @@
    "themes": []
   },
   {
-   "seq": 3510,
+   "seq": 3512,
    "id": "e65_066",
    "file": "src/content/era/era1965.js",
    "line": 71,
@@ -64576,7 +64612,7 @@
    "themes": []
   },
   {
-   "seq": 3511,
+   "seq": 3513,
    "id": "e65_067",
    "file": "src/content/era/era1965.js",
    "line": 76,
@@ -64594,7 +64630,7 @@
    "themes": []
   },
   {
-   "seq": 3512,
+   "seq": 3514,
    "id": "e65_068",
    "file": "src/content/era/era1965.js",
    "line": 77,
@@ -64612,7 +64648,7 @@
    "themes": []
   },
   {
-   "seq": 3513,
+   "seq": 3515,
    "id": "e65_069",
    "file": "src/content/era/era1965.js",
    "line": 78,
@@ -64630,7 +64666,7 @@
    "themes": []
   },
   {
-   "seq": 3514,
+   "seq": 3516,
    "id": "e65_070",
    "file": "src/content/era/era1965.js",
    "line": 79,
@@ -64648,7 +64684,7 @@
    "themes": []
   },
   {
-   "seq": 3515,
+   "seq": 3517,
    "id": "e65_071",
    "file": "src/content/era/era1965.js",
    "line": 80,
@@ -64666,7 +64702,7 @@
    "themes": []
   },
   {
-   "seq": 3516,
+   "seq": 3518,
    "id": "e65_072",
    "file": "src/content/era/era1965.js",
    "line": 81,
@@ -64684,7 +64720,7 @@
    "themes": []
   },
   {
-   "seq": 3517,
+   "seq": 3519,
    "id": "e65_073",
    "file": "src/content/era/era1965.js",
    "line": 82,
@@ -64702,7 +64738,7 @@
    "themes": []
   },
   {
-   "seq": 3518,
+   "seq": 3520,
    "id": "e65_074",
    "file": "src/content/era/era1965.js",
    "line": 83,
@@ -64720,7 +64756,7 @@
    "themes": []
   },
   {
-   "seq": 3519,
+   "seq": 3521,
    "id": "e65_075",
    "file": "src/content/era/era1965.js",
    "line": 84,
@@ -64738,7 +64774,7 @@
    "themes": []
   },
   {
-   "seq": 3520,
+   "seq": 3522,
    "id": "e65_076",
    "file": "src/content/era/era1965.js",
    "line": 85,
@@ -64756,7 +64792,7 @@
    "themes": []
   },
   {
-   "seq": 3521,
+   "seq": 3523,
    "id": "e65_077",
    "file": "src/content/era/era1965.js",
    "line": 86,
@@ -64774,7 +64810,7 @@
    "themes": []
   },
   {
-   "seq": 3522,
+   "seq": 3524,
    "id": "e65_078",
    "file": "src/content/era/era1965.js",
    "line": 87,
@@ -64792,7 +64828,7 @@
    "themes": []
   },
   {
-   "seq": 3523,
+   "seq": 3525,
    "id": "e65_079",
    "file": "src/content/era/era1965.js",
    "line": 88,
@@ -64810,7 +64846,7 @@
    "themes": []
   },
   {
-   "seq": 3524,
+   "seq": 3526,
    "id": "e65_080",
    "file": "src/content/era/era1965.js",
    "line": 89,
@@ -64828,7 +64864,7 @@
    "themes": []
   },
   {
-   "seq": 3525,
+   "seq": 3527,
    "id": "e65_081",
    "file": "src/content/era/era1965.js",
    "line": 90,
@@ -64846,7 +64882,7 @@
    "themes": []
   },
   {
-   "seq": 3526,
+   "seq": 3528,
    "id": "e65_082",
    "file": "src/content/era/era1965.js",
    "line": 91,
@@ -64864,7 +64900,7 @@
    "themes": []
   },
   {
-   "seq": 3527,
+   "seq": 3529,
    "id": "e65_083",
    "file": "src/content/era/era1965.js",
    "line": 92,
@@ -64882,7 +64918,7 @@
    "themes": []
   },
   {
-   "seq": 3528,
+   "seq": 3530,
    "id": "e65_084",
    "file": "src/content/era/era1965.js",
    "line": 93,
@@ -64900,7 +64936,7 @@
    "themes": []
   },
   {
-   "seq": 3529,
+   "seq": 3531,
    "id": "e65_085",
    "file": "src/content/era/era1965.js",
    "line": 94,
@@ -64918,7 +64954,7 @@
    "themes": []
   },
   {
-   "seq": 3530,
+   "seq": 3532,
    "id": "e65_086",
    "file": "src/content/era/era1965.js",
    "line": 95,
@@ -64936,7 +64972,7 @@
    "themes": []
   },
   {
-   "seq": 3531,
+   "seq": 3533,
    "id": "e65_087",
    "file": "src/content/era/era1965.js",
    "line": 96,
@@ -64954,7 +64990,7 @@
    "themes": []
   },
   {
-   "seq": 3532,
+   "seq": 3534,
    "id": "e65_088",
    "file": "src/content/era/era1965.js",
    "line": 97,
@@ -64972,7 +65008,7 @@
    "themes": []
   },
   {
-   "seq": 3533,
+   "seq": 3535,
    "id": "e65_089",
    "file": "src/content/era/era1965.js",
    "line": 98,
@@ -64990,7 +65026,7 @@
    "themes": []
   },
   {
-   "seq": 3534,
+   "seq": 3536,
    "id": "e65_090",
    "file": "src/content/era/era1965.js",
    "line": 99,
@@ -65008,7 +65044,7 @@
    "themes": []
   },
   {
-   "seq": 3535,
+   "seq": 3537,
    "id": "e65_091",
    "file": "src/content/era/era1965.js",
    "line": 100,
@@ -65026,7 +65062,7 @@
    "themes": []
   },
   {
-   "seq": 3536,
+   "seq": 3538,
    "id": "e65_092",
    "file": "src/content/era/era1965.js",
    "line": 101,
@@ -65044,7 +65080,7 @@
    "themes": []
   },
   {
-   "seq": 3537,
+   "seq": 3539,
    "id": "e65_093",
    "file": "src/content/era/era1965.js",
    "line": 102,
@@ -65062,7 +65098,7 @@
    "themes": []
   },
   {
-   "seq": 3538,
+   "seq": 3540,
    "id": "e65_094",
    "file": "src/content/era/era1965.js",
    "line": 103,
@@ -65080,7 +65116,7 @@
    "themes": []
   },
   {
-   "seq": 3539,
+   "seq": 3541,
    "id": "e65_095",
    "file": "src/content/era/era1965.js",
    "line": 104,
@@ -65098,7 +65134,7 @@
    "themes": []
   },
   {
-   "seq": 3540,
+   "seq": 3542,
    "id": "e65_096",
    "file": "src/content/era/era1965.js",
    "line": 105,
@@ -65116,7 +65152,7 @@
    "themes": []
   },
   {
-   "seq": 3541,
+   "seq": 3543,
    "id": "e78_001",
    "file": "src/content/era/era1978.js",
    "line": 3,
@@ -65134,7 +65170,7 @@
    "themes": []
   },
   {
-   "seq": 3542,
+   "seq": 3544,
    "id": "e78_002",
    "file": "src/content/era/era1978.js",
    "line": 4,
@@ -65152,7 +65188,7 @@
    "themes": []
   },
   {
-   "seq": 3543,
+   "seq": 3545,
    "id": "e78_003",
    "file": "src/content/era/era1978.js",
    "line": 5,
@@ -65170,7 +65206,7 @@
    "themes": []
   },
   {
-   "seq": 3544,
+   "seq": 3546,
    "id": "e78_004",
    "file": "src/content/era/era1978.js",
    "line": 6,
@@ -65188,7 +65224,7 @@
    "themes": []
   },
   {
-   "seq": 3545,
+   "seq": 3547,
    "id": "e78_005",
    "file": "src/content/era/era1978.js",
    "line": 7,
@@ -65206,7 +65242,7 @@
    "themes": []
   },
   {
-   "seq": 3546,
+   "seq": 3548,
    "id": "e78_006",
    "file": "src/content/era/era1978.js",
    "line": 8,
@@ -65224,7 +65260,7 @@
    "themes": []
   },
   {
-   "seq": 3547,
+   "seq": 3549,
    "id": "e78_007",
    "file": "src/content/era/era1978.js",
    "line": 9,
@@ -65242,7 +65278,7 @@
    "themes": []
   },
   {
-   "seq": 3548,
+   "seq": 3550,
    "id": "e78_008",
    "file": "src/content/era/era1978.js",
    "line": 10,
@@ -65260,7 +65296,7 @@
    "themes": []
   },
   {
-   "seq": 3549,
+   "seq": 3551,
    "id": "e78_009",
    "file": "src/content/era/era1978.js",
    "line": 11,
@@ -65278,7 +65314,7 @@
    "themes": []
   },
   {
-   "seq": 3550,
+   "seq": 3552,
    "id": "e78_010",
    "file": "src/content/era/era1978.js",
    "line": 12,
@@ -65296,7 +65332,7 @@
    "themes": []
   },
   {
-   "seq": 3551,
+   "seq": 3553,
    "id": "e78_011",
    "file": "src/content/era/era1978.js",
    "line": 13,
@@ -65314,7 +65350,7 @@
    "themes": []
   },
   {
-   "seq": 3552,
+   "seq": 3554,
    "id": "e78_012",
    "file": "src/content/era/era1978.js",
    "line": 14,
@@ -65332,7 +65368,7 @@
    "themes": []
   },
   {
-   "seq": 3553,
+   "seq": 3555,
    "id": "e78_013",
    "file": "src/content/era/era1978.js",
    "line": 15,
@@ -65350,7 +65386,7 @@
    "themes": []
   },
   {
-   "seq": 3554,
+   "seq": 3556,
    "id": "e78_014",
    "file": "src/content/era/era1978.js",
    "line": 16,
@@ -65368,7 +65404,7 @@
    "themes": []
   },
   {
-   "seq": 3555,
+   "seq": 3557,
    "id": "e78_015",
    "file": "src/content/era/era1978.js",
    "line": 17,
@@ -65386,7 +65422,7 @@
    "themes": []
   },
   {
-   "seq": 3556,
+   "seq": 3558,
    "id": "e78_016",
    "file": "src/content/era/era1978.js",
    "line": 18,
@@ -65404,7 +65440,7 @@
    "themes": []
   },
   {
-   "seq": 3557,
+   "seq": 3559,
    "id": "e78_017",
    "file": "src/content/era/era1978.js",
    "line": 19,
@@ -65422,7 +65458,7 @@
    "themes": []
   },
   {
-   "seq": 3558,
+   "seq": 3560,
    "id": "e78_018",
    "file": "src/content/era/era1978.js",
    "line": 20,
@@ -65440,7 +65476,7 @@
    "themes": []
   },
   {
-   "seq": 3559,
+   "seq": 3561,
    "id": "e78_019",
    "file": "src/content/era/era1978.js",
    "line": 21,
@@ -65458,7 +65494,7 @@
    "themes": []
   },
   {
-   "seq": 3560,
+   "seq": 3562,
    "id": "e78_020",
    "file": "src/content/era/era1978.js",
    "line": 22,
@@ -65476,7 +65512,7 @@
    "themes": []
   },
   {
-   "seq": 3561,
+   "seq": 3563,
    "id": "e78_021",
    "file": "src/content/era/era1978.js",
    "line": 23,
@@ -65496,7 +65532,7 @@
    ]
   },
   {
-   "seq": 3562,
+   "seq": 3564,
    "id": "e78_022",
    "file": "src/content/era/era1978.js",
    "line": 24,
@@ -65514,7 +65550,7 @@
    "themes": []
   },
   {
-   "seq": 3563,
+   "seq": 3565,
    "id": "e78_023",
    "file": "src/content/era/era1978.js",
    "line": 25,
@@ -65534,7 +65570,7 @@
    ]
   },
   {
-   "seq": 3564,
+   "seq": 3566,
    "id": "e78_024",
    "file": "src/content/era/era1978.js",
    "line": 26,
@@ -65554,7 +65590,7 @@
    ]
   },
   {
-   "seq": 3565,
+   "seq": 3567,
    "id": "e78_025",
    "file": "src/content/era/era1978.js",
    "line": 27,
@@ -65572,7 +65608,7 @@
    "themes": []
   },
   {
-   "seq": 3566,
+   "seq": 3568,
    "id": "e78_026",
    "file": "src/content/era/era1978.js",
    "line": 28,
@@ -65590,7 +65626,7 @@
    "themes": []
   },
   {
-   "seq": 3567,
+   "seq": 3569,
    "id": "e78_027",
    "file": "src/content/era/era1978.js",
    "line": 29,
@@ -65608,7 +65644,7 @@
    "themes": []
   },
   {
-   "seq": 3568,
+   "seq": 3570,
    "id": "e78_028",
    "file": "src/content/era/era1978.js",
    "line": 30,
@@ -65626,7 +65662,7 @@
    "themes": []
   },
   {
-   "seq": 3569,
+   "seq": 3571,
    "id": "e78_029",
    "file": "src/content/era/era1978.js",
    "line": 31,
@@ -65644,7 +65680,7 @@
    "themes": []
   },
   {
-   "seq": 3570,
+   "seq": 3572,
    "id": "e78_030",
    "file": "src/content/era/era1978.js",
    "line": 32,
@@ -65662,7 +65698,7 @@
    "themes": []
   },
   {
-   "seq": 3571,
+   "seq": 3573,
    "id": "e78_031",
    "file": "src/content/era/era1978.js",
    "line": 33,
@@ -65680,7 +65716,7 @@
    "themes": []
   },
   {
-   "seq": 3572,
+   "seq": 3574,
    "id": "e78_032",
    "file": "src/content/era/era1978.js",
    "line": 34,
@@ -65698,7 +65734,7 @@
    "themes": []
   },
   {
-   "seq": 3573,
+   "seq": 3575,
    "id": "e78_033",
    "file": "src/content/era/era1978.js",
    "line": 35,
@@ -65716,7 +65752,7 @@
    "themes": []
   },
   {
-   "seq": 3574,
+   "seq": 3576,
    "id": "e78_034",
    "file": "src/content/era/era1978.js",
    "line": 36,
@@ -65734,7 +65770,7 @@
    "themes": []
   },
   {
-   "seq": 3575,
+   "seq": 3577,
    "id": "e78_035",
    "file": "src/content/era/era1978.js",
    "line": 37,
@@ -65752,7 +65788,7 @@
    "themes": []
   },
   {
-   "seq": 3576,
+   "seq": 3578,
    "id": "e78_036",
    "file": "src/content/era/era1978.js",
    "line": 38,
@@ -65770,7 +65806,7 @@
    "themes": []
   },
   {
-   "seq": 3577,
+   "seq": 3579,
    "id": "e78_037",
    "file": "src/content/era/era1978.js",
    "line": 39,
@@ -65788,7 +65824,7 @@
    "themes": []
   },
   {
-   "seq": 3578,
+   "seq": 3580,
    "id": "e78_038",
    "file": "src/content/era/era1978.js",
    "line": 40,
@@ -65806,7 +65842,7 @@
    "themes": []
   },
   {
-   "seq": 3579,
+   "seq": 3581,
    "id": "e78_039",
    "file": "src/content/era/era1978.js",
    "line": 41,
@@ -65824,7 +65860,7 @@
    "themes": []
   },
   {
-   "seq": 3580,
+   "seq": 3582,
    "id": "e78_040",
    "file": "src/content/era/era1978.js",
    "line": 42,
@@ -65842,7 +65878,7 @@
    "themes": []
   },
   {
-   "seq": 3581,
+   "seq": 3583,
    "id": "e78_041",
    "file": "src/content/era/era1978.js",
    "line": 43,
@@ -65860,7 +65896,7 @@
    "themes": []
   },
   {
-   "seq": 3582,
+   "seq": 3584,
    "id": "e78_042",
    "file": "src/content/era/era1978.js",
    "line": 44,
@@ -65878,7 +65914,7 @@
    "themes": []
   },
   {
-   "seq": 3583,
+   "seq": 3585,
    "id": "e78_043",
    "file": "src/content/era/era1978.js",
    "line": 45,
@@ -65896,7 +65932,7 @@
    "themes": []
   },
   {
-   "seq": 3584,
+   "seq": 3586,
    "id": "e78_044",
    "file": "src/content/era/era1978.js",
    "line": 46,
@@ -65914,7 +65950,7 @@
    "themes": []
   },
   {
-   "seq": 3585,
+   "seq": 3587,
    "id": "e78_045",
    "file": "src/content/era/era1978.js",
    "line": 47,
@@ -65932,7 +65968,7 @@
    "themes": []
   },
   {
-   "seq": 3586,
+   "seq": 3588,
    "id": "e78_046",
    "file": "src/content/era/era1978.js",
    "line": 48,
@@ -65950,7 +65986,7 @@
    "themes": []
   },
   {
-   "seq": 3587,
+   "seq": 3589,
    "id": "e78_047",
    "file": "src/content/era/era1978.js",
    "line": 49,
@@ -65968,7 +66004,7 @@
    "themes": []
   },
   {
-   "seq": 3588,
+   "seq": 3590,
    "id": "e78_048",
    "file": "src/content/era/era1978.js",
    "line": 50,
@@ -65986,7 +66022,7 @@
    "themes": []
   },
   {
-   "seq": 3589,
+   "seq": 3591,
    "id": "e78_049",
    "file": "src/content/era/era1978.js",
    "line": 51,
@@ -66004,7 +66040,7 @@
    "themes": []
   },
   {
-   "seq": 3590,
+   "seq": 3592,
    "id": "e78_050",
    "file": "src/content/era/era1978.js",
    "line": 52,
@@ -66022,7 +66058,7 @@
    "themes": []
   },
   {
-   "seq": 3591,
+   "seq": 3593,
    "id": "e78_051",
    "file": "src/content/era/era1978.js",
    "line": 53,
@@ -66040,7 +66076,7 @@
    "themes": []
   },
   {
-   "seq": 3592,
+   "seq": 3594,
    "id": "e78_052",
    "file": "src/content/era/era1978.js",
    "line": 54,
@@ -66058,7 +66094,7 @@
    "themes": []
   },
   {
-   "seq": 3593,
+   "seq": 3595,
    "id": "e78_053",
    "file": "src/content/era/era1978.js",
    "line": 55,
@@ -66076,7 +66112,7 @@
    "themes": []
   },
   {
-   "seq": 3594,
+   "seq": 3596,
    "id": "e78_054",
    "file": "src/content/era/era1978.js",
    "line": 56,
@@ -66094,7 +66130,7 @@
    "themes": []
   },
   {
-   "seq": 3595,
+   "seq": 3597,
    "id": "e78_055",
    "file": "src/content/era/era1978.js",
    "line": 57,
@@ -66112,7 +66148,7 @@
    "themes": []
   },
   {
-   "seq": 3596,
+   "seq": 3598,
    "id": "e78_056",
    "file": "src/content/era/era1978.js",
    "line": 58,
@@ -66130,7 +66166,7 @@
    "themes": []
   },
   {
-   "seq": 3597,
+   "seq": 3599,
    "id": "e78_057",
    "file": "src/content/era/era1978.js",
    "line": 59,
@@ -66148,7 +66184,7 @@
    "themes": []
   },
   {
-   "seq": 3598,
+   "seq": 3600,
    "id": "e78_058",
    "file": "src/content/era/era1978.js",
    "line": 60,
@@ -66166,7 +66202,7 @@
    "themes": []
   },
   {
-   "seq": 3599,
+   "seq": 3601,
    "id": "e78_059",
    "file": "src/content/era/era1978.js",
    "line": 61,
@@ -66184,7 +66220,7 @@
    "themes": []
   },
   {
-   "seq": 3600,
+   "seq": 3602,
    "id": "e78_060",
    "file": "src/content/era/era1978.js",
    "line": 65,
@@ -66202,7 +66238,7 @@
    "themes": []
   },
   {
-   "seq": 3601,
+   "seq": 3603,
    "id": "e78_061",
    "file": "src/content/era/era1978.js",
    "line": 66,
@@ -66220,7 +66256,7 @@
    "themes": []
   },
   {
-   "seq": 3602,
+   "seq": 3604,
    "id": "e78_062",
    "file": "src/content/era/era1978.js",
    "line": 67,
@@ -66238,7 +66274,7 @@
    "themes": []
   },
   {
-   "seq": 3603,
+   "seq": 3605,
    "id": "e78_063",
    "file": "src/content/era/era1978.js",
    "line": 68,
@@ -66256,7 +66292,7 @@
    "themes": []
   },
   {
-   "seq": 3604,
+   "seq": 3606,
    "id": "echo_case85",
    "file": "src/content/era/era1985.js",
    "line": 16,
@@ -66274,7 +66310,7 @@
    "themes": []
   },
   {
-   "seq": 3605,
+   "seq": 3607,
    "id": "echo_flag85",
    "file": "src/content/era/era1985.js",
    "line": 17,
@@ -66292,7 +66328,7 @@
    "themes": []
   },
   {
-   "seq": 3606,
+   "seq": 3608,
    "id": "echo_cover85",
    "file": "src/content/era/era1985.js",
    "line": 18,
@@ -66310,7 +66346,7 @@
    "themes": []
   },
   {
-   "seq": 3607,
+   "seq": 3609,
    "id": "echo_marble85",
    "file": "src/content/era/era1985.js",
    "line": 19,
@@ -66328,7 +66364,7 @@
    "themes": []
   },
   {
-   "seq": 3608,
+   "seq": 3610,
    "id": "echo_game85",
    "file": "src/content/era/era1985.js",
    "line": 20,
@@ -66346,7 +66382,7 @@
    "themes": []
   },
   {
-   "seq": 3609,
+   "seq": 3611,
    "id": "echo_arcade85",
    "file": "src/content/era/era1985.js",
    "line": 21,
@@ -66364,7 +66400,7 @@
    "themes": []
   },
   {
-   "seq": 3610,
+   "seq": 3612,
    "id": "echo_football85",
    "file": "src/content/era/era1985.js",
    "line": 22,
@@ -66382,7 +66418,7 @@
    "themes": []
   },
   {
-   "seq": 3611,
+   "seq": 3613,
    "id": "echo_shop85",
    "file": "src/content/era/era1985.js",
    "line": 23,
@@ -66400,7 +66436,7 @@
    "themes": []
   },
   {
-   "seq": 3612,
+   "seq": 3614,
    "id": "echo_car85",
    "file": "src/content/era/era1985.js",
    "line": 24,
@@ -66418,7 +66454,7 @@
    "themes": []
   },
   {
-   "seq": 3613,
+   "seq": 3615,
    "id": "echo_lb85",
    "file": "src/content/era/era1985.js",
    "line": 25,
@@ -66436,7 +66472,7 @@
    "themes": []
   },
   {
-   "seq": 3614,
+   "seq": 3616,
    "id": "echo_laidoff85",
    "file": "src/content/era/era1985.js",
    "line": 26,
@@ -66454,7 +66490,7 @@
    "themes": []
   },
   {
-   "seq": 3615,
+   "seq": 3617,
    "id": "echo_move85",
    "file": "src/content/era/era1985.js",
    "line": 27,
@@ -66472,7 +66508,7 @@
    "themes": []
   },
   {
-   "seq": 3616,
+   "seq": 3618,
    "id": "echo_addr85",
    "file": "src/content/era/era1985.js",
    "line": 31,
@@ -66490,7 +66526,7 @@
    "themes": []
   },
   {
-   "seq": 3617,
+   "seq": 3619,
    "id": "e85_001",
    "file": "src/content/era/era1985.js",
    "line": 32,
@@ -66508,7 +66544,7 @@
    "themes": []
   },
   {
-   "seq": 3618,
+   "seq": 3620,
    "id": "e85_002",
    "file": "src/content/era/era1985.js",
    "line": 33,
@@ -66526,7 +66562,7 @@
    "themes": []
   },
   {
-   "seq": 3619,
+   "seq": 3621,
    "id": "e85_003",
    "file": "src/content/era/era1985.js",
    "line": 35,
@@ -66544,7 +66580,7 @@
    "themes": []
   },
   {
-   "seq": 3620,
+   "seq": 3622,
    "id": "e85_004",
    "file": "src/content/era/era1985.js",
    "line": 36,
@@ -66562,7 +66598,7 @@
    "themes": []
   },
   {
-   "seq": 3621,
+   "seq": 3623,
    "id": "e85_006",
    "file": "src/content/era/era1985.js",
    "line": 37,
@@ -66582,7 +66618,7 @@
    ]
   },
   {
-   "seq": 3622,
+   "seq": 3624,
    "id": "e85_007",
    "file": "src/content/era/era1985.js",
    "line": 38,
@@ -66602,7 +66638,7 @@
    ]
   },
   {
-   "seq": 3623,
+   "seq": 3625,
    "id": "e85_005",
    "file": "src/content/era/era1985.js",
    "line": 39,
@@ -66620,7 +66656,7 @@
    "themes": []
   },
   {
-   "seq": 3624,
+   "seq": 3626,
    "id": "echo_palm95",
    "file": "src/content/era/era1995.js",
    "line": 16,
@@ -66638,7 +66674,7 @@
    "themes": []
   },
   {
-   "seq": 3625,
+   "seq": 3627,
    "id": "echo_autopen95",
    "file": "src/content/era/era1995.js",
    "line": 17,
@@ -66656,7 +66692,7 @@
    "themes": []
   },
   {
-   "seq": 3626,
+   "seq": 3628,
    "id": "echo_bus95",
    "file": "src/content/era/era1995.js",
    "line": 18,
@@ -66674,7 +66710,7 @@
    "themes": []
   },
   {
-   "seq": 3627,
+   "seq": 3629,
    "id": "echo_song95",
    "file": "src/content/era/era1995.js",
    "line": 19,
@@ -66692,7 +66728,7 @@
    "themes": []
   },
   {
-   "seq": 3628,
+   "seq": 3630,
    "id": "echo_skate95",
    "file": "src/content/era/era1995.js",
    "line": 20,
@@ -66710,7 +66746,7 @@
    "themes": []
   },
   {
-   "seq": 3629,
+   "seq": 3631,
    "id": "echo_game95",
    "file": "src/content/era/era1995.js",
    "line": 21,
@@ -66728,7 +66764,7 @@
    "themes": []
   },
   {
-   "seq": 3630,
+   "seq": 3632,
    "id": "echo_field95",
    "file": "src/content/era/era1995.js",
    "line": 22,
@@ -66746,7 +66782,7 @@
    "themes": []
   },
   {
-   "seq": 3631,
+   "seq": 3633,
    "id": "echo_tree95",
    "file": "src/content/era/era1995.js",
    "line": 23,
@@ -66764,7 +66800,7 @@
    "themes": []
   },
   {
-   "seq": 3632,
+   "seq": 3634,
    "id": "echo_fuwa95",
    "file": "src/content/era/era1995.js",
    "line": 24,
@@ -66782,7 +66818,7 @@
    "themes": []
   },
   {
-   "seq": 3633,
+   "seq": 3635,
    "id": "echo_campus95",
    "file": "src/content/era/era1995.js",
    "line": 25,
@@ -66800,7 +66836,7 @@
    "themes": []
   },
   {
-   "seq": 3634,
+   "seq": 3636,
    "id": "e95_001",
    "file": "src/content/era/era1995.js",
    "line": 27,
@@ -66820,7 +66856,7 @@
    ]
   },
   {
-   "seq": 3635,
+   "seq": 3637,
    "id": "e95_002",
    "file": "src/content/era/era1995.js",
    "line": 28,
@@ -66838,7 +66874,7 @@
    "themes": []
   },
   {
-   "seq": 3636,
+   "seq": 3638,
    "id": "e95_003",
    "file": "src/content/era/era1995.js",
    "line": 29,
@@ -66856,7 +66892,7 @@
    "themes": []
   },
   {
-   "seq": 3637,
+   "seq": 3639,
    "id": "e95_004",
    "file": "src/content/era/era1995.js",
    "line": 30,
@@ -66874,7 +66910,7 @@
    "themes": []
   },
   {
-   "seq": 3638,
+   "seq": 3640,
    "id": "e95_005",
    "file": "src/content/era/era1995.js",
    "line": 31,
@@ -66892,7 +66928,7 @@
    "themes": []
   },
   {
-   "seq": 3639,
+   "seq": 3641,
    "id": "e95_006",
    "file": "src/content/era/era1995.js",
    "line": 32,
@@ -66910,7 +66946,7 @@
    "themes": []
   },
   {
-   "seq": 3640,
+   "seq": 3642,
    "id": "e95_007",
    "file": "src/content/era/era1995.js",
    "line": 33,
@@ -66928,7 +66964,7 @@
    "themes": []
   },
   {
-   "seq": 3641,
+   "seq": 3643,
    "id": "e95_008",
    "file": "src/content/era/era1995.js",
    "line": 34,
@@ -66946,7 +66982,7 @@
    "themes": []
   },
   {
-   "seq": 3642,
+   "seq": 3644,
    "id": "e95_009",
    "file": "src/content/era/era1995.js",
    "line": 35,
@@ -66964,7 +67000,7 @@
    "themes": []
   },
   {
-   "seq": 3643,
+   "seq": 3645,
    "id": "e95_010",
    "file": "src/content/era/era1995.js",
    "line": 36,
@@ -66982,7 +67018,7 @@
    "themes": []
   },
   {
-   "seq": 3644,
+   "seq": 3646,
    "id": "e95_011",
    "file": "src/content/era/era1995.js",
    "line": 38,
@@ -67000,7 +67036,7 @@
    "themes": []
   },
   {
-   "seq": 3645,
+   "seq": 3647,
    "id": "e95_012",
    "file": "src/content/era/era1995.js",
    "line": 39,
@@ -67018,7 +67054,7 @@
    "themes": []
   },
   {
-   "seq": 3646,
+   "seq": 3648,
    "id": "e95_013",
    "file": "src/content/era/era1995.js",
    "line": 40,
@@ -67036,7 +67072,7 @@
    "themes": []
   },
   {
-   "seq": 3647,
+   "seq": 3649,
    "id": "e95_014",
    "file": "src/content/era/era1995.js",
    "line": 41,
@@ -67056,7 +67092,7 @@
    ]
   },
   {
-   "seq": 3648,
+   "seq": 3650,
    "id": "cb_family3",
    "file": "src/content/rare/synergy.js",
    "line": 10,
@@ -67074,7 +67110,7 @@
    "themes": []
   },
   {
-   "seq": 3649,
+   "seq": 3651,
    "id": "cb_solo_free",
    "file": "src/content/rare/synergy.js",
    "line": 11,
@@ -67092,7 +67128,7 @@
    "themes": []
   },
   {
-   "seq": 3650,
+   "seq": 3652,
    "id": "cb_care_near",
    "file": "src/content/rare/synergy.js",
    "line": 12,
@@ -67110,7 +67146,7 @@
    "themes": []
   },
   {
-   "seq": 3651,
+   "seq": 3653,
    "id": "cb_dink_plan",
    "file": "src/content/rare/synergy.js",
    "line": 13,
@@ -67128,7 +67164,7 @@
    "themes": []
   },
   {
-   "seq": 3652,
+   "seq": 3654,
    "id": "cb_old_couple",
    "file": "src/content/rare/synergy.js",
    "line": 14,
@@ -67146,7 +67182,7 @@
    "themes": []
   },
   {
-   "seq": 3653,
+   "seq": 3655,
    "id": "cb_sandwich",
    "file": "src/content/rare/synergy.js",
    "line": 15,
@@ -67164,7 +67200,7 @@
    "themes": []
   },
   {
-   "seq": 3654,
+   "seq": 3656,
    "id": "cb_rent_free",
    "file": "src/content/rare/synergy.js",
    "line": 16,
@@ -67182,7 +67218,7 @@
    "themes": []
   },
   {
-   "seq": 3655,
+   "seq": 3657,
    "id": "cb_hop_viral_base",
    "file": "src/content/rare/synergy.js",
    "line": 17,
@@ -67202,7 +67238,7 @@
    "themes": []
   },
   {
-   "seq": 3656,
+   "seq": 3658,
    "id": "r_startup",
    "file": "src/content/rare/synergy.js",
    "line": 21,
@@ -67222,7 +67258,7 @@
    "themes": []
   },
   {
-   "seq": 3657,
+   "seq": 3659,
    "id": "r_funding",
    "file": "src/content/rare/synergy.js",
    "line": 26,
@@ -67240,7 +67276,7 @@
    "themes": []
   },
   {
-   "seq": 3658,
+   "seq": 3660,
    "id": "r_ipo",
    "file": "src/content/rare/synergy.js",
    "line": 31,
@@ -67258,7 +67294,7 @@
    "themes": []
   },
   {
-   "seq": 3659,
+   "seq": 3661,
    "id": "r_drug1",
    "file": "src/content/rare/synergy.js",
    "line": 33,
@@ -67276,7 +67312,7 @@
    "themes": []
   },
   {
-   "seq": 3660,
+   "seq": 3662,
    "id": "r_drug2",
    "file": "src/content/rare/synergy.js",
    "line": 38,
@@ -67294,7 +67330,7 @@
    "themes": []
   },
   {
-   "seq": 3661,
+   "seq": 3663,
    "id": "r_school1",
    "file": "src/content/rare/synergy.js",
    "line": 40,
@@ -67316,7 +67352,7 @@
    "themes": []
   },
   {
-   "seq": 3662,
+   "seq": 3664,
    "id": "r_school2",
    "file": "src/content/rare/synergy.js",
    "line": 45,
@@ -67334,7 +67370,7 @@
    "themes": []
   },
   {
-   "seq": 3663,
+   "seq": 3665,
    "id": "r_book",
    "file": "src/content/rare/synergy.js",
    "line": 47,
@@ -67357,7 +67393,7 @@
    "themes": []
   },
   {
-   "seq": 3664,
+   "seq": 3666,
    "id": "r_viral",
    "file": "src/content/rare/synergy.js",
    "line": 48,
@@ -67377,7 +67413,7 @@
    "themes": []
   },
   {
-   "seq": 3665,
+   "seq": 3667,
    "id": "r_award",
    "file": "src/content/rare/synergy.js",
    "line": 50,
@@ -67395,7 +67431,7 @@
    "themes": []
   },
   {
-   "seq": 3666,
+   "seq": 3668,
    "id": "r_lottery",
    "file": "src/content/rare/synergy.js",
    "line": 52,
@@ -67413,7 +67449,7 @@
    "themes": []
   },
   {
-   "seq": 3667,
+   "seq": 3669,
    "id": "r_patent",
    "file": "src/content/rare/synergy.js",
    "line": 53,
@@ -67431,7 +67467,7 @@
    "themes": []
   },
   {
-   "seq": 3668,
+   "seq": 3670,
    "id": "r_oldhouse",
    "file": "src/content/rare/synergy.js",
    "line": 54,
@@ -67449,7 +67485,7 @@
    "themes": []
   },
   {
-   "seq": 3669,
+   "seq": 3671,
    "id": "r_marathon",
    "file": "src/content/rare/synergy.js",
    "line": 55,
@@ -67467,7 +67503,7 @@
    "themes": []
   },
   {
-   "seq": 3670,
+   "seq": 3672,
    "id": "r_rescue",
    "file": "src/content/rare/synergy.js",
    "line": 56,
@@ -67485,7 +67521,7 @@
    "themes": []
   },
   {
-   "seq": 3671,
+   "seq": 3673,
    "id": "r_antique",
    "file": "src/content/rare/synergy.js",
    "line": 57,
@@ -67503,7 +67539,7 @@
    "themes": []
   },
   {
-   "seq": 3672,
+   "seq": 3674,
    "id": "r_teacher_students",
    "file": "src/content/rare/synergy.js",
    "line": 59,
@@ -67521,7 +67557,7 @@
    "themes": []
   },
   {
-   "seq": 3673,
+   "seq": 3675,
    "id": "r_craft_apprentice",
    "file": "src/content/rare/synergy.js",
    "line": 60,
@@ -67539,7 +67575,7 @@
    "themes": []
   },
   {
-   "seq": 3674,
+   "seq": 3676,
    "id": "r_village_doc",
    "file": "src/content/rare/synergy.js",
    "line": 65,
@@ -67557,7 +67593,7 @@
    "themes": []
   },
   {
-   "seq": 3675,
+   "seq": 3677,
    "id": "r_captain_final",
    "file": "src/content/rare/synergy.js",
    "line": 70,
@@ -67575,7 +67611,7 @@
    "themes": []
   },
   {
-   "seq": 3676,
+   "seq": 3678,
    "id": "r_trucker_route",
    "file": "src/content/rare/synergy.js",
    "line": 71,
@@ -67593,7 +67629,7 @@
    "themes": []
   },
   {
-   "seq": 3677,
+   "seq": 3679,
    "id": "r_scam_big",
    "file": "src/content/rare/synergy.js",
    "line": 77,
@@ -67611,7 +67647,7 @@
    "themes": []
   },
   {
-   "seq": 3678,
+   "seq": 3680,
    "id": "r_industry_overnight",
    "file": "src/content/rare/synergy.js",
    "line": 78,
@@ -67629,7 +67665,7 @@
    "themes": []
   },
   {
-   "seq": 3679,
+   "seq": 3681,
    "id": "r_oldfriend_gone",
    "file": "src/content/rare/synergy.js",
    "line": 83,
@@ -67647,7 +67683,7 @@
    "themes": []
   },
   {
-   "seq": 3680,
+   "seq": 3682,
    "id": "r_friend_debt",
    "file": "src/content/rare/synergy.js",
    "line": 84,
@@ -67665,7 +67701,7 @@
    "themes": []
   },
   {
-   "seq": 3681,
+   "seq": 3683,
    "id": "r_health_operation",
    "file": "src/content/rare/synergy.js",
    "line": 89,
@@ -67683,7 +67719,7 @@
    "themes": []
   },
   {
-   "seq": 3682,
+   "seq": 3684,
    "id": "r_guarantee_trap",
    "file": "src/content/rare/synergy.js",
    "line": 90,
@@ -67701,7 +67737,7 @@
    "themes": []
   },
   {
-   "seq": 3683,
+   "seq": 3685,
    "id": "r_old_neighbor",
    "file": "src/content/rare/synergy.js",
    "line": 91,
@@ -67719,7 +67755,7 @@
    "themes": []
   },
   {
-   "seq": 3684,
+   "seq": 3686,
    "id": "lk_born",
    "file": "src/content/rare/synergy.js",
    "line": 94,
@@ -67737,7 +67773,7 @@
    "themes": []
   },
   {
-   "seq": 3685,
+   "seq": 3687,
    "id": "lk_none",
    "file": "src/content/rare/synergy.js",
    "line": 95,
@@ -67755,7 +67791,7 @@
    "themes": []
   },
   {
-   "seq": 3686,
+   "seq": 3688,
    "id": "lk_fade",
    "file": "src/content/rare/synergy.js",
    "line": 96,
@@ -67773,7 +67809,7 @@
    "themes": []
   },
   {
-   "seq": 3687,
+   "seq": 3689,
    "id": "end_richest",
    "file": "src/content/rare/synergy.js",
    "line": 99,
@@ -67791,7 +67827,7 @@
    "themes": []
   },
   {
-   "seq": 3688,
+   "seq": 3690,
    "id": "end_drug",
    "file": "src/content/rare/synergy.js",
    "line": 101,
@@ -67809,7 +67845,7 @@
    "themes": []
   },
   {
-   "seq": 3689,
+   "seq": 3691,
    "id": "end_academician",
    "file": "src/content/rare/synergy.js",
    "line": 103,
@@ -67827,7 +67863,7 @@
    "themes": []
   },
   {
-   "seq": 3690,
+   "seq": 3692,
    "id": "end_principal",
    "file": "src/content/rare/synergy.js",
    "line": 105,
@@ -67845,7 +67881,7 @@
    "themes": []
   },
   {
-   "seq": 3691,
+   "seq": 3693,
    "id": "end_bestseller",
    "file": "src/content/rare/synergy.js",
    "line": 107,
@@ -67867,7 +67903,7 @@
    "themes": []
   },
   {
-   "seq": 3692,
+   "seq": 3694,
    "id": "end_influencer",
    "file": "src/content/rare/synergy.js",
    "line": 109,
@@ -67885,7 +67921,7 @@
    "themes": []
   },
   {
-   "seq": 3693,
+   "seq": 3695,
    "id": "end_bigfamily",
    "file": "src/content/rare/synergy.js",
    "line": 111,
@@ -67903,7 +67939,7 @@
    "themes": []
   },
   {
-   "seq": 3694,
+   "seq": 3696,
    "id": "end_traveler",
    "file": "src/content/rare/synergy.js",
    "line": 118,
@@ -67921,7 +67957,7 @@
    "themes": []
   },
   {
-   "seq": 3695,
+   "seq": 3697,
    "id": "end_standard",
    "file": "src/content/rare/synergy.js",
    "line": 120,
@@ -67939,7 +67975,7 @@
    "themes": []
   },
   {
-   "seq": 3696,
+   "seq": 3698,
    "id": "end_localfounder",
    "file": "src/content/rare/synergy.js",
    "line": 122,
@@ -67959,7 +67995,7 @@
    "themes": []
   },
   {
-   "seq": 3697,
+   "seq": 3699,
    "id": "end_lottery",
    "file": "src/content/rare/synergy.js",
    "line": 124,
@@ -67977,7 +68013,7 @@
    "themes": []
   },
   {
-   "seq": 3698,
+   "seq": 3700,
    "id": "end_champion",
    "file": "src/content/rare/synergy.js",
    "line": 126,
@@ -67995,7 +68031,7 @@
    "themes": []
   },
   {
-   "seq": 3699,
+   "seq": 3701,
    "id": "end_teacher_taoli",
    "file": "src/content/rare/synergy.js",
    "line": 128,
@@ -68013,7 +68049,7 @@
    "themes": []
   },
   {
-   "seq": 3700,
+   "seq": 3702,
    "id": "end_craft_legacy",
    "file": "src/content/rare/synergy.js",
    "line": 130,
@@ -68031,7 +68067,7 @@
    "themes": []
   },
   {
-   "seq": 3701,
+   "seq": 3703,
    "id": "end_village_doctor",
    "file": "src/content/rare/synergy.js",
    "line": 132,
@@ -68049,7 +68085,7 @@
    "themes": []
   },
   {
-   "seq": 3702,
+   "seq": 3704,
    "id": "end_captain",
    "file": "src/content/rare/synergy.js",
    "line": 134,
@@ -68067,7 +68103,7 @@
    "themes": []
   },
   {
-   "seq": 3703,
+   "seq": 3705,
    "id": "end_trucker_million",
    "file": "src/content/rare/synergy.js",
    "line": 136,
@@ -68085,7 +68121,7 @@
    "themes": []
   },
   {
-   "seq": 3704,
+   "seq": 3706,
    "id": "end_care_parents",
    "file": "src/content/rare/synergy.js",
    "line": 145,
@@ -68103,7 +68139,7 @@
    "themes": []
   },
   {
-   "seq": 3705,
+   "seq": 3707,
    "id": "end_solo_free",
    "file": "src/content/rare/synergy.js",
    "line": 147,
@@ -68121,7 +68157,7 @@
    "themes": []
   },
   {
-   "seq": 3706,
+   "seq": 3708,
    "id": "end_two_home",
    "file": "src/content/rare/synergy.js",
    "line": 149,
@@ -68139,7 +68175,7 @@
    "themes": []
   },
   {
-   "seq": 3707,
+   "seq": 3709,
    "id": "end_late_partner",
    "file": "src/content/rare/synergy.js",
    "line": 151,
@@ -68157,7 +68193,7 @@
    "themes": []
   },
   {
-   "seq": 3708,
+   "seq": 3710,
    "id": "end_return_home",
    "file": "src/content/rare/synergy.js",
    "line": 153,
@@ -68175,7 +68211,7 @@
    "themes": []
   },
   {
-   "seq": 3709,
+   "seq": 3711,
    "id": "end_farm_life",
    "file": "src/content/rare/synergy.js",
    "line": 155,
@@ -68197,7 +68233,7 @@
    "themes": []
   },
   {
-   "seq": 3710,
+   "seq": 3712,
    "id": "end_comeback",
    "file": "src/content/rare/synergy.js",
    "line": 157,
@@ -68215,7 +68251,7 @@
    "themes": []
   },
   {
-   "seq": 3711,
+   "seq": 3713,
    "id": "end_rent_free",
    "file": "src/content/rare/synergy.js",
    "line": 159,
@@ -68233,7 +68269,7 @@
    "themes": []
   },
   {
-   "seq": 3712,
+   "seq": 3714,
    "id": "end_abroad_rest",
    "file": "src/content/rare/synergy.js",
    "line": 161,
@@ -68251,7 +68287,7 @@
    "themes": []
   },
   {
-   "seq": 3713,
+   "seq": 3715,
    "id": "end_old_hand",
    "file": "src/content/rare/synergy.js",
    "line": 163,
@@ -68269,7 +68305,7 @@
    "themes": []
   },
   {
-   "seq": 3714,
+   "seq": 3716,
    "id": "end_one_partner",
    "file": "src/content/rare/synergy.js",
    "line": 165,
@@ -68287,7 +68323,7 @@
    "themes": []
   },
   {
-   "seq": 3715,
+   "seq": 3717,
    "id": "end_long_life",
    "file": "src/content/rare/synergy.js",
    "line": 167,
@@ -68305,7 +68341,7 @@
    "themes": []
   },
   {
-   "seq": 3716,
+   "seq": 3718,
    "id": "end_steady_life",
    "file": "src/content/rare/synergy.js",
    "line": 169,
@@ -68323,7 +68359,7 @@
    "themes": []
   },
   {
-   "seq": 3717,
+   "seq": 3719,
    "id": "end_late_learner",
    "file": "src/content/rare/synergy.js",
    "line": 171,
@@ -68341,7 +68377,7 @@
    "themes": []
   },
   {
-   "seq": 3718,
+   "seq": 3720,
    "id": "end_early_full",
    "file": "src/content/rare/synergy.js",
    "line": 173,
@@ -68359,7 +68395,7 @@
    "themes": []
   },
   {
-   "seq": 3719,
+   "seq": 3721,
    "id": "cf_01",
    "file": "src/content/prologue/cards.js",
    "line": 42,
@@ -68377,7 +68413,7 @@
    "themes": []
   },
   {
-   "seq": 3720,
+   "seq": 3722,
    "id": "cf_02",
    "file": "src/content/prologue/cards.js",
    "line": 43,
@@ -68395,7 +68431,7 @@
    "themes": []
   },
   {
-   "seq": 3721,
+   "seq": 3723,
    "id": "cf_03",
    "file": "src/content/prologue/cards.js",
    "line": 44,
@@ -68413,7 +68449,7 @@
    "themes": []
   },
   {
-   "seq": 3722,
+   "seq": 3724,
    "id": "cf_04",
    "file": "src/content/prologue/cards.js",
    "line": 45,
@@ -68431,7 +68467,7 @@
    "themes": []
   },
   {
-   "seq": 3723,
+   "seq": 3725,
    "id": "cf_05",
    "file": "src/content/prologue/cards.js",
    "line": 47,
@@ -68449,7 +68485,7 @@
    "themes": []
   },
   {
-   "seq": 3724,
+   "seq": 3726,
    "id": "cf_06",
    "file": "src/content/prologue/cards.js",
    "line": 48,
@@ -68467,7 +68503,7 @@
    "themes": []
   },
   {
-   "seq": 3725,
+   "seq": 3727,
    "id": "cf_07",
    "file": "src/content/prologue/cards.js",
    "line": 49,
@@ -68485,7 +68521,7 @@
    "themes": []
   },
   {
-   "seq": 3726,
+   "seq": 3728,
    "id": "cf_08",
    "file": "src/content/prologue/cards.js",
    "line": 50,
@@ -68503,7 +68539,7 @@
    "themes": []
   },
   {
-   "seq": 3727,
+   "seq": 3729,
    "id": "cf_09",
    "file": "src/content/prologue/cards.js",
    "line": 51,
@@ -68521,7 +68557,7 @@
    "themes": []
   },
   {
-   "seq": 3728,
+   "seq": 3730,
    "id": "cf_10",
    "file": "src/content/prologue/cards.js",
    "line": 52,
@@ -68539,7 +68575,7 @@
    "themes": []
   },
   {
-   "seq": 3729,
+   "seq": 3731,
    "id": "cf_11",
    "file": "src/content/prologue/cards.js",
    "line": 53,
@@ -68557,7 +68593,7 @@
    "themes": []
   },
   {
-   "seq": 3730,
+   "seq": 3732,
    "id": "cf_12",
    "file": "src/content/prologue/cards.js",
    "line": 54,
@@ -68575,7 +68611,7 @@
    "themes": []
   },
   {
-   "seq": 3731,
+   "seq": 3733,
    "id": "cf_13",
    "file": "src/content/prologue/cards.js",
    "line": 56,
@@ -68593,7 +68629,7 @@
    "themes": []
   },
   {
-   "seq": 3732,
+   "seq": 3734,
    "id": "cf_14",
    "file": "src/content/prologue/cards.js",
    "line": 57,
@@ -68611,7 +68647,7 @@
    "themes": []
   },
   {
-   "seq": 3733,
+   "seq": 3735,
    "id": "cf_15",
    "file": "src/content/prologue/cards.js",
    "line": 58,
@@ -68629,7 +68665,7 @@
    "themes": []
   },
   {
-   "seq": 3734,
+   "seq": 3736,
    "id": "cf_16",
    "file": "src/content/prologue/cards.js",
    "line": 59,
@@ -68647,7 +68683,7 @@
    "themes": []
   },
   {
-   "seq": 3735,
+   "seq": 3737,
    "id": "ct_01",
    "file": "src/content/prologue/cards.js",
    "line": 63,
@@ -68665,7 +68701,7 @@
    "themes": []
   },
   {
-   "seq": 3736,
+   "seq": 3738,
    "id": "ct_02",
    "file": "src/content/prologue/cards.js",
    "line": 64,
@@ -68683,7 +68719,7 @@
    "themes": []
   },
   {
-   "seq": 3737,
+   "seq": 3739,
    "id": "ct_03",
    "file": "src/content/prologue/cards.js",
    "line": 65,
@@ -68701,7 +68737,7 @@
    "themes": []
   },
   {
-   "seq": 3738,
+   "seq": 3740,
    "id": "ct_04",
    "file": "src/content/prologue/cards.js",
    "line": 66,
@@ -68719,7 +68755,7 @@
    "themes": []
   },
   {
-   "seq": 3739,
+   "seq": 3741,
    "id": "ct_05",
    "file": "src/content/prologue/cards.js",
    "line": 68,
@@ -68737,7 +68773,7 @@
    "themes": []
   },
   {
-   "seq": 3740,
+   "seq": 3742,
    "id": "ct_06",
    "file": "src/content/prologue/cards.js",
    "line": 69,
@@ -68755,7 +68791,7 @@
    "themes": []
   },
   {
-   "seq": 3741,
+   "seq": 3743,
    "id": "ct_07",
    "file": "src/content/prologue/cards.js",
    "line": 70,
@@ -68773,7 +68809,7 @@
    "themes": []
   },
   {
-   "seq": 3742,
+   "seq": 3744,
    "id": "ct_08",
    "file": "src/content/prologue/cards.js",
    "line": 71,
@@ -68791,7 +68827,7 @@
    "themes": []
   },
   {
-   "seq": 3743,
+   "seq": 3745,
    "id": "ct_09",
    "file": "src/content/prologue/cards.js",
    "line": 72,
@@ -68809,7 +68845,7 @@
    "themes": []
   },
   {
-   "seq": 3744,
+   "seq": 3746,
    "id": "ct_10",
    "file": "src/content/prologue/cards.js",
    "line": 73,
@@ -68827,7 +68863,7 @@
    "themes": []
   },
   {
-   "seq": 3745,
+   "seq": 3747,
    "id": "ct_11",
    "file": "src/content/prologue/cards.js",
    "line": 74,
@@ -68845,7 +68881,7 @@
    "themes": []
   },
   {
-   "seq": 3746,
+   "seq": 3748,
    "id": "ct_12",
    "file": "src/content/prologue/cards.js",
    "line": 75,
@@ -68863,7 +68899,7 @@
    "themes": []
   },
   {
-   "seq": 3747,
+   "seq": 3749,
    "id": "ct_13",
    "file": "src/content/prologue/cards.js",
    "line": 77,
@@ -68881,7 +68917,7 @@
    "themes": []
   },
   {
-   "seq": 3748,
+   "seq": 3750,
    "id": "ct_14",
    "file": "src/content/prologue/cards.js",
    "line": 78,
@@ -68899,7 +68935,7 @@
    "themes": []
   },
   {
-   "seq": 3749,
+   "seq": 3751,
    "id": "ct_15",
    "file": "src/content/prologue/cards.js",
    "line": 79,
@@ -68917,7 +68953,7 @@
    "themes": []
   },
   {
-   "seq": 3750,
+   "seq": 3752,
    "id": "ct_16",
    "file": "src/content/prologue/cards.js",
    "line": 80,
@@ -68935,7 +68971,7 @@
    "themes": []
   },
   {
-   "seq": 3751,
+   "seq": 3753,
    "id": "ce55_01",
    "file": "src/content/prologue/cards.js",
    "line": 84,
@@ -68953,7 +68989,7 @@
    "themes": []
   },
   {
-   "seq": 3752,
+   "seq": 3754,
    "id": "ce55_02",
    "file": "src/content/prologue/cards.js",
    "line": 85,
@@ -68971,7 +69007,7 @@
    "themes": []
   },
   {
-   "seq": 3753,
+   "seq": 3755,
    "id": "ce55_03",
    "file": "src/content/prologue/cards.js",
    "line": 86,
@@ -68989,7 +69025,7 @@
    "themes": []
   },
   {
-   "seq": 3754,
+   "seq": 3756,
    "id": "ce55_04",
    "file": "src/content/prologue/cards.js",
    "line": 87,
@@ -69007,7 +69043,7 @@
    "themes": []
   },
   {
-   "seq": 3755,
+   "seq": 3757,
    "id": "ce55_05",
    "file": "src/content/prologue/cards.js",
    "line": 88,
@@ -69025,7 +69061,7 @@
    "themes": []
   },
   {
-   "seq": 3756,
+   "seq": 3758,
    "id": "ce55_06",
    "file": "src/content/prologue/cards.js",
    "line": 89,
@@ -69043,7 +69079,7 @@
    "themes": []
   },
   {
-   "seq": 3757,
+   "seq": 3759,
    "id": "ce65_01",
    "file": "src/content/prologue/cards.js",
    "line": 92,
@@ -69061,7 +69097,7 @@
    "themes": []
   },
   {
-   "seq": 3758,
+   "seq": 3760,
    "id": "ce65_02",
    "file": "src/content/prologue/cards.js",
    "line": 93,
@@ -69079,7 +69115,7 @@
    "themes": []
   },
   {
-   "seq": 3759,
+   "seq": 3761,
    "id": "ce65_03",
    "file": "src/content/prologue/cards.js",
    "line": 94,
@@ -69097,7 +69133,7 @@
    "themes": []
   },
   {
-   "seq": 3760,
+   "seq": 3762,
    "id": "ce65_04",
    "file": "src/content/prologue/cards.js",
    "line": 95,
@@ -69115,7 +69151,7 @@
    "themes": []
   },
   {
-   "seq": 3761,
+   "seq": 3763,
    "id": "ce65_05",
    "file": "src/content/prologue/cards.js",
    "line": 96,
@@ -69133,7 +69169,7 @@
    "themes": []
   },
   {
-   "seq": 3762,
+   "seq": 3764,
    "id": "ce65_06",
    "file": "src/content/prologue/cards.js",
    "line": 97,
@@ -69151,7 +69187,7 @@
    "themes": []
   },
   {
-   "seq": 3763,
+   "seq": 3765,
    "id": "ce78_01",
    "file": "src/content/prologue/cards.js",
    "line": 100,
@@ -69169,7 +69205,7 @@
    "themes": []
   },
   {
-   "seq": 3764,
+   "seq": 3766,
    "id": "ce78_02",
    "file": "src/content/prologue/cards.js",
    "line": 101,
@@ -69187,7 +69223,7 @@
    "themes": []
   },
   {
-   "seq": 3765,
+   "seq": 3767,
    "id": "ce78_03",
    "file": "src/content/prologue/cards.js",
    "line": 102,
@@ -69205,7 +69241,7 @@
    "themes": []
   },
   {
-   "seq": 3766,
+   "seq": 3768,
    "id": "ce78_04",
    "file": "src/content/prologue/cards.js",
    "line": 103,
@@ -69223,7 +69259,7 @@
    "themes": []
   },
   {
-   "seq": 3767,
+   "seq": 3769,
    "id": "ce78_05",
    "file": "src/content/prologue/cards.js",
    "line": 104,
@@ -69241,7 +69277,7 @@
    "themes": []
   },
   {
-   "seq": 3768,
+   "seq": 3770,
    "id": "ce78_06",
    "file": "src/content/prologue/cards.js",
    "line": 105,
@@ -69259,7 +69295,7 @@
    "themes": []
   },
   {
-   "seq": 3769,
+   "seq": 3771,
    "id": "ce85_01",
    "file": "src/content/prologue/cards.js",
    "line": 108,
@@ -69277,7 +69313,7 @@
    "themes": []
   },
   {
-   "seq": 3770,
+   "seq": 3772,
    "id": "ce85_02",
    "file": "src/content/prologue/cards.js",
    "line": 109,
@@ -69295,7 +69331,7 @@
    "themes": []
   },
   {
-   "seq": 3771,
+   "seq": 3773,
    "id": "ce85_03",
    "file": "src/content/prologue/cards.js",
    "line": 110,
@@ -69313,7 +69349,7 @@
    "themes": []
   },
   {
-   "seq": 3772,
+   "seq": 3774,
    "id": "ce85_04",
    "file": "src/content/prologue/cards.js",
    "line": 111,
@@ -69331,7 +69367,7 @@
    "themes": []
   },
   {
-   "seq": 3773,
+   "seq": 3775,
    "id": "ce85_05",
    "file": "src/content/prologue/cards.js",
    "line": 112,
@@ -69349,7 +69385,7 @@
    "themes": []
   },
   {
-   "seq": 3774,
+   "seq": 3776,
    "id": "ce85_06",
    "file": "src/content/prologue/cards.js",
    "line": 113,
@@ -69367,7 +69403,7 @@
    "themes": []
   },
   {
-   "seq": 3775,
+   "seq": 3777,
    "id": "ce95_01",
    "file": "src/content/prologue/cards.js",
    "line": 116,
@@ -69385,7 +69421,7 @@
    "themes": []
   },
   {
-   "seq": 3776,
+   "seq": 3778,
    "id": "ce95_02",
    "file": "src/content/prologue/cards.js",
    "line": 117,
@@ -69403,7 +69439,7 @@
    "themes": []
   },
   {
-   "seq": 3777,
+   "seq": 3779,
    "id": "ce95_03",
    "file": "src/content/prologue/cards.js",
    "line": 118,
@@ -69421,7 +69457,7 @@
    "themes": []
   },
   {
-   "seq": 3778,
+   "seq": 3780,
    "id": "ce95_04",
    "file": "src/content/prologue/cards.js",
    "line": 119,
@@ -69439,7 +69475,7 @@
    "themes": []
   },
   {
-   "seq": 3779,
+   "seq": 3781,
    "id": "ce95_05",
    "file": "src/content/prologue/cards.js",
    "line": 120,
@@ -69457,7 +69493,7 @@
    "themes": []
   },
   {
-   "seq": 3780,
+   "seq": 3782,
    "id": "ce95_06",
    "file": "src/content/prologue/cards.js",
    "line": 121,
@@ -69475,7 +69511,7 @@
    "themes": []
   },
   {
-   "seq": 3781,
+   "seq": 3783,
    "id": "ce00_01",
    "file": "src/content/prologue/cards.js",
    "line": 124,
@@ -69493,7 +69529,7 @@
    "themes": []
   },
   {
-   "seq": 3782,
+   "seq": 3784,
    "id": "ce00_02",
    "file": "src/content/prologue/cards.js",
    "line": 125,
@@ -69511,7 +69547,7 @@
    "themes": []
   },
   {
-   "seq": 3783,
+   "seq": 3785,
    "id": "ce00_03",
    "file": "src/content/prologue/cards.js",
    "line": 126,
@@ -69529,7 +69565,7 @@
    "themes": []
   },
   {
-   "seq": 3784,
+   "seq": 3786,
    "id": "ce00_04",
    "file": "src/content/prologue/cards.js",
    "line": 127,
@@ -69547,7 +69583,7 @@
    "themes": []
   },
   {
-   "seq": 3785,
+   "seq": 3787,
    "id": "ce00_05",
    "file": "src/content/prologue/cards.js",
    "line": 128,
@@ -69565,7 +69601,7 @@
    "themes": []
   },
   {
-   "seq": 3786,
+   "seq": 3788,
    "id": "ce00_06",
    "file": "src/content/prologue/cards.js",
    "line": 129,
@@ -69583,7 +69619,7 @@
    "themes": []
   },
   {
-   "seq": 3787,
+   "seq": 3789,
    "id": "pr_origin",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 98,
@@ -69601,7 +69637,7 @@
    "themes": []
   },
   {
-   "seq": 3788,
+   "seq": 3790,
    "id": "pr_child1",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 101,
@@ -69619,7 +69655,7 @@
    "themes": []
   },
   {
-   "seq": 3789,
+   "seq": 3791,
    "id": "pr_child2",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 116,
@@ -69637,7 +69673,7 @@
    "themes": []
   },
   {
-   "seq": 3790,
+   "seq": 3792,
    "id": "pr_child3",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 131,
@@ -69655,7 +69691,7 @@
    "themes": []
   },
   {
-   "seq": 3791,
+   "seq": 3793,
    "id": "pr_child4",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 140,
@@ -69673,7 +69709,7 @@
    "themes": []
   },
   {
-   "seq": 3792,
+   "seq": 3794,
    "id": "pr_teen1",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 149,
@@ -69691,7 +69727,7 @@
    "themes": []
   },
   {
-   "seq": 3793,
+   "seq": 3795,
    "id": "pr_teen2",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 164,
@@ -69709,7 +69745,7 @@
    "themes": []
   },
   {
-   "seq": 3794,
+   "seq": 3796,
    "id": "pr_fork16",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 208,
@@ -69727,7 +69763,7 @@
    "themes": []
   },
   {
-   "seq": 3795,
+   "seq": 3797,
    "id": "pr_y17",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 246,
@@ -69745,7 +69781,7 @@
    "themes": []
   },
   {
-   "seq": 3796,
+   "seq": 3798,
    "id": "pr_y18",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 286,
@@ -69763,7 +69799,7 @@
    "themes": []
   },
   {
-   "seq": 3797,
+   "seq": 3799,
    "id": "pr_y20",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 326,
@@ -69781,7 +69817,7 @@
    "themes": []
   },
   {
-   "seq": 3798,
+   "seq": 3800,
    "id": "pr_y21",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 366,
@@ -69799,7 +69835,7 @@
    "themes": []
   },
   {
-   "seq": 3799,
+   "seq": 3801,
    "id": "pr_kid6_55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 406,
@@ -69817,7 +69853,7 @@
    "themes": []
   },
   {
-   "seq": 3800,
+   "seq": 3802,
    "id": "pr_kid8_55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 419,
@@ -69835,7 +69871,7 @@
    "themes": []
   },
   {
-   "seq": 3801,
+   "seq": 3803,
    "id": "pr_kid10_55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 432,
@@ -69853,7 +69889,7 @@
    "themes": []
   },
   {
-   "seq": 3802,
+   "seq": 3804,
    "id": "pr_half1",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 449,
@@ -69871,7 +69907,7 @@
    "themes": []
   },
   {
-   "seq": 3803,
+   "seq": 3805,
    "id": "pr_half2",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 459,
@@ -69889,7 +69925,7 @@
    "themes": []
   },
   {
-   "seq": 3804,
+   "seq": 3806,
    "id": "pr_half3",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 472,
@@ -69907,7 +69943,7 @@
    "themes": []
   },
   {
-   "seq": 3805,
+   "seq": 3807,
    "id": "pr_never1",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 484,
@@ -69925,7 +69961,7 @@
    "themes": []
   },
   {
-   "seq": 3806,
+   "seq": 3808,
    "id": "pr_never2",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 497,
@@ -69943,7 +69979,7 @@
    "themes": []
   },
   {
-   "seq": 3807,
+   "seq": 3809,
    "id": "pr_never3",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 508,
@@ -69961,7 +69997,7 @@
    "themes": []
   },
   {
-   "seq": 3808,
+   "seq": 3810,
    "id": "mark_slate55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 32,
@@ -69979,7 +70015,7 @@
    "themes": []
   },
   {
-   "seq": 3809,
+   "seq": 3811,
    "id": "mark_pencil55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 33,
@@ -69997,7 +70033,7 @@
    "themes": []
   },
   {
-   "seq": 3810,
+   "seq": 3812,
    "id": "mark_bridge55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 34,
@@ -70015,7 +70051,7 @@
    "themes": []
   },
   {
-   "seq": 3811,
+   "seq": 3813,
    "id": "mark_satchel55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 35,
@@ -70033,7 +70069,7 @@
    "themes": []
   },
   {
-   "seq": 3812,
+   "seq": 3814,
    "id": "mark_bench55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 36,
@@ -70051,7 +70087,7 @@
    "themes": []
   },
   {
-   "seq": 3813,
+   "seq": 3815,
    "id": "mark_ink55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 37,
@@ -70069,7 +70105,7 @@
    "themes": []
   },
   {
-   "seq": 3814,
+   "seq": 3816,
    "id": "mark_hoop55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 38,
@@ -70087,7 +70123,7 @@
    "themes": []
   },
   {
-   "seq": 3815,
+   "seq": 3817,
    "id": "mark_comic55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 39,
@@ -70105,7 +70141,7 @@
    "themes": []
   },
   {
-   "seq": 3816,
+   "seq": 3818,
    "id": "mark_band55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 40,
@@ -70123,7 +70159,7 @@
    "themes": []
   },
   {
-   "seq": 3817,
+   "seq": 3819,
    "id": "mark_top55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 41,
@@ -70141,7 +70177,7 @@
    "themes": []
   },
   {
-   "seq": 3818,
+   "seq": 3820,
    "id": "mark_kite55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 42,
@@ -70159,7 +70195,7 @@
    "themes": []
   },
   {
-   "seq": 3819,
+   "seq": 3821,
    "id": "mark_slingshot55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 43,
@@ -70177,7 +70213,7 @@
    "themes": []
   },
   {
-   "seq": 3820,
+   "seq": 3822,
    "id": "mark_book55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 44,
@@ -70195,7 +70231,7 @@
    "themes": []
   },
   {
-   "seq": 3821,
+   "seq": 3823,
    "id": "mark_locust55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 45,
@@ -70213,7 +70249,7 @@
    "themes": []
   },
   {
-   "seq": 3822,
+   "seq": 3824,
    "id": "mark_movie55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 46,
@@ -70231,7 +70267,7 @@
    "themes": []
   },
   {
-   "seq": 3823,
+   "seq": 3825,
    "id": "mark_tablet55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 47,
@@ -70249,7 +70285,7 @@
    "themes": []
   },
   {
-   "seq": 3824,
+   "seq": 3826,
    "id": "mark_doorplate55",
    "file": "src/content/prologue/prologue-c1955.js",
    "line": 48,
@@ -70267,7 +70303,7 @@
    "themes": []
   },
   {
-   "seq": 3825,
+   "seq": 3827,
    "id": "pr_origin",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 168,
@@ -70285,7 +70321,7 @@
    "themes": []
   },
   {
-   "seq": 3826,
+   "seq": 3828,
    "id": "pr_child1",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 171,
@@ -70303,7 +70339,7 @@
    "themes": []
   },
   {
-   "seq": 3827,
+   "seq": 3829,
    "id": "pr_child2",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 188,
@@ -70321,7 +70357,7 @@
    "themes": []
   },
   {
-   "seq": 3828,
+   "seq": 3830,
    "id": "pr_child3",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 204,
@@ -70339,7 +70375,7 @@
    "themes": []
   },
   {
-   "seq": 3829,
+   "seq": 3831,
    "id": "pr_child4",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 216,
@@ -70357,7 +70393,7 @@
    "themes": []
   },
   {
-   "seq": 3830,
+   "seq": 3832,
    "id": "pr_teen1",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 233,
@@ -70375,7 +70411,7 @@
    "themes": []
   },
   {
-   "seq": 3831,
+   "seq": 3833,
    "id": "pr_teen2",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 253,
@@ -70393,7 +70429,7 @@
    "themes": []
   },
   {
-   "seq": 3832,
+   "seq": 3834,
    "id": "pr_fork16",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 291,
@@ -70411,7 +70447,7 @@
    "themes": []
   },
   {
-   "seq": 3833,
+   "seq": 3835,
    "id": "pr_y17",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 327,
@@ -70429,7 +70465,7 @@
    "themes": []
   },
   {
-   "seq": 3834,
+   "seq": 3836,
    "id": "pr_y18",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 358,
@@ -70447,7 +70483,7 @@
    "themes": []
   },
   {
-   "seq": 3835,
+   "seq": 3837,
    "id": "pr_y20",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 395,
@@ -70465,7 +70501,7 @@
    "themes": []
   },
   {
-   "seq": 3836,
+   "seq": 3838,
    "id": "pr_y21",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 431,
@@ -70483,7 +70519,7 @@
    "themes": []
   },
   {
-   "seq": 3837,
+   "seq": 3839,
    "id": "pr_kid6_65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 464,
@@ -70501,7 +70537,7 @@
    "themes": []
   },
   {
-   "seq": 3838,
+   "seq": 3840,
    "id": "pr_kid8_65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 478,
@@ -70519,7 +70555,7 @@
    "themes": []
   },
   {
-   "seq": 3839,
+   "seq": 3841,
    "id": "pr_kid10_65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 491,
@@ -70537,7 +70573,7 @@
    "themes": []
   },
   {
-   "seq": 3840,
+   "seq": 3842,
    "id": "pr_half1",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 604,
@@ -70555,7 +70591,7 @@
    "themes": []
   },
   {
-   "seq": 3841,
+   "seq": 3843,
    "id": "pr_half2",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 612,
@@ -70573,7 +70609,7 @@
    "themes": []
   },
   {
-   "seq": 3842,
+   "seq": 3844,
    "id": "pr_half3",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 622,
@@ -70591,7 +70627,7 @@
    "themes": []
   },
   {
-   "seq": 3843,
+   "seq": 3845,
    "id": "pr_never1",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 634,
@@ -70609,7 +70645,7 @@
    "themes": []
   },
   {
-   "seq": 3844,
+   "seq": 3846,
    "id": "pr_never2",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 645,
@@ -70627,7 +70663,7 @@
    "themes": []
   },
   {
-   "seq": 3845,
+   "seq": 3847,
    "id": "pr_never3",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 655,
@@ -70645,7 +70681,7 @@
    "themes": []
   },
   {
-   "seq": 3846,
+   "seq": 3848,
    "id": "pr_fam_sentdown65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 520,
@@ -70663,7 +70699,7 @@
    "themes": []
   },
   {
-   "seq": 3847,
+   "seq": 3849,
    "id": "pool_move65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 560,
@@ -70681,7 +70717,7 @@
    "themes": []
   },
   {
-   "seq": 3848,
+   "seq": 3850,
    "id": "mark_pencil65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 94,
@@ -70699,7 +70735,7 @@
    "themes": []
   },
   {
-   "seq": 3849,
+   "seq": 3851,
    "id": "mark_eraser65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 95,
@@ -70717,7 +70753,7 @@
    "themes": []
   },
   {
-   "seq": 3850,
+   "seq": 3852,
    "id": "mark_river65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 96,
@@ -70735,7 +70771,7 @@
    "themes": []
   },
   {
-   "seq": 3851,
+   "seq": 3853,
    "id": "mark_satchel65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 97,
@@ -70753,7 +70789,7 @@
    "themes": []
   },
   {
-   "seq": 3852,
+   "seq": 3854,
    "id": "mark_bench65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 98,
@@ -70771,7 +70807,7 @@
    "themes": []
   },
   {
-   "seq": 3853,
+   "seq": 3855,
    "id": "mark_chalk65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 99,
@@ -70789,7 +70825,7 @@
    "themes": []
   },
   {
-   "seq": 3854,
+   "seq": 3856,
    "id": "mark_hoop65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 100,
@@ -70807,7 +70843,7 @@
    "themes": []
   },
   {
-   "seq": 3855,
+   "seq": 3857,
    "id": "mark_movie65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 101,
@@ -70825,7 +70861,7 @@
    "themes": []
   },
   {
-   "seq": 3856,
+   "seq": 3858,
    "id": "mark_wheat65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 102,
@@ -70843,7 +70879,7 @@
    "themes": []
   },
   {
-   "seq": 3857,
+   "seq": 3859,
    "id": "mark_redscarf65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 103,
@@ -70861,7 +70897,7 @@
    "themes": []
   },
   {
-   "seq": 3858,
+   "seq": 3860,
    "id": "mark_top65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 104,
@@ -70879,7 +70915,7 @@
    "themes": []
   },
   {
-   "seq": 3859,
+   "seq": 3861,
    "id": "mark_swim65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 105,
@@ -70897,7 +70933,7 @@
    "themes": []
   },
   {
-   "seq": 3860,
+   "seq": 3862,
    "id": "mark_books65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 106,
@@ -70915,7 +70951,7 @@
    "themes": []
   },
   {
-   "seq": 3861,
+   "seq": 3863,
    "id": "mark_tv65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 107,
@@ -70933,7 +70969,7 @@
    "themes": []
   },
   {
-   "seq": 3862,
+   "seq": 3864,
    "id": "mark_tree65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 108,
@@ -70951,7 +70987,7 @@
    "themes": []
   },
   {
-   "seq": 3863,
+   "seq": 3865,
    "id": "mark_table65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 109,
@@ -70969,7 +71005,7 @@
    "themes": []
   },
   {
-   "seq": 3864,
+   "seq": 3866,
    "id": "mark_desk65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 110,
@@ -70987,7 +71023,7 @@
    "themes": []
   },
   {
-   "seq": 3865,
+   "seq": 3867,
    "id": "mark_dawn65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 111,
@@ -71005,7 +71041,7 @@
    "themes": []
   },
   {
-   "seq": 3866,
+   "seq": 3868,
    "id": "mark_movebox65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 112,
@@ -71023,7 +71059,7 @@
    "themes": []
   },
   {
-   "seq": 3867,
+   "seq": 3869,
    "id": "mark_move65",
    "file": "src/content/prologue/prologue-c1965.js",
    "line": 113,
@@ -71041,7 +71077,7 @@
    "themes": []
   },
   {
-   "seq": 3868,
+   "seq": 3870,
    "id": "pr_origin",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 127,
@@ -71059,7 +71095,7 @@
    "themes": []
   },
   {
-   "seq": 3869,
+   "seq": 3871,
    "id": "pr_child1",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 130,
@@ -71077,7 +71113,7 @@
    "themes": []
   },
   {
-   "seq": 3870,
+   "seq": 3872,
    "id": "pr_child2",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 147,
@@ -71095,7 +71131,7 @@
    "themes": []
   },
   {
-   "seq": 3871,
+   "seq": 3873,
    "id": "pr_child3",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 163,
@@ -71113,7 +71149,7 @@
    "themes": []
   },
   {
-   "seq": 3872,
+   "seq": 3874,
    "id": "pr_child4",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 173,
@@ -71131,7 +71167,7 @@
    "themes": []
   },
   {
-   "seq": 3873,
+   "seq": 3875,
    "id": "pr_teen1",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 182,
@@ -71149,7 +71185,7 @@
    "themes": []
   },
   {
-   "seq": 3874,
+   "seq": 3876,
    "id": "pr_fam78a",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 200,
@@ -71167,7 +71203,7 @@
    "themes": []
   },
   {
-   "seq": 3875,
+   "seq": 3877,
    "id": "pr_teen2",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 217,
@@ -71185,7 +71221,7 @@
    "themes": []
   },
   {
-   "seq": 3876,
+   "seq": 3878,
    "id": "pr_fork16",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 261,
@@ -71203,7 +71239,7 @@
    "themes": []
   },
   {
-   "seq": 3877,
+   "seq": 3879,
    "id": "pr_y17",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 289,
@@ -71221,7 +71257,7 @@
    "themes": []
   },
   {
-   "seq": 3878,
+   "seq": 3880,
    "id": "pr_y18",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 322,
@@ -71239,7 +71275,7 @@
    "themes": []
   },
   {
-   "seq": 3879,
+   "seq": 3881,
    "id": "pr_fam78b",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 371,
@@ -71257,7 +71293,7 @@
    "themes": []
   },
   {
-   "seq": 3880,
+   "seq": 3882,
    "id": "pr_y20",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 390,
@@ -71275,7 +71311,7 @@
    "themes": []
   },
   {
-   "seq": 3881,
+   "seq": 3883,
    "id": "pr_y21",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 434,
@@ -71293,7 +71329,7 @@
    "themes": []
   },
   {
-   "seq": 3882,
+   "seq": 3884,
    "id": "pr_kid6_78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 485,
@@ -71311,7 +71347,7 @@
    "themes": []
   },
   {
-   "seq": 3883,
+   "seq": 3885,
    "id": "pr_kid8_78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 498,
@@ -71329,7 +71365,7 @@
    "themes": []
   },
   {
-   "seq": 3884,
+   "seq": 3886,
    "id": "pr_kid10_78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 512,
@@ -71347,7 +71383,7 @@
    "themes": []
   },
   {
-   "seq": 3885,
+   "seq": 3887,
    "id": "pr_half1",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 529,
@@ -71365,7 +71401,7 @@
    "themes": []
   },
   {
-   "seq": 3886,
+   "seq": 3888,
    "id": "pr_half2",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 537,
@@ -71383,7 +71419,7 @@
    "themes": []
   },
   {
-   "seq": 3887,
+   "seq": 3889,
    "id": "pr_half3",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 547,
@@ -71401,7 +71437,7 @@
    "themes": []
   },
   {
-   "seq": 3888,
+   "seq": 3890,
    "id": "pr_never1",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 559,
@@ -71419,7 +71455,7 @@
    "themes": []
   },
   {
-   "seq": 3889,
+   "seq": 3891,
    "id": "pr_never2",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 570,
@@ -71437,7 +71473,7 @@
    "themes": []
   },
   {
-   "seq": 3890,
+   "seq": 3892,
    "id": "pr_never3",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 580,
@@ -71455,7 +71491,7 @@
    "themes": []
   },
   {
-   "seq": 3891,
+   "seq": 3893,
    "id": "pool_move78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 597,
@@ -71473,7 +71509,7 @@
    "themes": []
   },
   {
-   "seq": 3892,
+   "seq": 3894,
    "id": "mark_sharpener78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 50,
@@ -71491,7 +71527,7 @@
    "themes": []
   },
   {
-   "seq": 3893,
+   "seq": 3895,
    "id": "mark_egg78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 51,
@@ -71509,7 +71545,7 @@
    "themes": []
   },
   {
-   "seq": 3894,
+   "seq": 3896,
    "id": "mark_roster78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 52,
@@ -71527,7 +71563,7 @@
    "themes": []
   },
   {
-   "seq": 3895,
+   "seq": 3897,
    "id": "mark_crayon78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 53,
@@ -71545,7 +71581,7 @@
    "themes": []
   },
   {
-   "seq": 3896,
+   "seq": 3898,
    "id": "mark_satchel78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 54,
@@ -71563,7 +71599,7 @@
    "themes": []
   },
   {
-   "seq": 3897,
+   "seq": 3899,
    "id": "mark_stool78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 55,
@@ -71581,7 +71617,7 @@
    "themes": []
   },
   {
-   "seq": 3898,
+   "seq": 3900,
    "id": "mark_river78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 56,
@@ -71599,7 +71635,7 @@
    "themes": []
   },
   {
-   "seq": 3899,
+   "seq": 3901,
    "id": "mark_yanghua78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 57,
@@ -71617,7 +71653,7 @@
    "themes": []
   },
   {
-   "seq": 3900,
+   "seq": 3902,
    "id": "mark_band78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 58,
@@ -71635,7 +71671,7 @@
    "themes": []
   },
   {
-   "seq": 3901,
+   "seq": 3903,
    "id": "mark_shuttlecock78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 59,
@@ -71653,7 +71689,7 @@
    "themes": []
   },
   {
-   "seq": 3902,
+   "seq": 3904,
    "id": "mark_sandbag78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 60,
@@ -71671,7 +71707,7 @@
    "themes": []
   },
   {
-   "seq": 3903,
+   "seq": 3905,
    "id": "mark_hoop78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 61,
@@ -71689,7 +71725,7 @@
    "themes": []
   },
   {
-   "seq": 3904,
+   "seq": 3906,
    "id": "mark_panda78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 62,
@@ -71707,7 +71743,7 @@
    "themes": []
   },
   {
-   "seq": 3905,
+   "seq": 3907,
    "id": "mark_tree78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 63,
@@ -71725,7 +71761,7 @@
    "themes": []
   },
   {
-   "seq": 3906,
+   "seq": 3908,
    "id": "mark_colortv78",
    "file": "src/content/prologue/prologue-c1978.js",
    "line": 64,
@@ -71743,7 +71779,7 @@
    "themes": []
   },
   {
-   "seq": 3907,
+   "seq": 3909,
    "id": "pr_origin",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 138,
@@ -71761,7 +71797,7 @@
    "themes": []
   },
   {
-   "seq": 3908,
+   "seq": 3910,
    "id": "pr_child1",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 141,
@@ -71779,7 +71815,7 @@
    "themes": []
   },
   {
-   "seq": 3909,
+   "seq": 3911,
    "id": "pr_child2",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 157,
@@ -71797,7 +71833,7 @@
    "themes": []
   },
   {
-   "seq": 3910,
+   "seq": 3912,
    "id": "pr_child3",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 174,
@@ -71815,7 +71851,7 @@
    "themes": []
   },
   {
-   "seq": 3911,
+   "seq": 3913,
    "id": "pr_child4",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 186,
@@ -71833,7 +71869,7 @@
    "themes": []
   },
   {
-   "seq": 3912,
+   "seq": 3914,
    "id": "pr_teen1",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 204,
@@ -71851,7 +71887,7 @@
    "themes": []
   },
   {
-   "seq": 3913,
+   "seq": 3915,
    "id": "pr_teen2",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 238,
@@ -71869,7 +71905,7 @@
    "themes": []
   },
   {
-   "seq": 3914,
+   "seq": 3916,
    "id": "pr_fork16",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 277,
@@ -71887,7 +71923,7 @@
    "themes": []
   },
   {
-   "seq": 3915,
+   "seq": 3917,
    "id": "pr_y17",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 290,
@@ -71905,7 +71941,7 @@
    "themes": []
   },
   {
-   "seq": 3916,
+   "seq": 3918,
    "id": "pr_y18",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 314,
@@ -71923,7 +71959,7 @@
    "themes": []
   },
   {
-   "seq": 3917,
+   "seq": 3919,
    "id": "pr_y20",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 342,
@@ -71941,7 +71977,7 @@
    "themes": []
   },
   {
-   "seq": 3918,
+   "seq": 3920,
    "id": "pr_y21",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 374,
@@ -71959,7 +71995,7 @@
    "themes": []
   },
   {
-   "seq": 3919,
+   "seq": 3921,
    "id": "pr_kid6_85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 402,
@@ -71977,7 +72013,7 @@
    "themes": []
   },
   {
-   "seq": 3920,
+   "seq": 3922,
    "id": "pr_kid8_85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 414,
@@ -71995,7 +72031,7 @@
    "themes": []
   },
   {
-   "seq": 3921,
+   "seq": 3923,
    "id": "pr_kid10_85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 426,
@@ -72013,7 +72049,7 @@
    "themes": []
   },
   {
-   "seq": 3922,
+   "seq": 3924,
    "id": "pr_half1",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 599,
@@ -72031,7 +72067,7 @@
    "themes": []
   },
   {
-   "seq": 3923,
+   "seq": 3925,
    "id": "pr_half2",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 607,
@@ -72049,7 +72085,7 @@
    "themes": []
   },
   {
-   "seq": 3924,
+   "seq": 3926,
    "id": "pr_half3",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 617,
@@ -72067,7 +72103,7 @@
    "themes": []
   },
   {
-   "seq": 3925,
+   "seq": 3927,
    "id": "pr_never1",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 629,
@@ -72085,7 +72121,7 @@
    "themes": []
   },
   {
-   "seq": 3926,
+   "seq": 3928,
    "id": "pr_never2",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 641,
@@ -72103,7 +72139,7 @@
    "themes": []
   },
   {
-   "seq": 3927,
+   "seq": 3929,
    "id": "pr_never3",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 651,
@@ -72121,7 +72157,7 @@
    "themes": []
   },
   {
-   "seq": 3928,
+   "seq": 3930,
    "id": "pool_lb85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 459,
@@ -72139,7 +72175,7 @@
    "themes": []
   },
   {
-   "seq": 3929,
+   "seq": 3931,
    "id": "pool_laidoff85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 485,
@@ -72157,7 +72193,7 @@
    "themes": []
   },
   {
-   "seq": 3930,
+   "seq": 3932,
    "id": "pool_move85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 512,
@@ -72175,7 +72211,7 @@
    "themes": []
   },
   {
-   "seq": 3931,
+   "seq": 3933,
    "id": "mark_case85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 63,
@@ -72193,7 +72229,7 @@
    "themes": []
   },
   {
-   "seq": 3932,
+   "seq": 3934,
    "id": "mark_flag85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 64,
@@ -72211,7 +72247,7 @@
    "themes": []
   },
   {
-   "seq": 3933,
+   "seq": 3935,
    "id": "mark_cover85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 65,
@@ -72229,7 +72265,7 @@
    "themes": []
   },
   {
-   "seq": 3934,
+   "seq": 3936,
    "id": "mark_marble85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 66,
@@ -72247,7 +72283,7 @@
    "themes": []
   },
   {
-   "seq": 3935,
+   "seq": 3937,
    "id": "mark_game85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 67,
@@ -72265,7 +72301,7 @@
    "themes": []
   },
   {
-   "seq": 3936,
+   "seq": 3938,
    "id": "mark_arcade85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 68,
@@ -72283,7 +72319,7 @@
    "themes": []
   },
   {
-   "seq": 3937,
+   "seq": 3939,
    "id": "mark_football85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 69,
@@ -72301,7 +72337,7 @@
    "themes": []
   },
   {
-   "seq": 3938,
+   "seq": 3940,
    "id": "mark_shop85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 71,
@@ -72319,7 +72355,7 @@
    "themes": []
   },
   {
-   "seq": 3939,
+   "seq": 3941,
    "id": "mark_car85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 72,
@@ -72337,7 +72373,7 @@
    "themes": []
   },
   {
-   "seq": 3940,
+   "seq": 3942,
    "id": "mark_bag85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 74,
@@ -72355,7 +72391,7 @@
    "themes": []
   },
   {
-   "seq": 3941,
+   "seq": 3943,
    "id": "mark_abacus85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 75,
@@ -72373,7 +72409,7 @@
    "themes": []
   },
   {
-   "seq": 3942,
+   "seq": 3944,
    "id": "mark_bench85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 76,
@@ -72391,7 +72427,7 @@
    "themes": []
   },
   {
-   "seq": 3943,
+   "seq": 3945,
    "id": "mark_top85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 77,
@@ -72409,7 +72445,7 @@
    "themes": []
   },
   {
-   "seq": 3944,
+   "seq": 3946,
    "id": "mark_kite85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 78,
@@ -72427,7 +72463,7 @@
    "themes": []
   },
   {
-   "seq": 3945,
+   "seq": 3947,
    "id": "mark_cicada85",
    "file": "src/content/prologue/prologue-c1985.js",
    "line": 79,
@@ -72445,7 +72481,7 @@
    "themes": []
   },
   {
-   "seq": 3946,
+   "seq": 3948,
    "id": "pr_origin",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 133,
@@ -72463,7 +72499,7 @@
    "themes": []
   },
   {
-   "seq": 3947,
+   "seq": 3949,
    "id": "pr_child1",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 136,
@@ -72481,7 +72517,7 @@
    "themes": []
   },
   {
-   "seq": 3948,
+   "seq": 3950,
    "id": "pr_child2",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 152,
@@ -72499,7 +72535,7 @@
    "themes": []
   },
   {
-   "seq": 3949,
+   "seq": 3951,
    "id": "pr_child3",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 174,
@@ -72517,7 +72553,7 @@
    "themes": []
   },
   {
-   "seq": 3950,
+   "seq": 3952,
    "id": "pr_child4",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 185,
@@ -72535,7 +72571,7 @@
    "themes": []
   },
   {
-   "seq": 3951,
+   "seq": 3953,
    "id": "pr_teen1",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 194,
@@ -72553,7 +72589,7 @@
    "themes": []
   },
   {
-   "seq": 3952,
+   "seq": 3954,
    "id": "pr_teen2",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 210,
@@ -72571,7 +72607,7 @@
    "themes": []
   },
   {
-   "seq": 3953,
+   "seq": 3955,
    "id": "pr_fork16",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 250,
@@ -72589,7 +72625,7 @@
    "themes": []
   },
   {
-   "seq": 3954,
+   "seq": 3956,
    "id": "pr_y17",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 299,
@@ -72607,7 +72643,7 @@
    "themes": []
   },
   {
-   "seq": 3955,
+   "seq": 3957,
    "id": "pr_y18",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 327,
@@ -72625,7 +72661,7 @@
    "themes": []
   },
   {
-   "seq": 3956,
+   "seq": 3958,
    "id": "pr_y20",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 358,
@@ -72643,7 +72679,7 @@
    "themes": []
   },
   {
-   "seq": 3957,
+   "seq": 3959,
    "id": "pr_y21",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 393,
@@ -72661,7 +72697,7 @@
    "themes": []
   },
   {
-   "seq": 3958,
+   "seq": 3960,
    "id": "pr_duikou18",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 423,
@@ -72679,7 +72715,7 @@
    "themes": []
   },
   {
-   "seq": 3959,
+   "seq": 3961,
    "id": "pr_kid6_95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 436,
@@ -72697,7 +72733,7 @@
    "themes": []
   },
   {
-   "seq": 3960,
+   "seq": 3962,
    "id": "pr_kid8_95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 448,
@@ -72715,7 +72751,7 @@
    "themes": []
   },
   {
-   "seq": 3961,
+   "seq": 3963,
    "id": "pr_kid10_95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 469,
@@ -72733,7 +72769,7 @@
    "themes": []
   },
   {
-   "seq": 3962,
+   "seq": 3964,
    "id": "pr_cov_uni95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 482,
@@ -72753,7 +72789,7 @@
    ]
   },
   {
-   "seq": 3963,
+   "seq": 3965,
    "id": "pr_half1",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 496,
@@ -72771,7 +72807,7 @@
    "themes": []
   },
   {
-   "seq": 3964,
+   "seq": 3966,
    "id": "pr_half2",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 506,
@@ -72789,7 +72825,7 @@
    "themes": []
   },
   {
-   "seq": 3965,
+   "seq": 3967,
    "id": "pr_half3",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 518,
@@ -72807,7 +72843,7 @@
    "themes": []
   },
   {
-   "seq": 3966,
+   "seq": 3968,
    "id": "pr_never1",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 530,
@@ -72825,7 +72861,7 @@
    "themes": []
   },
   {
-   "seq": 3967,
+   "seq": 3969,
    "id": "pr_never2",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 542,
@@ -72843,7 +72879,7 @@
    "themes": []
   },
   {
-   "seq": 3968,
+   "seq": 3970,
    "id": "pr_never3",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 554,
@@ -72861,7 +72897,7 @@
    "themes": []
   },
   {
-   "seq": 3969,
+   "seq": 3971,
    "id": "mark_autopen95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 56,
@@ -72879,7 +72915,7 @@
    "themes": []
   },
   {
-   "seq": 3970,
+   "seq": 3972,
    "id": "mark_bus95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 57,
@@ -72897,7 +72933,7 @@
    "themes": []
   },
   {
-   "seq": 3971,
+   "seq": 3973,
    "id": "mark_song95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 58,
@@ -72915,7 +72951,7 @@
    "themes": []
   },
   {
-   "seq": 3972,
+   "seq": 3974,
    "id": "mark_skate95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 59,
@@ -72933,7 +72969,7 @@
    "themes": []
   },
   {
-   "seq": 3973,
+   "seq": 3975,
    "id": "mark_game95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 60,
@@ -72951,7 +72987,7 @@
    "themes": []
   },
   {
-   "seq": 3974,
+   "seq": 3976,
    "id": "mark_field95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 61,
@@ -72969,7 +73005,7 @@
    "themes": []
   },
   {
-   "seq": 3975,
+   "seq": 3977,
    "id": "mark_tree95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 62,
@@ -72987,7 +73023,7 @@
    "themes": []
   },
   {
-   "seq": 3976,
+   "seq": 3978,
    "id": "mark_fuwa95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 64,
@@ -73005,7 +73041,7 @@
    "themes": []
   },
   {
-   "seq": 3977,
+   "seq": 3979,
    "id": "mark_campus95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 65,
@@ -73023,7 +73059,7 @@
    "themes": []
   },
   {
-   "seq": 3978,
+   "seq": 3980,
    "id": "mark_paint95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 67,
@@ -73041,7 +73077,7 @@
    "themes": []
   },
   {
-   "seq": 3979,
+   "seq": 3981,
    "id": "mark_wrap95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 68,
@@ -73059,7 +73095,7 @@
    "themes": []
   },
   {
-   "seq": 3980,
+   "seq": 3982,
    "id": "mark_badge95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 69,
@@ -73077,7 +73113,7 @@
    "themes": []
   },
   {
-   "seq": 3981,
+   "seq": 3983,
    "id": "mark_yoyo95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 70,
@@ -73095,7 +73131,7 @@
    "themes": []
   },
   {
-   "seq": 3982,
+   "seq": 3984,
    "id": "mark_silk95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 71,
@@ -73113,7 +73149,7 @@
    "themes": []
   },
   {
-   "seq": 3983,
+   "seq": 3985,
    "id": "mark_shuttle95",
    "file": "src/content/prologue/prologue-c1995.js",
    "line": 72,
@@ -73131,7 +73167,7 @@
    "themes": []
   },
   {
-   "seq": 3984,
+   "seq": 3986,
    "id": "pr_origin",
    "file": "src/content/prologue/prologue.js",
    "line": 227,
@@ -73149,7 +73185,7 @@
    "themes": []
   },
   {
-   "seq": 3985,
+   "seq": 3987,
    "id": "pr_child1",
    "file": "src/content/prologue/prologue.js",
    "line": 233,
@@ -73167,7 +73203,7 @@
    "themes": []
   },
   {
-   "seq": 3986,
+   "seq": 3988,
    "id": "pr_child2",
    "file": "src/content/prologue/prologue.js",
    "line": 251,
@@ -73185,7 +73221,7 @@
    "themes": []
   },
   {
-   "seq": 3987,
+   "seq": 3989,
    "id": "pr_child3",
    "file": "src/content/prologue/prologue.js",
    "line": 268,
@@ -73203,7 +73239,7 @@
    "themes": []
   },
   {
-   "seq": 3988,
+   "seq": 3990,
    "id": "pr_child4",
    "file": "src/content/prologue/prologue.js",
    "line": 280,
@@ -73221,7 +73257,7 @@
    "themes": []
   },
   {
-   "seq": 3989,
+   "seq": 3991,
    "id": "pr_teen1",
    "file": "src/content/prologue/prologue.js",
    "line": 300,
@@ -73239,7 +73275,7 @@
    "themes": []
   },
   {
-   "seq": 3990,
+   "seq": 3992,
    "id": "pr_teen2",
    "file": "src/content/prologue/prologue.js",
    "line": 316,
@@ -73257,7 +73293,7 @@
    "themes": []
   },
   {
-   "seq": 3991,
+   "seq": 3993,
    "id": "pr_fork16",
    "file": "src/content/prologue/prologue.js",
    "line": 365,
@@ -73275,7 +73311,7 @@
    "themes": []
   },
   {
-   "seq": 3992,
+   "seq": 3994,
    "id": "pr_y17",
    "file": "src/content/prologue/prologue.js",
    "line": 388,
@@ -73293,7 +73329,7 @@
    "themes": []
   },
   {
-   "seq": 3993,
+   "seq": 3995,
    "id": "pr_y18",
    "file": "src/content/prologue/prologue.js",
    "line": 423,
@@ -73311,7 +73347,7 @@
    "themes": []
   },
   {
-   "seq": 3994,
+   "seq": 3996,
    "id": "pr_y20",
    "file": "src/content/prologue/prologue.js",
    "line": 457,
@@ -73329,7 +73365,7 @@
    "themes": []
   },
   {
-   "seq": 3995,
+   "seq": 3997,
    "id": "pr_y21",
    "file": "src/content/prologue/prologue.js",
    "line": 489,
@@ -73347,7 +73383,7 @@
    "themes": []
   },
   {
-   "seq": 3996,
+   "seq": 3998,
    "id": "pr_l00_exam",
    "file": "src/content/prologue/prologue.js",
    "line": 520,
@@ -73365,7 +73401,7 @@
    "themes": []
   },
   {
-   "seq": 3997,
+   "seq": 3999,
    "id": "pr_l00_care",
    "file": "src/content/prologue/prologue.js",
    "line": 534,
@@ -73383,7 +73419,7 @@
    "themes": []
   },
   {
-   "seq": 3998,
+   "seq": 4000,
    "id": "pr_kid6_00",
    "file": "src/content/prologue/prologue.js",
    "line": 548,
@@ -73401,7 +73437,7 @@
    "themes": []
   },
   {
-   "seq": 3999,
+   "seq": 4001,
    "id": "pr_kid8_00",
    "file": "src/content/prologue/prologue.js",
    "line": 561,
@@ -73419,7 +73455,7 @@
    "themes": []
   },
   {
-   "seq": 4000,
+   "seq": 4002,
    "id": "pr_kid10_00",
    "file": "src/content/prologue/prologue.js",
    "line": 585,
@@ -73437,7 +73473,7 @@
    "themes": []
   },
   {
-   "seq": 4001,
+   "seq": 4003,
    "id": "pr_cov_kid20",
    "file": "src/content/prologue/prologue.js",
    "line": 604,
@@ -73457,7 +73493,7 @@
    ]
   },
   {
-   "seq": 4002,
+   "seq": 4004,
    "id": "pr_cov_kid21",
    "file": "src/content/prologue/prologue.js",
    "line": 613,
@@ -73477,7 +73513,7 @@
    ]
   },
   {
-   "seq": 4003,
+   "seq": 4005,
    "id": "pr_cov_mid20",
    "file": "src/content/prologue/prologue.js",
    "line": 619,
@@ -73497,7 +73533,7 @@
    ]
   },
   {
-   "seq": 4004,
+   "seq": 4006,
    "id": "pr_cov_exam20",
    "file": "src/content/prologue/prologue.js",
    "line": 638,
@@ -73517,7 +73553,7 @@
    ]
   },
   {
-   "seq": 4005,
+   "seq": 4007,
    "id": "pr_cov_grad22",
    "file": "src/content/prologue/prologue.js",
    "line": 648,
@@ -73537,7 +73573,7 @@
    ]
   },
   {
-   "seq": 4006,
+   "seq": 4008,
    "id": "pr_cov_uni20",
    "file": "src/content/prologue/prologue.js",
    "line": 657,
@@ -73557,7 +73593,7 @@
    ]
   },
   {
-   "seq": 4007,
+   "seq": 4009,
    "id": "pr_cov_uni22",
    "file": "src/content/prologue/prologue.js",
    "line": 667,
@@ -73577,7 +73613,7 @@
    ]
   },
   {
-   "seq": 4008,
+   "seq": 4010,
    "id": "pr_half1",
    "file": "src/content/prologue/prologue.js",
    "line": 682,
@@ -73595,7 +73631,7 @@
    "themes": []
   },
   {
-   "seq": 4009,
+   "seq": 4011,
    "id": "pr_half2",
    "file": "src/content/prologue/prologue.js",
    "line": 690,
@@ -73613,7 +73649,7 @@
    "themes": []
   },
   {
-   "seq": 4010,
+   "seq": 4012,
    "id": "pr_half3",
    "file": "src/content/prologue/prologue.js",
    "line": 700,
@@ -73631,7 +73667,7 @@
    "themes": []
   },
   {
-   "seq": 4011,
+   "seq": 4013,
    "id": "pr_never1",
    "file": "src/content/prologue/prologue.js",
    "line": 712,
@@ -73649,7 +73685,7 @@
    "themes": []
   },
   {
-   "seq": 4012,
+   "seq": 4014,
    "id": "pr_never2",
    "file": "src/content/prologue/prologue.js",
    "line": 720,
@@ -73667,7 +73703,7 @@
    "themes": []
   },
   {
-   "seq": 4013,
+   "seq": 4015,
    "id": "pr_never3",
    "file": "src/content/prologue/prologue.js",
    "line": 730,
@@ -73685,7 +73721,7 @@
    "themes": []
   },
   {
-   "seq": 4014,
+   "seq": 4016,
    "id": "pool_phonegame00",
    "file": "src/content/prologue/prologue.js",
    "line": 757,
@@ -73703,7 +73739,7 @@
    "themes": []
   },
   {
-   "seq": 4015,
+   "seq": 4017,
    "id": "pool_oldsign00",
    "file": "src/content/prologue/prologue.js",
    "line": 785,
@@ -73721,7 +73757,7 @@
    "themes": []
   },
   {
-   "seq": 4016,
+   "seq": 4018,
    "id": "pool_danmu00",
    "file": "src/content/prologue/prologue.js",
    "line": 812,
@@ -73739,7 +73775,7 @@
    "themes": []
   },
   {
-   "seq": 4017,
+   "seq": 4019,
    "id": "pool_move00",
    "file": "src/content/prologue/prologue.js",
    "line": 845,
@@ -73757,7 +73793,7 @@
    "themes": []
   },
   {
-   "seq": 4018,
+   "seq": 4020,
    "id": "mark_deskmate",
    "file": "src/content/prologue/prologue.js",
    "line": 50,
@@ -73775,7 +73811,7 @@
    "themes": []
   },
   {
-   "seq": 4019,
+   "seq": 4021,
    "id": "mark_candy",
    "file": "src/content/prologue/prologue.js",
    "line": 51,
@@ -73793,7 +73829,7 @@
    "themes": []
   },
   {
-   "seq": 4020,
+   "seq": 4022,
    "id": "mark_window",
    "file": "src/content/prologue/prologue.js",
    "line": 52,
@@ -73811,7 +73847,7 @@
    "themes": []
   },
   {
-   "seq": 4021,
+   "seq": 4023,
    "id": "mark_wrongline",
    "file": "src/content/prologue/prologue.js",
    "line": 53,
@@ -73829,7 +73865,7 @@
    "themes": []
   },
   {
-   "seq": 4022,
+   "seq": 4024,
    "id": "mark_pencil",
    "file": "src/content/prologue/prologue.js",
    "line": 54,
@@ -73847,7 +73883,7 @@
    "themes": []
   },
   {
-   "seq": 4023,
+   "seq": 4025,
    "id": "mark_namecall",
    "file": "src/content/prologue/prologue.js",
    "line": 55,
@@ -73865,7 +73901,7 @@
    "themes": []
   },
   {
-   "seq": 4024,
+   "seq": 4026,
    "id": "mark_river",
    "file": "src/content/prologue/prologue.js",
    "line": 56,
@@ -73883,7 +73919,7 @@
    "themes": []
   },
   {
-   "seq": 4025,
+   "seq": 4027,
    "id": "mark_hoop",
    "file": "src/content/prologue/prologue.js",
    "line": 57,
@@ -73901,7 +73937,7 @@
    "themes": []
   },
   {
-   "seq": 4026,
+   "seq": 4028,
    "id": "mark_corn",
    "file": "src/content/prologue/prologue.js",
    "line": 58,
@@ -73919,7 +73955,7 @@
    "themes": []
   },
   {
-   "seq": 4027,
+   "seq": 4029,
    "id": "mark_icepop",
    "file": "src/content/prologue/prologue.js",
    "line": 59,
@@ -73937,7 +73973,7 @@
    "themes": []
   },
   {
-   "seq": 4028,
+   "seq": 4030,
    "id": "mark_hopscotch",
    "file": "src/content/prologue/prologue.js",
    "line": 60,
@@ -73955,7 +73991,7 @@
    "themes": []
   },
   {
-   "seq": 4029,
+   "seq": 4031,
    "id": "mark_jumprope",
    "file": "src/content/prologue/prologue.js",
    "line": 61,
@@ -73973,7 +74009,7 @@
    "themes": []
   },
   {
-   "seq": 4030,
+   "seq": 4032,
    "id": "mark_tree",
    "file": "src/content/prologue/prologue.js",
    "line": 62,
@@ -73991,7 +74027,7 @@
    "themes": []
   },
   {
-   "seq": 4031,
+   "seq": 4033,
    "id": "mark_shop",
    "file": "src/content/prologue/prologue.js",
    "line": 63,
@@ -74009,7 +74045,7 @@
    "themes": []
   },
   {
-   "seq": 4032,
+   "seq": 4034,
    "id": "mark_yearbook",
    "file": "src/content/prologue/prologue.js",
    "line": 64,
@@ -74027,7 +74063,7 @@
    "themes": []
   },
   {
-   "seq": 4033,
+   "seq": 4035,
    "id": "mark_classphoto",
    "file": "src/content/prologue/prologue.js",
    "line": 65,
@@ -74045,7 +74081,7 @@
    "themes": []
   },
   {
-   "seq": 4034,
+   "seq": 4036,
    "id": "grab_wen",
    "file": "src/content/prologue/prologue.js",
    "line": 67,
@@ -74063,7 +74099,7 @@
    "themes": []
   },
   {
-   "seq": 4035,
+   "seq": 4037,
    "id": "grab_cai",
    "file": "src/content/prologue/prologue.js",
    "line": 68,
@@ -74081,7 +74117,7 @@
    "themes": []
   },
   {
-   "seq": 4036,
+   "seq": 4038,
    "id": "grab_gong",
    "file": "src/content/prologue/prologue.js",
    "line": 69,
@@ -74099,7 +74135,7 @@
    "themes": []
   },
   {
-   "seq": 4037,
+   "seq": 4039,
    "id": "grab_shi",
    "file": "src/content/prologue/prologue.js",
    "line": 70,
@@ -74117,7 +74153,7 @@
    "themes": []
   },
   {
-   "seq": 4038,
+   "seq": 4040,
    "id": "grab_yin",
    "file": "src/content/prologue/prologue.js",
    "line": 71,
@@ -74135,7 +74171,7 @@
    "themes": []
   },
   {
-   "seq": 4039,
+   "seq": 4041,
    "id": "grab_wan",
    "file": "src/content/prologue/prologue.js",
    "line": 72,
