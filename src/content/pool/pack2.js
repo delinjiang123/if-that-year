@@ -72,7 +72,7 @@ window.GAME_PACKS=(window.GAME_PACKS||[]).concat([
 {"id":"p2_069","chain":"p2_068","require":"fund_bought","min":31,"max":44,"text":"你那只基金跌了百分之二十。评论区里全是骂的，你把App的推送关了，眼不见为净。","effects":{"money":-2,"health":-1}},
 {"id":"p2_070","chain":"p2_069","require":"fund_bought","min":33,"max":48,"text":"基金账户里的数字绿了很久。你坐在沙发上，把持有页面打开又关上，关上又打开。","choices":[{"label":"割了，换成定期睡个好觉","effects":{"money":1,"growth":1,"wisdom":6},"echo":"卖出确认那天它小涨了一波。你把定期存单的回执收好，没再点开基金页面。"},{"label":"不卖了，改成每月定投","effects":{"money":-1,"growth":1,"wisdom":5},"set":"dca","echo":"你设了发工资第二天扣八百。扣款短信来的时候，你基本已经不看净值了。"}]},
 {"id":"p2_071","min":36,"max":46,"text":"银行的客户经理向你推荐一款理财，说年化有四点二。你问保本吗，对方说，现在都不兴说保本了。你没买。"},
-{"id":"p2_072","min":34,"max":44,"text":"你妈把存了多年的定期取了，非要跟你一起买点稳当的。你陪她在银行坐了一下午，最后买了国债。她说这个她懂，放心。"},
+{"id":"p2_072","stateAll":{"mom":"alive"},"min":34,"max":44,"text":"你妈把存了多年的定期取了，非要跟你一起买点稳当的。你陪她在银行坐了一下午，最后买了国债。她说这个她懂，放心。"},
 {"id":"p2_073","when":{"stat":"money","gt":55},"min":38,"max":50,"text":"你开始给钱分账了：一份应急，一份养老，剩下一小份才是拿去折腾的。折腾那份亏了，你也没像以前那么上头。","effects":{"growth":1,"money":1,"wisdom":5}},
 {"id":"p2_074","min":32,"max":42,"text":"同事说他靠短线赚了一台车。你问本金多少，他说先别问本金。你笑笑，没再往下接话。"},
 {"id":"p2_075","stateAll":{"mom":"alive","spouse":["partnered","dating"]},"forbid":"bought_house","min":30,"max":37,"text":"买房前，母亲把一个存折塞给你，说里面是三十万，是她和爸攒下的。存折的边都磨软了。","choices":[{"label":"收下，慢慢还这份情","effects":{"relation":2,"money":2},"set":"parent_help","echo":"你把每月的还款短信都转给母亲看。她回：不急，你们先紧着自己。"},{"label":"没收，自己的事自己扛","effects":{"freedom":2,"relation":-1},"echo":"你说自己够。母亲把存折收回去，那顿饭吃得有点安静。"}]},
