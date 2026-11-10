@@ -2050,6 +2050,7 @@ window.GAME_REGISTRY.milestones = {
     "p39_014",
     "p39_015",
     "cr_shop_093",
+    "cr_farm_118",
    ],
    "note": "长途职业线入行（v0.18.0，职业语境门）：跟车入行拍立旗。CL-03（v0.60.24）补登 pack39 三条入行拍 p39_013–015（车队招工学徒/物流干线招司机/买车挂靠夫妻同车）"
   },
@@ -2078,6 +2079,7 @@ window.GAME_REGISTRY.milestones = {
     "farm_exit_settle",
     "cr_shop_092",
     "cr_craft_083",
+    "cr_farm_113",
    ],
    "note": "工厂制造入行（v0.19.0，职业语境门）：招工入行拍立旗，工厂主簇以此为门"
   },
@@ -2173,7 +2175,8 @@ window.GAME_REGISTRY.milestones = {
     "p19_025",
     "p19_055",
     "cr_factory_122",
-    "cr_craft_081"
+    "cr_craft_081",
+    "cr_farm_115"
    ],
    "note": "店主入行（v0.19.0）：批发学徒/接手家店/开网店拍立旗，商户簇以此为门"
   },
@@ -2182,6 +2185,7 @@ window.GAME_REGISTRY.milestones = {
     "p22_071",
     "cr_shop_095",
     "cr_factory_125",
+    "cr_farm_117",
    ],
    "note": "零工/自由职业入行（v0.19.0）：劳务市场报名接活拍立旗，零工簇以此为门；与 side_job（副业）分家"
   },
@@ -2226,7 +2230,8 @@ window.GAME_REGISTRY.milestones = {
   },
   "township_work": {
    "setters": [
-    "farm_township"
+    "farm_township",
+    "cr_farm_114"
    ],
    "note": "乡镇企业入行（立项新增）：农民路线混合层——FORM_OF_FLAG 映射 employee、工资走 C 档；farm_work 旗不清，土地池保持开门；厂散回落由 farm_township_back 立 farm_returned 接回"
   },
@@ -2251,7 +2256,8 @@ window.GAME_REGISTRY.milestones = {
   "builder_work": {
    "setters": [
     "cr_factory_126",
-    "cr_craft_082"
+    "cr_craft_082",
+    "cr_farm_116"
    ],
    "note": "建筑工人入行（第 2 期注册扩版 v0.60.19 立行当，先有 trades/FORM_OF_FLAG 登记；CL-19 工厂线转行段 cr_factory_126 为首个立旗条目，本条目随之新建）"
   },
@@ -2261,6 +2267,7 @@ window.GAME_REGISTRY.milestones = {
     "cr_shop_096",
     "cr_factory_124",
     "cr_craft_085",
+    "cr_farm_119",
    ],
    "note": "职业陪护入行（v0.19.0）：陪护接活入行拍立旗；与家庭照护旗 care_ss_gap/care_self 分家"
   },
