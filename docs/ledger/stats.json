@@ -1,6 +1,6 @@
 {
- "totalRows": 3961,
- "uniqueIds": 3871,
+ "totalRows": 3973,
+ "uniqueIds": 3883,
  "duplicateIds": [
   {
    "id": "pr_origin",
@@ -294,6 +294,7 @@
   "src/content/pool/pack55.js": 12,
   "src/content/pool/pack57.js": 12,
   "src/content/pool/pack58.js": 12,
+  "src/content/pool/pack67.js": 12,
   "src/content/pool/pack28.js": 10,
   "src/content/pool/pack34.js": 10,
   "src/content/pool/pack60.js": 10,
@@ -302,7 +303,7 @@
   "src/content/pool/pack36.js": 3
  },
  "byCategory": {
-  "普通池": 2876,
+  "普通池": 2888,
   "具名线": 332,
   "年代包": 309,
   "童年记号": 104,
@@ -317,7 +318,7 @@
   "分岔": 7
  },
  "byEra": {
-  "全年代": 2897,
+  "全年代": 2909,
   "c1955": 241,
   "c1965": 237,
   "c2000": 208,
@@ -331,13 +332,13 @@
   "c1978+c1985+c1995+c2000": 1
  },
  "byGate": {
-  "状态门": 2929,
+  "状态门": 2941,
   "无门": 564,
   "序章幕": 321,
   "链条": 147
  },
  "byRoute": {
-  "不限": 3827,
+  "不限": 3839,
   "abroad": 53,
   "home": 25,
   "farm": 15,
@@ -356,32 +357,32 @@
   "corp+gap+home": 1,
   "home+corp+abroad+study+gap": 1
  },
- "introducedKnown": 177,
- "lineResolved": 3961,
- "withOccupation": 329,
- "withTrade": 322,
+ "introducedKnown": 181,
+ "lineResolved": 3973,
+ "withOccupation": 331,
+ "withTrade": 326,
  "byTrade": {
   "factory": 62,
   "farm": 36,
-  "shop": 34,
+  "shop": 35,
   "craft": 24,
   "fab": 20,
   "teach": 17,
   "gig": 16,
   "miner": 12,
   "courier": 11,
+  "press": 10,
   "heavy": 9,
-  "press": 9,
   "sea": 9,
   "med_hosp": 8,
   "care": 8,
   "med": 8,
+  "exam_landed": 7,
   "truck": 7,
-  "exam_landed": 6,
   "driver_taxi": 6,
   "img": 5,
   "nurse": 5,
-  "write": 3,
+  "write": 4,
   "township": 3,
   "builder": 3,
   "acct": 2,
@@ -399,24 +400,24 @@
   ]
  },
  "themeDupesRemoved": 0,
- "runtimeGamePacks": 3517,
+ "runtimeGamePacks": 3529,
  "runtimeGameDataEvents": 45,
  "textCounts": {
   "contentJsonStyle": {
-   "unique": 3446,
-   "occurrences": 3446
+   "unique": 3458,
+   "occurrences": 3458
   },
   "contentJsStyle": {
    "unique": 288,
    "occurrences": 479
   },
   "contentBothStyles": {
-   "unique": 3747,
-   "occurrences": 3957
+   "unique": 3759,
+   "occurrences": 3969
   },
   "srcBothStyles": {
-   "unique": 3860,
-   "occurrences": 4113
+   "unique": 3872,
+   "occurrences": 4125
   }
  },
  "lineMissing": [],

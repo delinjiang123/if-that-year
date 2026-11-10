@@ -524,7 +524,8 @@ window.GAME_REGISTRY.milestones = {
   },
   "exam_landed": {
    "setters": [
-    "p16_072"
+    "p16_072",
+    "cr_teach_105"
    ],
    "note": "体制内上岸落点（v0.20.1 W6 改链）：面试（p16_005）只落 exam_passed，录取（p16_071）→报到（p16_072）链尾才落本旗，后续体制内在行文本以此为据"
   },
@@ -1794,6 +1795,7 @@ window.GAME_REGISTRY.milestones = {
     "cr_teach_098",
     "cr_teach_099",
     "cr_teach_100",
+    "cr_teach_111",
    ],
    "note": "在职想走（第 2 期 P2-3 立）：后段想走拍 cr_want_cold（冷门来处）与 cr_want_seed（种子/承继来处）的「想换」选项立旗，两拍自身以 forbid 本旗关门防复读。消费者：world/career.js 的 gateSwitchDue——待业段满 1 年且想走、或在职想走（已立旗且不在待业段）两条支路开 gate_switch（框走 want；unit_gone 硬推走 fact 框）。立旗不清空：想走而没走（关口里又选了原行或推掉）旗仍在，冷却后再开（设计 §3.5，中年转行的口子留得住）"
   },
@@ -2179,7 +2181,8 @@ window.GAME_REGISTRY.milestones = {
     "p19_055",
     "cr_factory_122",
     "cr_craft_081",
-    "cr_farm_115"
+    "cr_farm_115",
+    "cr_teach_104"
    ],
    "note": "店主入行（v0.19.0）：批发学徒/接手家店/开网店拍立旗，商户簇以此为门"
   },
@@ -2288,7 +2291,8 @@ window.GAME_REGISTRY.milestones = {
   },
   "write_work": {
    "setters": [
-    "p2_086"
+    "p2_086",
+    "cr_teach_107"
    ],
    "note": "写作入行（v0.19.0）：副业写作留用拍立旗，r_book/end_bestseller 以此为证据门"
   },
@@ -2337,7 +2341,8 @@ window.GAME_REGISTRY.milestones = {
     "p38_014",
     "p38_015",
     "p38_016",
-    "p38_017"
+    "p38_017",
+    "cr_teach_106"
    ],
    "note": "报社入行（v0.19.0）：报社招工入行拍立旗（全池仅 p30_012 一条在行）。CL-02（v0.60.22）补登 pack38 五条入行拍 p38_013–017（公开招考/印刷厂学徒/转业分配/通讯员转正/都市报创刊招人）"
   },
