@@ -120,12 +120,12 @@ window.GAME_TRADES = {
   "courier": {
     "flag": "courier_work", "form": "flex",
     "family": "road",
-    "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
+    "eraIn": ["c1965", "c1978", "c1985", "c1995", "c2000"],
     "eduGate": null, "gateDirect": true,
     "coldOk": true, "coldKinds": ["recruit", "follow", "wage"], "coldWeight": 4,
     "inheritFrom": [],
     "seedEcho": null, "inheritEcho": null,
-    "note": "快递物流（机会层）：转运分拣/站点招工拍立旗；可达年代含晚年转行拍 p22_002（50–54 岁、无公历门）"
+    "note": "快递物流（机会层）：转运分拣/站点招工拍立旗；可达年代含晚年转行拍 p22_002（50–54 岁、无公历门）。CL-61 开线（总指挥裁定 3）：eraIn 收为 c1965 起五代——本行 1993 年才起步，c1955 代整命入行不成立；其实测依据：trades.eraIn 只管 career.js 关口菜单（gateRowCommon），storylet 资格不读它——收窄前后直调 IFY.met 对四扇存量门判定逐字不变（p22_002 对 c1955 恒 true，是该代唯一通道；p22_072/cr_shop_097/cr_factory_127 对 c1955 本就被各自年龄窗×公历门挡死）。c1955 玩家进本线只走 p22_002 晚年门与两扇中年转入门的既有形状，不靠关口菜单。"
   },
   "care": {
     "flag": "care_work", "form": "flex",
