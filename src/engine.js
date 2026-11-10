@@ -1,4 +1,4 @@
-// 《如果那年》引擎 v0.60.47 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
+// 《如果那年》引擎 v0.60.48 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
 //      / 判词按数值形状拼装 / 全程自动存档可续玩 / 种子可输入、可复制分享链接 / 在线零 LLM 调用
 // [模块]本引擎自 v0.20.0 起拆为各自独立的模块文件（独立包装器 + window.IFY 共享命名空间），按 index.html 的顺序加载：本文件（建 IFY + 编排）→ src/world/apply.js → src/record.js → src/world/processes/{parents,spouse,work,place,health}.js → src/scheduler.js → src/views/{stream,year,shadow,settlement,share}.js → src/engine-boot.js（收尾，调用 IFY.renderStart()）。跨模块引用一律 IFY.<名>，可变量收编为 IFY 属性。
 window.IFY = window.IFY || {};
@@ -502,9 +502,9 @@ window.IFY = window.IFY || {};
   function loadPrefs() {
     try {
       const p = JSON.parse(localStorage.getItem(PREFS_KEY));
-      if (p && AUTO_MODES.some(([k]) => k === p.mode) && SPEED_CPS[p.speed]) return { mode: p.mode, speed: p.speed, autoHintSeen: !!p.autoHintSeen, foldIntroSeen: !!p.foldIntroSeen, foldOpen: !!p.foldOpen, foldTouched: !!p.foldTouched, autoPanelOpen: !!p.autoPanelOpen };
+      if (p && AUTO_MODES.some(([k]) => k === p.mode) && SPEED_CPS[p.speed]) return { mode: p.mode, speed: p.speed, autoHintSeen: !!p.autoHintSeen, foldIntroSeen: !!p.foldIntroSeen, foldOpen: !!p.foldOpen, foldTouched: !!p.foldTouched, fold2Open: !!p.fold2Open, fold2Touched: !!p.fold2Touched, autoPanelOpen: !!p.autoPanelOpen };
     } catch (e) { /* 旧结构或损坏数据不报错，按新默认走 */ }
-    return { mode: DEFAULT_AUTO_MODE, speed: "mid", autoHintSeen: false, foldIntroSeen: false, foldOpen: false, foldTouched: false, autoPanelOpen: false }; // foldIntroSeen（v0.24.0 首页重做）：「设置与对局」折叠区首局后自动展开一次的已见标记；旧 prefs 缺字段按未见过处理，无迁移。foldOpen/foldTouched/autoPanelOpen（本批）：两处设置面板的开合存进 prefs——foldTouched=玩家手动切换过开始页折叠，之后以存住的状态为准；旧 prefs 缺字段一律按 false 补齐
+    return { mode: DEFAULT_AUTO_MODE, speed: "mid", autoHintSeen: false, foldIntroSeen: false, foldOpen: false, foldTouched: false, fold2Open: false, fold2Touched: false, autoPanelOpen: false }; // foldIntroSeen（v0.24.0 首页重做）：折叠区首局后自动展开一次的已见标记；旧 prefs 缺字段按未见过处理，无迁移。foldOpen/foldTouched（「设置」折叠）与 fold2Open/fold2Touched（「对局」折叠，v0.60.48 拆分后各存各的）/autoPanelOpen：面板开合存进 prefs——玩家手动切换过之后以存住的状态为准；旧 prefs 缺字段一律按 false 补齐
   }
 
   function savePrefs() {
@@ -711,11 +711,13 @@ window.IFY = window.IFY || {};
     const linkDriven = !!(seedParam || cardsParam);
     // 本批：折叠开合存进 prefs——玩家手动切换过（foldTouched）之后，renderStart 一律读存住的状态，
     // 重画、点年代卡等任何开始页内交互都不许改它；没切换过时仍走原介绍逻辑（链接带入展开 / 首局后展开一次）。
-    let foldOpen = false, foldGuide = false;
+    let foldOpen = false, fold2Open = false, foldGuide = false;
     if (IFY.prefs.foldTouched) foldOpen = !!IFY.prefs.foldOpen;
-    else if (linkDriven) foldOpen = true;
-    else if (livesCount > 0 && !IFY.prefs.foldIntroSeen) { foldOpen = true; foldGuide = true; IFY.prefs.foldIntroSeen = true; savePrefs(); }
+    if (IFY.prefs.fold2Touched) fold2Open = !!IFY.prefs.fold2Open;
+    else if (linkDriven) fold2Open = true;
+    else if (livesCount > 0 && !IFY.prefs.foldIntroSeen) { fold2Open = true; foldGuide = true; IFY.prefs.foldIntroSeen = true; savePrefs(); }
     let dailyCtx = null; // 今日一局的待选路线（{eraId, routeId}）：点今日一局时记下，开局时随存档带进局内，22 岁选路拍预选高亮、仍须点选
+    let dailyArmed = false; // 今日一局已备好且种子/年代未被改动：开始按钮文案切「开启今日一局」；改种子或换年代即解除
     app().innerHTML = `
       <section class="card">
         <header class="masthead">
@@ -753,7 +755,7 @@ window.IFY = window.IFY || {};
       </section>
       <div class="actions">
         ${liveSaved ? `<button class="primary" id="resume">继续上次的人生（${savedAge} 岁 · ${esc(savedLabel)}）</button>` : ""}
-        <button id="startgo" class="${liveSaved ? "ghost" : "primary"}">${liveSaved ? "重新开始一局" : "开始这一生"}</button>
+        <button id="startgo" class="${liveSaved ? "ghost" : "primary"}">${liveSaved ? "开始新的一局" : "开始这一生"}</button>
       </div>
       ${histRuns.length ? `<section class="card histcard">
         <p class="setlab">最近活过的人生</p>
@@ -763,13 +765,8 @@ window.IFY = window.IFY || {};
       </section>` : ""}
       <section class="card foldcard">
         <div class="foldblock${foldOpen ? " open" : ""}" id="foldblock">
-          <button type="button" class="foldhead" id="foldtoggle" aria-expanded="${foldOpen ? "true" : "false"}"><span class="foldtitle">设置与对局</span><small>平时不用打开</small><span class="foldchev" aria-hidden="true">▾</span></button>
+          <button type="button" class="foldhead" id="foldtoggle" aria-expanded="${foldOpen ? "true" : "false"}"><span class="foldtitle">设置</span><small>平时不用打开</small><span class="foldchev" aria-hidden="true">▾</span></button>
           <div id="foldbody"${foldOpen ? "" : " hidden"}>
-            ${foldGuide ? `<p class="hint foldguide">第二局想换个推进方式，或者跟朋友比同一局，东西都在这儿。</p>` : ""}
-            ${CARDS_ON ? `<div class="setblock" id="deckblock"${hasPrologue(startEra) ? " hidden" : ""}>
-              <p class="setlab">出身</p>
-              <div class="carddeck" id="carddeck">${deckHtml()}</div>
-            </div>` : ""}
             <div class="setblock" id="pushblock">
               <p class="setlab">推进</p>
               <p class="picklab">自动推进</p>
@@ -781,8 +778,20 @@ window.IFY = window.IFY || {};
                 ${["slow", "mid", "fast"].map((k) => `<button type="button" class="segbtn" data-speed="${k}">${IFY.speedButtonLabel(k)}</button>`).join("")}
               </div>
             </div>
+            <div class="foldcloserow"><button type="button" class="ghost" id="foldclose">收起</button></div>
+          </div>
+        </div>
+      </section>
+      <section class="card foldcard">
+        <div class="foldblock${fold2Open ? " open" : ""}" id="foldblock2">
+          <button type="button" class="foldhead" id="foldtoggle2" aria-expanded="${fold2Open ? "true" : "false"}"><span class="foldtitle">对局</span><small>种子码、今日一局</small><span class="foldchev" aria-hidden="true">▾</span></button>
+          <div id="foldbody2"${fold2Open ? "" : " hidden"}>
+            ${foldGuide ? `<p class="hint foldguide">跟朋友比同一局、看这一局的出身，都在这儿。推进方式在上面「设置」里换。</p>` : ""}
+            ${CARDS_ON ? `<div class="setblock" id="deckblock"${hasPrologue(startEra) ? " hidden" : ""}>
+              <p class="setlab">出身（家境·天赋·性情）</p>
+              <div class="carddeck" id="carddeck">${deckHtml()}</div>
+            </div>` : ""}
             <div class="setblock" id="matchblock">
-              <p class="setlab">对局</p>
               <p class="picklab">种子码</p>
               <div class="seedrow">
                 <input id="seedin" type="text" placeholder="种子码（不填就是随机）">
@@ -792,7 +801,7 @@ window.IFY = window.IFY || {};
               <p class="hint" id="dailyline"></p>
               <p class="hint tomorrow-note">明天一局：${tomDaily.era.label} · ${hasPrologue(tomDaily.era.id) ? "从小时候开始" : esc(tomDaily.route.name)}。</p>
             </div>
-            <div class="foldstartrow"><button type="button" id="startgo2" class="${liveSaved ? "ghost" : "primary"}">${liveSaved ? "重新开始一局" : "开始这一生"}</button></div>
+            <div class="foldstartrow"><button type="button" id="startgo2" class="${liveSaved ? "ghost" : "primary"}">${liveSaved ? "开始新的一局" : "开始这一生"}</button></div>
             <div class="foldcloserow"><button type="button" class="ghost" id="foldclose">收起</button></div>
           </div>
         </div>
@@ -809,16 +818,21 @@ window.IFY = window.IFY || {};
     let startLock = false; // §6.1 防连点：双击不能在同一帧触发两次开局（统一挂在 #startgo 上）
     const llBtn = el("liveslink"); // v0.24.0：首访（无存档、无已完成局）不渲染此入口，取不到时跳过接线
     if (llBtn) llBtn.addEventListener("click", () => { ANA.track("lives_view", {}); IFY.renderLives(); });
-    const foldBody = el("foldbody"), foldBlock = el("foldblock");
-    const setFold = (open) => { // 本批：折叠头与底部「收起」走同一条切换路径——切换即存 prefs 并置手动标记，此后以存住的状态为准
-      foldBody.hidden = !open;
-      foldBlock.classList.toggle("open", open);
-      el("foldtoggle").setAttribute("aria-expanded", String(open));
-      IFY.prefs.foldOpen = open; IFY.prefs.foldTouched = true; savePrefs();
+    const wireFold = (bodyId, blockId, toggleId, closeId, openKey, touchedKey) => { // 折叠头与底部「收起」走同一条切换路径——切换即存 prefs 并置手动标记，此后以存住的状态为准；「设置」「对局」两折叠各存各的
+      const body = el(bodyId), block = el(blockId);
+      if (!body || !block) return;
+      const setF = (open) => {
+        body.hidden = !open;
+        block.classList.toggle("open", open);
+        el(toggleId).setAttribute("aria-expanded", String(open));
+        IFY.prefs[openKey] = open; IFY.prefs[touchedKey] = true; savePrefs();
+      };
+      el(toggleId).addEventListener("click", () => setF(body.hidden));
+      const cb = el(closeId);
+      if (cb) cb.addEventListener("click", () => setF(false));
     };
-    el("foldtoggle").addEventListener("click", () => setFold(foldBody.hidden));
-    const foldCloseBtn = el("foldclose");
-    if (foldCloseBtn) foldCloseBtn.addEventListener("click", () => setFold(false));
+    wireFold("foldbody", "foldblock", "foldtoggle", "foldclose", "foldOpen", "foldTouched");
+    wireFold("foldbody2", "foldblock2", "foldtoggle2", "foldclose2", "fold2Open", "fold2Touched");
     // 存档还原（续玩与历史回看共用同一条路，防两处口径漂移）：两形状识别＋逐字段回填＋三股流
     // 复位都在这里做完；坏档（缺 seedStr 且无合法 rngA）返回 null，调用方各自处置。
     const restoreFromSave = (raw) => {
@@ -910,7 +924,7 @@ window.IFY = window.IFY || {};
       if (strip) strip.innerHTML = ys.map((yy) => `<button type="button" class="yearbtn${yy === y ? " sel" : ""}" data-year="${yy}" aria-label="生在${yy}年">${String(yy % 100).padStart(2, "0")}</button>`).join("");
       const bh = el("birthhint");
       if (bh) bh.textContent = birthOverride != null && ys.includes(birthOverride) ? "就定在这一年了。点别的数字，可以再换。" : "这一年，你出生了。点一个数字，就能换一年。";
-      if (!liveSaved) setStartLabels(`从${y}年开始这一生`);
+      setStartLabels(startLabel());
     };
     const stripEl = el("yearstrip");
     if (stripEl) stripEl.addEventListener("click", (ev) => { const b = ev.target.closest(".yearbtn"); if (!b) return; birthOverride = Number(b.dataset.year); syncBirth(); });
@@ -933,7 +947,7 @@ window.IFY = window.IFY || {};
     syncAutoPick();
     // 年代分流（v0.17.0）：试点年代走序章开局——藏牌面、亮序章入口；其余年代照旧。切换只改呈现，开局函数在点击时按年代走
     // v0.24.0：路线卡已撤出首页（选路回局内 22 岁汇入拍），此处只切标题/介绍/出身子区/序章提示与开始按钮文案
-    const startLabel = () => liveSaved ? "重新开始一局" : `从${shownBirth()}年开始这一生`; // 有进行中存档时主按钮让位给续玩：文案恒为重开（存档优先）；只有终局档时不算占用
+    const startLabel = () => dailyArmed ? "开始今日一局" : (liveSaved ? "开始新的一局" : `从${shownBirth()}年开始这一生`); // 今日一局备好未改动时开始钮直呼其名；有进行中存档时主按钮让位给续玩：文案恒为开始新的一局（存档优先）；只有终局档时不算占用
     const eraToggle = () => {
       const pro = hasPrologue(selEra());
       const t = el("starttitle"); if (t) t.textContent = "你没走的那条路，过得怎么样？";
@@ -944,7 +958,7 @@ window.IFY = window.IFY || {};
     document.querySelectorAll("#erapick .segbtn").forEach((b) => b.addEventListener("click", eraToggle));
     eraToggle();
     syncBirth(); // 出生年行首帧即明示（与年代预选/链接参数对齐后的抽出年份）
-    el("seedin").addEventListener("input", () => { redealAll(); birthOverride = null; eraToggle(); syncBirth(); }); // 种子一变手牌即重发：屏幕上的手牌恒等于开局将用的手牌（输入即生效，无单独确认按钮）；出生年同理随种子重抽，年代说明行也随种子重选条
+    el("seedin").addEventListener("input", () => { dailyArmed = false; redealAll(); birthOverride = null; eraToggle(); syncBirth(); }); // 种子一变手牌即重发：屏幕上的手牌恒等于开局将用的手牌（输入即生效，无单独确认按钮）；出生年同理随种子重抽，年代说明行也随种子重选条；手改种子即解除今日一局的「开启」文案
     el("daily").addEventListener("click", () => {
       const dd = dailyFor(todayStr());
       dailyCtx = { eraId: dd.era.id, routeId: dd.route.id }; // 待选路线记下：开局随存档带入，22 岁选路拍预选高亮那一张、仍须玩家点选（两条流程一致）
@@ -959,7 +973,9 @@ window.IFY = window.IFY || {};
       }
       el("daily").textContent = "今日一局已备好";
       birthOverride = null; syncBirth(); // 今日一局换了种子：出生年回到该种子抽出的年份
+      dailyArmed = true; setStartLabels(startLabel()); // 备好未改动：开始钮直呼「开启今日一局」，点它即进今日这局
     });
+    document.querySelectorAll("#erapick .segbtn").forEach((b) => b.addEventListener("click", () => { if (dailyArmed && (!dailyCtx || b.dataset.era !== dailyCtx.eraId)) { dailyArmed = false; setStartLabels(startLabel()); } })); // 换到别的年代＝今日一局作废，开始钮文案随之恢复
     // F2 种子正式入口（圆桌决议）：安静的次要入口，与折叠区里的 #seedin 是同一个输入——
     // 这里填的码同步写进 #seedin 并触发它既有的 input 接线（重发牌面、按种子重抽出生年），
     // 再点开始走的仍是统一开局按钮那一条路，与带 ?seed= 链接打开完全同路，不另起开局逻辑。

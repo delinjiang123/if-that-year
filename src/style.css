@@ -78,7 +78,7 @@ button.big{width:100%;margin-bottom:14px}
 .foldhead small{color:var(--mut);font-size:12.5px}
 .foldchev{margin-left:auto;color:var(--mut);transition:transform .15s}
 .foldblock.open .foldchev{transform:rotate(180deg)}
-#foldbody .setblock:first-of-type{border-top:none;margin-top:10px;padding-top:0}
+#foldbody .setblock:first-of-type,#foldbody2 .setblock:first-of-type{border-top:none;margin-top:10px;padding-top:0}
 .foldguide{margin:10px 0 0}
 .actions .primary,.actions .ghost{width:100%;margin-top:0}
 .foldstartrow{margin:14px 0 2px}
