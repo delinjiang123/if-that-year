@@ -1,4 +1,4 @@
-// 《如果那年》引擎 v0.60.70 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
+// 《如果那年》引擎 v0.60.71 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
 //      / 判词按数值形状拼装 / 全程自动存档可续玩 / 种子可输入、可复制分享链接 / 在线零 LLM 调用
 // [模块]本引擎自 v0.20.0 起拆为各自独立的模块文件（独立包装器 + window.IFY 共享命名空间），按 index.html 的顺序加载：本文件（建 IFY + 编排）→ src/world/apply.js → src/record.js → src/world/processes/{parents,spouse,work,place,health}.js → src/scheduler.js → src/views/{stream,year,shadow,settlement,share}.js → src/engine-boot.js（收尾，调用 IFY.renderStart()）。跨模块引用一律 IFY.<名>，可变量收编为 IFY 属性。
 window.IFY = window.IFY || {};
@@ -504,7 +504,7 @@ window.IFY = window.IFY || {};
       const p = JSON.parse(localStorage.getItem(PREFS_KEY));
       if (p && AUTO_MODES.some(([k]) => k === p.mode) && SPEED_CPS[p.speed]) return { mode: p.mode, speed: p.speed, autoHintSeen: !!p.autoHintSeen, foldIntroSeen: !!p.foldIntroSeen, foldOpen: !!p.foldOpen, foldTouched: !!p.foldTouched, fold2Open: !!p.fold2Open, fold2Touched: !!p.fold2Touched, autoPanelOpen: !!p.autoPanelOpen };
     } catch (e) { /* 旧结构或损坏数据不报错，按新默认走 */ }
-    return { mode: DEFAULT_AUTO_MODE, speed: "mid", autoHintSeen: false, foldIntroSeen: false, foldOpen: false, foldTouched: false, fold2Open: false, fold2Touched: false, autoPanelOpen: false }; // foldIntroSeen（v0.24.0 首页重做）：折叠区首局后自动展开一次的已见标记；旧 prefs 缺字段按未见过处理，无迁移。foldOpen/foldTouched（「设置」折叠）与 fold2Open/fold2Touched（「对局」折叠，v0.60.70 拆分后各存各的）/autoPanelOpen：面板开合存进 prefs——玩家手动切换过之后以存住的状态为准；旧 prefs 缺字段一律按 false 补齐
+    return { mode: DEFAULT_AUTO_MODE, speed: "mid", autoHintSeen: false, foldIntroSeen: false, foldOpen: false, foldTouched: false, fold2Open: false, fold2Touched: false, autoPanelOpen: false }; // foldIntroSeen（v0.24.0 首页重做）：折叠区首局后自动展开一次的已见标记；旧 prefs 缺字段按未见过处理，无迁移。foldOpen/foldTouched（「设置」折叠）与 fold2Open/fold2Touched（「对局」折叠，v0.60.71 拆分后各存各的）/autoPanelOpen：面板开合存进 prefs——玩家手动切换过之后以存住的状态为准；旧 prefs 缺字段一律按 false 补齐
   }
 
   function savePrefs() {

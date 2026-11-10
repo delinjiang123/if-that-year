@@ -156,11 +156,16 @@ console.log("功能：echoText / procText 分版");
   S.state.spouse = "divorced";
   ok(P.echoText(c0) === c0.echoState.spouse.divorced, "divorced 回响 = 独居版");
   const proc = byId.proc_dad_care;
+  S.era = "c1978"; // CL-52：dad_care 自此带 textEra（老/新本），状态层断言须在无年代变体的中本（c1978）下查，下两行原断言一字未动
   S.state.mom = "alive";
   ok(P.procText(proc) === proc.text, "母亲在世时 proc_dad_care = 原版");
   S.state.mom = "dead";
   const solo = P.procText(proc);
   ok(solo === proc.textState.mom.dead && !solo.includes("你妈在电话"), "母亲已故时 proc_dad_care = 父亲单人版（母亲不开口）");
+  S.era = "c2000"; // CL-52 年代层：新本生效且同样不预设母亲存亡（era 层压过 state 层，文本本身须安全）
+  ok(P.procText(proc) === proc.textEra.c2000 && !P.procText(proc).includes("你妈"), "CL-52 年代层 proc_dad_care c2000 = 新本且母亲不开口");
+  S.era = "c1955";
+  ok(P.procText(proc) === proc.textEra.c1955 && !P.procText(proc).includes("你妈"), "CL-52 年代层 proc_dad_care c1955 = 老本且母亲不开口");
 }
 
 // ---- ⑥ 判词批 B：陪伴槽认伴侣史（手组账本直调 settlementSlots） ----
