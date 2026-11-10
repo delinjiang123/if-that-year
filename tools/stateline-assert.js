@@ -167,6 +167,28 @@ console.log("功能：echoText / procText 分版");
   S.era = "c1955";
   ok(P.procText(proc) === proc.textEra.c1955 && !P.procText(proc).includes("你妈"), "CL-52 年代层 proc_dad_care c1955 = 老本且母亲不开口");
 }
+{
+  let S = freshS();
+  const dh = byId.proc_dad_hosp, mh = byId.proc_mom_hosp;
+  // CL-60 父母差异层：住院两拍每一层成对不等（爸心脑血管面/妈骨科面），同局先后住院不原样重播
+  ok(dh.text !== mh.text, "CL-60 住院正文 爸≠妈");
+  ok(dh.textEra.c1955 !== mh.textEra.c1955 && dh.textEra.c1995 !== mh.textEra.c1995, "CL-60 住院年代层（老本/新本）爸≠妈");
+  ok(dh.textDist.far !== mh.textDist.far, "CL-60 住院远距层 爸≠妈");
+  for (const era of ["c1955", "c1978", "c2000"]) {
+    S.era = era;
+    ok(P.procText(dh) !== P.procText(mh), "CL-60 procText 住院 " + era + " 爸≠妈");
+  }
+  S.era = "c1978";
+  ok(P.echoText(dh.choices[0]) !== P.echoText(mh.choices[0]), "CL-60 住院陪床回响 爸≠妈");
+  ok(P.echoText(dh.choices[1]) !== P.echoText(mh.choices[1]), "CL-60 住院请护工回响 爸≠妈");
+  S.era = "c1955";
+  ok(P.echoText(dh.choices[0]) !== P.echoText(mh.choices[0]), "CL-60 住院陪床回响（老本）爸≠妈");
+  // 同族照护回响：care 两拍同局都会走到，请护工/先观察回响成对不等
+  const dc = byId.proc_dad_care, mc = byId.proc_mom_care;
+  S.era = "c1978";
+  ok(P.echoText(dc.choices[1]) !== P.echoText(mc.choices[1]), "CL-60 照护请护工回响 爸≠妈");
+  ok(P.echoText(dc.choices[2]) !== P.echoText(mc.choices[2]), "CL-60 照护先观察回响 爸≠妈");
+}
 
 // ---- ⑥ 判词批 B：陪伴槽认伴侣史（手组账本直调 settlementSlots） ----
 console.log("⑥ 判词批 B：陪伴槽 / 收尾段认伴侣史 + 判词片段门");
