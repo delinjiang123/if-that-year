@@ -1787,6 +1787,8 @@ window.GAME_REGISTRY.milestones = {
     "cr_shop_091",
     "cr_shop_099",
     "cr_shop_100",
+    "cr_factory_121",
+    "cr_factory_128",
    ],
    "note": "在职想走（第 2 期 P2-3 立）：后段想走拍 cr_want_cold（冷门来处）与 cr_want_seed（种子/承继来处）的「想换」选项立旗，两拍自身以 forbid 本旗关门防复读。消费者：world/career.js 的 gateSwitchDue——待业段满 1 年且想走、或在职想走（已立旗且不在待业段）两条支路开 gate_switch（框走 want；unit_gone 硬推走 fact 框）。立旗不清空：想走而没走（关口里又选了原行或推掉）旗仍在，冷却后再开（设计 §3.5，中年转行的口子留得住）"
   },
@@ -2166,7 +2168,8 @@ window.GAME_REGISTRY.milestones = {
    "setters": [
     "p19_005",
     "p19_025",
-    "p19_055"
+    "p19_055",
+    "cr_factory_122"
    ],
    "note": "店主入行（v0.19.0）：批发学徒/接手家店/开网店拍立旗，商户簇以此为门"
   },
@@ -2174,6 +2177,7 @@ window.GAME_REGISTRY.milestones = {
    "setters": [
     "p22_071",
     "cr_shop_095",
+    "cr_factory_125",
    ],
    "note": "零工/自由职业入行（v0.19.0）：劳务市场报名接活拍立旗，零工簇以此为门；与 side_job（副业）分家"
   },
@@ -2182,6 +2186,7 @@ window.GAME_REGISTRY.milestones = {
     "p22_002",
     "p22_072",
     "cr_shop_097",
+    "cr_factory_127",
    ],
    "note": "快递物流入行（v0.19.0）：转运分拣/站点招工拍立旗，快递簇以此为门"
   },
@@ -2197,7 +2202,8 @@ window.GAME_REGISTRY.milestones = {
   },
   "farm_returned": {
    "setters": [
-    "farm_township_back"
+    "farm_township_back",
+    "cr_factory_123"
    ],
    "note": "乡镇企业回落（立项新增）：厂散后回地里立旗——flagAges 只记首落点，重立 farm_work 翻不动活计形态，故用新旗承接回落落点，FORM_OF_FLAG 映射 farm，R1 按落点年龄把形态拽回"
   },
@@ -2236,10 +2242,17 @@ window.GAME_REGISTRY.milestones = {
    ],
    "note": "财会入行（v0.19.0）：第一份出纳活入行拍立旗，出纳簇以此为门"
   },
+  "builder_work": {
+   "setters": [
+    "cr_factory_126"
+   ],
+   "note": "建筑工人入行（第 2 期注册扩版 v0.60.19 立行当，先有 trades/FORM_OF_FLAG 登记；CL-19 工厂线转行段 cr_factory_126 为首个立旗条目，本条目随之新建）"
+  },
   "care_work": {
    "setters": [
     "p21_073",
     "cr_shop_096",
+    "cr_factory_124",
    ],
    "note": "职业陪护入行（v0.19.0）：陪护接活入行拍立旗；与家庭照护旗 care_ss_gap/care_self 分家"
   },
