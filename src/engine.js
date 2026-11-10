@@ -1,4 +1,4 @@
-// 《如果那年》引擎 v0.60.48 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
+// 《如果那年》引擎 v0.60.49 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
 //      / 判词按数值形状拼装 / 全程自动存档可续玩 / 种子可输入、可复制分享链接 / 在线零 LLM 调用
 // [模块]本引擎自 v0.20.0 起拆为各自独立的模块文件（独立包装器 + window.IFY 共享命名空间），按 index.html 的顺序加载：本文件（建 IFY + 编排）→ src/world/apply.js → src/record.js → src/world/processes/{parents,spouse,work,place,health}.js → src/scheduler.js → src/views/{stream,year,shadow,settlement,share}.js → src/engine-boot.js（收尾，调用 IFY.renderStart()）。跨模块引用一律 IFY.<名>，可变量收编为 IFY 属性。
 window.IFY = window.IFY || {};
@@ -504,7 +504,7 @@ window.IFY = window.IFY || {};
       const p = JSON.parse(localStorage.getItem(PREFS_KEY));
       if (p && AUTO_MODES.some(([k]) => k === p.mode) && SPEED_CPS[p.speed]) return { mode: p.mode, speed: p.speed, autoHintSeen: !!p.autoHintSeen, foldIntroSeen: !!p.foldIntroSeen, foldOpen: !!p.foldOpen, foldTouched: !!p.foldTouched, fold2Open: !!p.fold2Open, fold2Touched: !!p.fold2Touched, autoPanelOpen: !!p.autoPanelOpen };
     } catch (e) { /* 旧结构或损坏数据不报错，按新默认走 */ }
-    return { mode: DEFAULT_AUTO_MODE, speed: "mid", autoHintSeen: false, foldIntroSeen: false, foldOpen: false, foldTouched: false, fold2Open: false, fold2Touched: false, autoPanelOpen: false }; // foldIntroSeen（v0.24.0 首页重做）：折叠区首局后自动展开一次的已见标记；旧 prefs 缺字段按未见过处理，无迁移。foldOpen/foldTouched（「设置」折叠）与 fold2Open/fold2Touched（「对局」折叠，v0.60.48 拆分后各存各的）/autoPanelOpen：面板开合存进 prefs——玩家手动切换过之后以存住的状态为准；旧 prefs 缺字段一律按 false 补齐
+    return { mode: DEFAULT_AUTO_MODE, speed: "mid", autoHintSeen: false, foldIntroSeen: false, foldOpen: false, foldTouched: false, fold2Open: false, fold2Touched: false, autoPanelOpen: false }; // foldIntroSeen（v0.24.0 首页重做）：折叠区首局后自动展开一次的已见标记；旧 prefs 缺字段按未见过处理，无迁移。foldOpen/foldTouched（「设置」折叠）与 fold2Open/fold2Touched（「对局」折叠，v0.60.49 拆分后各存各的）/autoPanelOpen：面板开合存进 prefs——玩家手动切换过之后以存住的状态为准；旧 prefs 缺字段一律按 false 补齐
   }
 
   function savePrefs() {
@@ -717,7 +717,6 @@ window.IFY = window.IFY || {};
     else if (linkDriven) fold2Open = true;
     else if (livesCount > 0 && !IFY.prefs.foldIntroSeen) { fold2Open = true; foldGuide = true; IFY.prefs.foldIntroSeen = true; savePrefs(); }
     let dailyCtx = null; // 今日一局的待选路线（{eraId, routeId}）：点今日一局时记下，开局时随存档带进局内，22 岁选路拍预选高亮、仍须点选
-    let dailyArmed = false; // 今日一局已备好且种子/年代未被改动：开始按钮文案切「开启今日一局」；改种子或换年代即解除
     app().innerHTML = `
       <section class="card">
         <header class="masthead">
@@ -794,11 +793,11 @@ window.IFY = window.IFY || {};
             <div class="setblock" id="matchblock">
               <p class="picklab">种子码</p>
               <div class="seedrow">
-                <input id="seedin" type="text" placeholder="种子码（不填就是随机）">
+                <input id="seedin" type="text" placeholder="种子码（不填就是随机）" value="${seedParam ? esc(seedParam) : ""}">
               </div>
               <p class="hint">不填就是随机。跟朋友比同一局，两边填同一个码。</p>
-              <div class="dailyrow"><button class="ghost" id="daily">今日一局 · 今天的固定局，点这先备好</button></div>
-              <p class="hint" id="dailyline"></p>
+              ${seedParam ? `<p class="hint">链接带来的种子码已经填好了，点开始，就是跟朋友同一局。</p>` : ""}
+              <div class="dailyrow"><button class="ghost" id="daily">今日一局 · 今天的固定局，点了就开始</button></div>
               <p class="hint tomorrow-note">明天一局：${tomDaily.era.label} · ${hasPrologue(tomDaily.era.id) ? "从小时候开始" : esc(tomDaily.route.name)}。</p>
             </div>
             <div class="foldstartrow"><button type="button" id="startgo2" class="${liveSaved ? "ghost" : "primary"}">${liveSaved ? "开始新的一局" : "开始这一生"}</button></div>
@@ -806,14 +805,6 @@ window.IFY = window.IFY || {};
           </div>
         </div>
       </section>
-      <section class="card seedentry">
-        <p class="setlab">用种子开一局</p>
-        <p class="hint">填朋友给的种子码，用同一个种子开一局。年代还是在上面选。</p>
-        <div class="seedrow">
-          <input id="seedentryin" type="text" placeholder="填种子码" autocomplete="off">
-          <button type="button" class="ghost" id="seedentrygo">用这个种子开始</button>
-        </div>
-        <p class="hint" id="seedentrymsg"></p>
       </section>`;
     let startLock = false; // §6.1 防连点：双击不能在同一帧触发两次开局（统一挂在 #startgo 上）
     const llBtn = el("liveslink"); // v0.24.0：首访（无存档、无已完成局）不渲染此入口，取不到时跳过接线
@@ -947,7 +938,7 @@ window.IFY = window.IFY || {};
     syncAutoPick();
     // 年代分流（v0.17.0）：试点年代走序章开局——藏牌面、亮序章入口；其余年代照旧。切换只改呈现，开局函数在点击时按年代走
     // v0.24.0：路线卡已撤出首页（选路回局内 22 岁汇入拍），此处只切标题/介绍/出身子区/序章提示与开始按钮文案
-    const startLabel = () => dailyArmed ? "开始今日一局" : (liveSaved ? "开始新的一局" : `从${shownBirth()}年开始这一生`); // 今日一局备好未改动时开始钮直呼其名；有进行中存档时主按钮让位给续玩：文案恒为开始新的一局（存档优先）；只有终局档时不算占用
+    const startLabel = () => liveSaved ? "开始新的一局" : `从${shownBirth()}年开始这一生`; // 有进行中存档时主按钮让位给续玩：文案恒为开始新的一局（存档优先）；只有终局档时不算占用
     const eraToggle = () => {
       const pro = hasPrologue(selEra());
       const t = el("starttitle"); if (t) t.textContent = "你没走的那条路，过得怎么样？";
@@ -958,7 +949,7 @@ window.IFY = window.IFY || {};
     document.querySelectorAll("#erapick .segbtn").forEach((b) => b.addEventListener("click", eraToggle));
     eraToggle();
     syncBirth(); // 出生年行首帧即明示（与年代预选/链接参数对齐后的抽出年份）
-    el("seedin").addEventListener("input", () => { dailyArmed = false; redealAll(); birthOverride = null; eraToggle(); syncBirth(); }); // 种子一变手牌即重发：屏幕上的手牌恒等于开局将用的手牌（输入即生效，无单独确认按钮）；出生年同理随种子重抽，年代说明行也随种子重选条；手改种子即解除今日一局的「开启」文案
+    el("seedin").addEventListener("input", () => { redealAll(); birthOverride = null; eraToggle(); syncBirth(); }); // 种子一变手牌即重发：屏幕上的手牌恒等于开局将用的手牌（输入即生效，无单独确认按钮）；出生年同理随种子重抽，年代说明行也随种子重选条
     el("daily").addEventListener("click", () => {
       const dd = dailyFor(todayStr());
       dailyCtx = { eraId: dd.era.id, routeId: dd.route.id }; // 待选路线记下：开局随存档带入，22 岁选路拍预选高亮那一张、仍须玩家点选（两条流程一致）
@@ -966,34 +957,11 @@ window.IFY = window.IFY || {};
       const eb = document.querySelector(`#erapick .segbtn[data-era="${dd.era.id}"]`);
       if (eb) eb.click(); // 年代走既有接线（重发时代牌 + 切换呈现）
       redealAll();
-      if (hasPrologue(dd.era.id)) {
-        el("dailyline").textContent = `今日一局：${dd.era.label}，从小时候开始。种子替你备好了，点开始就是今日这局；选路时今日那条会先亮着，你也可以改。`;
-      } else {
-        el("dailyline").textContent = `今日一局：${dd.era.label}。种子替你备好了，点开始就是今日这局；进局选路时，今日那条会先亮着，你也可以改。`;
-      }
-      el("daily").textContent = "今日一局已备好";
       birthOverride = null; syncBirth(); // 今日一局换了种子：出生年回到该种子抽出的年份
-      dailyArmed = true; setStartLabels(startLabel()); // 备好未改动：开始钮直呼「开启今日一局」，点它即进今日这局
+      el("startgo").click(); // 点了就开始（用户 2026-11-10 定，daily run 式一步到位）：备局动作做完即走统一开局按钮同一条路，不再让玩家备好后再找开始
     });
-    document.querySelectorAll("#erapick .segbtn").forEach((b) => b.addEventListener("click", () => { if (dailyArmed && (!dailyCtx || b.dataset.era !== dailyCtx.eraId)) { dailyArmed = false; setStartLabels(startLabel()); } })); // 换到别的年代＝今日一局作废，开始钮文案随之恢复
-    // F2 种子正式入口（圆桌决议）：安静的次要入口，与折叠区里的 #seedin 是同一个输入——
-    // 这里填的码同步写进 #seedin 并触发它既有的 input 接线（重发牌面、按种子重抽出生年），
-    // 再点开始走的仍是统一开局按钮那一条路，与带 ?seed= 链接打开完全同路，不另起开局逻辑。
-    const seIn = el("seedentryin"), seGo = el("seedentrygo"), seMsg = el("seedentrymsg");
-    if (seIn && seGo) {
-      if (seedParam && !seIn.value) seIn.value = seedParam; // 链接带来的种子在正式入口里也看得见
-      const syncEntry = () => { const si = el("seedin"); if (si && si.value !== seIn.value) { si.value = seIn.value; si.dispatchEvent(new Event("input", { bubbles: true })); } };
-      seIn.addEventListener("input", syncEntry); // 填了不用入口按钮、直接点主开始钮，也用这个种子
-      seGo.addEventListener("click", () => {
-        const v = (seIn.value || "").trim();
-        if (!v) { if (seMsg) seMsg.textContent = "先填种子码，再点开始。"; seIn.focus(); return; } // 引擎对种子无格式限制（任意非空串都按哈希成局），空着没法开，只提示这一句
-        syncEntry();
-        el("startgo").click();
-      });
-      seIn.addEventListener("keydown", (ev) => { if (ev.key === "Enter") { ev.preventDefault(); seGo.click(); } });
-    }
     // 统一开局按钮：序章年代走序章开局；无序章年代先落出身、路线留到局内 22 岁汇入拍选（newGame 只建局不落路线）
-    const sg2 = el("startgo2"); // 折叠区内的同路开始钮：在「设置与对局」里备好（今日一局/种子码/推进）就能直接进局，不必滚回顶部（与 seedentrygo 同式，转发统一开局按钮，不另起开局逻辑）
+    const sg2 = el("startgo2"); // 折叠区内的同路开始钮：在「对局」里填好种子码就能直接进局，不必滚回顶部（转发统一开局按钮，不另起开局逻辑）
     if (sg2) sg2.addEventListener("click", () => { const sg = el("startgo"); if (sg) sg.click(); });
     el("startgo").addEventListener("click", () => {
       if (startLock) return;

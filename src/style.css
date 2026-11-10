@@ -401,7 +401,3 @@ button:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{o
 
 /* P0 小页批 · F2 种子正式入口：开始屏折叠卡之后的一张安静小卡，权重低于选年代与主按钮；
    输入框沿 .seedrow input 既有样式，按钮只去掉 .ghost 的上边距与行内对齐 */
-.seedentry{padding-top:16px}
-.seedentry .seedrow{align-items:center}
-.seedentry .seedrow .ghost{margin-top:0;padding:10px 16px}
-.seedentry #seedentrymsg:empty{display:none}
