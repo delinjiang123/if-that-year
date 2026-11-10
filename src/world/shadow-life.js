@@ -416,7 +416,7 @@
     // fork_kid（定形 kidForkView 与呈现层共用）；分岔独占本年，解决后 return（与下方年龄
     // 分岔同规），选择走 chooseForTrack 既有通用回落（按新 id 的规则登记是 S5 的事）。
     if (IFY.kidGateDue()) { const kf = IFY.kidForkView(); if (kf) { resolveForkHeadless(kf); return; } }
-    if (IFY.datingDue()) { const dit = D.events.find((e) => e.id === "proc_dating"); if (dit) resolveProcHeadless(dit); }
+    if (IFY.datingDue()) { const dit = D.events.find((e) => e.id === "proc_dating"); if (dit) resolveProcHeadless(IFY.datingView(dit)); } // CL-45：摊牌分级取版与呈现层同调 datingView（影子一生至多推迟一次，至多见第二遍）
     IFY.settleAbroadDefault();
     const akd = IFY.abroadKindDue();
     if (akd) { const ait = D.events.find((e) => e.id === akd.item); if (ait) resolveProcHeadless(ait); }

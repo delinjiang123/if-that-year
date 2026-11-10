@@ -74,6 +74,14 @@
      按 S.retiredAt 算出的退休年数分版（≤2 年原文、3–6 年 mid、>6 年 long），解析点
      views/year.js retireYearsText，把已解析正文首处「没多久」替换为 mid/long 的时间词；
      形状核对在 tools/validate-state.js（mid/long 须为非空文本，且条目 text 须真含「没多久」）。
+   - textDefer（条目级）/ labelDefer / echoDefer（选项级，CL-45 登记）：{ "1": 文本, "2": 文本 }——
+     dating 摊牌分级变体（proc_dating 专用）：键为呈现时 S.datingDefers（本局已推迟次数），
+     第一遍（0）用原文，第二遍（1）换带回响的正文与推迟项标签/回响，第三遍（2）换决断正文
+     （推迟项已由呈现/无头两侧既有过滤在 datingDefers≥2 时撤下，故选项变体无 "2" 的实际
+     呈现）；解析点 world/processes/spouse.js datingView（engine.js step 与 shadow-life.js
+     stepYearHeadless 的 dating 取拍点同调，返回浅拷贝视图、不改条目本体），未命中回落原文；
+     形状核对在 tools/validate-state.js 与 tools/validate-storylet.js（键值域 {"1","2"}、
+     值为非空文本）。
    - textNoUnit（条目级）/ echoNoUnit（选项级，v0.20.1 W2 登记、W7 扩至分岔）：不点名单位
      变体——本局无当前单位事实（work.js noCurrentUnit）时优先于 textForm/textState，
      解析点 views/year.js formText/echoText（进程拍另有 work.js applyRetireVariant 通道）。

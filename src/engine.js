@@ -1,4 +1,4 @@
-// 《如果那年》引擎 v0.60.65 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
+// 《如果那年》引擎 v0.60.66 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
 //      / 判词按数值形状拼装 / 全程自动存档可续玩 / 种子可输入、可复制分享链接 / 在线零 LLM 调用
 // [模块]本引擎自 v0.20.0 起拆为各自独立的模块文件（独立包装器 + window.IFY 共享命名空间），按 index.html 的顺序加载：本文件（建 IFY + 编排）→ src/world/apply.js → src/record.js → src/world/processes/{parents,spouse,work,place,health}.js → src/scheduler.js → src/views/{stream,year,shadow,settlement,share}.js → src/engine-boot.js（收尾，调用 IFY.renderStart()）。跨模块引用一律 IFY.<名>，可变量收编为 IFY 属性。
 window.IFY = window.IFY || {};
@@ -504,7 +504,7 @@ window.IFY = window.IFY || {};
       const p = JSON.parse(localStorage.getItem(PREFS_KEY));
       if (p && AUTO_MODES.some(([k]) => k === p.mode) && SPEED_CPS[p.speed]) return { mode: p.mode, speed: p.speed, autoHintSeen: !!p.autoHintSeen, foldIntroSeen: !!p.foldIntroSeen, foldOpen: !!p.foldOpen, foldTouched: !!p.foldTouched, fold2Open: !!p.fold2Open, fold2Touched: !!p.fold2Touched, autoPanelOpen: !!p.autoPanelOpen };
     } catch (e) { /* 旧结构或损坏数据不报错，按新默认走 */ }
-    return { mode: DEFAULT_AUTO_MODE, speed: "mid", autoHintSeen: false, foldIntroSeen: false, foldOpen: false, foldTouched: false, fold2Open: false, fold2Touched: false, autoPanelOpen: false }; // foldIntroSeen（v0.24.0 首页重做）：折叠区首局后自动展开一次的已见标记；旧 prefs 缺字段按未见过处理，无迁移。foldOpen/foldTouched（「设置」折叠）与 fold2Open/fold2Touched（「对局」折叠，v0.60.65 拆分后各存各的）/autoPanelOpen：面板开合存进 prefs——玩家手动切换过之后以存住的状态为准；旧 prefs 缺字段一律按 false 补齐
+    return { mode: DEFAULT_AUTO_MODE, speed: "mid", autoHintSeen: false, foldIntroSeen: false, foldOpen: false, foldTouched: false, fold2Open: false, fold2Touched: false, autoPanelOpen: false }; // foldIntroSeen（v0.24.0 首页重做）：折叠区首局后自动展开一次的已见标记；旧 prefs 缺字段按未见过处理，无迁移。foldOpen/foldTouched（「设置」折叠）与 fold2Open/fold2Touched（「对局」折叠，v0.60.66 拆分后各存各的）/autoPanelOpen：面板开合存进 prefs——玩家手动切换过之后以存住的状态为准；旧 prefs 缺字段一律按 false 补齐
   }
 
   function savePrefs() {
@@ -1237,7 +1237,7 @@ window.IFY = window.IFY || {};
     // 文本都以摊牌前的状态为准（与出生/领证保底同段同理）。与年龄分岔同级：呈现独占本年
     // （复述拍后过年），故不走进程拍的「呈现完回到本年」路。
     if (IFY.kidGateDue()) { const kf = IFY.kidForkView(); if (kf) { IFY.renderFork(kf); return IFY.mountStream(); } }
-    if (IFY.datingDue()) { const dit = D.events.find((e) => e.id === "proc_dating"); if (dit) { IFY.renderProcItem(dit); return IFY.mountStream(); } }
+    if (IFY.datingDue()) { const dit = D.events.find((e) => e.id === "proc_dating"); if (dit) { IFY.renderProcItem(IFY.datingView(dit)); return IFY.mountStream(); } } // CL-45：摊牌按已推迟次数分级取版（datingView），与无头侧同口径
     // 出国去向拍与退休相位拍（v0.19.0）：同为进程拍，呈现完回到本年；去向默认推断先于去向拍检查之外的年份静默补值
     IFY.settleAbroadDefault();
     const akd = IFY.abroadKindDue();

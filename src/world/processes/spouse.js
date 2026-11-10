@@ -6,6 +6,35 @@
     return !!(IFY.S.state && IFY.S.state.spouse === "dating" && typeof IFY.S.datingSince === "number" && IFY.S.age - IFY.S.datingSince >= 7);
   }
 
+  // 摊牌分级视图（CL-45）：proc_dating 一生可发至多三遍，文本不许一字不差原样重播——
+  // 按本局已推迟次数 S.datingDefers 取版（条目声明 textDefer、推迟项声明 labelDefer/
+  // echoDefer，键＝推迟次数，登记见 registry.js 字段字典）：0 遍或未声明变体时原样返回
+  // 条目本体（恒等，零影响）；命中时返回浅拷贝视图（换 text 与命中选项的 label/echo，
+  // 其余字段与选项对象引用不动），不改条目本体——同页多命（影子无头）不会串版。
+  // 呈现层（engine.js step）与无头侧（shadow-life.js stepYearHeadless）取拍点同调本函数，
+  // 两侧看到的正文与选项集一致；第三遍（defers≥2）的推迟项撤下走两侧既有过滤，不经此处。
+  function datingView(item) {
+    if (!item) return item;
+    const n = (IFY.S && IFY.S.datingDefers) || 0;
+    if (n <= 0) return item;
+    const key = String(Math.min(n, 2));
+    const t = item.textDefer && item.textDefer[key];
+    const hasChoiceVar = Array.isArray(item.choices) && item.choices.some((c) => c && ((c.labelDefer && c.labelDefer[key]) || (c.echoDefer && c.echoDefer[key])));
+    if (!t && !hasChoiceVar) return item;
+    const view = Object.assign({}, item);
+    if (t) view.text = t;
+    if (hasChoiceVar) view.choices = item.choices.map((c) => {
+      if (!c) return c;
+      const l = c.labelDefer && c.labelDefer[key], e = c.echoDefer && c.echoDefer[key];
+      if (!l && !e) return c;
+      const cc = Object.assign({}, c);
+      if (l) cc.label = l;
+      if (e) cc.echo = e;
+      return cc;
+    });
+    return view;
+  }
+
   // 出生保送（孩子线批次 S1）：立约「要」之后，出生这一幕不能再靠池抽碰运气——立约次年到期必达，
   // 由进程层呈现 p3_046 本体（呈现点在 engine.js step() 与 shadow-life.js stepYearHeadless() 的进程段，
   // 排在 dating 摊牌之前：立约时的伴侣状态还没被摊牌改动，出生拍按状态取的文本才对得上）。
@@ -334,5 +363,5 @@
       : "38 岁挂起的那份账，45 岁说再试一回。可医院没正经跑起来，日子推着人往前走，孩子的事就一直没落定。";
     return "38 岁挂起的那份账，到这一生走完，也没正式对完。";
   }
-  Object.assign(IFY, { datingDue, bornDue, syncKidDebut, kidDebutDue, kidDebutItem, licenseDue, kidGateDue, kidForkView, kidForkCovenant, spouseText, registerCovenant, covenantSettleLine });
+  Object.assign(IFY, { datingDue, datingView, bornDue, syncKidDebut, kidDebutDue, kidDebutItem, licenseDue, kidGateDue, kidForkView, kidForkCovenant, spouseText, registerCovenant, covenantSettleLine });
 })(window.IFY);

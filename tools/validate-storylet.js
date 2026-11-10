@@ -145,6 +145,25 @@ function checkEffects(item, at) {
     if (!ry || typeof ry !== "object" || Array.isArray(ry)) err(`${at} textRetireYears 不是对象`);
     else for (const k of ["mid", "long"]) if (typeof ry[k] !== "string" || !ry[k]) err(`${at} textRetireYears.${k} 不是非空文本`);
   }
+  // dating 摊牌分级变体（CL-45 登记）：与 validate-state 同口径核形状（键＝已推迟次数，值域 {"1","2"}）
+  for (const fld of ["textDefer"]) {
+    if (item[fld] === undefined) continue;
+    const dv = item[fld];
+    if (!dv || typeof dv !== "object" || Array.isArray(dv)) err(`${at} ${fld} 不是对象`);
+    else for (const [dk, txt] of Object.entries(dv)) {
+      if (!["1", "2"].includes(dk)) err(`${at} ${fld} 含非法推迟键 ${dk}`);
+      else if (typeof txt !== "string" || !txt) err(`${at} ${fld}.${dk} 不是非空文本`);
+    }
+  }
+  for (const c of item.choices || []) for (const fld of ["labelDefer", "echoDefer"]) {
+    if (c[fld] === undefined) continue;
+    const dv = c[fld];
+    if (!dv || typeof dv !== "object" || Array.isArray(dv)) err(`${at} 选项 ${fld} 不是对象`);
+    else for (const [dk, txt] of Object.entries(dv)) {
+      if (!["1", "2"].includes(dk)) err(`${at} 选项 ${fld} 含非法推迟键 ${dk}`);
+      else if (typeof txt !== "string" || !txt) err(`${at} 选项 ${fld}.${dk} 不是非空文本`);
+    }
+  }
   for (const c of item.choices || []) checkEffects(c, at);
 }
 for (const [name, arr] of collections) for (const e of arr) checkEffects(e, `${name}:${e.id || "(无 id)"}`);

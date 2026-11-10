@@ -248,6 +248,15 @@ function scan(item, itemId, inhGate) {
       else if (typeof txt !== "string" || !txt) err(`${itemId}: ${fld}.${ev} 不是非空文本`);
     }
   }
+  // dating 摊牌分级变体（CL-45 登记）：textDefer/labelDefer/echoDefer 须为 { "1"|"2": 非空文本 }（键＝已推迟次数）
+  for (const fld of ["textDefer", "labelDefer", "echoDefer"]) {
+    if (!item[fld]) continue;
+    if (typeof item[fld] !== "object" || Array.isArray(item[fld])) { err(`${itemId}: ${fld} 不是对象`); continue; }
+    for (const [dk, txt] of Object.entries(item[fld])) {
+      if (!["1", "2"].includes(dk)) err(`${itemId}: ${fld} 含非法推迟键 ${dk}`);
+      else if (typeof txt !== "string" || !txt) err(`${itemId}: ${fld}.${dk} 不是非空文本`);
+    }
+  }
   checkEraFrameShape(item, itemId); // 年代框变体（v0.23 WP1 E2）
   // 枚举事实声明（v0.23 WP1 E11）：setFact/requiresFact 的事实名须已登记、值须在值集内（absent 是缺省读法、不许显式写入值集校验面）
   for (const fld of ["setFact", "requiresFact"]) {

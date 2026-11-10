@@ -74,11 +74,21 @@ window.GAME_PACKS = (window.GAME_PACKS || []).concat([
       { label: "大办，让她风风光光过这个寿", care: { who: "mom", yrs: 1 }, effects: { money: -3, relation: 2 }, echo: "她穿了红褂子坐在上首，拉着这个的手，拍拍那个的背。一天下来她累了，靠在椅子上眯着眼笑，像晒着了太阳。" },
       { label: "就在家里过，一家人守着她", effects: { relation: 1 }, echo: "一桌人，她挨个看过去，慢慢吃了一碗面。吃完她说，人老了，不图热闹，图个全乎。" } ] },
   // —— dating 到期结算：处满 7 年未定，由进程拍给出三条路（推迟至多两次） ——
+  // 分级重播（CL-45）：本拍一生可发至多三遍，文本不许原样重播——textDefer 按呈现时
+  // S.datingDefers（已推迟次数）分版：第一遍（0）原文，第二遍（1）带回响换文，第三遍（2）
+  // 决断版（推迟项已由呈现/无头两侧的既有过滤在 defers≥2 时撤下，只剩定/散两路）。
+  // 推迟项第二遍的标签/回响走 labelDefer/echoDefer 同键换版。解析点 spouse.js datingView。
   { id: "proc_dating", min: 22, max: 80, procOnly: true, stateAll: { spouse: "dating" }, text: "处了这些年，周围人都默认你们是一对。可这事一直没个正式的说法。这一回，得有个决定了。",
+    textDefer: {
+      "1": "这话四年前就谈过一回，那回说的是再处处看。这一拖，又是几年。对方家里问过几遍，邻里也早把你们当正经一对处着。可岁数摆在这儿，这事不能再含糊下去了。",
+      "2": "这事前前后后谈过两回了，回回都说再处处看。对方等得起等不起，你们心里都有数。这一回，要么定下来，要么散，谁也别再说以后再说了。",
+    },
     choices: [
       { label: "把关系定下来，好好过日子", set: "married", setState: { spouse: "partnered" }, effects: { relation: 4, freedom: -1 }, echo: "没办多大的排场，两家人吃了顿饭，日子就接着往下过了。回头看，这个决定下得晚，可不算错。" },
       { label: "好聚好散，各过各的", setState: { spouse: "single" }, effects: { freedom: 3, relation: -3 }, echo: "最后那顿饭吃得很平静。东西分好，钥匙还回去。走出那个门的时候，你知道这回是真的分开了。" },
-      { label: "再处处看，不急着定", deferDating: true, effects: { relation: 1 }, echo: "话说开了，反倒松快些。定不定，以后再说——你们先这么处着。" },
+      { label: "再处处看，不急着定", deferDating: true, effects: { relation: 1 }, echo: "话说开了，反倒松快些。定不定，以后再说——你们先这么处着。",
+        labelDefer: { "1": "还是定不下来，再拖一拖" },
+        echoDefer: { "1": "话又说了一遍，还是没说死。对方没再说什么，回去的路上走得比平时慢。你们都知道，这事不会就这么算了。" } },
     ] },
   // —— 孩子首次露面保底拍（孩子线批次 S2）：出生满 3 年孩子还没在任何一拍里露过面、且低龄
   // 孩子池当年无合格条目时，由进程判定 kidDebutDue 必达呈现（触发与选拍在 spouse.js）。
