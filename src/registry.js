@@ -2323,6 +2323,11 @@ window.GAME_REGISTRY.milestones = {
     "cr_craft_085",
     "cr_farm_119",
     "cr_nurse_022",
+    "p81_015",
+    "p81_016",
+    "p81_017",
+    "p81_018",
+    "p81_019",
    ],
    "note": "职业陪护入行（v0.19.0）：陪护接活入行拍立旗；与家庭照护旗 care_ss_gap/care_self 分家"
   },
