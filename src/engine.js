@@ -1,4 +1,4 @@
-// 《如果那年》引擎 v0.60.64 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
+// 《如果那年》引擎 v0.60.65 —— 版本号规则见 docs/DEVLOG.md 卷首// 要点：选择写标记→回响事件 / 年度小选择+当场回响 / 数值阈值危机 / 瞥视先给标题、点开才看全文（计数真实）
 //      / 判词按数值形状拼装 / 全程自动存档可续玩 / 种子可输入、可复制分享链接 / 在线零 LLM 调用
 // [模块]本引擎自 v0.20.0 起拆为各自独立的模块文件（独立包装器 + window.IFY 共享命名空间），按 index.html 的顺序加载：本文件（建 IFY + 编排）→ src/world/apply.js → src/record.js → src/world/processes/{parents,spouse,work,place,health}.js → src/scheduler.js → src/views/{stream,year,shadow,settlement,share}.js → src/engine-boot.js（收尾，调用 IFY.renderStart()）。跨模块引用一律 IFY.<名>，可变量收编为 IFY 属性。
 window.IFY = window.IFY || {};
@@ -504,7 +504,7 @@ window.IFY = window.IFY || {};
       const p = JSON.parse(localStorage.getItem(PREFS_KEY));
       if (p && AUTO_MODES.some(([k]) => k === p.mode) && SPEED_CPS[p.speed]) return { mode: p.mode, speed: p.speed, autoHintSeen: !!p.autoHintSeen, foldIntroSeen: !!p.foldIntroSeen, foldOpen: !!p.foldOpen, foldTouched: !!p.foldTouched, fold2Open: !!p.fold2Open, fold2Touched: !!p.fold2Touched, autoPanelOpen: !!p.autoPanelOpen };
     } catch (e) { /* 旧结构或损坏数据不报错，按新默认走 */ }
-    return { mode: DEFAULT_AUTO_MODE, speed: "mid", autoHintSeen: false, foldIntroSeen: false, foldOpen: false, foldTouched: false, fold2Open: false, fold2Touched: false, autoPanelOpen: false }; // foldIntroSeen（v0.24.0 首页重做）：折叠区首局后自动展开一次的已见标记；旧 prefs 缺字段按未见过处理，无迁移。foldOpen/foldTouched（「设置」折叠）与 fold2Open/fold2Touched（「对局」折叠，v0.60.64 拆分后各存各的）/autoPanelOpen：面板开合存进 prefs——玩家手动切换过之后以存住的状态为准；旧 prefs 缺字段一律按 false 补齐
+    return { mode: DEFAULT_AUTO_MODE, speed: "mid", autoHintSeen: false, foldIntroSeen: false, foldOpen: false, foldTouched: false, fold2Open: false, fold2Touched: false, autoPanelOpen: false }; // foldIntroSeen（v0.24.0 首页重做）：折叠区首局后自动展开一次的已见标记；旧 prefs 缺字段按未见过处理，无迁移。foldOpen/foldTouched（「设置」折叠）与 fold2Open/fold2Touched（「对局」折叠，v0.60.65 拆分后各存各的）/autoPanelOpen：面板开合存进 prefs——玩家手动切换过之后以存住的状态为准；旧 prefs 缺字段一律按 false 补齐
   }
 
   function savePrefs() {
@@ -1052,7 +1052,7 @@ window.IFY = window.IFY || {};
       ${view.text.split("\n").map((p) => `<p class="body">${esc(p)}</p>`).join("")}
       ${view.gateNote ? `<p class="hint">${esc(view.gateNote)}</p>` : ""}
       <div id="echo"></div>
-      ${view.choices ? `<div class="choices">${view.choices.map((c, i) => `<button class="choice" data-i="${i}">${esc(c.label)}</button>`).join("")}</div>`
+      ${view.choices ? `<div class="choices">${(view.examFork ? menuPerm(IFY.S.seedStr, "examfork@" + view.id, view.choices.length).map((k) => [view.choices[k], k]) : view.choices.map((c, i) => [c, i])).map(([c, i]) => `<button class="choice" data-i="${i}">${esc(c.label)}</button>`).join("")}</div>`
                      : `<button class="primary" id="cont">${view.id === "pr_y21" ? "到 22 岁" : "继续"}</button>`}
       </section>`;
     IFY.finishRender();
@@ -1092,6 +1092,9 @@ window.IFY = window.IFY || {};
       const i = Number(b.dataset.i);
       IFY.choiceBeat(b, () => choosePrologueChoice(i, false));
     }));
+    // CL-41（落榜岔口）：examFork 幕是人生大岔口，与交换提问同例——全程模式也不自动选，
+    // 停在这一屏等玩家亲手点（选项序已在上方按 menuPerm 洗过，内容与落定下标不变）。
+    if (view.examFork) return;
     // 全程自动选扩围（本批）：序章选项与事件屏同一套两段式——主计时到点先预高亮 400ms，再走同一落定函数
     IFY.armAuto(view.text, () => {
       const idx = Math.floor(IFY.rng() * view.choices.length);

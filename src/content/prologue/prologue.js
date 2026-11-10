@@ -221,6 +221,14 @@
       textByFact: { examResult: {
         admit: "高考那两天，你妈在考场外头站了半个上午，说手心全是汗。分数出来，比你估的高一些。通知书到家那天，你爸把信封摊在桌上，看了好几遍。秋天你背着行李去学校报到，六人间的宿舍，你睡靠窗的上铺。",
         miss: "高考那两天，你有两道大题没写完。分数出来，差了本科线一截。你在家里闷了几天，去报了复读班。开学那天，你背着书包又走进教室，后墙的倒计时，从三百多天重新开始撕。",
+      },
+      // CL-41（落榜岔口）：miss 者在 pr_examfork 选路后按 missPath 换文（本键排在 examResult
+      // 之后，choose 的平年定版后写者胜）；repeat 沿用上方 miss 原文（复读这一年）。
+      missPath: {
+        repeat: "高考那两天，你有两道大题没写完。分数出来，差了本科线一截。你在家里闷了几天，去报了复读班。开学那天，你背着书包又走进教室，后墙的倒计时，从三百多天重新开始撕。",
+        work: "你没再进教室。秋天，考上的同学都开学了，你在快递站分拣包裹，传送带不停，你的手得跟上。头一个月工资到账，你给家里转了三百，剩下的留着交房租。",
+        craft: "秋天你进了职校的实训车间。师傅姓严，先不让你碰机器，让你扫了半个月地、认了半个月工具。你也没抱怨：来都来了，就从头学起。",
+        army: "秋天你穿上了军装。新兵连的哨声比闹钟早，被子要叠成方块，跑步的口令一声接一声。你想家的时候，就在熄灯后睁着眼，听上下铺的呼吸声。",
       } } },
   };
   const ACTS = [
@@ -481,6 +489,11 @@
       factTexts: [
         { fact: "examResult", is: "admit", text: "高考完那个暑假，通知书到了，你收拾行李，秋天去学校报了到。转眼大二，课排得满，你在一家小公司做兼职文案，一千字三十块，改三遍。第一笔钱到账，你截了图，没发给任何人。" },
         { fact: "examResult", is: "miss", text: "头一年，你差了本科线一截，复读了一年。第二年分数过了线，秋天你背着行李去了学校。如今大一，课排得满，你在一家小公司做兼职文案，一千字三十块，改三遍。第一笔钱到账，你截了图，没发给任何人。" },
+        // CL-41（落榜岔口）：非复读三支的 20 岁落点（排在 examResult 条之后、覆盖之；
+        // 复读支不入此表——二次考上者读上方 miss 条，二次落榜者已在 pr_examfork2 改道）。
+        { fact: "missPath", is: "work", text: "这一年，你在站点干熟了，哪条街的门牌最难找、哪个小区的保安好说话，你都门儿清。双十一那阵子，你忙得脚不沾地，工资也比平时多一截。你开始想，这活能干几年，往后得有个别的打算。" },
+        { fact: "missPath", is: "craft", text: "手艺慢慢上身。这一年，新能源车进店多了，师傅让你去学新课，学费店里出一半。你学得最用功，笔记记了满满一本。有人喊你小师傅，你嘴上推辞，心里受用。" },
+        { fact: "missPath", is: "army", text: "部队第二年的日子，有了个样子：你站的哨、出的操、打的靶，都有了准头。班长让你带新兵纠正动作，你站在队伍前头，嗓子喊哑了。夜里站岗，你看着营区外的灯，数自己还剩多少天。" },
       ],
       choices: [
         { label: "挣的钱先存起来，存折上的数慢慢往上涨", effects: { money: 2 }, echo: "存折你藏在抽屉最里面，数到整数时，心里会稳一下。" },
@@ -511,8 +524,34 @@
       // FIX-01：落榜复读的人 21 岁才大二，本幕的毕业季/答辩文对他们不成立，整段换文。
       factTexts: [
         { fact: "examResult", is: "miss", text: "大二这一年，你把该考的证考了两个。宿舍里有人准备考研，有人忙着实习，你夹在中间，先把简历投了几家试试。日子不闲，心里倒比刚进校时稳当些。" },
+        // CL-41（落榜岔口）：非复读三支的 21 岁落点（army＝退伍拍：两年兵役满，退伍去向
+        // 按本代口径写自谋起步；work/craft＝站稳与出师）。
+        { fact: "missPath", is: "work", text: "二十一岁，你在这个行当里站住了。同批进站的人走了小一半，你还在。你把这两年攒下的钱算了算，不多，可都是自己的。往后的路怎么走，你想，是时候好好盘算一回了。" },
+        { fact: "missPath", is: "craft", text: "你出师了。师傅说，手艺是你的，谁也拿不走。往后是留在店里，还是自己出去闯，你得自己拿主意。你把工具收拾好，摆得整整齐齐，像是要出远门。" },
+        { fact: "missPath", is: "army", text: "退伍那天，你把军装叠好，压在行李最底下。部队给的退役金和证书，你都收好了。回家的车上，战友们在群里互相留地址，约着以后聚。你看着窗外，心里清楚：下一段路，得自己找了。" },
       ],
       choices: null }, // 无选项：看完点「到 22 岁」，汇入五路线
+    // CL-41（落榜岔口）：落榜者的真岔口两幕——开局不入序（whenFact），pr_y18 落定后由
+    // choose 的延迟补入扫描按资格插入（examfork2 在 pr_examfork 落定后、同理补入并挪到
+    // pr_y20 之前）。examFork=true：呈现层洗选项序、全程模式不自动选（engine 特判）。
+    // 本组两幕五代同构、文案逐代（见各代包同名两幕）。
+    { id: "pr_examfork", age: 19, log: "落榜之后", title: "19 岁 · 落榜之后", examFork: true,
+      whenFact: { examResult: "miss" },
+      text: "分数出来那天，你把查分页面刷新了三遍，数字没变：差了本科线一截。考上的人在群里报喜，你把群消息设了免打扰。晚上，家里人坐在客厅里，谁也没先开口。这条路走到这儿，得换个走法了——往哪儿走，你自己定。",
+      choices: [
+        { label: "再复读一年，拼一回", setFact: { missPath: "repeat" }, rollSecond: true, effects: { growth: 1 }, echo: "你把书重新码回桌上。这一年，手机里那些群，你全退了。" },
+        { label: "不念了，出去找活干", setFact: { missPath: "work" }, setState: { schooling: "left" }, effects: { money: 1 }, echo: "你把复习资料捆好，塞进床底。第二天，你去镇上的快递点问招不招人。" },
+        { label: "去学一门手艺", setFact: { missPath: "craft" }, setState: { schooling: "left" }, seed: "craft", seedNote: "落榜那年，你去学了门手艺，跟师傅学艺", effects: { growth: 1 }, echo: "你打听好了：职校的汽修班还招人，管住。你把这事跟家里说了，你爸沉默了一会儿，说，学门手艺，也饿不着。" },
+        { label: "去当兵", setFact: { missPath: "army" }, setState: { schooling: "left" }, set: "served_army", effects: { health: 1 }, echo: "征兵的消息，你是在镇上的公告栏看的。体检那天，你起了个大早，站在队伍里，心里有点慌，也有点说不上来的劲儿。" },
+      ] },
+    { id: "pr_examfork2", age: 20, log: "第二次落榜", title: "20 岁 · 又差了几分", examFork: true,
+      whenFact: { examResult2: "miss" },
+      text: "第二年的分数，比去年高了些，还是差了一截。你在查分页面前坐了半天，把复读班老师发来的消息看了又看。家里那边，你妈在电话里说，实在不行就别念了——这话不难听，是心疼钱，也心疼你。这一回，得落地了。",
+      choices: [
+        { label: "不念了，出去找活干", setFact: { missPath: "work" }, setState: { schooling: "left" }, effects: { money: 1 }, echo: "你把两年的书都捆好，称了斤，卖给了收废品的。你说，留个纪念吧，又摆摆手，算了。" },
+        { label: "去学一门手艺", setFact: { missPath: "craft" }, setState: { schooling: "left" }, seed: "craft", seedNote: "落榜那年，你去学了门手艺，跟师傅学艺", effects: { growth: 1 }, echo: "你给职校打了电话，问汽修班还收不收大一岁的。那边说，收，只要你肯从头学。" },
+        { label: "去当兵，还来得及", setFact: { missPath: "army" }, setState: { schooling: "left" }, set: "served_army", effects: { health: 1 }, echo: "今年的征兵还没结束。你把体检表填了，站在队伍里，旁边多是应届的，比你小两岁，你也不怵。" },
+      ] },
     // v0.23 WP5 家庭层拍（L00-考/L00-护）：wp5Beat=true 的两拍不进缺省幕序——每局至多入序一拍，
     // 由 seqTableFor 按已定版的家底/留守事实在 start 时选定（见 WP5 段），保证家庭拍净增至多 1 幕。
     // 两拍同置 14 岁：与 16 岁分岔之间隔着 15 岁少年拍（第一局密度口径）。本数组里置于主幕之后，
@@ -976,6 +1015,27 @@
     if (seedStr == null) return null;
     const v = derivedRoll(seedStr, "#examResult") < p ? "admit" : "miss";
     setFact(S, "examResult", v);
+    return v;
+  }
+
+  // CL-41（落榜岔口）：复读支的第二次结果。玩家在 pr_examfork 选「复读」的那一拍由
+  // choose() 掷定（选项带 rollSecond 声明），走派生流（种子字符串＋"#examResult2"），
+  // 不消费序章自有流、不平移任何既有定款；概率在首次掷档的同档概率上上浮 +0.25
+  // （艾莉裁一：二次重掷上浮照稿；设计参数，无统计出处），上限 0.95。结果在 19 岁
+  // 当年不揭晓：20 岁幕与 pr_examfork2（二次落榜岔口，whenFact 读本事实）才消费它。
+  // 只给已落榜且选了复读的人掷；其余人恒不掷、本事实恒缺失。
+  const EXAM2_LIFT = 0.25;
+  function rollExamResult2(S) {
+    if (factOf(S, "examResult2") !== "absent") return factOf(S, "examResult2");
+    if (factOf(S, "examResult") !== "miss") return null;
+    if (!S.state || S.state.track !== "study") return null;
+    const band = factOf(S, "examBand");
+    const base = Object.prototype.hasOwnProperty.call(EXAM_RESULT_ADMIT, band) ? EXAM_RESULT_ADMIT[band] : 0.5;
+    const p = Math.min(0.95, base + EXAM2_LIFT);
+    const seedStr = S.prologue && S.prologue.seedStr != null ? S.prologue.seedStr : S.seedStr;
+    if (seedStr == null) return null;
+    const v = derivedRoll(seedStr, "#examResult2") < p ? "admit" : "miss";
+    setFact(S, "examResult2", v);
     return v;
   }
 
@@ -1974,7 +2034,7 @@
     if (act.id === "pr_origin" && P.earlyBuilt && P.earlyStep < EARLY_ACTS.length) return earlyView(S);
     // v0.48.3：5 岁屏本体呈现——物化时扣下的 5 岁行在此落账（恰一次，落完清空）。
     if (act.id === "pr_origin" && P.originLogPending) { S.log.push(P.originLogPending); P.originLogPending = null; }
-    return { id: act.id, age: act.age, stage: stageFor(act.age), title: act.title || null, text: P.curText, choices: P.curChoices, pendingState: P.pendingState, isFork: act.id === "pr_fork16",
+    return { id: act.id, age: act.age, stage: stageFor(act.age), title: act.title || null, text: P.curText, choices: P.curChoices, pendingState: P.pendingState, isFork: act.id === "pr_fork16", examFork: act.examFork === true,
       gateNote: gateNoteOf(S, act), familyBeat: !!act.familyBeat, echo: act.familyBeat ? ((act.poolEntry && P.poolEcho) || (act.echoByQuota && (act.echoByQuota[P.quotaEchoKey] || act.echoByQuota[factOf(S, "quotaHolder")])) || act.echo || null) : null };
   }
 
@@ -2020,6 +2080,10 @@
         setFact(S, name, value);
       }
       if (ch.familyFact) S.flags[ch.familyFact] = true;
+      // CL-41（落榜岔口）：复读选项带 rollSecond 声明——落选当拍掷定第二次结果
+      // （派生流，细则见 rollExamResult2）；须赶在下方 pr_examfork 的延迟补入扫描之前，
+      // 二次落榜岔口 pr_examfork2 的 whenFact 才读得到本局的第二次结果。
+      if (ch.rollSecond) rollExamResult2(S);
       // 分家记账（丙案第一步）：新搬家拍的选项带 splitBranch 时，把呈现点先记的预约分支改成本次实选支
       if (ch.splitBranch && S.pendingSplit && S.pendingSplit.eventId === (act.poolEntry || act.id)) S.pendingSplit.branch = ch.splitBranch;
       // 选项 set 指向已登记记号时同步落记号（WP2，合并二期落）：池幕选项的 mark_* 记号在此补落（旗由调用方照常落）
@@ -2043,6 +2107,21 @@
       // fix2：延迟补入面扩到本处境的 sitActs（与 acts 同口径）；无带 when* 的处境幕的包结果不变。
       const deferred = (pk.acts || []).concat((pk.sitActs && pk.sitActs[P.situation]) || []).filter((a) => (a.whenFact || a.whenState) && !P.seq.some((x) => x.id === a.id) && whenDeferredOk(S, a));
       if (deferred.length) P.seq = P.seq.concat(deferred).slice().sort((x, y) => x.age - y.age);
+    }
+    // CL-41（落榜岔口）：与 fork16 同形的延迟补入扫描，另在两个落点各跑一次——
+    // pr_y18 落定后（examResult 已在该幕物化点掷定，pr_examfork 的 whenFact 此时才可判）
+    // 与 pr_examfork 落定后（复读者的 examResult2 已掷定，pr_examfork2 的 whenFact 此时才可判）。
+    // 存量 when* 幕只有 pr_duikou18，其资格在 fork16 当拍即定版，这两次扫描对它恒空转。
+    // pr_examfork2 与 pr_y20 同岁：年龄排序分不出先后，补入后显式挪到 pr_y20 之前
+    // （二次揭晓与分路必须先于 20 岁幕的去向分文）。
+    if (act.id === "pr_y18" || act.id === "pr_examfork") {
+      const pk = packFor(S.era);
+      const deferred = (pk.acts || []).concat((pk.sitActs && pk.sitActs[P.situation]) || []).filter((a) => (a.whenFact || a.whenState) && !P.seq.some((x) => x.id === a.id) && whenDeferredOk(S, a));
+      if (deferred.length) {
+        P.seq = P.seq.concat(deferred).slice().sort((x, y) => x.age - y.age);
+        const fi = P.seq.findIndex((x) => x.id === "pr_examfork2");
+        if (fi >= 0) { const fk = P.seq.splice(fi, 1)[0]; const yi = P.seq.findIndex((x) => x.id === "pr_y20"); if (yi >= 0) P.seq.splice(yi, 0, fk); }
+      }
     }
     const nextAge = P.idx < P.seq.length ? P.seq[P.idx].age : 22;
     const gapFx = {};
@@ -2106,7 +2185,7 @@
 
   const PRO_API = { sitActs: SIT_ACTS, flatsByAge: FLATS_BY_AGE, situationW: SITUATION_W, start, present, choose, stageFor, prng, packFor, hasPack,
     early2KeyFor, early34KeyFor, flatKeyFor, actVariantKeyFor, child4KeyFor, condText, // 变体扩容批：定款函数验收读口（与 wp5BeatFor 同例）；condText 为读者最小扩展批读口
-    factOf, setFact, rollExamBand, rollExamResult, gateNoteSample: GATE_NOTE_SAMPLE,
+    factOf, setFact, rollExamBand, rollExamResult, rollExamResult2, gateNoteSample: GATE_NOTE_SAMPLE,
     wp5BeatFor, rebuildSeq, migrantFamilies: MIGRANT_FAMILIES, careFamilies: CARE_FAMILIES }; // v0.23 WP5：验收脚本读口（选拍与 seq 重建）
   // acts / marks 惰性合并全年代包：校验与影子瞥视按 id 查全集（id 跨代唯一，集成时核过）；无包文件被加载的环境（单文件校验沙箱）自动退回 c2000 集。
   Object.defineProperty(PRO_API, "acts", { enumerable: true, get() {

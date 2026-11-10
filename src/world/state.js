@@ -265,16 +265,21 @@ window.GAME_REGISTRY = {
      "from": "half",
      "to": "left",
      "by": [
-      "pr_half2"
+      "pr_half2",
+      "pr_examfork",
+      "pr_examfork2"
      ],
-     "note": "读了又离开（v0.18.0 开放）：half 线 14 岁拍的选择——读到这儿就回家帮工"
+     "note": "读了又离开（v0.18.0 开放）：half 线 14 岁拍的选择——读到这儿就回家帮工。CL-41 补登岔口两幕：half 处境又走学业轨的人（14 岁没走、16 岁选了念书）落榜后在岔口选打工/学手艺/当兵，同样自 half 落 left"
     },
     {
      "from": "school",
      "to": "left",
-     "by": [],
-     "reserved": true,
-     "note": "school 直转 left 未开放：现行口径下流失统一走 half 线（处境在发放时已按帮工+流失小格标定）"
+     "by": [
+      "pr_examfork",
+      "pr_examfork2",
+      "pr_half2"
+     ],
+     "note": "school 直转 left 由落榜岔口开放（CL-41）：学业轨的人在 19 岁落榜岔口（复读再落榜者在 20 岁岔口）选打工/学手艺/当兵时离校。此前未开放的口径不变——少年段流失仍统一走 half 线（处境在发放时已按帮工+流失小格标定）。by 含 pr_half2 是 validate-state 实扫口径（setState 写入不分 from 一律列名）：pr_half2 运行期只对 half 处境呈现、实际只产生 half>left，school>left 的真载体只有岔口两幕"
     }
    ]
   },

@@ -1,4 +1,4 @@
-// 《如果那年》v0.21 一期 WP3：「另一个你」决策政策（纯函数）——蓝图第四节落点，policyV=2（v2 于 2026-11-09 随孩子线 S5 升版：fork_kid 具名规则登记＋两条删除，见 docs/SHADOW-POLICY.md 与 DEVLOG v0.60.18）。
+// 《如果那年》v0.21 一期 WP3：「另一个你」决策政策（纯函数）——蓝图第四节落点，policyV=3（v2 于 2026-11-09 随孩子线 S5 升版：fork_kid 具名规则登记＋两条删除；v3 于 2026-11-10 随 CL-41 落榜岔口升版：新增落榜去向权重小表 MISS_PATH_W 与选点函数 missPathFor，见 docs/SHADOW-POLICY.md）。
 // 纯度纪律（硬约束 6）：本模块零可变模块级状态（只有冻结的常量表）、零随机流消费、
 // 不调用任何随机函数、不读时钟、不读另一条 Track、不设备忘缓存。F 不修改任何入参。
 // 入参只有三个来源：该 Track 自己的状态（State）、性子向量（W）、路线倾向（A）；
@@ -10,7 +10,7 @@
   var IFY = root.IFY || (root.IFY = {});
 
   var KEYS = ["health", "money", "growth", "freedom", "relation", "wisdom"];
-  var POLICY_V = 2;
+  var POLICY_V = 3;
 
   function vec(h, m, g, f, r, w) { return { health: h, money: m, growth: g, freedom: f, relation: r, wisdom: w }; }
   // 性子缺失时的中性向量（蓝图 4.1 兜底）：六维都取 1，不偏向任何一边。
@@ -267,6 +267,34 @@
     ]),
   });
 
+  // ---------- 落榜去向（CL-41，policyV=3 新增）：影子自己的 missPath ----------
+  // 影子的 examResult 随出生事实拷贝与玩家同值（现行派生不变）；同为 miss 时，影子走的
+  // 不是玩家在岔口选的那条——由这张按年代给的权重小表定（方向经裁定：早年代复读与
+  // 当兵权重高，晚年代打工与学手艺升）。设计参数，无统计出处（与 examBandTables 同性质）。
+  // 选点是纯函数：种子字符串＋"#shadowMissPath" 走与序章 derivedRoll 同式的哈希一掷，
+  // 不读任何随机流、不读玩家那条 Track 的 missPath。c1955 无高考环、永不掷（无表即 null）。
+  var MISS_PATH_W = Object.freeze({
+    c1965: Object.freeze({ repeat: 0.40, army: 0.30, work: 0.20, craft: 0.10 }),
+    c1978: Object.freeze({ repeat: 0.35, army: 0.25, work: 0.25, craft: 0.15 }),
+    c1985: Object.freeze({ repeat: 0.30, army: 0.15, work: 0.35, craft: 0.20 }),
+    c1995: Object.freeze({ repeat: 0.25, army: 0.10, work: 0.40, craft: 0.25 }),
+    c2000: Object.freeze({ repeat: 0.22, army: 0.08, work: 0.42, craft: 0.28 }),
+  });
+  var MISS_PATH_ORDER = ["repeat", "work", "craft", "army"];
+  function missRoll(seedStr, tag) {
+    var s = String(seedStr) + tag, a = 2166136261;
+    for (var i = 0; i < s.length; i++) { a ^= s.charCodeAt(i); a = Math.imul(a, 16777619); }
+    a = (a + 0x6D2B79F5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  }
+  function missPathFor(seedStr, era) {
+    var row = MISS_PATH_W[era];
+    if (!row || seedStr == null) return null;
+    var roll = missRoll(seedStr, "#shadowMissPath"), acc = 0;
+    for (var i = 0; i < MISS_PATH_ORDER.length; i++) { acc += row[MISS_PATH_ORDER[i]] || 0; if (roll < acc) return MISS_PATH_ORDER[i]; }
+    return "army";
+  }
+
   // ---------- 四级瀑布 ----------
   function effectOf(c, k) {
     var v = c && c.effects ? c.effects[k] : 0;
@@ -372,5 +400,5 @@
   for (var ak in A) Object.freeze(A[ak].affinity);
   for (var fk in FORKS) for (var fi = 0; fi < FORKS[fk].length; fi++) Object.freeze(FORKS[fk][fi]);
 
-  IFY.shadowPolicy = { F: F, W: W, A: A, FORKS: FORKS, chooseForTrack: chooseForTrack, viewOf: viewOf, matchChoice: matchChoice, NEUTRAL: NEUTRAL, POLICY_V: POLICY_V };
+  IFY.shadowPolicy = { F: F, W: W, A: A, FORKS: FORKS, chooseForTrack: chooseForTrack, viewOf: viewOf, matchChoice: matchChoice, NEUTRAL: NEUTRAL, POLICY_V: POLICY_V, MISS_PATH_W: MISS_PATH_W, missPathFor: missPathFor };
 })();

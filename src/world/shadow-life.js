@@ -51,7 +51,7 @@
       autoMode: (src && src.autoMode) || IFY.DEFAULT_AUTO_MODE || "off",
       speed: (src && src.speed) || "mid",
       swapped: false, swap: null,
-      controlLog: [], shownFacts: [], policyV: 2,
+      controlLog: [], shownFacts: [], policyV: 3,
     };
   }
 
@@ -168,6 +168,20 @@
       if (schoolingCopy !== undefined) S.state.schooling = schoolingCopy;
       if (trackCopy !== undefined) S.state.track = trackCopy;
       S.facts = factsCopy; // v0.23 E8：枚举事实整容器落 B（与 A 深拷贝同值，之后各走各账）
+      // CL-41（落榜岔口，policyV=3）：B 的 examResult 随拷贝与 A 同值；同为 miss 时，B 走的
+      // 不是 A 在岔口选的那条——按影子政策的年代权重表（shadow-policy MISS_PATH_W）以种子
+      // 派生一掷重选 B 自己的 missPath，覆盖拷贝值。schooling 随落点对齐（复读＝回校、
+      // 其余三支＝已离校，与 A 侧岔口落账同口径）；落点在 B 的年表里留一行实话（19 岁，
+      // 与其他转折同粒度，下方在首条 22 岁行之前落账）。政策不可用时保留拷贝值、不阻断出生。
+      let shadowMissLine = null;
+      if (S.facts.examResult === "miss" && IFY.shadowPolicy && typeof IFY.shadowPolicy.missPathFor === "function") {
+        const mp = IFY.shadowPolicy.missPathFor(A.seedStr, S.era);
+        if (mp) {
+          S.facts.missPath = mp;
+          S.state.schooling = mp === "repeat" ? "school" : "left";
+          shadowMissLine = { repeat: "高考落了榜，复读了一年", work: "高考落了榜，没再念，出去打工了", craft: "高考落了榜，去学了门手艺", army: "高考落了榜，去当了兵" }[mp] || null;
+        }
+      }
       if (typeof IFY.inheritSeedsAtBirth === "function") IFY.inheritSeedsAtBirth(S, A); // 第 1 期 P1-5（设计 §5.1）：22 岁前埋下的种子随出生整表深拷贝给 B——拷贝本体在 career.js（种子账的写侧归账本主，本文件不直读该账）；只读 A、不消费任何流，拷贝后两轨各记各的
       for (const [name, v] of Object.entries(famFlagsCopy)) S.flags[name] = v; // v0.23 E8：familyFact 已立旗逐项落 B
       S.marks = marksCopy;
@@ -176,6 +190,7 @@
       // unchosen 按 B 重走（3.1）：B 的路线是选中的，其余四条入 B 自己的 unchosen（D.routes 原序，与 newGame/mergeIntoRoute 同口径）
       S.unchosen = unchosenBase;
       for (const r of IFY.D.routes) if (r.id !== routeB.id) S.unchosen.push({ kind: "route", label: r.name, id: r.id });
+      if (shadowMissLine) S.log.push(`19 岁 · ${shadowMissLine}`); // CL-41：影子落榜落点行（先于 22 岁两行，年表序自洽）
       // stats 按 B 重走（3.1）：初值 → 同一批出身牌 effects（数值+钩子旗同一拍）→ B 路线 route.stats，叠加顺序与 newGame 一致
       const CARDS = IFY.CARDS;
       if (CARDS && cardsCopy.length) {

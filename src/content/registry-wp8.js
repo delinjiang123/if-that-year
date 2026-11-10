@@ -30,12 +30,26 @@ window.GAME_REGISTRY_EXTRA = (window.GAME_REGISTRY_EXTRA || []).concat([{
     // 疫情当下旗（G4 补强片）：e95_001 在公历门 2020–2022 内呈现即立；p1_039/p1_040 以 forbid 消费——
     // 立过当下拍的人（25–27 岁亲历封控）不再在 28–38 岁抽到疫情回望/封控复述拍，疫情只落一拍。
     "covid95_days": { "setters": ["e95_001"], "note": "疫情当下旗（c1995）：e95_001 呈现即立；消费者 p1_039/p1_040 的 forbid（持有本旗则两拍不出现）" },
+    // 服役记号（CL-41 落榜岔口）：落榜岔口（19 岁 pr_examfork／20 岁 pr_examfork2）选「当兵」的选项呈现即立。
+    // 消费者＝后段回响（复员军人身份在工厂/体制脸上的回响拍）——本片只立记号与登记，后段回响拍未建，
+    // 登记为链条接力接口项；影子侧不立此旗（影子的落点只落 missPath 事实与其年表行，见 shadow-policy v3）。
+    "served_army": { "setters": ["pr_examfork", "pr_examfork2"], "note": "服役记号（CL-41）：落榜岔口选当兵即立；后段消费者（复员回响拍）未建，登记为接力接口项" },
   },
   enumFacts: {
     "examResult": {
       "values": ["admit", "miss"],
       "host": "track",
-      "note": "高考结果（FIX-01 学业主线修复）：admit=考上 / miss=落榜（下游口径＝复读一年、第二年考上）；写手只有序章 rollExamResult（派生流掷定，按 examBand 分档 high 0.90/mid 0.65/low 0.35 为设计参数、无统计出处），只给 study 轨的人；band 缺失但已在 study 轨的（没进过校门/退学者经对口口转入）按 0.50 掷；对口升学线（craftForm95=upgrade）不掷、其结果由 pr_y20 既有 factTexts 兑现。消费者：各包 19 岁平年 textByFact、pr_y18（仅 c1965）/pr_y20/pr_y21 的 factTexts 分文。c1955 无 examBand 表、永不掷（该代学业轨＝高中毕业回乡，本无高考环）"
+      "note": "高考结果（FIX-01 学业主线修复）：admit=考上 / miss=落榜；写手只有序章 rollExamResult（派生流掷定，按 examBand 分档 high 0.90/mid 0.65/low 0.35 为设计参数、无统计出处），只给 study 轨的人；band 缺失但已在 study 轨的（没进过校门/退学者经对口口转入）按 0.50 掷；对口升学线（craftForm95=upgrade）不掷、其结果由 pr_y20 既有 factTexts 兑现。消费者：各包 19 岁平年 textByFact、pr_y18（仅 c1965）/pr_y20/pr_y21 的 factTexts 分文。c1955 无 examBand 表、永不掷（该代学业轨＝高中毕业回乡，本无高考环）。【CL-41 改账】FIX-01 的下游口径「落榜＝复读一年、第二年考上」自落榜岔口起作废：miss 揭晓后走 pr_examfork 四路分流（见 missPath 登记），复读只是四路之一；既有 miss 分文自此只供复读支（及二次考上者）读"
+    },
+    "missPath": {
+      "values": ["repeat", "work", "craft", "army"],
+      "host": "track",
+      "note": "落榜去向（CL-41 落榜岔口）：examResult=miss 的人在 19 岁岔口 pr_examfork 亲手选定（repeat=复读／work=打工／craft=学手艺／army=当兵）；选复读再落榜者在 20 岁岔口 pr_examfork2 改选 work/craft/army 之一（值被覆盖，终局恒为落点）。写手只有岔口两幕的选项 setFact。work/craft/army 三支落选当拍 schooling 转 left（state.js 边 by 岔口两幕）；craft 支选项另带 craft 向种子声明（plantSeed 唯一写点）；army 支另立 served_army 记号。消费者：各包 19 岁平年 textByFact（missPath 键排在 examResult 键之后、覆盖之）、pr_y20/pr_y21 的 missPath factTexts、影子出生时的落点重选（shadow-policy v3 权重表，只写影子自己的那份）"
+    },
+    "examResult2": {
+      "values": ["admit", "miss"],
+      "host": "track",
+      "note": "复读第二次结果（CL-41）：选复读当拍由 rollExamResult2 掷定（派生流，种子＋#examResult2；概率＝首次同档概率＋0.25 上浮、上限 0.95，设计参数、无统计出处），19 岁当年不揭晓；admit 者 20/21 岁沿用 examResult=miss 的既有分文（复读后考上），miss 者进 pr_examfork2 二次岔口。写手只有 rollExamResult2；只给 examResult=miss 且选了复读的人"
     },
     "craftForm95": {
       "values": ["upgrade", "job"],
