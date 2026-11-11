@@ -242,8 +242,10 @@ window.GAME_REGISTRY.milestones = {
     "p17_021",
     "p17_024",
     "p18_049",
+    "p118_010",
     "p3_033"
-   ]
+   ],
+   "note": "购房旗：CL-114 补登 p118_010（留学链⑥落旗拍，选项带 houseLoc city/suburb，captureHouse 路线盲照常捕获）。消费者含 p118_011（搬家，require 本旗）"
   },
   "care_plan_stated": {
    "setters": [
