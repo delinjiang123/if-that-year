@@ -2376,9 +2376,9 @@ window.GAME_REGISTRY.milestones = {
     "p71_016",
     "p71_017",
     "p71_018",
-    "p87_003"
+    "cr_write_136"
    ],
-   "note": "写作入行（v0.19.0）：副业写作留用拍立旗，r_book/end_bestseller 以此为证据门；CL-37 开线（v0.60.61）补登六个入行门 p71_013–018"
+   "note": "写作入行（v0.19.0）：副业写作留用拍立旗，r_book/end_bestseller 以此为证据门；CL-37 开线（v0.60.61）补登六个入行门 p71_013–018；CL-98（2026-11-11）原 p87_003 改挂转行通道、改号 cr_write_136，同位替换本行"
   },
   "nurse_work": {
    "setters": [

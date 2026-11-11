@@ -22,9 +22,11 @@
 //   gateDirect   = 关口可否直达：false＝落旗必须先有另一面入行旗或先过考试链（setter 的
 //                  require/chain 实扫），这类行当不进关口的点亮候选（§八.3 普查口径）。
 //   coldOk       = 可否进关口下层「冷门层」被抽（§4.3）；false 的行当 coldKinds 恒空、
-//                  coldWeight 恒 0。chain 型（exam_landed）、路线/深造型（grad_work）、
-//                  分科支与回落型（nurse/img/township/farm_returned）一律 false——冷门层
-//                  直达会绕开它们既有的链与前置旗。
+//                  coldWeight 恒 0。chain 型（exam_landed）、分科支与回落型
+//                  （nurse/img/township/farm_returned）一律 false——冷门层直达会绕开
+//                  它们既有的链与前置旗。grad_work 原同列 false，CL-98 已裁例外准入
+//                  （其前置是学历门而非链旗，冷门层组装仍逐个过 gateEduPass、不绕门，
+//                  见 grad 行 note）。
 //   coldKinds    = 该行当可绑的冷门类型（assign 分配/recruit 招工/follow 跟人走/near
 //                  离家近/wage 给的钱多），按入行拍的渠道性质登记；类型本身在某代可不可
 //                  用由 COLD_KIND_ERA 表另管（见文件尾）。
@@ -212,7 +214,7 @@ window.GAME_TRADES = {
     "family": "medic",
     "eraIn": ["c2000"],
     "eduGate": null, "gateDirect": true,
-    "coldOk": true, "coldKinds": ["recruit", "assign"], "coldWeight": 3,
+    "coldOk": true, "coldKinds": ["recruit", "assign"], "coldWeight": 4,
     "inheritFrom": [],
     "seedEcho": null, "inheritEcho": null,
     "note": "医院线入行：市医院招工培训拍 p21_071 立旗（era=c2000 独占），影像/病房/药房三支共用此门"
@@ -312,10 +314,10 @@ window.GAME_TRADES = {
     "family": "word",
     "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
     "eduGate": "gate", "gateDirect": true,
-    "coldOk": false, "coldKinds": [], "coldWeight": 0,
+    "coldOk": true, "coldKinds": ["assign", "follow"], "coldWeight": 2,
     "inheritFrom": [],
     "seedEcho": null, "inheritEcho": null,
-    "note": "研究在行：深造路线课题组入行拍 e_grad_start 立旗——全表唯一带 ctx.eduGate（严口径）＋studyLine 的入行拍，故 eduGate 登记 gate；工资 A 档高薪组＋grad 溢价"
+    "note": "研究在行：深造路线课题组入行拍 e_grad_start 立旗——全表唯一带 ctx.eduGate（严口径）＋studyLine 的入行拍，故 eduGate 登记 gate；工资 A 档高薪组＋grad 溢价；CL-98（2026-11-11，CL-91 入口审计提案 6、总指挥裁）：准入冷门层 coldWeight 2——冷门层候选在 career.js 组装时仍逐个过 gateEduPass，学历严口径不动、D5 说明行保留；coldKinds 按入行渠道性质取 assign（老年代分配深造名额）＋follow（跟导师进课题组），assign 在晚年代由 COLD_KIND_ERA 表自动滤除"
   },
   "photo": {
     "flag": "photo_work", "form": "flex",
