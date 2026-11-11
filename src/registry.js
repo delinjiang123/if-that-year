@@ -796,6 +796,20 @@ window.GAME_REGISTRY.milestones = {
    ],
    "note": "给网店被封的同学递过「来你这边干着」的话（P1 立）：与 helped_classmate_job 共用同学转行回响"
   },
+  "oldhouse_cash": {
+   "setters": [
+    "r_oldhouse",
+    "r_oldhouse_rural"
+   ],
+   "note": "拆迁选择留痕旗·选钱（CL-128 新立）：城市落点 r_oldhouse 与农村变体 r_oldhouse_rural 的要钱选项同落此旗，坐实环按旗分档消费（r_oldhouse_move／r_oldhouse_rural_move 的 require）；本身不进结算与结局口径。"
+  },
+  "oldhouse_home": {
+   "setters": [
+    "r_oldhouse",
+    "r_oldhouse_rural"
+   ],
+   "note": "拆迁选择留痕旗·选房（CL-128 新立）：城市落点 r_oldhouse 与农村变体 r_oldhouse_rural 的要房选项同落此旗，坐实环按旗分档消费（r_oldhouse_move_home／r_oldhouse_rural_home 的 require）；本身不进结算与结局口径。"
+  },
   "old_neighbors_kept": {
    "setters": [
     "p23_055"
@@ -2075,9 +2089,8 @@ window.GAME_REGISTRY.milestones = {
   },
   "traj_oldhouse": {
    "setters": [
-    "r_oldhouse"
    ],
-   "note": "拆迁链中间旗（CL-112 新立）：r_oldhouse 落点环选钱/选房两选项同落此旗，供坐实环 r_oldhouse_move 的 chain+require 双门消费；本身不进结算与结局口径。"
+   "note": "拆迁链旧中间旗（CL-112 新立，CL-128 退役）：原由 r_oldhouse 两选项同落、供坐实环 require 消费；CL-128 起选择留痕改由 oldhouse_cash／oldhouse_home 两旗承担、坐实环按旗分档，本旗不再有 setter，保留登记——旧档账本里可能仍有此旗，已无消费者。"
   },
   "traj_scale_acct": {
    "setters": [
@@ -2259,9 +2272,12 @@ window.GAME_REGISTRY.milestones = {
   },
   "traj_windfall": {
    "setters": [
-    "r_oldhouse_move"
+    "r_oldhouse_move",
+    "r_oldhouse_move_home",
+    "r_oldhouse_rural_home",
+    "r_oldhouse_rural_move"
    ],
-   "note": "拆迁坐实旗：CL-112 前由 r_oldhouse 一拍直落；改造后落点环只落 traj_oldhouse，本旗改由坐实环 r_oldhouse_move 落（CL-109 §五两环制）。"
+   "note": "拆迁坐实旗：CL-112 前由 r_oldhouse 一拍直落；改造后落点环只落选择旗，本旗改由坐实环落（CL-109 §五两环制）。CL-128 起坐实按选择分四拍：城市选钱 r_oldhouse_move／城市选房 r_oldhouse_move_home／农村选钱 r_oldhouse_rural_move／农村选房 r_oldhouse_rural_home，同落此旗。"
   },
   "trial_done": {
    "setters": [

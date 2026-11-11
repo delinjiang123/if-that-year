@@ -52,16 +52,19 @@ window.GAME_SYNERGY = {
     { id: "r_lottery", label: "楼下中了头奖", clue: "楼下彩票站贴出红纸那天，名字没写、照常去上班的人。", min: 23, max: 60, chance: 0.00015, text: "楼下彩票站贴了张红纸：本站中出头奖。名字没写，但你知道是你——那组号码，是你随手写的生日组合。税后的钱到账那天，你照常去上了班。", effects: { money: 40 }, set: "traj_lottery" },
     { id: "r_patent", label: "小专利卖了个好价", clue: "捣鼓了两年的方案，被人找上门来买的人。", min: 32, max: 55, stats: [{ k: "growth", gt: 71 }], chance: 0.015, text: "你业余捣鼓出来的一个小专利，被一家公司看上了，开价比你想的高得多。签约的时候对方说：我们找这个方案找了两年。", effects: { money: 14, growth: 2 } },
     // CL-112（CL-109 §五改造）：拆迁落点环——原一拍抽奖（chance 0.015／窗 40–60／无年代门）改两环：
-    // 落点只落链旗 traj_oldhouse，钱/房的大头与 traj_windfall 都在坐实环 r_oldhouse_move（表末追加）；
+    // 落点只落链旗，钱/房的大头与 traj_windfall 都在坐实环（表末追加）；
     // 年代门 minYear 2003（城市更新成规模的起点），routeIn 补 farm 成六线（城乡两形同门：近郊老家
     // 与老城老屋都靠 near_family 这一「住在家人近处、老家那片还在」的事实代理）；补偿不写具体数字。
     // 选房档不接 bought_house：captureHouse 只认第一套且按工资档定价收首付，安置房不是买房，
-    // 硬接会把回迁房写成商品房/房改房（机制核查见 CL-112 REPORT）——选房只给过渡钱、
+    // 硬接会把回迁房写成商品房/房改房（机制核查见 CL-112 REPORT，CL-128 复核同结论）——选房只给过渡钱、
     // 房的去向在本拍回响与坐实环文本里交代（等回迁、搬回老地方住），不悬空。
-    { id: "r_oldhouse", label: "那片要动了", clue: "丈量那天站在自家门口，看人往墙上写号的人。", min: 38, max: 58, any: ["near_family"], routeIn: ["home", "corp", "abroad", "study", "gap", "farm"], minYear: 2003, chance: 0.007, text: "老家那片要动了。消息先在街坊之间传，后来街道的人来丈量，邻居都在场，墙上写了号。协议摆在你面前，签之前得先选一样：要钱，还是要安置房。",
+    // CL-128（W6 内容组）：正文与回响按 §五文案纪律重写（丈量邻居在场、协议在街道办签）；
+    // 选择留痕改制：两选项各落一面留痕旗（oldhouse_cash／oldhouse_home），坐实环按旗分档
+    // （选钱档钱高、选房档钱低而房落文案），旧链旗 traj_oldhouse 自本片起退为保留登记。
+    { id: "r_oldhouse", label: "那片要动了", clue: "丈量那天站在自家门口，看人往墙上写号的人。", min: 38, max: 58, any: ["near_family"], routeIn: ["home", "corp", "abroad", "study", "gap", "farm"], minYear: 2003, chance: 0.007, text: "老家那片要动了。先是街坊之间传，后来见了真章：丈量的人挨户走，邻居都在场，墙上拿粉笔写了号。你回去把该量的都量了，该问的都问了。协议在街道办签，签之前先定一件事：补偿要钱，还是要安置房。",
       choices: [
-        { label: "要钱。利落，往后自己安排", effects: { money: 10, freedom: 1 }, set: "traj_oldhouse", echo: "签完字，你在老屋门口站了一会儿，拍了张照。钱到账那天，你请老邻居吃了顿饭。" },
-        { label: "要房。等回迁，还住回这片", effects: { money: 3, relation: 1 }, set: "traj_oldhouse", echo: "先搬出去租着，等那片盖回来。房的去向就这么定下了：不换地方，盖好了搬回去住。" },
+        { label: "要钱。利落，往后自己安排", effects: { money: 10, freedom: 1 }, set: "oldhouse_cash", echo: "签完字，你在老屋门口站了一会儿，拍了张照。钱到账那天，你请老邻居吃了顿饭。这笔钱来得快，你也知道，花起来一样快——先存着，慢慢安排。" },
+        { label: "要房。等回迁，还住回这片", effects: { money: 3, relation: 1 }, set: "oldhouse_home", echo: "先搬出去租着，等那片盖回来。等的日子不短，房租一个月一个月掏，可地址不换：盖好了，搬回老地方住。" },
       ] },
     { id: "r_marathon", label: "年龄组第一名", clue: "冲线时计时员愣了一下，又看了一眼号码布的人。", min: 52, max: 64, stats: [{ k: "health", gt: 74 }], chance: 0.05, text: "城市马拉松，你拿了年龄组的第一名。冲线的时候计时员愣了一下，看了看你的号码布，又看了看你。", effects: { health: 3, freedom: 2 }, set: "traj_champ" },
     { id: "r_rescue","stateAll":{"mom":"alive"}, label: "河边救起一个人", clue: "救完人发现鞋掉了一只，母亲把新闻存进手机的人。", min: 28, max: 55, minYear: 2008, chance: 0.002, text: "河边有人落水，你跳下去了。人救上来的时候你才发现自己鞋掉了一只。本地新闻播了四十秒，母亲把那段视频存在手机里，给亲戚挨个看。", effects: { relation: 5, health: -2 } },
@@ -106,9 +109,11 @@ window.GAME_SYNERGY = {
     { id: "lk_none", label: "最后一次复查", clue: "把没用完的药对着单子点了一遍，又放回抽屉的人。", min: 51, max: 53, require: ["late_try"], chain: "lk_wait", state: { kids: "undecided", spouse: ["partnered", "dating"] }, chance: 0.55, text: "最后一次复查，医生把能说的都说了：该试的办法都试了，再往下，身体先受不了。回家路上你们在面馆停了一次，一人一碗，谁也没剩下。日子还得往下过，这话谁也没说出口，可两个人都懂。", effects: { wisdom: 2, health: -1 }, set: "late_tried", setState: { kids: "none" } },
     { id: "lk_fade", label: "慢慢就不提了", clue: "把医院的就诊卡收进钱包最里层，三年没再动过的人。", min: 52, max: 57, require: ["late_try"], state: { kids: "undecided", spouse: ["partnered", "dating"] }, chance: 0.5, text: "也没有哪一天正式说过停。就是复查的闹钟删了，药没有再续，就诊卡收进钱包最里面。这事从饭桌上慢慢退到了抽屉里。偶尔亲戚问起，你们笑笑，把话岔开。", effects: { wisdom: 2, freedom: 1 }, set: "late_tried", setState: { kids: "none" } },
     // CL-112（CL-109 §五）：拆迁坐实环，追加在存量 rare 表末（表序纪律：新链不抢存量链的掷骰序）。
-    // chain+require 双门：落点环来过且选过钱/房（traj_oldhouse）才掷；chance 0.08 是链内高转化
-    // （事已临头，搬完是常态）。traj_windfall 在此落（原由 r_oldhouse 直落，registry 已改指本条）。
-    { id: "r_oldhouse_move", label: "搬出去那年", clue: "老屋里吃完最后一顿饭，把碗筷打包带走的人。", min: 39, max: 64, chain: "r_oldhouse", require: "traj_oldhouse", chance: 0.08, text: "搬出去那年，卡车停在巷口。老屋里最后吃了一顿饭，碗筷打包带走，门锁交出去。头一年路过那片，你还会放慢脚步看一眼。日子，就这么换了个地方往下过。", effects: { money: 2, wisdom: 1 }, set: "traj_windfall" },
+    // chain+require 双门：落点环来过才掷；chance 0.08 是链内高转化（事已临头，搬完是常态）。
+    // traj_windfall 在此落（原由 r_oldhouse 直落，registry 已改指本条）。
+    // CL-128（W6）：按选择分档——本条收选钱档（require 改指 oldhouse_cash），钱档自 +2 抬到 +6
+    // （落点环已给 +10，此环是钱落袋后的第一年）；选房档另立 r_oldhouse_move_home（表末），钱低、房落文案。
+    { id: "r_oldhouse_move", label: "搬出去那年", clue: "老屋里吃完最后一顿饭，把碗筷打包带走的人。", min: 39, max: 64, chain: "r_oldhouse", require: "oldhouse_cash", chance: 0.08, text: "搬出去那年，卡车停在巷口。老屋里最后吃了一顿饭，碗筷打包带走，门锁交出去。钱在卡里躺着，头一年你没敢怎么动；后来该置办的置办了，手头是松了些，日子还是照常过。头一年路过那片，你还会放慢脚步看一眼。", effects: { money: 6, wisdom: 1 }, set: "traj_windfall" },
     // CL-116（CL-109 §三.1）：小店 shop 富贵尾巴三环——本业做大，不是副业起家（与 end_localfounder 分工）。
     // 资格：主线 shop_work＋在行十年（ctx mainLine/tenureIn）、公历 1998 起（连锁业态成熟）、c1955 不进
     // （那代人的小店是合作社/供销形，存量另有形状）。chance 照 §二.3 三环表：0.055/0.06/0.06；坐实钱门取 §二.4 区间下沿 55（INDEX 草案 58 实测过苛，见 CL-116 REPORT）。
@@ -343,6 +348,26 @@ window.GAME_SYNERGY = {
         { label: "不扩。活推掉些，手艺守精细", effects: { wisdom: 2, money: -1 }, echo: "你把订单本合上，加塞的一个没接。活还是一个人做，慢是慢点，可出去的东西，件件经得起看。" },
       ] },
     { id: "r_craft_factory", label: "小厂的牌子", clue: "厂门口的牌子还是自己写的那块、发货单摞起来比字典厚的人。", min: 38, max: 58, chain: "r_craft_orders", require: "traj_scale_craft", ctx: { mainLine: "craft_work" }, chance: 0.04, text: "作坊扩起来这些年，慢慢有了小厂的样子：十几号人，机器活和手工活分着做，大单走流水，小单还是你亲手把关。外地的大客户也找上门了，先看样品，再看厂子，最后看你这个人。发货单一摞一摞往外走，厂门口那块牌子，还是你当年自己写的那块，字有点旧，你舍不得换。", effects: { money: 11, growth: 2, relation: 1 }, set: "traj_fortune_craft" },
+    // CL-128（CL-109 §五 W6 拆迁内容组）：城市选房坐实环＋农村变体三拍，追加表末（表序纪律同前）。
+    // 城市选房档：chain r_oldhouse＋require oldhouse_home 与选钱档（r_oldhouse_move）分流；回迁要等几年，
+    // 窗比选钱档晚开、宽收（42–68）；钱只给 +1 过渡量级，房的去向在正文交代（搬回老地方、新楼有电梯），
+    // 不接 bought_house（理由见 r_oldhouse 头注）；traj_windfall 照落——房也是这笔横财的形状。
+    { id: "r_oldhouse_move_home", label: "搬回老地方", clue: "新楼的电梯头一回停在自家楼层，拎着菜站了一会儿的人。", min: 42, max: 68, chain: "r_oldhouse", require: "oldhouse_home", chance: 0.08, text: "等了几年，那片终于盖回来了。分房那天你早早去了，钥匙拿到手，先顺着老地址走了一遍：楼是新的，路还是那条路，巷口的小卖部也开回来了，就是门脸新了些。搬回去头一个月，老邻居回来了一多半，楼道里碰见，还是先问吃了没。房还是住的房，日子接上了。", effects: { money: 1, relation: 2 }, set: "traj_windfall" },
+    // 农村变体落点：城中村/近郊征地与采煤沉陷区搬迁两副面孔同拍（文案里并置交代），route farm 单线，
+    // minYear 2005。资格门不用 near_family——实查（CL-128 探针）：farm 路线玩家该旗零持有（其 setter
+    // 全在其他路线的住处选择上），沿用即永不触发；种地人的「老房事实」就是本人还住在村里：
+    // routeIn farm（居住路线轴）＋forbid farm_left（举家进城的已不是整村搬迁的对象，排除写在门上）。
+    // 深山纯农区在事实层无可分辨的出身标记（registry 无矿区/城郊出身事实，已查），门上能落的排除
+    // 就是 farm_left 与年代门两道，余下靠文案两副面孔与 chance 校准承接（§五口径的机制内落法）。
+    // miner 出身走的也是 farm 路，其村多在采空区，文案的沉陷一面即为这批人写。选择留痕与城市落点共用两旗。
+    { id: "r_oldhouse_rural", label: "整村搬迁", clue: "村委会大喇叭喊了三遍，回家把房本找出来的人。", min: 36, max: 56, forbid: ["farm_left"], routeIn: ["farm"], minYear: 2005, chance: 0.005, text: "老家村里要整村搬了。这一带有两种搬法：城郊的村是扩建占地，煤矿边的村是地下采空、地面一年年往下沉——你们村是哪一种，村里人心里都有数。村委会的大喇叭喊了三遍，丈量的人挨户走：量房、量地、量院子里的树。协议在村委会签，签之前先定一样：要钱，还是要安置小区的房。",
+      choices: [
+        { label: "要钱。房和地都折成钱", effects: { money: 10, freedom: 1 }, set: "oldhouse_cash", echo: "签完字，你在自家院子里站了一会儿。院里那棵树也量过了，折在钱里头。这笔钱来得快，去得也快——先存着，慢慢安排。" },
+        { label: "要房。等安置小区盖好", effects: { money: 3, relation: 1 }, set: "oldhouse_home", echo: "先搬去镇上租着住，等安置小区盖好。楼是新的，就是离地远了。村里人互相打听着，都等着分房那天。" },
+      ] },
+    // 农村坐实两拍：chain r_oldhouse_rural 与城市坐实分流，选择分档同城市口径（钱 +6／房 +1）。
+    { id: "r_oldhouse_rural_move", label: "搬出村那年", clue: "在院里吃完最后一顿饭，把大门锁上的最后一个人。", min: 37, max: 62, chain: "r_oldhouse_rural", require: "oldhouse_cash", chance: 0.08, text: "搬出村那年，推土机在村口等着。最后一顿饭是在院里吃的，桌子搬出来，人坐了一圈，碗筷打包带走。钱到账以后，村里人散到镇上、县里各处，逢年过节在群里问候一句。再回老家，那片已经平了，站在地头，认不出谁家是谁家。", effects: { money: 6, wisdom: 1 }, set: "traj_windfall" },
+    { id: "r_oldhouse_rural_home", label: "分到安置房", clue: "新房钥匙串上，还挂着老屋那把旧钥匙的人。", min: 40, max: 66, chain: "r_oldhouse_rural", require: "oldhouse_home", chance: 0.08, text: "安置小区盖好那阵，村里人天天去边上看。分房抽号，你家抽到六楼，有电梯。搬进去那天一看，老邻居还是那批人，只是从平房院子换成了楼上楼下。地是没有了，早市近，孙子辈上学也近。你把老屋的钥匙留了一把，挂在新钥匙串上，一直没摘。", effects: { money: 1, relation: 2 }, set: "traj_windfall" },
   ],
   endings: [
     { id: "end_richest", clue: "把副业干成大公司，最后站在锣声里的人。", tier: "legendary", all: ["traj_ipo"], stats: [{ k: "money", gt: 69 }], title: "世界首富", evidence: [["r_ipo"],["r_funding"]],
