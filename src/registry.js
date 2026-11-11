@@ -1952,16 +1952,29 @@ window.GAME_REGISTRY.milestones = {
    ],
    "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记，CL-117 转实登）：坐实拍＝r_builder_firm（require 本链做大旗 traj_scale_builder2；稿面钱门经 CL-117 实测与中年 money 水位相抵、已摘除，钱的刻度由结算层承接）。消费者：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence。"
   },
+  "traj_fortune_care": {
+   "setters": [
+    "r_care_home"
+   ],
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／§四，CL-126 新登记实登）：照护薄尾巴坐实拍 r_care_home 落（require 本链起势旗 traj_scale_care）。消费者：settlement.js 钱槽富贵档（FORTUNE 旗组按 traj_fortune_ 前缀动态认，自动命中）；end_selfmade 的 any/evidence 是 CL-112 枚举名单、未含本线，是否补入待总指挥裁定。"
+  },
   "traj_fortune_consult": {
    "setters": [
     "r_consult_partner"
    ],
    "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记，CL-124 转实登）：合伙人链坐实拍 r_consult_partner 落（require 本链做大旗 traj_scale_consult2）。消费者：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence。"
   },
+  "traj_fortune_courier": {
+   "setters": [
+    "r_courier_expand"
+   ],
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／§四，CL-126 新登记实登）：快递薄尾巴坐实拍 r_courier_expand 落（require 本链起势旗 traj_scale_courier；本站线入行晚、tenure 门放宽到 6 年，照稿 §四一环半口径）。消费者：settlement.js 钱槽富贵档（FORTUNE 旗组按 traj_fortune_ 前缀动态认，自动命中）；end_selfmade 的 any/evidence 是 CL-112 枚举名单、未含本线，是否补入待总指挥裁定。"
+  },
   "traj_fortune_craft": {
    "setters": [
+    "r_craft_factory"
    ],
-   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记）：本线尾巴坐实拍未施工（后续 W 片），setters 先空集占位，照 trial_done 先例以本注记为准。消费者先行：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence——旗未落时两处恒不命中，不改变存量行为。"
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／§三.12／CL-112 占位登记，CL-126 转实登）：作坊到小厂链坐实拍 r_craft_factory 落（require 本链起势旗 traj_scale_craft；craft 在 WORK_FORMAL_FLAGS、退休节点 55–60，坐实窗上限压 58 不越节点）。与 traj_craft（传承向）并行不悖。消费者：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence。"
   },
   "traj_fortune_dev": {
    "setters": [
@@ -1980,6 +1993,18 @@ window.GAME_REGISTRY.milestones = {
     "r_fin_partner"
    ],
    "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记，CL-124 转实登）：券商慢合伙人链坐实拍 r_fin_partner 落（require 本链起势旗 traj_scale_fin）。消费者：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence。"
+  },
+  "traj_fortune_forestry": {
+   "setters": [
+    "r_forestry_nursery"
+   ],
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／§四，CL-126 新登记实登）：林业薄尾巴坐实拍 r_forestry_nursery 落（require 本链起势旗 traj_scale_forestry；forestry 在 WORK_FORMAL_FLAGS、退休节点 55–60，坐实窗上限压 58 不越节点）。消费者：settlement.js 钱槽富贵档（FORTUNE 旗组按 traj_fortune_ 前缀动态认，自动命中）；end_selfmade 的 any/evidence 是 CL-112 枚举名单、未含本线，是否补入待总指挥裁定。"
+  },
+  "traj_fortune_med": {
+   "setters": [
+    "r_med_signboard"
+   ],
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／§四，CL-126 新登记实登）：医护薄尾巴坐实拍 r_med_signboard 落（require 本链起势旗 traj_scale_med；门只认 med_work，nurse/img/med_hosp 不进本链，照稿 §四口径）。消费者：settlement.js 钱槽富贵档（FORTUNE 旗组按 traj_fortune_ 前缀动态认，自动命中）；end_selfmade 的 any/evidence 是 CL-112 枚举名单、未含本线，是否补入待总指挥裁定。"
   },
   "traj_fortune_media": {
    "setters": [
@@ -2019,6 +2044,18 @@ window.GAME_REGISTRY.milestones = {
     "r_shop_landmark"
    ],
    "note": "富贵尾巴坐实旗（CL-109 §三.1／CL-116 实登）：小店连锁链坐实拍 r_shop_landmark 落。消费者：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence。"
+  },
+  "traj_fortune_taxi": {
+   "setters": [
+    "r_taxi_rent"
+   ],
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／§四，CL-126 新登记实登）：出租车牌年代窄尾巴坐实拍 r_taxi_rent 落（require 本链起势旗 traj_scale_taxi；全链只开公历 1995–2015 起势窗＋坐实 ≤2018、代门 c1965–c1985，窗外代外零呈现，网约车脸不进）。消费者：settlement.js 钱槽富贵档（FORTUNE 旗组按 traj_fortune_ 前缀动态认，自动命中）；end_selfmade 的 any/evidence 是 CL-112 枚举名单、未含本线，是否补入待总指挥裁定。"
+  },
+  "traj_fortune_truck": {
+   "setters": [
+    "r_truck_fleet"
+   ],
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／§四，CL-126 新登记实登）：货车薄尾巴坐实拍 r_truck_fleet 落（require 本链起势旗 traj_scale_truck；truck 在 WORK_FORMAL_FLAGS、退休节点 55–60，坐实窗上限压 58 不越节点）。与 traj_trucker（里程荣誉）分工：那面是跑满的里程，这面是自有车队的摊子。消费者：settlement.js 钱槽富贵档（FORTUNE 旗组按 traj_fortune_ 前缀动态认，自动命中）；end_selfmade 的 any/evidence 是 CL-112 枚举名单、未含本线，是否补入待总指挥裁定。"
   },
   "traj_fortune_write": {
    "setters": [
@@ -2140,6 +2177,48 @@ window.GAME_REGISTRY.milestones = {
     "r_shop_chain"
    ],
    "note": "富贵尾巴链内旗（CL-116 立）：小店链做大拍 r_shop_chain 的「挂牌子」选项落，供坐实环 r_shop_landmark 的 chain+require 双门消费；本身不进结算与结局口径。"
+  },
+  "traj_scale_truck": {
+   "setters": [
+    "r_truck_second"
+   ],
+   "note": "富贵尾巴链内旗（CL-126）：货车薄尾巴起势拍 r_truck_second 的「买第二台车」选项落——标记「自有车队起步」，坐实环 r_truck_fleet 以此为 require；本身不进结算与结局口径。"
+  },
+  "traj_scale_med": {
+   "setters": [
+    "r_med_clinic"
+   ],
+   "note": "富贵尾巴链内旗（CL-126）：医护薄尾巴起势拍 r_med_clinic 的「盘下门面」选项落——标记「自己的诊所开起来」，坐实环 r_med_signboard 以此为 require；本身不进结算与结局口径。"
+  },
+  "traj_scale_courier": {
+   "setters": [
+    "r_courier_station"
+   ],
+   "note": "富贵尾巴链内旗（CL-126）：快递薄尾巴起势拍 r_courier_station 的「接下站点」选项落——标记「站点承包到手」，坐实环 r_courier_expand 以此为 require；本身不进结算与结局口径。"
+  },
+  "traj_scale_care": {
+   "setters": [
+    "r_care_agency"
+   ],
+   "note": "富贵尾巴链内旗（CL-126）：照护薄尾巴起势拍 r_care_agency 的「注册成公司」选项落——标记「散摊子成了公司」，坐实环 r_care_home 以此为 require；本身不进结算与结局口径。"
+  },
+  "traj_scale_forestry": {
+   "setters": [
+    "r_forestry_contract"
+   ],
+   "note": "富贵尾巴链内旗（CL-126）：林业薄尾巴起势拍 r_forestry_contract 的「承包」选项落——标记「承包林地与苗圃起步」，坐实环 r_forestry_nursery 以此为 require；本身不进结算与结局口径。"
+  },
+  "traj_scale_taxi": {
+   "setters": [
+    "r_taxi_plate"
+   ],
+   "note": "富贵尾巴链内旗（CL-126）：出租车牌窄尾巴起势拍 r_taxi_plate 的「添第二台牌子」选项落——标记「两台车的牌照在手」，坐实环 r_taxi_rent 以此为 require；本身不进结算与结局口径。"
+  },
+  "traj_scale_craft": {
+   "setters": [
+    "r_craft_orders"
+   ],
+   "note": "富贵尾巴链内旗（CL-126）：手艺作坊链起势拍 r_craft_orders 的「扩作坊」选项落——标记「作坊扩起来」，坐实环 r_craft_factory 以此为 require；本身不进结算与结局口径。"
   },
   "traj_school": {
    "setters": [

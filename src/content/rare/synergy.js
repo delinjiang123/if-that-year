@@ -285,6 +285,64 @@ window.GAME_SYNERGY = {
         { label: "放手让徒弟顶。自己只接点名找你的", effects: { relation: 2, wisdom: 1 }, echo: "徒弟头一回独立跟完全程，回来把片子交给你看，你挑出三处毛病，没骂，留他吃了顿饭。第二年，他能顶一摊了。" },
       ] },
     { id: "r_photo_landmark", label: "办喜事先想你家", clue: "给一家人拍过三代人照片的人。", min: 38, max: 58, chain: "r_photo_second", require: "traj_scale_photo2", ctx: { flag: "photo_work" }, stats: [{ k: "money", gt: 55 }], chance: 0.055, text: "在这个地方，家里办喜事要拍照，先想到的就是你家店。不用打广告，老客户领着新客户来：有一家的结婚照是二十年前在你这儿拍的，如今抱着孙子来拍周岁，点名还要你按快门。预约的本子记到了半年后。钱是慢慢挣下的，一单一单，都是熟人的脸。你偶尔翻翻早年的底片箱，想，这行当没白干。", effects: { money: 11, relation: 3, growth: 1 }, set: "traj_fortune_photo" },
+    // CL-126（CL-109 §四＋§三.12，富贵尾巴 W5 薄尾巴组）：truck 车队／med 诊所／courier 站点／
+    // care 机构／forestry 苗木／taxi 车牌＋craft 作坊到小厂，各两环，追加于存量 rare 表末
+    // （CL-125 之后；表序纪律：新链不抢存量链的掷骰序）。落法：起势真岔口单落旗（接/不接是
+    // 该环的人生岔路口本体，守成选项不落旗，链可日后重掷再上，照 CL-117 builder 起势先例），
+    // 坐实 chain+require 双门只认链内旗。资格：truck/med/courier/care/craft 五线入行旗在
+    // validate-state ENTRY_FLAGS 名单内，用 ctx.mainLine＋tenureIn；forestry_work 不在名单，
+    // 照 CL-117/124 改 ctx.flag＋tenureIn 双门；driver_taxi 在名单内用 mainLine。taxi 只开
+    // 1995–2015 公历窄窗＋c1965–c1985 代门（车牌资产是那年代独有形状，网约车脸不进——
+    // 年代门外、代门外均零呈现，普查逐代验明）；craft/truck/forestry 三线在 WORK_FORMAL_FLAGS
+    // （退休节点 55–60），坐实窗上限压 58 不越退休节点。钱门：truck 起势 money>45 是稿 §四
+    // 本体口径（买第二台车得有底子）；四线坐实稿面钱门（med 55／care 52／forestry 52／
+    // craft 55）照 CL-117/124/125 归因法同种子带门/摘门对照实测：med（2.97%→4.06%）、
+    // forestry（3.83%→5.10%）、craft（2.29%→3.29%）三线摘门（雇员形钱门与中年 money 水位
+    // 相抵、摘后落带，钱的刻度由结算层承接）；care 独留 gt52（带门 4.88% 带中段，摘门
+    // 6.51% 反超薄带上沿——门在此线是真筛选不是误伤，照 CL-125 留门先例）。薄尾巴写把营生
+    // 慢慢做成摊子/队伍/牌子的坐实，不写暴富、不报具体数字。
+    { id: "r_truck_second", label: "第二台车", clue: "把贷款合同折好、放进驾驶室手套箱的人。", min: 35, max: 52, minYear: 1998, ctx: { mainLine: "truck_work", tenureIn: [12, 999] }, stats: [{ k: "money", gt: 45 }], chance: 0.08, text: "跑了十几年车，路上的活你都熟了：哪条线货多，哪家厂结账痛快，哪个服务区能睡个安稳觉。这一年货越来越多，你一台车跑不过来，推掉的活心疼。车行那边有一台二手的，车况你验过，价钱也谈得差不多——贷款买下来，雇个人开，你手里就成了两台车。买不买，你在家算了好几晚。",
+      choices: [
+        { label: "买。雇个老乡跟车，慢慢教", effects: { money: -3, growth: 3 }, set: "traj_scale_truck", echo: "车开回来那天，你把两台车并排停好，绕着走了两圈。往后操心的事多了一倍，可货主再打电话来，你敢接了。" },
+        { label: "不买。一个人一台车，稳当", effects: { freedom: 1, money: -2 }, echo: "你把车行的电话放下了。还是天不亮就出车，货多的时候推掉些，心里默念：稳当比什么都强。" },
+      ] },
+    { id: "r_truck_fleet", label: "三五台车的小车队", clue: "自己不上车了、在停车场挨个敲轮胎听声的人。", min: 38, max: 58, chain: "r_truck_second", require: "traj_scale_truck", ctx: { mainLine: "truck_work" }, chance: 0.032, text: "车从两台添到三台、四台，都是一台一台验过、谈下来的。司机里有老乡，也有老乡带来的老乡。你自己上车的时候少了，更多是在停车场和货主之间转：排班、对账、谁的车该保养了，哪个月的运费还没结。逢年过节，几个司机在你家院子里支起桌子吃饺子，你端着碗站了一会儿，想，这摊子，是真立起来了。", effects: { money: 11, relation: 2, growth: 1 }, set: "traj_fortune_truck" },
+    { id: "r_med_clinic", label: "把诊所盘下来", clue: "在空门面里站了半天、先量了量窗户的人。", min: 40, max: 55, minYear: 2000, ctx: { mainLine: "med_work", tenureIn: [12, 999] }, chance: 0.08, text: "在卫生院看了十几年病，十里八乡的人你差不多都熟：谁家老人的血压得盯着，谁家的孩子一到换季就喘。街口那间门面空出来了，房东是熟人，话递得很直：你要是想自己开个诊所，租金好商量。手续、器械、进药的渠道，你都打听了一圈——这一步迈出去，往后就是自己给自己当家了。",
+      choices: [
+        { label: "盘下来。自己的诊所自己扛", effects: { money: -3, growth: 3 }, set: "traj_scale_med", echo: "门面盘下来那天，你先把窗户量了。牌子还没做，你已经把听诊器和血压计摆进了抽屉。" },
+        { label: "不盘。卫生院这碗饭，吃得踏实", effects: { health: 1, growth: -1 }, echo: "你把房东的话客客气气回了。照样按点上班，给人看病抓药，日子稳稳当当，就是偶尔路过那间门面，会多看一眼。" },
+      ] },
+    { id: "r_med_signboard", label: "诊所成了招牌", clue: "诊所的登记本从年头记到年尾、名字写满好几页的人。", min: 42, max: 58, chain: "r_med_clinic", require: "traj_scale_med", ctx: { mainLine: "med_work" }, chance: 0.04, text: "诊所开到这些年，附近几个村的人生了病，先往你这儿来。早上门还没开，门口已经坐了两三个人，带着马扎，慢慢等。进药、坐诊、半夜出诊，你一个人顶着的时候多，可这间诊所的名字，是真在这一片立住了。外头来的亲戚打听，哪家诊所看得好？人报的，是你家的门牌。", effects: { money: 10, relation: 2, growth: 1 }, set: "traj_fortune_med" },
+    { id: "r_courier_station", label: "承包下站点", clue: "把押金数了三遍、锁进抽屉最底层的人。", min: 28, max: 45, minYear: 2012, ctx: { mainLine: "courier_work", tenureIn: [6, 999] }, chance: 0.08, text: "你送快递送了好些年，这一片的楼栋、门卫、代收点，闭着眼都能摸到。站点原来的承包人要回老家，公司那边问下来：这个站点，你敢不敢接？押金、片区、派费的算法，一条条摆在你面前。接，往后站点的好坏是你自己的事；不接，你还是按件挣钱，风吹日晒，可心里没负担。",
+      choices: [
+        { label: "接。押金交了，站点我来扛", effects: { money: -3, growth: 3 }, set: "traj_scale_courier", echo: "合同签完，你把站点里外重新归置了一遍，墙上贴了张片区图。头一个月对账，你算到半夜，数没差。" },
+        { label: "不接。按件挣钱，心里踏实", effects: { freedom: 1, growth: -1 }, echo: "站点让别人接了。你照样骑着车跑你那一片，就是路过站点的时候，会想起那天那份合同。" },
+      ] },
+    { id: "r_courier_expand", label: "新片区也归你", clue: "站点墙上挂了两张片区图、新招的人先跟他跑一星期的人。", min: 30, max: 48, minYear: 2014, chain: "r_courier_station", require: "traj_scale_courier", ctx: { mainLine: "courier_work" }, chance: 0.045, text: "你的站点这两年在区域里排得靠前：丢件少，投诉少，大促那几天也没爆过仓。总部的人下来转了一圈，回去没多久，话就到了：隔壁新开发的那一片，也划给你，敢不敢接？你把老人分了两个过去，自己两头跑了一阵。片区图从一张变两张，钉在站点最显眼的墙上。", effects: { money: 10, growth: 2, relation: 1 }, set: "traj_fortune_courier" },
+    { id: "r_care_agency", label: "把摊子注册成公司", clue: "把十几个阿姨的名字写进花名册、一个个打电话确认的人。", min: 38, max: 55, minYear: 2010, ctx: { mainLine: "care_work", tenureIn: [10, 999] }, chance: 0.08, text: "你从月嫂干起，后来带人：谁家生了孩子、谁家老人要陪护，电话都先打到你这儿。你手里攒下十几个靠得住的阿姨，可一直是个散摊子，活靠口碑传，钱靠手递手。这一年，雇主们问得多了：你们有没有公司？能不能签合同、开发票？把摊子注册成公司这件事，你在心里盘了很久。",
+      choices: [
+        { label: "注册。摊子变公司，规矩立起来", effects: { money: -2, growth: 3 }, set: "traj_scale_care", echo: "执照办下来那天，你把十几个阿姨的名字工工整整写进花名册。往后接活，先签合同，再派人。" },
+        { label: "不注册。散摊子灵活，口碑够用", effects: { relation: 1, money: -1 }, echo: "你没去办。还是老样子，电话介绍，手工记账。活没少接，就是有些大单，人家要合同，你只能笑着推掉。" },
+      ] },
+    { id: "r_care_home", label: "小养老院的牌子", clue: "过年给院里老人包饺子、挨个屋问冷不冷的人。", min: 40, max: 58, chain: "r_care_agency", require: "traj_scale_care", ctx: { mainLine: "care_work" }, stats: [{ k: "money", gt: 52 }], chance: 0.04, text: "公司做这些年，家政之外，你又张罗起一间小养老院：几十张床位，请了护工和做饭的师傅。入住的老人，好些是你当年上门照顾过的，人老了，儿女忙，商量着送到你这儿来——放心，因为知根知底。过年你给院里包饺子，挨个屋问冷不冷、被子够不够。这块牌子，在这一片算是挂住了。", effects: { money: 10, relation: 3, growth: 1 }, set: "traj_fortune_care" },
+    { id: "r_forestry_contract", label: "承包下那片林子", clue: "在承包合同上按完手印、先上山走了一圈的人。", min: 38, max: 55, minYear: 2003, ctx: { flag: "forestry_work", tenureIn: [12, 999] }, chance: 0.08, text: "你管了十几年的山，哪片是杉木、哪片是松、哪年栽的、哪年该间伐，闭着眼都说得上来。林改之后，山场的承包一轮一轮谈，轮到你熟的这一片了：承包下来自己经营，再起一片苗圃卖苗。场里有人劝你，都这个岁数了，管护的活稳稳当当，何必往自己肩上压？可这片山，你看着它长起来的。",
+      choices: [
+        { label: "承包。山是熟的，苗圃也敢起", effects: { money: -3, growth: 3 }, set: "traj_scale_forestry", echo: "合同按了手印，你先上山走了一圈，把要补栽的地块在本子上标好。苗圃雇了两个人，都是附近村里的。" },
+        { label: "不承包。管护这份活，干到老", effects: { health: 1, growth: -1 }, echo: "承包的事让别人谈去了。你照样背着柴刀巡山，哪棵树病了、哪段路塌了，你心里有数。" },
+      ] },
+    { id: "r_forestry_nursery", label: "苗木大户", clue: "苗圃里雇着七八个人、买苗的车排到村口的人。", min: 40, max: 58, chain: "r_forestry_contract", require: "traj_scale_forestry", ctx: { flag: "forestry_work" }, chance: 0.04, text: "苗圃一年一年扩，从自家地边的一小块，扩到连着的几块坡地。附近搞绿化、修路的、回乡种果树的，买苗都往你这儿来。忙的时候雇着七八个人，起苗、打捆、装车，你站在地头调度，嗓子喊得冒烟。你那片承包林也间伐过一轮，账算下来，这辈子跟山打交道，没白打。", effects: { money: 10, growth: 2, relation: 1 }, set: "traj_fortune_forestry" },
+    { id: "r_taxi_plate", label: "第二台车的牌照", clue: "把牌照手续装进牛皮纸袋、压在床底下的人。", min: 30, max: 50, minYear: 1995, maxYear: 2015, eraIn: ["c1965", "c1978", "c1985"], ctx: { mainLine: "driver_taxi", tenureIn: [10, 999] }, chance: 0.10, text: "你开出租这些年，这个城市的大街小巷，比自家胡同还熟。那阵子，车和牌照是一块儿算的：一台车的牌照，顶得上小半套房，老司机之间私下都说，这是能传给孩子的家当。你手里攒下了些钱，咬咬牙，能再添一台——车雇人开，牌照租出去，月月有进账。添不添，你跟家里商量了好几个晚上。",
+      choices: [
+        { label: "添。咬牙把第二台的牌子拿下", effects: { money: -3, growth: 3 }, set: "traj_scale_taxi", echo: "手续办完，你把那一袋子纸压在床底下。每个月租子到手的信儿一来，家里买菜都比从前松快些。" },
+        { label: "不添。一台车开到老，不欠债", effects: { freedom: 1, money: -2 }, echo: "你没动那笔钱。照样一台车，白班夜班自己排，困了就在火车站外头眯一会儿。" },
+      ] },
+    { id: "r_taxi_rent", label: "靠牌照养老的头几年", clue: "车租出去、每月对一遍租金账、驾驶证还留着舍不得交的人。", min: 32, max: 55, maxYear: 2018, eraIn: ["c1965", "c1978", "c1985"], chain: "r_taxi_plate", require: "traj_scale_taxi", ctx: { mainLine: "driver_taxi" }, chance: 0.12, text: "年岁上来，你慢慢开不动了，夜班先停了，后来白班也停了。两台车都租了出去，开车的年轻人按月把份子钱送来，数目不大，可月月有。这几年家里的大事小情，这笔进账兜了底。你的驾驶证还留着，偶尔摸出来看看，跟老伙计喝茶的时候说：那几年咬牙添的那台车，算是添对了。", effects: { money: 9, freedom: 2, wisdom: 1 }, set: "traj_fortune_taxi" },
+    { id: "r_craft_orders", label: "接不下的单", clue: "订单本翻到三个月后、先在本子上记下自己名字的人。", min: 35, max: 55, minYear: 1995, ctx: { mainLine: "craft_work", tenureIn: [12, 999] }, chance: 0.08, text: "你的手艺在这一片是出了名的，活一直接得稳。这一年不一样：订单本翻过去，活已经排到三个月后了，还有人托关系来加塞。你一个人一双手，徒弟还没出师。添人、添家伙、把隔壁的空房租下来扩成作坊，单子就接得下；不扩，就只能把活往外推，推掉的都是口碑。扩不扩，你拿着订单本想了好几天。",
+      choices: [
+        { label: "扩。租下隔壁，添人添家伙", effects: { money: -3, growth: 3 }, set: "traj_scale_craft", echo: "隔壁房租下来那天，你把新家伙一件件摆好。徒弟带着新来的学徒，你的活从案子边，挪到了满屋子转着看。" },
+        { label: "不扩。活推掉些，手艺守精细", effects: { wisdom: 2, money: -1 }, echo: "你把订单本合上，加塞的一个没接。活还是一个人做，慢是慢点，可出去的东西，件件经得起看。" },
+      ] },
+    { id: "r_craft_factory", label: "小厂的牌子", clue: "厂门口的牌子还是自己写的那块、发货单摞起来比字典厚的人。", min: 38, max: 58, chain: "r_craft_orders", require: "traj_scale_craft", ctx: { mainLine: "craft_work" }, chance: 0.04, text: "作坊扩起来这些年，慢慢有了小厂的样子：十几号人，机器活和手工活分着做，大单走流水，小单还是你亲手把关。外地的大客户也找上门了，先看样品，再看厂子，最后看你这个人。发货单一摞一摞往外走，厂门口那块牌子，还是你当年自己写的那块，字有点旧，你舍不得换。", effects: { money: 11, growth: 2, relation: 1 }, set: "traj_fortune_craft" },
   ],
   endings: [
     { id: "end_richest", clue: "把副业干成大公司，最后站在锣声里的人。", tier: "legendary", all: ["traj_ipo"], stats: [{ k: "money", gt: 69 }], title: "世界首富", evidence: [["r_ipo"],["r_funding"]],
@@ -316,7 +374,7 @@ window.GAME_SYNERGY = {
     // 钱门 gt 64；evidence 两点制：一点认旗（hasFact 并读口径，旗落即认）、一点认钱数字。
     // traj_fortune_* 的坐实拍由后续 W 片施工，在此之前本条仅 traj_ipo 一路可达（与 end_richest 分工：
     // 那条是 legendary 且要 money>69，本条 epic 收 65–69 的上市局与各线本业做大局）。
-    { id: "end_selfmade", clue: "起家时手里没几个钱，后来这一片办事先想起他家的人。", tier: "epic", any: ["traj_fortune_acct", "traj_fortune_builder", "traj_fortune_consult", "traj_fortune_craft", "traj_fortune_dev", "traj_fortune_farm", "traj_fortune_fin", "traj_fortune_media", "traj_fortune_photo", "traj_fortune_sea", "traj_fortune_shop", "traj_fortune_write", "traj_ipo"], stats: [{ k: "money", gt: 64 }], title: "白手起家", evidence: [["traj_fortune_acct", "traj_fortune_builder", "traj_fortune_consult", "traj_fortune_craft", "traj_fortune_dev", "traj_fortune_farm", "traj_fortune_fin", "traj_fortune_media", "traj_fortune_photo", "traj_fortune_sea", "traj_fortune_shop", "traj_fortune_write", "traj_ipo"], [{ "stat": { "k": "money", "gt": 64 } }]],
+    { id: "end_selfmade", clue: "起家时手里没几个钱，后来这一片办事先想起他家的人。", tier: "epic", any: ["traj_fortune_acct", "traj_fortune_builder", "traj_fortune_care", "traj_fortune_consult", "traj_fortune_courier", "traj_fortune_craft", "traj_fortune_dev", "traj_fortune_farm", "traj_fortune_fin", "traj_fortune_forestry", "traj_fortune_med", "traj_fortune_media", "traj_fortune_photo", "traj_fortune_sea", "traj_fortune_shop", "traj_fortune_taxi", "traj_fortune_truck", "traj_fortune_write", "traj_ipo"], stats: [{ k: "money", gt: 64 }], title: "白手起家", evidence: [["traj_fortune_acct", "traj_fortune_builder", "traj_fortune_care", "traj_fortune_consult", "traj_fortune_courier", "traj_fortune_craft", "traj_fortune_dev", "traj_fortune_farm", "traj_fortune_fin", "traj_fortune_forestry", "traj_fortune_med", "traj_fortune_media", "traj_fortune_photo", "traj_fortune_sea", "traj_fortune_shop", "traj_fortune_taxi", "traj_fortune_truck", "traj_fortune_write", "traj_ipo"], [{ "stat": { "k": "money", "gt": 64 } }]],
       text: "你起家的时候，手里没几个钱。后来那摊事一点点做大，做成了这一片绕不开的名字。钱是挣到了，日子还是照常过：菜自己买，账自己记。有人问你这算不算白手起家，你笑笑说，算吧，就是慢了点。" },
     { id: "end_lottery", clue: "每年那一天还去买一注，还是那组生日号码的人。", tier: "rare", all: ["traj_lottery"], title: "天选之人", evidence: [["r_lottery"],[{"stat":{"k":"money","gt":59}}]],
       text: "中奖的事你没跟几个人说。钱一部分存了定期，一部分给家里添了几样大件，日子还是照常过。只是每年那一天，你会去楼下那家彩票站买一注，还是那组生日号码。店主问你图啥，你说：图个念想。" },
