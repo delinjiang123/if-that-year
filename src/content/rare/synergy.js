@@ -109,6 +109,36 @@ window.GAME_SYNERGY = {
     // chain+require 双门：落点环来过且选过钱/房（traj_oldhouse）才掷；chance 0.08 是链内高转化
     // （事已临头，搬完是常态）。traj_windfall 在此落（原由 r_oldhouse 直落，registry 已改指本条）。
     { id: "r_oldhouse_move", label: "搬出去那年", clue: "老屋里吃完最后一顿饭，把碗筷打包带走的人。", min: 39, max: 64, chain: "r_oldhouse", require: "traj_oldhouse", chance: 0.08, text: "搬出去那年，卡车停在巷口。老屋里最后吃了一顿饭，碗筷打包带走，门锁交出去。头一年路过那片，你还会放慢脚步看一眼。日子，就这么换了个地方往下过。", effects: { money: 2, wisdom: 1 }, set: "traj_windfall" },
+    // CL-116（CL-109 §三.1）：小店 shop 富贵尾巴三环——本业做大，不是副业起家（与 end_localfounder 分工）。
+    // 资格：主线 shop_work＋在行十年（ctx mainLine/tenureIn）、公历 1998 起（连锁业态成熟）、c1955 不进
+    // （那代人的小店是合作社/供销形，存量另有形状）。chance 照 §二.3 三环表：0.055/0.06/0.06；坐实钱门取 §二.4 区间下沿 55（INDEX 草案 58 实测过苛，见 CL-116 REPORT）。
+    { id: "r_shop_expand", label: "第二家店的盘算", clue: "在空铺面的卷帘门前，前后站了三回的人。", min: 35, max: 52, minYear: 1998, eraIn: ["c1965", "c1978", "c1985", "c1995", "c2000"], ctx: { mainLine: "shop_work", tenureIn: [10, 99] }, chance: 0.055, text: "街对面那间铺面空出来了，房东的招租纸还贴在卷帘门上。你路过三回，第三回站在门口算了半天：押金、房租、再招两个人，两家店的进货能并到一处，量大了，价也好谈。回家吃饭的时候，对方把计算器推到你面前：开可以，先算清楚再说。算完，两个人都没说不开——剩下的就是开大开小的事了。",
+      choices: [
+        { label: "开大。押金房租一次到位，场面撑起来", effects: { money: -4, growth: 5, freedom: 2 }, set: "traj_scale_shop", echo: "合同签完那晚，你把新店的钥匙和老店的挂到一串上，拎着比先前沉了点。头一年两头跑，人瘦了几斤。" },
+        { label: "开小。先租一半铺面，试着来", effects: { money: -1, growth: 3, wisdom: 2 }, set: "traj_scale_shop", echo: "新店小归小，开张那天也放了串鞭炮。老店的人分过去两个，你隔天去一趟，账先立住了。" },
+      ] },
+    { id: "r_shop_chain", label: "三家店，一个牌子", clue: "三块招牌同一天换新，站在街对面看师傅挂的人。", min: 38, max: 56, chain: "r_shop_expand", require: "traj_scale_shop", chance: 0.06, text: "第二家店站住了。第三家的铺面你没怎么犹豫——新小区门口，入住的还不到一半，你赌的是往后这几年。三家店的招牌统一换成一个样子，进货并成一个单子，厂家的业务员头一回登门跟你谈账期。也有人拐弯抹角地问：你这牌子，能不能让我也挂一块？",
+      choices: [
+        { label: "让他挂。牌子立起来，规矩也立起来", effects: { money: 10, growth: 3, health: -2 }, set: "traj_scale_shop2", echo: "三家店的进货单摞在一起，订货的电话一个接一个。对方说，这回真像个买卖了。" },
+        { label: "不给外人。自家的店先开到第三家", effects: { money: 7, growth: 2, wisdom: 1 }, set: "traj_scale_shop2", echo: "加盟的话你没接。牌子是自家的，一家一家开踏实了，比什么都强。" },
+      ] },
+    { id: "r_shop_landmark", label: "这条街绕不开的店", clue: "外地人打听路，先报他家店名当坐标的人。", min: 42, max: 60, chain: "r_shop_chain", require: "traj_scale_shop2", stats: [{ k: "money", gt: 55 }], chance: 0.06, text: "这几年，街坊办事先想起你家：孩子满月订蛋糕，单位发东西订货，谁家老人过寿摆桌，先打个电话过来问一句。你站在柜台后面，看着一个小学生进来买橡皮——他爷爷小时候，也在这家店买过。牌子没往大里吹，就是这条街上的人认它。", effects: { money: 10, relation: 3, growth: 2 }, set: "traj_fortune_shop" },
+    // CL-116（CL-109 §三.9）：农 farm 富贵尾巴三环——大户与牵头人。三环各带公历门：流转 2003、
+    // 合作社 2007、家庭农场挂牌 2013，链长正好横跨这十年。资格：主线 farm_work＋在行十五年。
+    // 调参注记（实测，见 CL-116 REPORT）：本线级联晚熟、三环 chance 0.07/0.08/0.08 略高于 §二.3
+    // 建议表，坐实钱门 45 按本线钱位分布定（种地线钱袋比城镇线薄一截，55/50 实测过苛）；
+    // 定向普查合格局命中率 3.6%，在用户裁定的 3–8% 带内。
+    { id: "r_farm_expand", label: "连片流转", clue: "站在田埂上，望出去连片都是自家在种的人。", min: 35, max: 58, minYear: 2003, ctx: { mainLine: "farm_work", tenureIn: [15, 99] }, chance: 0.07, text: "村里几户在外头打工的，地撂着可惜，托人来问你接不接。连成片算下来一百多亩，合同一年一签还是几年一签，村里的人把话说得很活。你回家把账算到半夜：种子化肥头一回能成车往回拉了，收的时候，一台收割机从东头走到西头，不用中途挪窝。接，是早就想好的，剩下的就是接多接少。",
+      choices: [
+        { label: "全接。一百多亩连成片，一把尺子量到底", effects: { money: -4, growth: 4 }, set: "traj_scale_farm", echo: "合同签完，你骑着车绕新接的地走了一圈，回家比平时晚了二十分钟。" },
+        { label: "先接近处的几块。远处的明年再说", effects: { money: -2, growth: 2, wisdom: 1 }, set: "traj_scale_farm", echo: "先接下的地连着自家的，管起来不费腿。远处那几块，你说等收完这一季再谈。" },
+      ] },
+    { id: "r_farm_coop", label: "牵头办合作社", clue: "头一年分账，把账本摊在桌上、谁要看谁看的人。", min: 38, max: 58, minYear: 2007, chain: "r_farm_expand", require: "traj_scale_farm", chance: 0.08, text: "以前这类事都是别人牵头，你跟着入。这回几户人家反过来问你：你地多，你懂行，你牵头行不行？统一买种子化肥，统一往外卖，账怎么记、钱怎么分，章程改了三稿。最难的不是办事，是让每户都觉得公平。商量到最后，牵头这事落在你身上，剩下的是你管哪一摊。",
+      choices: [
+        { label: "你管账。账摊在明处，话说在前头", effects: { money: 9, relation: 3, health: -2 }, set: "traj_scale_farm2", echo: "头一年分账，账本就放在桌子上，谁要看谁看。没人真去翻，但都说，这事办得亮堂。" },
+        { label: "你跑销路。账让村会计记，你在外头跑", effects: { money: 6, relation: 2, freedom: 1 }, set: "traj_scale_farm2", echo: "你一年大半在外头跑市场，粮卖出去的价格一茬比一茬稳。村里人说，你这张嘴，比账本管用。" },
+      ] },
+    { id: "r_farm_estate", label: "家庭农场挂牌", clue: "牌子钉在院门上，钉子是自己一锤一锤敲进去的人。", min: 40, max: 60, minYear: 2013, chain: "r_farm_coop", require: "traj_scale_farm2", stats: [{ k: "money", gt: 45 }], chance: 0.08, text: "农场的牌子送到那天，你找了块平整的院墙，自己一锤一锤钉上去的。来登记的人问面积、问带动了几户，你一笔一笔答。地还是那些地，粮还是那些粮。就是从这年起，村里年轻人回来说起种地，先说的是你家这个样子——种地，也能种出个名堂来。", effects: { money: 9, relation: 2, growth: 2 }, set: "traj_fortune_farm" },
   ],
   endings: [
     { id: "end_richest", clue: "把副业干成大公司，最后站在锣声里的人。", tier: "legendary", all: ["traj_ipo"], stats: [{ k: "money", gt: 69 }], title: "世界首富", evidence: [["r_ipo"],["r_funding"]],

@@ -1964,8 +1964,9 @@ window.GAME_REGISTRY.milestones = {
   },
   "traj_fortune_farm": {
    "setters": [
+    "r_farm_estate"
    ],
-   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记）：本线尾巴坐实拍未施工（后续 W 片），setters 先空集占位，照 trial_done 先例以本注记为准。消费者先行：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence——旗未落时两处恒不命中，不改变存量行为。"
+   "note": "富贵尾巴坐实旗（CL-109 §三.9／CL-116 实登）：农规模化链坐实拍 r_farm_estate 落。消费者：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence。"
   },
   "traj_fortune_fin": {
    "setters": [
@@ -2005,8 +2006,9 @@ window.GAME_REGISTRY.milestones = {
   },
   "traj_fortune_shop": {
    "setters": [
+    "r_shop_landmark"
    ],
-   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记）：本线尾巴坐实拍未施工（后续 W 片），setters 先空集占位，照 trial_done 先例以本注记为准。消费者先行：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence——旗未落时两处恒不命中，不改变存量行为。"
+   "note": "富贵尾巴坐实旗（CL-109 §三.1／CL-116 实登）：小店连锁链坐实拍 r_shop_landmark 落。消费者：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence。"
   },
   "traj_fortune_write": {
    "setters": [
@@ -2028,6 +2030,30 @@ window.GAME_REGISTRY.milestones = {
     "r_oldhouse"
    ],
    "note": "拆迁链中间旗（CL-112 新立）：r_oldhouse 落点环选钱/选房两选项同落此旗，供坐实环 r_oldhouse_move 的 chain+require 双门消费；本身不进结算与结局口径。"
+  },
+  "traj_scale_farm": {
+   "setters": [
+    "r_farm_expand"
+   ],
+   "note": "富贵尾巴链内旗（CL-109 §二.2／CL-116 立）：农链起势拍 r_farm_expand 的「接下连片地」选项落，供做大环 r_farm_coop 的 chain+require 双门消费；本身不进结算与结局口径。"
+  },
+  "traj_scale_farm2": {
+   "setters": [
+    "r_farm_coop"
+   ],
+   "note": "富贵尾巴链内旗（CL-116 立）：农链做大拍 r_farm_coop 的「牵头」选项落，供坐实环 r_farm_estate 的 chain+require 双门消费；本身不进结算与结局口径。"
+  },
+  "traj_scale_shop": {
+   "setters": [
+    "r_shop_expand"
+   ],
+   "note": "富贵尾巴链内旗（CL-109 §二.2／CL-116 立）：小店链起势拍 r_shop_expand 的「开第二家店」选项落，供做大环 r_shop_chain 的 chain+require 双门消费；本身不进结算与结局口径。"
+  },
+  "traj_scale_shop2": {
+   "setters": [
+    "r_shop_chain"
+   ],
+   "note": "富贵尾巴链内旗（CL-116 立）：小店链做大拍 r_shop_chain 的「挂牌子」选项落，供坐实环 r_shop_landmark 的 chain+require 双门消费；本身不进结算与结局口径。"
   },
   "traj_school": {
    "setters": [
