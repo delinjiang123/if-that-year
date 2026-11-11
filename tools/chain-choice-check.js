@@ -14,6 +14,7 @@ const PACK_FILES = ["src/content/pool/pack1.js", "src/content/pool/pack2.js", "s
 load("src/events.js");
 for (const p of PACK_FILES) { const fp = path.join(ROOT, p); if (fs.existsSync(fp)) load(p); } // v0.20.0 M1-B：旧版读 GAME_REGISTRY.packFiles（注册表从未有此字段，恒为空）；改为与 index.html 同序的显式清单（本检查的 rares/byId 语义不变，packs 本就只经 GAME_PACKS 累加、不入 byId）
 load("src/content/rare/synergy.js");
+load("src/content/pool/pack120.js"); // CL-115：rare 追加包，装载序同 index.html（synergy 之后）
 const byId = new Map();
 for (const e of sandbox.GAME_DATA.events) byId.set(e.id, e);
 const rares = [...(sandbox.GAME_DATA.rares || []), ...(sandbox.GAME_SYNERGY.rare || [])];

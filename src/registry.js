@@ -1974,8 +1974,24 @@ window.GAME_REGISTRY.milestones = {
   },
   "traj_fortune_media": {
    "setters": [
+    "r_media_team",
+    "r_media_brand"
    ],
-   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记）：自媒体是 write 线的线面、旗名单列（CL-109 §二.2 点名 traj_fortune_media）；坐实拍未施工（后续 W 片），setters 先空集占位，照 trial_done 先例以本注记为准。消费者先行：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence——旗未落时两处恒不命中，不改变存量行为。"
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记，CL-115 转实登）：自媒体是 write 线的线面、旗名单列（CL-109 §二.2 点名 traj_fortune_media）；坐实拍＝pack120 团队化 r_media_team／自有牌子 r_media_brand（require 本链变现旗 traj_media_income＋money>55）。消费者：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence。"
+  },
+  "traj_scale_media": {
+   "setters": [
+    "r_media_viral",
+    "r_media_live"
+   ],
+   "note": "自媒体爆款链链内旗（CL-115）：起势两条（r_media_viral／r_media_live）的选项同落——标记「本业账号的爆款被接住」，做大环只认此旗，副业面 r_viral 只落 traj_viral、进不了本链（照 CL-109 §三.7 分工不许串）。"
+  },
+  "traj_media_income": {
+   "setters": [
+    "r_media_cash",
+    "r_media_matrix"
+   ],
+   "note": "自媒体爆款链链内旗（CL-115）：做大环（商单变现 r_media_cash 的接单选项／账号矩阵 r_media_matrix）落——标记「红利期变现走通」，坐实环以此为 require。r_media_cash 的不接选项不落此旗，链可经矩阵环续上。"
   },
   "traj_fortune_photo": {
    "setters": [
@@ -2040,7 +2056,9 @@ window.GAME_REGISTRY.milestones = {
   },
   "traj_viral": {
    "setters": [
-    "r_viral"
+    "r_viral",
+    "r_media_viral",
+    "r_media_live"
    ]
   },
   "traj_vp": {

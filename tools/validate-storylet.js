@@ -27,6 +27,7 @@ load("src/events.js");
 for (const p of PACK_FILES) load(p);
 load("src/content/prologue/cards.js");
 load("src/content/rare/synergy.js");
+load("src/content/pool/pack120.js"); // CL-115：rare 追加包，装载序同 index.html（synergy 之后、storylet 之前，条目追加 rare 表尾）
 load("src/content/registry-v023.js"); load("src/content/registry-wp2.js"); load("src/content/registry-wp3.js"); load("src/content/registry-wp4.js"); load("src/content/registry-wp5.js"); load("src/content/registry-wp6.js"); load("src/content/registry-wp7.js"); load("src/content/registry-wp8.js"); load("src/content/registry-retire.js"); load("src/content/trades.js"); load("src/world/state.js"); load("src/registry.js"); load("src/anchors.js"); load("src/rhythm.js");
 load("src/content/prologue/prologue-c1955.js"); load("src/content/prologue/prologue-c1965.js"); load("src/content/prologue/prologue-c1978.js"); load("src/content/prologue/prologue-c1985.js"); load("src/content/prologue/prologue-c1995.js");
 load("src/content/prologue/prologue.js");

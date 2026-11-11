@@ -20,6 +20,7 @@ let events = [...D.events];
 for (const p of PACK_FILES) events = events.concat(ld(p, "GAME_PACKS") || []); // v0.20.0 M1-B：内容按领域重组至 src/content/，PACK_FILES 为 index.html 相对顺序的完整路径
 const syn = ld("src/content/rare/synergy.js", "GAME_SYNERGY");
 events = events.concat(syn.combos || [], syn.rare || [], syn.endings || []);
+events = events.concat(ld("src/content/pool/pack120.js", "GAME_PACK_RARE") || []); // CL-115：rare 追加包（独立沙盒读 GAME_PACK_RARE 副本，与 synergy 表尾追加的同一批条目）
 const byId = new Map();
 for (const e of events) { if (byId.has(e.id)) err(`重复 id: ${e.id}`); byId.set(e.id, e); }
 

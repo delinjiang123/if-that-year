@@ -520,7 +520,7 @@ window.IFY = window.IFY || {};
   IFY.autoText = null;   // 当前画面若可自动推进，其正文；必停画面恒为 null
   IFY.autoAction = null; // 当前画面可执行的自动动作（advance 或普通事件自动选）
   IFY.autoKind = null;   // "advance" | "choice"
-  IFY.autoHold = false;  // v0.60.124：点正文暂停本屏的标记（只停本屏、不动偏好；新一屏 armAuto 清除）
+  IFY.autoHold = false;  // v0.60.125：点正文暂停本屏的标记（只停本屏、不动偏好；新一屏 armAuto 清除）
   IFY.autoPanelOpen = !!IFY.prefs.autoPanelOpen; // v0.20.4 局内「推进设置」面板展开态（重渲染不自动合上）；本批起开合存进 prefs，刷新/重开页面也保持上次状态
   IFY.autoTotal = 0;     // 本屏总停留（细线用，choice 模式含最后 400ms 预高亮段）
   // §4.1 倒计时细线：纯计时账（总时长/已耗），不读布局，暂停冻结、恢复续走、切档由 scheduleAuto 干净重启
@@ -532,7 +532,7 @@ window.IFY = window.IFY || {};
   window.addEventListener("blur", () => IFY.pauseAuto());
   window.addEventListener("focus", () => IFY.resumeAuto());
 
-  // 暂停手势（§4.2，v0.60.124 改语义）：点正文 = 暂停本屏，先看完这一屏再说——只停本屏的计时，
+  // 暂停手势（§4.2，v0.60.125 改语义）：点正文 = 暂停本屏，先看完这一屏再说——只停本屏的计时，
   // 不许改玩家存好的模式偏好（旧语义点一下就把偏好写成「关」并存盘，玩家刚设好的平年/全程会被一次
   // 随手点按抹掉，真机反馈已证）。暂停到下一屏自动解除（armAuto 清 hold）；面板/控制行里显式改档
   // 才是改偏好的唯一入口。被点的控件本身仍按原动作执行（例如点中某个选项，就按手动选它）。
@@ -540,7 +540,7 @@ window.IFY = window.IFY || {};
     const t = ev.target;
     if (!t || !t.closest) return;
     if (t.closest("#autorow, .autopanelwrap")) return; // v0.20.4：推进设置面板与控制行内的点击各走各的委托
-    // v0.60.124（用户真机裁定）：面板开着时点正文（非控件）= 先把设置面板关上，这一下不干别的
+    // v0.60.125（用户真机裁定）：面板开着时点正文（非控件）= 先把设置面板关上，这一下不干别的
     // （不暂停、不改档）。面板关着时点正文才是下面的暂停本屏。
     if (IFY.autoPanelOpen && !t.closest("button, a, input, select, textarea, summary, label")) {
       IFY.autoPanelOpen = false;
@@ -571,7 +571,7 @@ window.IFY = window.IFY || {};
       const p = el("autopanel");
       if (p) p.hidden = !IFY.autoPanelOpen;
       tog.setAttribute("aria-expanded", String(IFY.autoPanelOpen));
-      tog.textContent = IFY.autoPanelOpen ? "推进设置 · 收起" : "推进设置"; // v0.60.124：展开态把「收起」写在脸上，免得玩家找不到关法
+      tog.textContent = IFY.autoPanelOpen ? "推进设置 · 收起" : "推进设置"; // v0.60.125：展开态把「收起」写在脸上，免得玩家找不到关法
       return;
     }
     const mode = t.closest("[data-automode]");
@@ -1099,7 +1099,7 @@ window.IFY = window.IFY || {};
       if (box) box.remove();
       el("echo").innerHTML = `${IFY.deltaLine()}${autoSelected ? `<p class="autonote">自动推进 · 已选「${esc(c.label)}」</p>` : `<p class="pickednote">已选「${esc(c.label)}」</p>`}${IFY.echoText(c) ? `<p class="echo">${esc(IFY.echoText(c))}</p>` : ""}<button class="primary" id="cont">继续</button>`;
       save(); el("cont").addEventListener("click", () => step());
-      IFY.armAuto(IFY.echoText(c) || c.label, () => step(), "advance"); // v0.60.124（用户真机裁定）：手动点完选项，回响屏也接着自动推进——点选只代表这一屏由玩家定，之后的平年照旧按阅读时长自己往前走；off 档由 autoEligible 自然不排程
+      IFY.armAuto(IFY.echoText(c) || c.label, () => step(), "advance"); // v0.60.125（用户真机裁定）：手动点完选项，回响屏也接着自动推进——点选只代表这一屏由玩家定，之后的平年照旧按阅读时长自己往前走；off 档由 autoEligible 自然不排程
     };
     document.querySelectorAll(".choice").forEach((b) => b.addEventListener("click", () => {
       const i = Number(b.dataset.i);
