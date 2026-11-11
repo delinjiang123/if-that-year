@@ -34,7 +34,7 @@
       IFY.el("echo").innerHTML = `${IFY.deltaLine()}${autoSelected ? `<p class="autonote">自动推进 · 已选「${IFY.esc(c.label)}」</p>` : `<p class="pickednote">已选「${IFY.esc(c.label)}」</p>`}<p class="echo">${IFY.esc(echoText(c))}</p><button class="primary" id="cont">过一年</button>`;
       IFY.refreshStatsBar(); // fx-fix：稀有事件选项落账后就地刷条（与事件/危机的 v0.31.2 修复对齐，此前漏了这一处）
       IFY.save(); IFY.el("cont").addEventListener("click", IFY.advance);
-      if (autoSelected) IFY.armAuto(echoText(c) || c.label, IFY.advance, "advance");
+      IFY.armAuto(echoText(c) || c.label, IFY.advance, "advance"); // v0.60.121：手动点选后回响屏同样 arm（用户裁定：选项点完应当继续自动推进）
     };
     document.querySelectorAll(".choice").forEach((b) => b.addEventListener("click", () => {
       const c = r.choices[Number(b.dataset.i)];
@@ -333,7 +333,7 @@
       IFY.el("echo").innerHTML = `${IFY.deltaLine()}${autoSelected ? `<p class="autonote">自动推进 · 已选「${IFY.esc(ch.label)}」</p>` : `<p class="pickednote">已选「${IFY.esc(ch.label)}」</p>`}<p class="echo">${IFY.esc(echoText(ch))}</p><button class="primary" id="cont">过一年</button>`;
       IFY.refreshStatsBar(); // v0.31.2：效果已落账，头部数值条就地跟上真数
       IFY.save(); IFY.el("cont").addEventListener("click", IFY.advance);
-      if (autoSelected) IFY.armAuto(echoText(ch) || ch.label, IFY.advance, "advance"); // 照事件屏：自动选落定后回响屏的「过一年」接着 arm，别让整局停在危机回响
+      IFY.armAuto(echoText(ch) || ch.label, IFY.advance, "advance"); // 照事件屏：回响屏的「过一年」接着 arm，别让整局停在危机回响；v0.60.121 起手动点选同样 arm
     };
     document.querySelectorAll(".choice").forEach((b) => b.addEventListener("click", () => {
       const ch = c.choices[Number(b.dataset.i)];
@@ -436,7 +436,7 @@
       IFY.el("echo").innerHTML = `${IFY.deltaLine()}${autoSelected ? `<p class="autonote">自动推进 · 已选「${IFY.esc(labelText(c))}」</p>` : `<p class="pickednote">已选「${IFY.esc(labelText(c))}」</p>`}<p class="echo">${IFY.esc(echoText(c))}</p><button class="primary" id="cont">过一年</button>`;
       IFY.refreshStatsBar(); // v0.31.2：效果已落账，头部数值条就地跟上真数
       IFY.save(); IFY.el("cont").addEventListener("click", IFY.advance);
-      if (autoSelected) IFY.armAuto(echoText(c) || c.label, IFY.advance, "advance");
+      IFY.armAuto(echoText(c) || c.label, IFY.advance, "advance"); // v0.60.121：手动点选后回响屏同样 arm（用户裁定：选项点完应当继续自动推进）
     };
     document.querySelectorAll(".choice").forEach((b) => b.addEventListener("click", () => {
       IFY.choiceBeat(b, () => chooseEventChoice(e.choices[Number(b.dataset.i)], false));

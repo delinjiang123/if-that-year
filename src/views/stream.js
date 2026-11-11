@@ -36,6 +36,7 @@
   function lineReset() { IFY.lineTotal = 0; IFY.lineElapsedBase = 0; IFY.lineSegT = 0; linePaint(0, 0); }
 
   function autoEligible() {
+    if (IFY.autoHold) return false; // 玩家点正文暂停了本屏：本屏不再自动推进，偏好本身不动（暂停≠关）
     if (!IFY.autoText || !IFY.autoAction || IFY.prefs.mode === "off") return false;
     // v0.34.1（用户定）：自动推进从 0 岁起与成年同一套规矩——序章不再排除平年，无选项的幕按阅读时长自己往前走，选项幕照旧停住等玩家。
     return IFY.autoKind === "advance" || (IFY.autoKind === "choice" && IFY.prefs.mode === "full");
@@ -79,6 +80,7 @@
   }
 
   function armAuto(text, action, kind) { // 无抉择画面传 advance；普通事件选项画面只在 full 模式传自动选动作
+    IFY.autoHold = false; // 新一屏：上一屏的点按暂停到此为止，按存好的偏好重新排程
     IFY.autoText = text; IFY.autoAction = action || IFY.advance; IFY.autoKind = kind || "advance";
     scheduleAuto();
   }
@@ -110,7 +112,7 @@
     const modes = IFY.AUTO_MODES.map(([k, label]) => `<button type="button" class="switchbtn${IFY.prefs.mode === k ? " sel" : ""}" data-automode="${k}"><b>${label}</b></button>`).join("");
     const spd = ["slow", "mid", "fast"].map((k) => `<button type="button" class="segbtn${IFY.prefs.speed === k ? " sel" : ""}" data-autospeed="${k}">${speedButtonLabel(k)}</button>`).join("");
     const open = !!IFY.autoPanelOpen;
-    return `<div class="autopanelwrap"><p class="autopanelrow"><button type="button" class="setlink" id="autosetbtn" aria-expanded="${open}">推进设置</button></p><div class="autopanel" id="autopanel"${open ? "" : " hidden"}><p class="picklab">自动推进</p><div class="switchpicks">${modes}</div><p class="picklab">速度</p><div class="segpicks${IFY.prefs.mode === "off" ? " dim" : ""}">${spd}</div></div></div>`;
+    return `<div class="autopanelwrap"><p class="autopanelrow"><button type="button" class="setlink" id="autosetbtn" aria-expanded="${open}">${open ? "推进设置 · 收起" : "推进设置"}</button></p><div class="autopanel" id="autopanel"${open ? "" : " hidden"}><p class="picklab">自动推进</p><div class="switchpicks">${modes}</div><p class="picklab">速度</p><div class="segpicks${IFY.prefs.mode === "off" ? " dim" : ""}">${spd}</div></div></div>`;
   }
 
   function refreshAutoPanel() {
@@ -122,6 +124,7 @@
 
   function setAutoMode(mode) {
     if (!IFY.AUTO_MODES.some(([k]) => k === mode)) return;
+    IFY.autoHold = false; // 显式改档 = 按新档恢复排程，清掉点按暂停
     IFY.prefs.mode = mode;
     IFY.savePrefs();
     scheduleAuto();
