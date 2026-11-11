@@ -338,6 +338,7 @@
     consult: "去咨询公司", // CL-93 咨询注册片补登（与 GATE_TRADE_FX 同步）
     rail: "进铁路", // CL-121 铁路开线补登（与 GATE_TRADE_FX 同步；forestry/sea 两表漏补是 CL-93 旧账，不在本片范围）
     recycle: "收废品", // CL-120 回收开线补登（与 GATE_TRADE_FX 同步）
+    post: "进邮局", // CL-119 邮政开线补登（与 GATE_TRADE_FX 同步；forestry/sea 两行当年漏登此表是 CL-93 点名的存量缺口，本行不照漏）
   };
   // 关口选项的六维效果（P1-6 激活批定实，§5.2 硬要求：影子无头轨政策 F 第 3 级
   // 靠 effects 打分，空对象会让关口选项对影子恒 0 分、政策退化到位置兜底）。
@@ -360,6 +361,7 @@
     consult: { money: 4, growth: 4, wisdom: 2, health: -2, freedom: -2 }, // CL-93：高薪长见识、卖时间与身体（出差驻场、客户说了算），按行当真实形状分
     rail: { money: 3, growth: 1, health: -2, freedom: -1, relation: 1 }, // CL-121：单位制稳钱、三班倒熬夜伤身费自由、铁路大院人熟关系厚，按行当真实形状分
     recycle: { money: 3, freedom: 3, health: -2 }, // CL-120：自己的摊自己说了算、现钱天天有，代价是体力与风里雨里，按行当真实形状分
+    post: { money: 2, relation: 3, health: -2, freedom: -1 }, // CL-119：单位稳、钱不多；一条邮路走下来全是熟人（relation 厚），风雨邮路伤身，单位管着自由低
   };
   function gateFx(trade) { return Object.assign({}, GATE_TRADE_FX[trade] || {}); }
   const GATE_KIND_SUB = {

@@ -369,6 +369,16 @@ window.GAME_TRADES = {
     "seedEcho": null, "inheritEcho": null,
     "note": "铁路（CL-121 开线，朋友试玩期待的新职业，总指挥注册裁定照 CL-47 forestry 镜像）：列车乘务/车站客运/餐车后勤/货运调车四脸共用 rail_work 一旗，脸靠公历门与 ctx 分；form 按单位制登 employee（铁路局/车务段/客运段是单位）；正规口径（入 WORK_FORMAL_FLAGS，退休窗 55–60）；族籍归 road 道路（与 truck/driver_taxi/courier 同族，跑线的人彼此外溢）；eraIn 六代全开（绿皮基础脸全年代、提速脸 1997 起、高铁脸 2010 起，由条目公历门分开）；inheritFrom 空——承继（铁路子弟顶替）走线内入行拍 p128_014，现行出身牌无铁路子弟来源"
   },
+  "post": {
+    "flag": "post_work", "form": "employee",
+    "family": "road",
+    "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
+    "eduGate": null, "gateDirect": true,
+    "coldOk": true, "coldKinds": ["recruit", "assign"], "coldWeight": 3,
+    "inheritFrom": [],
+    "seedEcho": null, "inheritEcho": null,
+    "note": "邮政（CL-119 开线，总指挥注册裁定）：乡邮投递／邮政营业柜台／分拣转运三脸共用 post_work 一旗，脸靠公历门与 ctx 分（分拣脸 c1985 起密、转型脸 2010 起：电商包裹／普遍服务／政务专送）；form 按单位制登 employee（邮电局／邮政局／邮政公司历来是单位）；正规口径（入 WORK_FORMAL_FLAGS，退休窗 55–60，本片不写退休仪式拍，⑥段窗位照此）；族籍归 road 路上族（邮路就是一条走了几十年的路，与 courier 同族互溢——快递出现之前，乡村的连接就是邮政，两条线在族里正好一头一尾）；eraIn 六代全开（邮政行当各代不断线，脸由条目公历门分）；inheritFrom 空——承继（邮电子弟顶替）走线内入行拍 p126_015，现行出身牌无邮电子弟来源"
+  },
   "consult": {
     "flag": "consult_work", "form": "employee",
     "family": "word",
