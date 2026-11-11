@@ -11,14 +11,22 @@
 // deferDating），须配合补丁稿 work/wp6-parents-patch.md 与 work/wp6-shadow-life-patch.md 合并后才
 // 在呈现层生效；inferAbroadDefault 的年代权重另见 work/wp6-place-patch.md。审计逐条清单落
 // sim-v023/logs/wp6/abroad-audit.md。
+// CL-105（留学链第一片）：入口拍新增 3 个留学选项（每 kind 一条，eraIn [c1985,c1995,c2000]，
+// 同落 setState abroadKind＋set abroad_study，链面见 pack116）。上段 WP6 注记称选项级 eraIn
+// 呈现过滤须配合补丁才生效——CL-105 施工前已用 jsdom 在现行树实测：renderProcItem 的
+// GATE_KEYS＋IFY.met 过滤已在呈现层真生效（c1955 只亮 dispatch/进修、定居三项被滤；
+// c1978/c1995 反之），注记已过期，此处留痕。
 window.GAME_PACKS = (window.GAME_PACKS || []).concat([
   // —— 入口拍：去向（22–26 岁，route=abroad） ——
   { id: "proc_abroad_kind", min: 22, max: 26, procOnly: true, route: "abroad", text: "能去的地方摆在你面前，不止一个。每个地方脾气不一样，往后要过的日子，也就跟着两样。这一回，你往哪边去。",
     textEra: { c1955: "单位里传下消息：有个出去的名额。去处不多，路子就那么两条，名额还得争。这一回，你想走哪条。", c1965: "出去的名额落到单位头上。能走的路子不多，多半是跟着项目走，或是派出去学东西。这一回，你想走哪条。" },
     choices: [
       { label: "去远的那个地方，住下就不走了", eraIn: ["c1978", "c1985", "c1995", "c2000"], setState: { abroadKind: "anglo" }, effects: { growth: 3, freedom: 2, money: -2 }, echo: "落地的地方离家很远。住下来的路很长，得一年一年攒。头一件事，是把当地话学利索。" },
+      { label: "去远的那个地方读书，先把书读出来再说", eraIn: ["c1985", "c1995", "c2000"], setState: { abroadKind: "anglo" }, set: "abroad_study", effects: { growth: 3, money: -3, freedom: 1 }, echo: "去那么远的地方读书，学费是家里凑的、自己攒的，一分一分算着花。先把书读出来，往后的路，读完再说。" },
       { label: "去离家近的，想回就回", eraIn: ["c1978", "c1985", "c1995", "c2000"], setState: { abroadKind: "eastasia" }, effects: { money: 1, relation: 1, growth: 2 }, echo: "离家近，逢年过节回得去。字大半认得，话还得慢慢学，规矩也得慢慢摸。" },
+      { label: "去离家近的地方读书", eraIn: ["c1985", "c1995", "c2000"], setState: { abroadKind: "eastasia" }, set: "abroad_study", effects: { growth: 3, money: -3, relation: 1 }, echo: "离家近，书先读起来。学费压着，日子得省着过。先把书读出来，往后的路，读完再说。" },
       { label: "去日子慢、假期多的地方", eraIn: ["c1978", "c1985", "c1995", "c2000"], setState: { abroadKind: "europe" }, effects: { freedom: 3, health: 1, money: -1 }, echo: "那边的日子过得慢，税扣得重，假给得足。当地话难学，急不得。" },
+      { label: "去日子慢的地方读书，读完再看", eraIn: ["c1985", "c1995", "c2000"], setState: { abroadKind: "europe" }, set: "abroad_study", effects: { growth: 2, money: -3, freedom: 2 }, echo: "那边的日子慢，书也慢慢读。学费是笔大钱，家里凑的、自己攒的，先把书读出来，往后的事，读完再说。" },
       { label: "跟着项目出去挣钱，干完就回来", setState: { abroadKind: "dispatch" }, effects: { money: 4, health: -2, freedom: -1 }, echo: "合同签了几年，住处跟着项目走。钱是多，就是哪儿都住不长，行李不敢全拆开。" },
       { label: "跟着单位派出去进修，学完回来", eraIn: ["c1955", "c1965"], setState: { abroadKind: "dispatch" }, effects: { growth: 3, money: 1, relation: -1 }, echo: "名额是单位争来的，先学话，再学技术。走之前把家里的事安顿好，回来还回原单位。" },
     ] },

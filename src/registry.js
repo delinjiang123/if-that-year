@@ -132,6 +132,17 @@
 /* 拆分说明（v0.20.0）：version 与 domains 已移至 src/world/state.js（须在本文件之前加载）；
    本文件只登记里程碑（milestones），正文与拆分前一字未动。 */
 window.GAME_REGISTRY.milestones = {
+  "abroad_study": {
+   "setters": [
+    "proc_abroad_kind"
+   ],
+   "note": "留学链在读旗（CL-105 立，照 CL-104 编年稿脊柱设计）：proc_abroad_kind 的 3 个留学选项（选项级 eraIn [c1985,c1995,c2000]）与 setState abroadKind 同落 choice 级 set；普通旗，不进状态域。消费者：pack116 留学链①②全部条目（require 本旗）——没走留学门的人（窗口外推断补值只补 kind、补不了本旗）不进本链，与 r_abroad_pr 稀有事件的通用落点并行不冲突。第二片③毕业就业拍起转 abroad_worked"
+  },
+  "abroad_worked": {
+   "setters": [
+   ],
+   "note": "留学链已在地就业旗（CL-105 占位登记，照 CL-78/CL-93 空集占位先例）：本片无 setter、无消费者；由留学链第二片③毕业就业拍落（INDEX S03-04 对口形/S03-05 不对口形），此后④站稳与⑤永住/⑥买房条目以本旗 require 为链门。abroad_study→abroad_worked 两旗接力即本链脊柱，零新状态域"
+  },
   "ad_first": {
    "setters": [
     "p2_037"
