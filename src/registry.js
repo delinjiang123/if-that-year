@@ -140,8 +140,10 @@ window.GAME_REGISTRY.milestones = {
   },
   "abroad_worked": {
    "setters": [
+    "p117_004",
+    "p117_005"
    ],
-   "note": "留学链已在地就业旗（CL-105 占位登记，照 CL-78/CL-93 空集占位先例）：本片无 setter、无消费者；由留学链第二片③毕业就业拍落（INDEX S03-04 对口形/S03-05 不对口形），此后④站稳与⑤永住/⑥买房条目以本旗 require 为链门。abroad_study→abroad_worked 两旗接力即本链脊柱，零新状态域"
+   "note": "留学链已在地就业旗（CL-105 占位登记，照 CL-78/CL-93 空集占位先例）：CL-111 第二片已转实登——p117_004 对口形/p117_005 不对口形两选项同落（INDEX S03-04/S03-05）；消费者：pack117 的④站稳 7 条以本旗 require 为链门，此后⑤永住/⑥买房条目同读本旗。abroad_study→abroad_worked 两旗接力即本链脊柱，零新状态域"
   },
   "ad_first": {
    "setters": [
@@ -177,9 +179,11 @@ window.GAME_REGISTRY.milestones = {
    "setters": [
     "p11_040",
     "ab37_023",
-    "ab37_024"
+    "ab37_024",
+    "p117_006",
+    "p117_008"
    ],
-   "note": "回老家落脚（v0.20.1 面板急修补）：ab37_023 派遣项目结束选「回了」与 ab37_024 晚年选「回去在老家过」同立此旗，居所轨迹 residenceTrail 据此把终点写成 home，与 p11_040 同一写法"
+   "note": "回老家落脚（v0.20.1 面板急修补）：ab37_023 派遣项目结束选「回了」与 ab37_024 晚年选「回去在老家过」同立此旗，居所轨迹 residenceTrail 据此把终点写成 home，与 p11_040 同一写法。CL-111 补登：留学链回程两正脸 p117_006（读完回）/p117_008（读不下去回）的「回」选项同立此旗；消费者另有 p117_007（回来找活，require 本旗＋abroad_study）"
   },
   "back_to_city": {
    "setters": [
