@@ -1,8 +1,15 @@
-// [模块]《如果那年》付费功能「人生纪录典藏」（v0.33.0）：结算页的导出台。
-// 式样定稿见 paid-spec/SPEC.md：只卖「把这一生留下来」——一份数据、两个壳（长图＋可打印纪录册）；
-// 不卖改命、不卖好结局、不插广告。结算页现有的一切原样全免，本模块只在分享台之后加一行入口
-// 和一个导出面板；水印只落在导出成品（预览长图/预览纪录册）上，游戏内画面与现有分享卡一概不动。
-// 导出全程只读结算数据（与结算页/分享卡同一批函数取数），不碰落账、不消耗随机流。
+// [模块]《如果那年》「人生纪录典藏」（v0.33.0 上线；2026-11-11 CL-127 改免费）：结算页的导出台。
+// 一份数据、两个壳（长图＋可打印纪录册），对所有人免费：完局后直接生成、直接下载，
+// 无解锁门、无水印预览、无输码。支持作者是另一件事——自愿、金额自选、不换任何东西，
+// 入口只在面板里安静摆一行，链到支持页（buy.html）。不卖改命、不卖好结局、不插广告。
+// 结算页原有的一切一字不动，本模块只在分享台之后加一行入口和一个导出面板；游戏内画面
+// 与现有分享卡一概不动。导出全程只读结算数据（与结算页/分享卡同一批函数取数），不碰
+// 落账、不消耗随机流。
+// 封存（CL-127）：原付费路径整套保留在本文件内但玩家面无入口、不可达——本机解锁记录
+// （keepsakeState/keepsakeUnlocked/saveUnlock/readPendingCode）、输码核验（verifyCode/
+// reasonText）、赠予（requestGift/wireGift/giftShareText）、订购未完标记（markBuyPending/
+// buyPending/clearBuyPending）、水印（drawWatermark 与 openBook/renderKeepsakeImage 的
+// preview/watermark 形参）；领码页带回码的自动解锁入口已摘除。端点侧见 keepsake-config.js。
 (function (IFY) {
 "use strict";
 const CFG = window.IFY_KEEPSAKE || {};
@@ -1207,25 +1214,25 @@ function renderPanel() {
 const panel = IFY.el("keepsake-panel");
 if (!panel) return;
 const esc = IFY.esc;
-// S4：面板一打开先摆本局的一条事实（两种状态都先见这一句），再谈导出与价格
+// S4：面板一打开先摆本局的一条事实（先见这一句），再谈导出与支持
 const d = buildKeepsakeData();
 const factHtml = `<p class="ks-fact">${esc(panelFact(d))}</p>`;
-if (keepsakeUnlocked()) {
+// CL-127：导出全免费——单一面板，无解锁分支。导出与支持是两件事，分开摆：
+// 先把这一生拿走（长图＋纪录册直接生成），支持只在下面安静摆一行，自愿。
 panel.innerHTML = `<div class="ks-block">
 ${factHtml}
-<p class="ks-intro">这台设备已经解锁了。这一局能导出，以后每一局走完都能导出。</p>
+<p class="ks-intro">这一生走完了。长图和纪录册都免费，直接拿走：长图能存下来发给家里人看，册子能打印出来，自己留一本，或者送给爸妈也行。</p>
 <div class="row">
-<button type="button" class="primary" id="ks-dl">下载长图（无水印）</button>
+<button type="button" class="primary" id="ks-dl">下载长图</button>
 <button type="button" class="ghost" id="ks-book">打开纪录册（可打印）</button>
 </div>
 <p class="hint" id="ks-dlnote" hidden></p>
 <div class="cardpreview" id="ks-prevbox"></div>
-<p class="picklab">送一份给朋友</p>
-<p class="hint">用你自己的码，能领出一枚新的码，送给一个人。他玩完一局，在结算页输这枚码，就能导出他那一局的典藏。一枚码只能领一份。</p>
+<p class="picklab">支持作者（自愿）</p>
+<p class="hint">游戏和导出都不收钱。这一局要是让你觉得值，可以自愿支持一点，金额自己定，不换任何东西。</p>
 <div class="row">
-<button type="button" class="ghost" id="ks-gift">领一枚赠予码</button>
+<a class="ghost ks-support" href="${esc(CFG.buyPage || "buy.html")}" target="_blank" rel="noopener">去支持页</a>
 </div>
-<div id="ks-giftbox"></div>
 </div>`;
 const img = renderKeepsakeImage(d, { scale: 1});
 img.className = "card-img";
@@ -1242,82 +1249,16 @@ exportImg = c2;
 });
 });
 IFY.el("ks-book").addEventListener("click", () => { openBook(false); anaTrack("keepsake_export", { kind: "booklet" }); });
-wireGift();
-return;
-}
-let pending = readPendingCode();
-panel.innerHTML = `<div class="ks-block">
-${factHtml}
-<p class="ks-intro">游戏本身免费。走到这里，如果这一局让你想支持作者继续做下去，可以付一次；作为纪念，这台设备以后每一局都能把这一生导出成长图和纪录册。长图能存下来发给家里人看，册子打印出来能送人。</p>
-<div class="row">
-<button type="button" class="ghost" id="ks-preview">先看长图预览（带水印）</button>
-</div>
-<div class="cardpreview" id="ks-prevbox"></div>
-${buyPending()? `<div class="row">
-<a class="ghost ks-resume" href="${esc(CFG.buyPage || "buy.html")}" target="_blank" rel="noopener">刚才那笔没付完，点这里接着付</a>
-</div>`: ""}
-<div class="row">
-<a class="ghost ks-buy" href="${esc(CFG.buyPage || "buy.html")}" target="_blank" rel="noopener">支持作者 · ¥${CFG.priceJPY} / ¥${CFG.priceCNY}</a>
-</div>
-<p class="picklab">已经有兑换码了？</p>
-<div class="seedrow">
-<input id="ks-code" type="text" placeholder="输入兑换码" autocomplete="off" value="${esc(pending)}">
-<button type="button" class="primary" id="ks-unlock">用码解锁</button>
-</div>
-<p class="hint" id="ks-hint">${pending? "你从领码页带回的码已经填好了，点「用码解锁」就行。": ""}</p>
-<p class="hint">付完款会跳到领码页，码很大，抄下来也行。码丢了，凭付款订单能补发；换了设备，拿码再输一次就行。</p>
-<p class="hint">订完回游戏，展开这一行输码就能导出。这一页关了也没事：下次打开游戏，首页「最近活过的人生」里点这一局，能接着弄。</p>
-</div>`;
-const buyA = panel.querySelector(".ks-buy");
-if (buyA) buyA.addEventListener("click", () => { markBuyPending(); anaTrack("buy_click", {});});
-const resumeA = panel.querySelector(".ks-resume");
-if (resumeA) resumeA.addEventListener("click", () => anaTrack("buy_click", {}));
-IFY.el("ks-preview").addEventListener("click", () => {
-const box = IFY.el("ks-prevbox");
-box.innerHTML = "";
-const img = renderKeepsakeImage(buildKeepsakeData(), { scale: 0.55, watermark: true});
-img.className = "card-img";
-box.appendChild(img);
-const note = document.createElement("p");
-note.className = "hint";
-note.textContent = "这是带水印的预览。支持作者后，拿到的是无水印的全尺寸长图，外加能打印的纪录册。";
-box.appendChild(note);
-anaTrack("keepsake_preview", {}); // 统计升级批：水印预览生成完成
-});
-IFY.el("ks-unlock").addEventListener("click", async () => {
-const inp = IFY.el("ks-code");
-const hint = IFY.el("ks-hint");
-const code = (inp.value || "").trim();
-if (!code) { hint.textContent = "先把码输进来。"; return;}
-hint.textContent = "正在核验……";
-const r = await verifyCode(code);
-if (r.ok) {
-saveUnlock(code);
-try { sessionStorage.removeItem(PENDING_KEY);} catch (e) {}
-refreshDesk();
-const h2 = IFY.el("ks-hint");
-if (h2) h2.textContent = "";
-} else {
-hint.textContent = reasonText(r.reason);
-}
-});
 }
 
 function refreshDesk() {
 const line = IFY.el("keepsake-open");
 if (!line) return;
-line.textContent = keepsakeUnlocked()
-? "这一生的纪念品 · 已解锁，导出"
-: `支持作者 · 把这一生留成纪念 · ¥${CFG.priceJPY} / ¥${CFG.priceCNY}`;
-// 订购回头路（父亲事故热修）：有未完标记且未解锁时，典藏台上方常驻「继续订购」直达订购页，
-// 不用先展开面板才找得到；解锁或标记清除后自动收起（storage/visibilitychange 也走本函数）。
+// CL-127：入口行只说导出这一件事（免费、直接拿走）；支持不在行上喊，收在面板里。
+line.textContent = "把这一生留成纪念 · 免费导出";
+// 订购未完的「继续订购」常驻框随付费路径一并封存：元素保留，永不填充、永不显示。
 const rz = IFY.el("ks-resumebox");
-if (rz) {
-const showResume = !keepsakeUnlocked() && buyPending();
-rz.hidden = !showResume;
-if (showResume) rz.innerHTML = `<a class="ghost ks-buy" href="${IFY.esc(CFG.buyPage || "buy.html")}" target="_blank" rel="noopener">刚才那笔没付完，点这里接着付</a>`;
-else rz.innerHTML = "";
-}
+if (rz) { rz.hidden = true; rz.innerHTML = ""; }
 const panel = IFY.el("keepsake-panel");
 if (panel &&!panel.hidden) renderPanel();
 }
@@ -1331,39 +1272,15 @@ if (!btn) return;
 btn.addEventListener("click", () => {
 const p = IFY.el("keepsake-panel");
 if (!p) return;
-if (p.hidden) { anaTrack("keepsake_open", { state: keepsakeUnlocked()? "unlocked": "locked" }); renderPanel(); p.hidden = false;} else p.hidden = true;
+if (p.hidden) { anaTrack("keepsake_open", { state: "free" }); renderPanel(); p.hidden = false;} else p.hidden = true;
 });
 refreshDesk();
 }
 
-// ---------- 领码页带回码：自动解锁（失败不打扰，码留作预填） ----------
-// 地址栏抹码：kc 处理完（核验成功、失败都算）就把 URL 里的 kc 抹掉，不刷新页面、
-// 不动其他参数——免得玩家之后复制这个链接发出去，把码一起发走。
-function scrubKcFromUrl() {
-try {
-const u = new URL(location.href);
-if (u.searchParams.has("kc")) {
-u.searchParams.delete("kc");
-history.replaceState(null, "", u.pathname + u.search + u.hash);
-}
-} catch (e) {}
-}
-try {
-const kc = new URLSearchParams(location.search).get("kc");
-if (kc &&!keepsakeUnlocked()) {
-try { sessionStorage.setItem(PENDING_KEY, kc);} catch (e) {}
-try { localStorage.setItem(PENDING_LS_KEY, JSON.stringify({ code: kc, at: new Date().toISOString()}));} catch (e) {} // 待用码再存一份到 localStorage：自动核验失败时两份都留着，跨会话预填靠这份
-verifyCode(kc).then((r) => {
-if (r.ok) {
-saveUnlock(kc);
-try { sessionStorage.removeItem(PENDING_KEY);} catch (e) {}
-refreshDesk();
-}
-scrubKcFromUrl();
-}).catch(() => { scrubKcFromUrl(); });
-}
-} catch (e) {}
-
+// ---------- 封存（CL-127）：领码页带回码的自动解锁入口已摘除 ----------
+// 原逻辑：地址栏带 kc 参数回到游戏页时自动核验解锁、失败留作预填。免费化后玩家面
+// 无输码入口，此入口一并摘除；verifyCode 本体保留在上方（无调用方），kc 抹码函数
+// scrubKcFromUrl 随入口删除。端点 /api/claim 与发码逻辑不动，见 keepsake-config.js。
 // 在别的标签页完成订购/解锁时，本页展开着的导出台跟着刷新（结算页不用重开）
 try {
 window.addEventListener("storage", (e) => { if (e && e.key === LS_KEY) refreshDesk();});
