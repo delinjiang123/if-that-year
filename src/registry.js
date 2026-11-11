@@ -1904,8 +1904,11 @@ window.GAME_REGISTRY.milestones = {
   },
   "traj_book": {
    "setters": [
-    "r_book"
-   ]
+    "r_book",
+    "r_write_rediscovered",
+    "r_write_serial"
+   ],
+   "note": "CL-125 补登：write 富贵尾巴起势两门（旧作翻红 r_write_rediscovered／连载买断 r_write_serial）与存量 r_book 同落此旗——CL-109 §三.4「给 r_book 补第二扇门」：本业写作者不靠 side_start 也能立此旗；坐实环 r_write_reprint 只认旗、不问出处。end_bestseller 口径不变。"
   },
   "traj_captain": {
    "setters": [
@@ -2001,8 +2004,9 @@ window.GAME_REGISTRY.milestones = {
   },
   "traj_fortune_photo": {
    "setters": [
+    "r_photo_landmark"
    ],
-   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记）：本线尾巴坐实拍未施工（后续 W 片），setters 先空集占位，照 trial_done 先例以本注记为准。消费者先行：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence——旗未落时两处恒不命中，不改变存量行为。"
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记，CL-125 转实登）：坐实拍＝r_photo_landmark（require 本链做大旗 traj_scale_photo2）。消费者：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence。"
   },
   "traj_fortune_sea": {
    "setters": [
@@ -2018,8 +2022,9 @@ window.GAME_REGISTRY.milestones = {
   },
   "traj_fortune_write": {
    "setters": [
+    "r_write_reprint"
    ],
-   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记）：本线尾巴坐实拍未施工（后续 W 片），setters 先空集占位，照 trial_done 先例以本注记为准。消费者先行：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence——旗未落时两处恒不命中，不改变存量行为。"
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记，CL-125 转实登）：坐实拍＝r_write_reprint（require traj_book——本链起势两门与存量 r_book 同为前任；钱门见该拍注记与 CL-125 REPORT 的实测归因）。消费者：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence。"
   },
   "traj_ipo": {
    "setters": [
@@ -2110,6 +2115,19 @@ window.GAME_REGISTRY.milestones = {
     "r_fin_newline"
    ],
    "note": "富贵尾巴链内旗（CL-124）：金融慢合伙人链双起势（列席牵头慢账 r_fin_slowroom／带新业务线 r_fin_newline）同落——标记「慢活交到你手上」，坐实环 r_fin_partner 以此为 require；本身不进结算与结局口径。"
+  },
+  "traj_scale_photo": {
+   "setters": [
+    "r_photo_studio",
+    "r_photo_annual"
+   ],
+   "note": "富贵尾巴链内旗（CL-125）：摄影影楼链双起势（自己的影楼站住了 r_photo_studio／商业客户包年 r_photo_annual）同落——标记「自己的摊子有了底」，做大环 r_photo_second 以此为 require；本身不进结算与结局口径。"
+  },
+  "traj_scale_photo2": {
+   "setters": [
+    "r_photo_second"
+   ],
+   "note": "富贵尾巴链内旗（CL-125）：摄影影楼链做大拍 r_photo_second 条目本体落（呈现即立旗）——标记「第二家店与婚庆队成形」，坐实环 r_photo_landmark 以此为 require；本身不进结算与结局口径。"
   },
   "traj_scale_shop": {
    "setters": [

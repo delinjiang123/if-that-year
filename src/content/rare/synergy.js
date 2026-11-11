@@ -246,6 +246,45 @@ window.GAME_SYNERGY = {
         { label: "不并。牌子小，是我自己的", effects: { freedom: 2, relation: 1 }, echo: "你回了话。大所的人也不勉强，说往后有合作再找你。你那块小牌子还挂在门口，风吹日晒，字有点旧了。" },
       ] },
     { id: "r_acct_firm", label: "所里养着十来个人", clue: "坐在最里间听外头敲键盘、锁门时回头看牌子的人。", min: 40, max: 60, require: "traj_scale_acct", chance: 0.06, text: "所里养着十来个人了。月初发工资，你坐在最里头那间，听着外头打算盘和敲键盘的声音，心里很稳。客户还是那些客户，有几家从你立牌子那年就跟着，他们的厂从小作坊做成了公司，你这边的账，也跟着记了厚厚一摞。晚上锁门走的时候，你回头看了一眼牌子——灯还亮着。", effects: { money: 10, growth: 2, relation: 2 }, set: "traj_fortune_acct" },
+    // CL-125（CL-109 §三.4/§三.8，富贵尾巴 W4）：write 长尾翻红两环＋photo 影楼三环，追加于
+    // 存量 rare 表末（CL-124 之后；表序纪律：新链不抢存量链的掷骰序）。资格与落法：
+    // write_work 在 validate-state ENTRY_FLAGS 名单内，用 ctx mainLine＋tenureIn；photo_work
+    // 不在名单，照 CL-117/124 改 ctx.flag（曾入行）＋tenureIn（当前主线工龄）双门。
+    // write 起势落存量旗 traj_book（与 r_book 同旗——end_bestseller 的既有口径直接通）：
+    // 翻红是赶上了时候的事实、不是抉择，两条起势（旧作翻红／连载买断）的选项只分姿态、
+    // 同落此旗（照 CL-124 dev 起势双落旗形状）；坐实不设 chain、只认 traj_book（r_book 的
+    // 副业路与本链两门同为前任）。media 同为 write 线面（pack120），其链自带 traj_viral
+    // 前置、本链自带 traj_book 前置，两链 require 不交叉、富贵旗互不串扰。
+    // photo 双起势同落 traj_scale_photo（影楼站稳／商业客户包年），做大环链内旗落条目
+    // 本体（呈现即立旗，照 CL-117/124 先例），选项只分代价；风光脸在本线只是副业面、
+    // 从不占主线，链门落主线工龄即已排除（稿 §三.8 的风光封顶裁定不动）。
+    { id: "r_write_rediscovered", label: "书被翻出来了", clue: "接到编辑电话，回家先把自家书架上那本旧书抽出来擦了擦灰的人。", min: 35, max: 55, ctx: { mainLine: "write_work", tenureIn: [10, 999] }, stats: [{ k: "growth", gt: 60 }], chance: 0.03, text: "十多年前你写的那本书，印数不大，卖完也就没人再提了。这阵子不知道怎么了，先是有人在网上到处问这本书哪儿能买到，接着一档谈话节目打来电话，说想聊聊书里写的那摊事。出版社的编辑也找来了：仓库里剩的几百本早卖空了，他们想重印。编辑说，这就是赶上时候了。这话你没太当真，可回家还是把书架上那本样书抽出来，擦了擦灰。",
+      choices: [
+        { label: "接住。该跑的场子，跑一跑", effects: { growth: 2, freedom: -1 }, set: "traj_book", echo: "重印的书出来了，封面还是老样子，腰封上多了几句别人的话。你跑了几场活动，回来累得不想说话，样书倒是又擦了一遍。" },
+        { label: "不折腾。书在那儿，谁想看谁看", effects: { wisdom: 2 }, set: "traj_book", echo: "你没去跑场子。书重印了，摆在书店不起眼的架子上，慢慢地卖。偶尔有人提起，你看一眼，关掉页面，接着写手头的东西。" },
+      ] },
+    { id: "r_write_serial", label: "连载被买断", clue: "合同签完，先把连载的存稿文件夹备份了三份的人。", min: 35, max: 55, minYear: 2012, ctx: { mainLine: "write_work", tenureIn: [10, 999] }, stats: [{ k: "growth", gt: 60 }], chance: 0.03, text: "你在行里写了这些年，夜里还连着一部长篇连载，攒了几十万字，看的人不算多，可天天有人催更。这天平台的人找来：想把这部买下来，在他们那儿独家连完，收尾之后结集出书。价钱开得不低，条件也写得细：更新节奏要跟上，版权一签就是好几年。你把合同拿回家，看了两晚上。",
+      choices: [
+        { label: "签。独家就独家，先把这部写完", effects: { money: 3, growth: 2, freedom: -1 }, set: "traj_book", echo: "签完你把存稿文件夹备份了三份。催更的人还在，往后催你的，多了一个平台。连载收尾那阵，出书的事提上了日程。" },
+        { label: "只授这一部。后头写什么，还归我", effects: { money: 2, wisdom: 2 }, set: "traj_book", echo: "你把合同改了两条，平台那边争了几天，也认了。这一部归他们连、归他们出书；再往后的东西，还是你自己的。" },
+      ] },
+    { id: "r_write_reprint", label: "一版再版", clue: "版税单到手，先把数字数了两遍的人。", min: 38, max: 58, require: "traj_book", ctx: { mainLine: "write_work" }, stats: [{ k: "money", gt: 55 }], chance: 0.035, text: "那本书就这么一版一版印下去了。版税单一年来两回，头几年你看都不细看，有一回你把数字数了数，又数了一遍——不是稿费那种数了。这笔钱不声不响，可它不停：书在店里摆着，在图书馆里借着，在人手里传着，你睡你的觉，它自己往前走。写了这么多年字，头一回，你觉得字是能养人的。", effects: { money: 12, growth: 2 }, set: "traj_fortune_write" },
+    { id: "r_photo_studio", label: "自己的影楼站住了", clue: "结婚照的单子排到下个月，记事本头一回写不下的人。", min: 32, max: 50, minYear: 2005, ctx: { flag: "photo_work", tenureIn: [10, 999] }, chance: 0.05, text: "你学徒出身，在别人家的馆子里跟了好些年，前几年才自己盘下这间小店。头两年店里冷清，房租都算着花。这一年不一样了：结婚照的单子排到了下个月，拍周岁照的打电话来，得先问你哪天有空。隔壁卖童装的铺子要搬走，房东来问你接不接——接下，店面大一倍；不接，现在这间也够转，就是往后单子只怕接不过来。",
+      choices: [
+        { label: "接。把隔壁盘下来，店面扩一倍", effects: { money: -3, growth: 3 }, set: "traj_scale_photo", echo: "隔壁的墙打通那天，店里落了一层灰，你拿布把相机盖了三层。地方大了，敢接的活也大了。" },
+        { label: "不扩。单子挑着接，名声做扎实", effects: { growth: 2, relation: 2 }, set: "traj_scale_photo", echo: "你没接隔壁。店还是那间，价提了一档，推掉的单子不少——可推出去的人，回头还把亲戚领来。" },
+      ] },
+    { id: "r_photo_annual", label: "客户把年包了", clue: "签完包年合同，先把用了六年的机身送去保养的人。", min: 30, max: 50, minYear: 2008, ctx: { flag: "photo_work", tenureIn: [8, 999] }, chance: 0.05, text: "这些年你有一多半的活，是给本地几家公司拍的：产品图、开业、年会、门店换季。这天最大的一家把你叫去，摊开一份合同：往后他们家的图，一年一包，都归你，钱按季结。数不算顶大，可它是死的——旱涝都有。签了，你这一年就有了底，敢琢磨别的事；不签，散单自在，就是心里没根。",
+      choices: [
+        { label: "签。一年有了底，再想别的", effects: { money: 3, growth: 2 }, set: "traj_scale_photo", echo: "签完你把那台用了六年的机身送去保养。往后每季的款按时到，店里添置什么，你心里有了数。" },
+        { label: "先签半年。看看他们付款痛快不痛快", effects: { money: 2, wisdom: 2 }, set: "traj_scale_photo", echo: "半年里款一回没拖。续签的时候，对方主动说，明年把另一家分店的活也给你。你的心，这才算放下。" },
+      ] },
+    { id: "r_photo_second", label: "第二家店和婚庆队", clue: "一天赶三个场子，进门先问助理新人到了没有的人。", min: 35, max: 55, require: "traj_scale_photo", ctx: { flag: "photo_work" }, chance: 0.055, set: "traj_scale_photo2", text: "第二家店开在了新区，赶上新区结婚的人一年比一年多。你一个人分不了身，正式收了两个徒弟，排班表贴在墙上：哪天、哪场、谁去，红笔标得清清楚楚。忙的周末一天三场，你坐着车在几个厅之间跑，相机包不离手。有人问你还拍不拍，你说拍，就是拍得比从前少了——多半的时候，你在带人。",
+      choices: [
+        { label: "亲自盯。关键的场子，还是自己到", effects: { growth: 3, health: -2 }, echo: "那几年你的膝盖先不行了，上楼拍全家福，得扶一把栏杆。可你到的场子，新人家里都放心。" },
+        { label: "放手让徒弟顶。自己只接点名找你的", effects: { relation: 2, wisdom: 1 }, echo: "徒弟头一回独立跟完全程，回来把片子交给你看，你挑出三处毛病，没骂，留他吃了顿饭。第二年，他能顶一摊了。" },
+      ] },
+    { id: "r_photo_landmark", label: "办喜事先想你家", clue: "给一家人拍过三代人照片的人。", min: 38, max: 58, chain: "r_photo_second", require: "traj_scale_photo2", ctx: { flag: "photo_work" }, stats: [{ k: "money", gt: 55 }], chance: 0.055, text: "在这个地方，家里办喜事要拍照，先想到的就是你家店。不用打广告，老客户领着新客户来：有一家的结婚照是二十年前在你这儿拍的，如今抱着孙子来拍周岁，点名还要你按快门。预约的本子记到了半年后。钱是慢慢挣下的，一单一单，都是熟人的脸。你偶尔翻翻早年的底片箱，想，这行当没白干。", effects: { money: 11, relation: 3, growth: 1 }, set: "traj_fortune_photo" },
   ],
   endings: [
     { id: "end_richest", clue: "把副业干成大公司，最后站在锣声里的人。", tier: "legendary", all: ["traj_ipo"], stats: [{ k: "money", gt: 69 }], title: "世界首富", evidence: [["r_ipo"],["r_funding"]],
