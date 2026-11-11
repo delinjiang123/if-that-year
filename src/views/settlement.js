@@ -1424,7 +1424,15 @@
     // own/commodity 支先按 M 分说（涨上来了/买在高点），其余情形沿用原两句按变现后钱分档（m 已含变现额）。
     const houseTier = IFY.S.houseTier || null;
     const houseM = houseTier && typeof IFY.houseMultipleOf === "function" ? IFY.houseMultipleOf(IFY.S, IFY.S.birthYear + (IFY.S.death ? IFY.S.death.age : IFY.S.age)) : null;
-    if (houseTier === "R" || housing.owned === "reform") s3 = m >= 60 ? "房改那会儿把住着的单位房买下来了，手里还留着余钱，够花。" : "房改时把住着的单位房买了下来，钱多半填进了这套房里，日子紧巴巴地过。";
+    // 富贵档（CL-112，CL-109 §六）：钱槽在住房支之前先判 FORTUNE——持有任一 traj_fortune_* 坐实旗
+    // 或 traj_ipo（与事业槽读 traj_ipo 同口径：读本局终局旗，交换局的段见证不在此扩读）。
+    // money≥55 走富贵档（覆盖住房支文案，住房形态在措辞里分三形带过）；money<40 走散财变体
+    // （挣到过、没守住，也给一句体面的话）；40–55 不覆盖、回落下方住房支（旗是年轻时的事，
+    // 日子回到了常态）。判词 moneyMain 只读数字轨迹，与此互不干涉，本次不动。
+    const FORTUNE = Object.keys(F).some((k) => F[k] && k.indexOf("traj_fortune_") === 0) || !!F.traj_ipo;
+    if (FORTUNE && m >= 55) s3 = (houseTier === "R" || housing.unit || housing.owned === "reform" || housing.form === "reform") ? "住的还是这套老房，没换。手里的钱够，后半程没为钱发过愁。老邻居问你图啥，你说，住惯了。" : housing.owned ? "房子早供完了。钱这一辈子，算是挣出来了——后半程没再为钱发过愁。账还是自己记，菜还是自己买，就是买什么不用再算三遍了。" : "没买房，钱倒是真攒下了。这一辈子钱上没受过憋屈，租房住着也自在，房东涨租，你搬走就是。";
+    else if (FORTUNE && m < 40) s3 = "钱是真挣到过。后来散了大半，剩下的够过日子。说起那几年，你还是会笑一下——风光过，就不算白过。";
+    else if (houseTier === "R" || housing.owned === "reform") s3 = m >= 60 ? "房改那会儿把住着的单位房买下来了，手里还留着余钱，够花。" : "房改时把住着的单位房买了下来，钱多半填进了这套房里，日子紧巴巴地过。";
     else if (housing.owned === "selfbuilt") s3 = m >= 40 ? "自己动手盖起来的房，没欠下月月要还的钱。地是村里的，房是自家的，手里还留着余钱，够花。" : "自己动手盖起来的房，没欠下月月要还的钱。地是村里的，房是自家的，日子紧巴巴地过。"; // 自建房支（农民路线）：无月供、无变现，只按手头宽紧分说
     else if (housing.owned === "own" || housing.owned === "commodity") {
       if (houseM != null && houseM >= 1.6) s3 = "当年买的那套房，涨上来了。终局算总账，房子这一笔是挣的。";

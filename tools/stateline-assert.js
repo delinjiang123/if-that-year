@@ -1132,7 +1132,7 @@ vm.runInContext("window.__P.specialEnding = window.IFY.specialEnding;", sandbox,
   const NEW_ENDS = ["end_care_parents", "end_solo_free", "end_two_home", "end_late_partner", "end_return_home", "end_farm_life", "end_comeback", "end_rent_free", "end_abroad_rest", "end_old_hand", "end_one_partner", "end_long_life", "end_steady_life", "end_late_learner", "end_early_full"];
   const ends = P.D.endings || [];
   const byEnd = {}; for (const e of ends) byEnd[e.id] = e;
-  ok(ends.length === 32, "⑰ 数据: 结局表共 32 条（17 旧 + 15 新）");
+  ok(ends.length === 33, "⑰ 数据: 结局表共 33 条（17 旧 + 15 新 + CL-112 end_selfmade 白手起家）");
   ok(NEW_ENDS.every((id) => byEnd[id] && byEnd[id].tier === "rare" && byEnd[id].title && byEnd[id].clue && byEnd[id].text), "⑰ 数据: 15 条新结局齐备（tier=rare、title/clue/text 非空）");
   ok(NEW_ENDS.every((id) => Array.isArray(byEnd[id].evidence) && byEnd[id].evidence.length === 2 && byEnd[id].evidence.every((g) => Array.isArray(g) && g.length > 0)), "⑰ 数据: 15 条新结局各恰有 2 组非空证据点（与旧 17 条同纪律）");
 

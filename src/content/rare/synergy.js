@@ -51,7 +51,18 @@ window.GAME_SYNERGY = {
     // —— 独立稀有点 ——
     { id: "r_lottery", label: "楼下中了头奖", clue: "楼下彩票站贴出红纸那天，名字没写、照常去上班的人。", min: 23, max: 60, chance: 0.00015, text: "楼下彩票站贴了张红纸：本站中出头奖。名字没写，但你知道是你——那组号码，是你随手写的生日组合。税后的钱到账那天，你照常去上了班。", effects: { money: 40 }, set: "traj_lottery" },
     { id: "r_patent", label: "小专利卖了个好价", clue: "捣鼓了两年的方案，被人找上门来买的人。", min: 32, max: 55, stats: [{ k: "growth", gt: 71 }], chance: 0.015, text: "你业余捣鼓出来的一个小专利，被一家公司看上了，开价比你想的高得多。签约的时候对方说：我们找这个方案找了两年。", effects: { money: 14, growth: 2 } },
-    { id: "r_oldhouse", label: "老房子补偿款", clue: "锁上老屋门之前，在门口拍了张照的人。", min: 40, max: 60, any: ["near_family"], routeIn: ["home", "corp", "abroad", "study", "gap"], chance: 0.015, text: "老家那片要改造了。老房子的补偿款打下来，比你想的多。你站在老屋门口拍了张照，才锁上门。", effects: { money: 12 }, set: "traj_windfall" },
+    // CL-112（CL-109 §五改造）：拆迁落点环——原一拍抽奖（chance 0.015／窗 40–60／无年代门）改两环：
+    // 落点只落链旗 traj_oldhouse，钱/房的大头与 traj_windfall 都在坐实环 r_oldhouse_move（表末追加）；
+    // 年代门 minYear 2003（城市更新成规模的起点），routeIn 补 farm 成六线（城乡两形同门：近郊老家
+    // 与老城老屋都靠 near_family 这一「住在家人近处、老家那片还在」的事实代理）；补偿不写具体数字。
+    // 选房档不接 bought_house：captureHouse 只认第一套且按工资档定价收首付，安置房不是买房，
+    // 硬接会把回迁房写成商品房/房改房（机制核查见 CL-112 REPORT）——选房只给过渡钱、
+    // 房的去向在本拍回响与坐实环文本里交代（等回迁、搬回老地方住），不悬空。
+    { id: "r_oldhouse", label: "那片要动了", clue: "丈量那天站在自家门口，看人往墙上写号的人。", min: 38, max: 58, any: ["near_family"], routeIn: ["home", "corp", "abroad", "study", "gap", "farm"], minYear: 2003, chance: 0.007, text: "老家那片要动了。消息先在街坊之间传，后来街道的人来丈量，邻居都在场，墙上写了号。协议摆在你面前，签之前得先选一样：要钱，还是要安置房。",
+      choices: [
+        { label: "要钱。利落，往后自己安排", effects: { money: 10, freedom: 1 }, set: "traj_oldhouse", echo: "签完字，你在老屋门口站了一会儿，拍了张照。钱到账那天，你请老邻居吃了顿饭。" },
+        { label: "要房。等回迁，还住回这片", effects: { money: 3, relation: 1 }, set: "traj_oldhouse", echo: "先搬出去租着，等那片盖回来。房的去向就这么定下了：不换地方，盖好了搬回去住。" },
+      ] },
     { id: "r_marathon", label: "年龄组第一名", clue: "冲线时计时员愣了一下，又看了一眼号码布的人。", min: 52, max: 64, stats: [{ k: "health", gt: 74 }], chance: 0.05, text: "城市马拉松，你拿了年龄组的第一名。冲线的时候计时员愣了一下，看了看你的号码布，又看了看你。", effects: { health: 3, freedom: 2 }, set: "traj_champ" },
     { id: "r_rescue","stateAll":{"mom":"alive"}, label: "河边救起一个人", clue: "救完人发现鞋掉了一只，母亲把新闻存进手机的人。", min: 28, max: 55, minYear: 2008, chance: 0.002, text: "河边有人落水，你跳下去了。人救上来的时候你才发现自己鞋掉了一只。本地新闻播了四十秒，母亲把那段视频存在手机里，给亲戚挨个看。", effects: { relation: 5, health: -2 } },
     { id: "r_antique", label: "旧瓷瓶擦不得", clue: "被告知『别擦了，这个擦不得』之后，把房顶修了的人。", min: 35, max: 60, chance: 0.003, text: "清理老柜子时翻出个旧瓷瓶，拿去给懂行的人看了一眼。对方戴上眼镜看了很久，说：别擦了，这个擦不得。后来它拍出去的钱，正好够把老房的房顶修了。", effects: { money: 8 } },
@@ -94,6 +105,10 @@ window.GAME_SYNERGY = {
     { id: "lk_born", label: "这一回，等到了", clue: "快五十岁那年，把婴儿床拼了两个晚上的人。", min: 48, max: 51, require: ["late_try"], chain: "lk_wait", state: { kids: "undecided", spouse: ["partnered", "dating"] }, chance: 0.13, text: "消息是对方先看到的，验孕棒举在手里，半天没说出话。后面几个月，复查一次不落，报告都说平稳。孩子出生那天，你在产房外站了很久，护士抱出来，你先看对方——对方朝你点点头，你才伸手。", effects: { relation: 4, health: -2, money: -3 }, set: "late_parent", setState: { kids: "has" } },
     { id: "lk_none", label: "最后一次复查", clue: "把没用完的药对着单子点了一遍，又放回抽屉的人。", min: 51, max: 53, require: ["late_try"], chain: "lk_wait", state: { kids: "undecided", spouse: ["partnered", "dating"] }, chance: 0.55, text: "最后一次复查，医生把能说的都说了：该试的办法都试了，再往下，身体先受不了。回家路上你们在面馆停了一次，一人一碗，谁也没剩下。日子还得往下过，这话谁也没说出口，可两个人都懂。", effects: { wisdom: 2, health: -1 }, set: "late_tried", setState: { kids: "none" } },
     { id: "lk_fade", label: "慢慢就不提了", clue: "把医院的就诊卡收进钱包最里层，三年没再动过的人。", min: 52, max: 57, require: ["late_try"], state: { kids: "undecided", spouse: ["partnered", "dating"] }, chance: 0.5, text: "也没有哪一天正式说过停。就是复查的闹钟删了，药没有再续，就诊卡收进钱包最里面。这事从饭桌上慢慢退到了抽屉里。偶尔亲戚问起，你们笑笑，把话岔开。", effects: { wisdom: 2, freedom: 1 }, set: "late_tried", setState: { kids: "none" } },
+    // CL-112（CL-109 §五）：拆迁坐实环，追加在存量 rare 表末（表序纪律：新链不抢存量链的掷骰序）。
+    // chain+require 双门：落点环来过且选过钱/房（traj_oldhouse）才掷；chance 0.08 是链内高转化
+    // （事已临头，搬完是常态）。traj_windfall 在此落（原由 r_oldhouse 直落，registry 已改指本条）。
+    { id: "r_oldhouse_move", label: "搬出去那年", clue: "老屋里吃完最后一顿饭，把碗筷打包带走的人。", min: 39, max: 64, chain: "r_oldhouse", require: "traj_oldhouse", chance: 0.08, text: "搬出去那年，卡车停在巷口。老屋里最后吃了一顿饭，碗筷打包带走，门锁交出去。头一年路过那片，你还会放慢脚步看一眼。日子，就这么换了个地方往下过。", effects: { money: 2, wisdom: 1 }, set: "traj_windfall" },
   ],
   endings: [
     { id: "end_richest", clue: "把副业干成大公司，最后站在锣声里的人。", tier: "legendary", all: ["traj_ipo"], stats: [{ k: "money", gt: 69 }], title: "世界首富", evidence: [["r_ipo"],["r_funding"]],
@@ -121,6 +136,12 @@ window.GAME_SYNERGY = {
       text: "行业里那份用了很多年的标准，起草人名单里有你。年轻人入行学的第一课，写的就是你定的规矩。你没跟人提过这事，只是每次看到那份文件，都把错别字在心里默默改一遍。" },
     { id: "end_localfounder", clue: "招工启事贴出去，来应聘的有小学同学孩子的人。", tier: "epic", route: "home", all: ["side_job"], any: ["shop_work"], forbid: ["moved_city"], stats: [{ k: "money", gt: 71 }], title: "县城企业家", evidence: [["side_job"],["c_side",{"stat":{"k":"money","gt":71}}]],
       text: "你在县城里的那摊生意，后来成了镇上最大的用工单位。招工启事贴出去，来的有你小学同学的孩子。你在办公室里看着窗外想：当年要是走了，这一切就都没有了。当然，走了也会有别的——只是这个版本，你过得不后悔。" },
+    // CL-112（CL-109 §六）：各线富贵尾巴的共同结局家——any 任一 traj_fortune_* 坐实旗或 traj_ipo，
+    // 钱门 gt 64；evidence 两点制：一点认旗（hasFact 并读口径，旗落即认）、一点认钱数字。
+    // traj_fortune_* 的坐实拍由后续 W 片施工，在此之前本条仅 traj_ipo 一路可达（与 end_richest 分工：
+    // 那条是 legendary 且要 money>69，本条 epic 收 65–69 的上市局与各线本业做大局）。
+    { id: "end_selfmade", clue: "起家时手里没几个钱，后来这一片办事先想起他家的人。", tier: "epic", any: ["traj_fortune_acct", "traj_fortune_builder", "traj_fortune_consult", "traj_fortune_craft", "traj_fortune_dev", "traj_fortune_farm", "traj_fortune_fin", "traj_fortune_media", "traj_fortune_photo", "traj_fortune_sea", "traj_fortune_shop", "traj_fortune_write", "traj_ipo"], stats: [{ k: "money", gt: 64 }], title: "白手起家", evidence: [["traj_fortune_acct", "traj_fortune_builder", "traj_fortune_consult", "traj_fortune_craft", "traj_fortune_dev", "traj_fortune_farm", "traj_fortune_fin", "traj_fortune_media", "traj_fortune_photo", "traj_fortune_sea", "traj_fortune_shop", "traj_fortune_write", "traj_ipo"], [{ "stat": { "k": "money", "gt": 64 } }]],
+      text: "你起家的时候，手里没几个钱。后来那摊事一点点做大，做成了这一片绕不开的名字。钱是挣到了，日子还是照常过：菜自己买，账自己记。有人问你这算不算白手起家，你笑笑说，算吧，就是慢了点。" },
     { id: "end_lottery", clue: "每年那一天还去买一注，还是那组生日号码的人。", tier: "rare", all: ["traj_lottery"], title: "天选之人", evidence: [["r_lottery"],[{"stat":{"k":"money","gt":59}}]],
       text: "中奖的事你没跟几个人说。钱一部分存了定期，一部分给家里添了几样大件，日子还是照常过。只是每年那一天，你会去楼下那家彩票站买一注，还是那组生日号码。店主问你图啥，你说：图个念想。" },
     { id: "end_champion", clue: "奖牌挂在书房门后，说秘诀是『还跑得动』的人。", tier: "rare", all: ["traj_champ"], title: "年龄组冠军", evidence: [["r_marathon"],[{"stat":{"k":"relation","gt":59}}]],

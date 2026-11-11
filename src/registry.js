@@ -1935,6 +1935,66 @@ window.GAME_REGISTRY.milestones = {
     "r_funding"
    ]
   },
+  "traj_fortune_acct": {
+   "setters": [
+   ],
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记）：本线尾巴坐实拍未施工（后续 W 片），setters 先空集占位，照 trial_done 先例以本注记为准。消费者先行：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence——旗未落时两处恒不命中，不改变存量行为。"
+  },
+  "traj_fortune_builder": {
+   "setters": [
+   ],
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记）：本线尾巴坐实拍未施工（后续 W 片），setters 先空集占位，照 trial_done 先例以本注记为准。消费者先行：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence——旗未落时两处恒不命中，不改变存量行为。"
+  },
+  "traj_fortune_consult": {
+   "setters": [
+   ],
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记）：本线尾巴坐实拍未施工（后续 W 片），setters 先空集占位，照 trial_done 先例以本注记为准。消费者先行：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence——旗未落时两处恒不命中，不改变存量行为。"
+  },
+  "traj_fortune_craft": {
+   "setters": [
+   ],
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记）：本线尾巴坐实拍未施工（后续 W 片），setters 先空集占位，照 trial_done 先例以本注记为准。消费者先行：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence——旗未落时两处恒不命中，不改变存量行为。"
+  },
+  "traj_fortune_dev": {
+   "setters": [
+   ],
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记）：本线尾巴坐实拍未施工（后续 W 片），setters 先空集占位，照 trial_done 先例以本注记为准。消费者先行：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence——旗未落时两处恒不命中，不改变存量行为。"
+  },
+  "traj_fortune_farm": {
+   "setters": [
+   ],
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记）：本线尾巴坐实拍未施工（后续 W 片），setters 先空集占位，照 trial_done 先例以本注记为准。消费者先行：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence——旗未落时两处恒不命中，不改变存量行为。"
+  },
+  "traj_fortune_fin": {
+   "setters": [
+   ],
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记）：本线尾巴坐实拍未施工（后续 W 片），setters 先空集占位，照 trial_done 先例以本注记为准。消费者先行：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence——旗未落时两处恒不命中，不改变存量行为。"
+  },
+  "traj_fortune_media": {
+   "setters": [
+   ],
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记）：自媒体是 write 线的线面、旗名单列（CL-109 §二.2 点名 traj_fortune_media）；坐实拍未施工（后续 W 片），setters 先空集占位，照 trial_done 先例以本注记为准。消费者先行：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence——旗未落时两处恒不命中，不改变存量行为。"
+  },
+  "traj_fortune_photo": {
+   "setters": [
+   ],
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记）：本线尾巴坐实拍未施工（后续 W 片），setters 先空集占位，照 trial_done 先例以本注记为准。消费者先行：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence——旗未落时两处恒不命中，不改变存量行为。"
+  },
+  "traj_fortune_sea": {
+   "setters": [
+   ],
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记）：本线尾巴坐实拍未施工（后续 W 片），setters 先空集占位，照 trial_done 先例以本注记为准。消费者先行：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence——旗未落时两处恒不命中，不改变存量行为。"
+  },
+  "traj_fortune_shop": {
+   "setters": [
+   ],
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记）：本线尾巴坐实拍未施工（后续 W 片），setters 先空集占位，照 trial_done 先例以本注记为准。消费者先行：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence——旗未落时两处恒不命中，不改变存量行为。"
+  },
+  "traj_fortune_write": {
+   "setters": [
+   ],
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记）：本线尾巴坐实拍未施工（后续 W 片），setters 先空集占位，照 trial_done 先例以本注记为准。消费者先行：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence——旗未落时两处恒不命中，不改变存量行为。"
+  },
   "traj_ipo": {
    "setters": [
     "r_ipo"
@@ -1944,6 +2004,12 @@ window.GAME_REGISTRY.milestones = {
    "setters": [
     "r_lottery"
    ]
+  },
+  "traj_oldhouse": {
+   "setters": [
+    "r_oldhouse"
+   ],
+   "note": "拆迁链中间旗（CL-112 新立）：r_oldhouse 落点环选钱/选房两选项同落此旗，供坐实环 r_oldhouse_move 的 chain+require 双门消费；本身不进结算与结局口径。"
   },
   "traj_school": {
    "setters": [
@@ -1982,8 +2048,9 @@ window.GAME_REGISTRY.milestones = {
   },
   "traj_windfall": {
    "setters": [
-    "r_oldhouse"
-   ]
+    "r_oldhouse_move"
+   ],
+   "note": "拆迁坐实旗：CL-112 前由 r_oldhouse 一拍直落；改造后落点环只落 traj_oldhouse，本旗改由坐实环 r_oldhouse_move 落（CL-109 §五两环制）。"
   },
   "trial_done": {
    "setters": [
