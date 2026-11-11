@@ -267,40 +267,85 @@
       cardStats(x, y + 26, 560, 44);
     } else {
       // ===== 判词卡（模板 A），视觉元素与旧版一致 =====
+      // CL-129：长判词下六维条压页脚（钩子行/域名行）的存量修复。判词组装本就
+      // 贴着 110 字上限出句，4:5 卡的内容流经常把六维条推过页脚。修法不动页脚、
+      // 不动任何主体元素的位置口径：绘制前先按 wrapText 同一套量法预演本局的
+      // 版式（只量行数、不落笔），在参数梯子里选第一套能让六维条末行避开页脚
+      // 钩子行的参数——收的只是判词区字号/行距、段间空与六维条行高。内容短的
+      // 局第一套（＝旧版原参数）即合身，出图与旧版逐像素一致。
       const titleY = big ? 246 : 232;
       const tall = big ? (H0 - 1350) * 0.35 : 0;
-      x.fillStyle = "#23211C";
-      let y;
-      if (IFY.S.special) {
-        x.font = (big ? 58 : 50) + "px " + IFY.SERIF;
-        y = wrapText(x, "【" + IFY.S.special.title + "】", 90, titleY + tall * 0.4, 900, big ? 80 : 72);
-        x.font = "46px " + IFY.SERIF;
-        y = wrapText(x, v.text, 90, y + 6, 900, big ? 66 : 60);
-      } else {
-        x.font = (big ? 58 : 52) + "px " + IFY.SERIF;
-        y = wrapText(x, v.text, 90, titleY + tall * 0.4, 900, big ? 80 : 68);
-      }
-      x.fillStyle = "#8A948C"; x.font = "27px " + IFY.SANS; // 事实标签行（v0.11.0，与结算页同一行）
-      y = wrapText(x, IFY.lifeTags(), 90, y + 4, 900, 40);
-      const gy = y + (big ? 80 : 56) + tall * 0.6;
-      drawRoad(x, gy);
-      x.font = "30px " + IFY.SERIF; x.fillStyle = "#8A948C";
-      x.fillText("22 岁", 90, gy + 54); x.textAlign = "right"; x.fillText(end + " 岁", 990, gy + 54); x.textAlign = "left";
       const cardLog = cardLogLines(); // v0.22.1 F5：「关键的一岔」与流水卡同源，交换局读合并段流水
       const keyFork = cardLog.find((l) => l.includes("回不回老家")) || cardLog.find((l) => l.includes("·") && l.includes("："));
-      y = gy + (big ? 118 : 104);
-      x.fillStyle = "#23211C"; x.font = "34px " + IFY.SANS;
-      if (keyFork) y = wrapText(x, "关键的一岔：" + keyFork.split("· ")[1], 90, y, 900, 50);
-      y = wrapText(x, "这条路：" + IFY.S.route.name + "，你走完了。", 90, y + 6, 900, 50);
-      // v0.22 WP7：交换过的局，路线行后加小字一行（27px 灰，与事实标签行同档，不抢判词与路线行）
-      if (swappedOnce()) { x.fillStyle = "#8A948C"; x.font = "27px " + IFY.SANS; y = wrapText(x, "中途换过一条路", 90, y + 2, 900, 40); x.font = "34px " + IFY.SANS; }
-      x.fillStyle = "#8A948C";
+      const keyForkText = keyFork ? "关键的一岔：" + keyFork.split("· ")[1] : null;
+      const routeText = "这条路：" + IFY.S.route.name + "，你走完了。";
       // v0.22 WP7：有不受控 Track 条目时影子行改真账短句（路线名 + 终局岁数，同第八槽终局一句压缩版），
       // 不再用 shadowCostText 模板（防与真账打架）；无条目（legacy）照旧模板。
       const realShadowLine = typeof IFY.uncontrolledFinalLine === "function" ? IFY.uncontrolledFinalLine() : "";
-      y = wrapText(x, realShadowLine || ("另一条路（" + sh.name + "）：" + IFY.shadowCostText(sh)), 90, y + 6, 900, big ? 50 : 46);
-      if (refl) { x.fillStyle = "#2F4A3C"; x.font = "34px " + IFY.SERIF; y = wrapText(x, "「" + refl + "」", 90, y + 10, 900, 50); }
-      cardStats(x, y + (big ? 26 : 14), 560, big ? 50 : 42);
+      const shadowText = realShadowLine || ("另一条路（" + sh.name + "）：" + IFY.shadowCostText(sh));
+      const tagsText = IFY.lifeTags();
+      const specialText = IFY.S.special ? "【" + IFY.S.special.title + "】" : null;
+      const swapLine = swappedOnce() ? "中途换过一条路" : null;
+      const reflText = refl ? "「" + refl + "」" : null;
+      const LADDER = [
+        { vF: big ? 58 : 52, vLh: big ? 80 : 68, stF: big ? 58 : 50, stLh: big ? 80 : 72, svF: 46, svLh: big ? 66 : 60, tagsLh: 40, roadGap: big ? 80 : 56, forkGap: big ? 118 : 104, bodyLh: 50, shLh: big ? 50 : 46, statsGap: big ? 26 : 14, step: big ? 50 : 42 },
+        { vF: big ? 58 : 52, vLh: big ? 80 : 68, stF: big ? 58 : 50, stLh: big ? 80 : 72, svF: 46, svLh: big ? 66 : 60, tagsLh: 40, roadGap: big ? 80 : 56, forkGap: big ? 118 : 104, bodyLh: 50, shLh: big ? 50 : 46, statsGap: big ? 16 : 8, step: big ? 42 : 34 },
+        { vF: big ? 58 : 52, vLh: big ? 70 : 60, stF: big ? 58 : 50, stLh: big ? 72 : 64, svF: 46, svLh: big ? 60 : 54, tagsLh: 36, roadGap: big ? 64 : 44, forkGap: big ? 100 : 88, bodyLh: 46, shLh: big ? 46 : 42, statsGap: big ? 14 : 8, step: big ? 38 : 32 },
+        { vF: big ? 52 : 46, vLh: big ? 64 : 56, stF: big ? 52 : 44, stLh: big ? 70 : 62, svF: 42, svLh: big ? 56 : 50, tagsLh: 36, roadGap: big ? 56 : 40, forkGap: big ? 92 : 80, bodyLh: 44, shLh: big ? 44 : 40, statsGap: big ? 10 : 6, step: big ? 34 : 30 },
+      ];
+      const linesOf = (text, font) => { // 与 wrapText 逐字同口径，只数行数（wrapText 返回值 = 起点 + 行数 × 行距）
+        x.font = font;
+        let lines = 1, line = "";
+        for (const ch of text) { if (x.measureText(line + ch).width > 900 && line) { lines++; line = ch; } else line += ch; }
+        return lines;
+      };
+      const statsBottomFor = (P) => {
+        let y;
+        if (specialText) {
+          y = titleY + tall * 0.4 + linesOf(specialText, P.stF + "px " + IFY.SERIF) * P.stLh;
+          y += 6 + linesOf(v.text, P.svF + "px " + IFY.SERIF) * P.svLh;
+        } else {
+          y = titleY + tall * 0.4 + linesOf(v.text, P.vF + "px " + IFY.SERIF) * P.vLh;
+        }
+        y += 4 + linesOf(tagsText, "27px " + IFY.SANS) * P.tagsLh;
+        y = y + P.roadGap + tall * 0.6 + P.forkGap;
+        if (keyForkText) y += linesOf(keyForkText, "34px " + IFY.SANS) * P.bodyLh;
+        y += 6 + linesOf(routeText, "34px " + IFY.SANS) * P.bodyLh;
+        if (swapLine) y += 2 + linesOf(swapLine, "27px " + IFY.SANS) * 40;
+        y += 6 + linesOf(shadowText, "34px " + IFY.SANS) * P.shLh;
+        if (reflText) y += 10 + linesOf(reflText, "34px " + IFY.SERIF) * P.bodyLh;
+        return y + P.statsGap + 5 * P.step + 6; // 六维条末行底（cardStats 末行条带下沿）
+      };
+      const STATS_LIMIT = H0 - 181; // 页脚钩子行基线 H0-140、墨迹顶实测约在基线上方 29；六维条末行底须在其上方再留 12
+      let P = LADDER[LADDER.length - 1];
+      for (const cand of LADDER) { if (statsBottomFor(cand) <= STATS_LIMIT) { P = cand; break; } }
+      x.fillStyle = "#23211C";
+      let y;
+      if (IFY.S.special) {
+        x.font = P.stF + "px " + IFY.SERIF;
+        y = wrapText(x, specialText, 90, titleY + tall * 0.4, 900, P.stLh);
+        x.font = P.svF + "px " + IFY.SERIF;
+        y = wrapText(x, v.text, 90, y + 6, 900, P.svLh);
+      } else {
+        x.font = P.vF + "px " + IFY.SERIF;
+        y = wrapText(x, v.text, 90, titleY + tall * 0.4, 900, P.vLh);
+      }
+      x.fillStyle = "#8A948C"; x.font = "27px " + IFY.SANS; // 事实标签行（v0.11.0，与结算页同一行）
+      y = wrapText(x, tagsText, 90, y + 4, 900, P.tagsLh);
+      const gy = y + P.roadGap + tall * 0.6;
+      drawRoad(x, gy);
+      x.font = "30px " + IFY.SERIF; x.fillStyle = "#8A948C";
+      x.fillText("22 岁", 90, gy + 54); x.textAlign = "right"; x.fillText(end + " 岁", 990, gy + 54); x.textAlign = "left";
+      y = gy + P.forkGap;
+      x.fillStyle = "#23211C"; x.font = "34px " + IFY.SANS;
+      if (keyForkText) y = wrapText(x, keyForkText, 90, y, 900, P.bodyLh);
+      y = wrapText(x, routeText, 90, y + 6, 900, P.bodyLh);
+      // v0.22 WP7：交换过的局，路线行后加小字一行（27px 灰，与事实标签行同档，不抢判词与路线行）
+      if (swapLine) { x.fillStyle = "#8A948C"; x.font = "27px " + IFY.SANS; y = wrapText(x, swapLine, 90, y + 2, 900, 40); x.font = "34px " + IFY.SANS; }
+      x.fillStyle = "#8A948C";
+      y = wrapText(x, shadowText, 90, y + 6, 900, P.shLh);
+      if (reflText) { x.fillStyle = "#2F4A3C"; x.font = "34px " + IFY.SERIF; y = wrapText(x, reflText, 90, y + 10, 900, P.bodyLh); }
+      cardStats(x, y + P.statsGap, 560, P.step);
     }
     cardFooter(x, W, H0);
     drawQrBand(x, W, H0);
