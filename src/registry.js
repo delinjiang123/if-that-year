@@ -477,6 +477,11 @@ window.GAME_REGISTRY.milestones = {
     "p9_020"
    ]
   },
+  "consult_work": {
+   "setters": [
+   ],
+   "note": "咨询入行（CL-93 注册落地片）：行当与旗已在 trades.js／work.js FORM_OF_FLAG 登记，本条目为注册占位——现池无任何条目立此旗（setters 空集，validate-state 双向对账空集自洽），入行拍随咨询线内容片（CL-95）补入后逐条补登。形态 employee 正职层（不进 WORK_FORMAL_FLAGS／WORK_INFORMAL_FLAGS，退休落 fallback 58–63、养老金率 0.45），族籍 word 与 teach/press 同族；与销售职称的置业顾问（pack17 买房面）/销售顾问（p19_018）/早教课程顾问（p3_051）、留学顾问（pack18 留学中介面）、他线晚年返聘顾问面（p14_007/p14_008/p25_005、cr_forest_079、cr_dev_095 等⑥回响）分家——那些都不是咨询公司里的顾问，本旗只认乙方咨询公司的入行（校招直入与行业转入）"
+  },
   "cooking_recipe": {
    "setters": [
     "p10_028"

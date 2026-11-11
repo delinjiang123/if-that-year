@@ -59,7 +59,7 @@
     miner_work: "employee", truck_work: "employee", med_hosp: "employee", med_work: "employee",
     nurse_work: "employee", img_work: "employee", teach_work: "employee", acct_work: "employee",
     fin_work: "employee", press_work: "employee", dev_work: "employee", driver_taxi: "employee",
-    grad_work: "employee", builder_work: "employee", sea_work: "self", forestry_work: "employee", // 第 2 期注册片新增行当（建筑工人＋CL-27 出海，与 trades.js 双向对应，validate-state 守）；forestry_work 为 CL-47 林业开线新增（总指挥裁定 form=employee）；photo_work 的 form 已由 CL-78 注册落地片改定 flex（见上行 flex 组与 trades.js photo 注）
+    grad_work: "employee", builder_work: "employee", sea_work: "self", forestry_work: "employee", consult_work: "employee", // 第 2 期注册片新增行当（建筑工人＋CL-27 出海，与 trades.js 双向对应，validate-state 守）；forestry_work 为 CL-47 林业开线新增（总指挥裁定 form=employee）；photo_work 的 form 已由 CL-78 注册落地片改定 flex（见上行 flex 组与 trades.js photo 注）；consult_work 为 CL-93 咨询注册片新增（总指挥裁定 form=employee；不进 WORK_FORMAL_FLAGS/WORK_INFORMAL_FLAGS，退休落 fallback 58–63、养老金率 0.45）
   };
   const FORM_SIDE_FLAGS = ["side_job", "xiahai"];
   const FORM_TIE_ORDER = ["farm", "public", "self", "flex", "employee"]; // R1 同龄同序时的表序
