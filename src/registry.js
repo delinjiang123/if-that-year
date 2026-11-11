@@ -2187,6 +2187,7 @@ window.GAME_REGISTRY.milestones = {
     "cr_truck_048",
     "cr_truck_049",
     "cr_truck_050",
+    "cr_sea_082",
    ],
    "note": "长途职业线入行（v0.18.0，职业语境门）：跟车入行拍立旗。CL-03（v0.60.24）补登 pack39 三条入行拍 p39_013–015（车队招工学徒/物流干线招司机/买车挂靠夫妻同车）"
   },
@@ -2216,6 +2217,7 @@ window.GAME_REGISTRY.milestones = {
     "cr_shop_092",
     "cr_craft_083",
     "cr_farm_113",
+    "cr_sea_083",
    ],
    "note": "工厂制造入行（v0.19.0，职业语境门）：招工入行拍立旗，工厂主簇以此为门"
   },
@@ -2316,7 +2318,8 @@ window.GAME_REGISTRY.milestones = {
     "cr_farm_115",
     "cr_teach_104",
     "cr_write_110",
-    "cr_driver_taxi_038"
+    "cr_driver_taxi_038",
+    "cr_sea_081"
    ],
    "note": "店主入行（v0.19.0）：批发学徒/接手家店/开网店拍立旗，商户簇以此为门"
   },
@@ -2327,6 +2330,7 @@ window.GAME_REGISTRY.milestones = {
     "cr_factory_125",
     "cr_farm_117",
     "p85_014",
+    "cr_sea_084",
    ],
    "note": "零工/自由职业入行（v0.19.0）：劳务市场报名接活拍立旗，零工簇以此为门；与 side_job（副业）分家。CL-61 补登 p85_014：众包骑手注册门（宝妈时段单，孩子上学那天注册）——骑手脸按 DESIGN 分工与 courier 共用机会层日常池，众包本体归 gig 落账"
   },
@@ -2350,6 +2354,7 @@ window.GAME_REGISTRY.milestones = {
     "farm_entry_main",
     "cr_shop_094",
     "cr_craft_084",
+    "cr_sea_085",
    ],
    "note": "种地入行（v0.19.0）：分家单过/分地到户拍立旗，种地簇以此为门；农民路线立项后此旗为该路线立线旗（入口含 pack35 接班拍）"
   },
@@ -2361,9 +2366,11 @@ window.GAME_REGISTRY.milestones = {
     "p63_015",
     "p63_016",
     "p63_017",
-    "p63_018"
+    "p63_018",
+    "p115_005",
+    "p115_006"
    ],
-   "note": "出海入行（CL-27 新线，用户 2026-11-10 亲点）：pack63 七条入行拍立旗（渔业队上船/顶替进渔业公司/跟船学徒/码头招季节船员/远洋招工/承包滩涂网箱养殖/潜水海钓体验）；三脸（捕捞/养殖/海上体验）共用一旗，脸靠公历门与 ctx 分"
+   "note": "出海入行（CL-27 新线，用户 2026-11-10 亲点）：pack63 七条入行拍立旗（渔业队上船/顶替进渔业公司/跟船学徒/码头招季节船员/远洋招工/承包滩涂网箱养殖/潜水海钓体验）；三脸（捕捞/养殖/海上体验）共用一旗，脸靠公历门与 ctx 分。CL-107 补登两门：远洋劳务签约门 p115_005（经劳务公司、先凑费用，与 p63_016 公司直招分开）／养殖公司技术员门 p115_006"
   },
   "forestry_work": {
    "setters": [
@@ -2411,7 +2418,8 @@ window.GAME_REGISTRY.milestones = {
     "p37_019",
     "cr_craft_086",
     "cr_press_097",
-    "cr_med_041"
+    "cr_med_041",
+    "cr_sea_086"
    ],
    "note": "教师入行（v0.19.0）：r_school1 分配到校呈现即立（两选项均为教书），教师簇以此为门；traj_school 仍为轨迹旗。v0.60.20 补登 pack37 五条入行拍（代课/接班/考编/特岗/临聘，均 ctx entry 立 teach_work）"
   },
