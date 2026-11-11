@@ -2346,9 +2346,10 @@ window.GAME_REGISTRY.milestones = {
     "p99_014",
     "p99_015",
     "p99_016",
-    "p99_017"
+    "p99_017",
+    "cr_builder_105"
    ],
-   "note": "建筑工人入行（第 2 期注册扩版 v0.60.19 立行当，先有 trades/FORM_OF_FLAG 登记；CL-19 工厂线转行段 cr_factory_126 为首个立旗条目，本条目随之新建）"
+   "note": "建筑工人入行（第 2 期注册扩版 v0.60.19 立行当，先有 trades/FORM_OF_FLAG 登记；CL-19 工厂线转行段 cr_factory_126 为首个立旗条目，本条目随之新建）；CL-96 收口补登矿工关停分流转入面 cr_builder_105"
   },
   "care_work": {
    "setters": [
