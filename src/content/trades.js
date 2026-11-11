@@ -379,6 +379,16 @@ window.GAME_TRADES = {
     "seedEcho": null, "inheritEcho": null,
     "note": "咨询顾问（CL-93 注册落地片，总指挥裁定照 CL-85 编年稿待裁 4 立行当，本片只注册不写内容拍）：卖的是判断（事情该不该这么办）不是数字对错——与 acct（counter 柜台数族）分家，族籍归 word 文教（产出物是报告与话）；form 定 employee（公司脸是正脸：外资所/四大咨询臂/本所的项目制驻场是这行的主形状；独立顾问是后段的⑤转面，不另立第二旗，照 dev ⑤转面判例）；eraIn 自 c1978 起四代——外资咨询所 1990 年代初才入华设点、c1978 代青年正赶上，c1955/c1965 两代青年时这行在中国没有成形行当，那两代的『顾问』只有退休返聘一义且已被他线⑥占住（p14_007/p14_008/p25_005 等返聘面），开了即重、故不开（编年稿原文作『c1978 起五代』，按六代全表实数是四代，口径以本注为准）；eduGate 定 gate 严口径——直入的唯一形状是校招（笔试面试数轮、须正经文凭），这行的主力入行其实是行业经验转入（在甲方/厂里干过多年再跳乙方），转入不走关口学历门、由内容片的转入拍以 require 前置行当旗自管，本字段只记直入门的实况；gateDirect=true（校招是真直达门：不需先立他旗、非考试链，与 township/exam_landed 的 false 分家），但 coldOk=false、coldWeight 恒 0——咨询不靠招工/跟人走/离家近这类冷门渠道进人，冷门层直达会把『转入为主、校招为辅』的关口形状冲成随机直达（与同为严学历门的 grad 一致）；退休口径：不进 WORK_FORMAL_FLAGS 也不进 WORK_INFORMAL_FLAGS，落 work.js 的 fallback 58–63、养老金率 0.45（合伙人没有退休仪式，⑥按退股转独立顾问的晚段写，与 builder 同例）；内容红线（内容片 CL-95 执行）：咨询黑话只许出现在反面样本条（编年稿 CX-03）里、成串黑话出现在其他任何条目即退稿，『AI 咨询』交叉面零条；eraIn/eduGate 仍非现行 setter 实扫（本片只注册不写内容拍、现无 setter 可扫），入行拍随 CL-95 落地后按文件头口径随 setter 重扫回写"
   },
+  "recycle": {
+    "flag": "recycle_work", "form": "self",
+    "family": "market",
+    "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
+    "eduGate": null, "gateDirect": true,
+    "coldOk": true, "coldKinds": ["recruit", "follow", "near", "wage"], "coldWeight": 4,
+    "inheritFrom": [],
+    "seedEcho": null, "inheritEcho": null,
+    "note": "回收（CL-120 开线，职业地图候选 A4，总指挥注册裁定）：废品回收五脸共用 recycle_work 一旗——走街串巷个体回收/收购站坐商（全年代）、分拣场（1995 起密）、再生资源公司与规范回收点（2003 起）、电子废弃物拆解（2005 起，只写日常劳作与行规），脸靠公历门与 ctx 分；form 按个体/自营形态登 self（这行的落点是自己的摊/站/场，受雇只是入行前段）；族籍归 market 市集（与 shop/gig/courier 同族互溢，入行脸可挂 gig 冷门外溢，本线另有直达种子 p127_010–017 与六扇入行门 p127_001–006，不靠外溢兜底）；非正规口径（不入 WORK_FORMAL_FLAGS、入 WORK_INFORMAL_FLAGS，退休窗 63–68、养老金率 0.3 随 wage.js informal 口径，与 sea 同例）；eraIn 六代全开（回收行当自 1950 年代起不断线，c1955 出生者青年正赶上供销社收购站与走街串巷并行的年代，胶片/电子只是换货，行当本身不换）；coldKinds/coldWeight 与同族 gig 同档（招工/跟人/离家近/给钱是这行的原生进人渠道）；inheritFrom 空——承继走线内入行拍 p127_003（接家里长辈的收购摊），现行出身牌无回收子弟来源"
+  },
 };
 
 // 冷门类型 × 年代可用表（COLD_KIND_ERA，§4.3）：机制只查表，格子内容是登记事实。
