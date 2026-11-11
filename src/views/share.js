@@ -67,7 +67,7 @@
     x.fillStyle = "#2F4A3C"; x.font = "34px " + IFY.SERIF;
     x.fillText("同样的运气，你会怎么选？", 90, H - 140);
     x.fillStyle = "#8A948C"; x.font = "28px " + IFY.SANS;
-    x.fillText("if-that-year.pages.dev", 90, H - 88);
+    x.fillText("if-that-year.sommeatlas.com", 90, H - 88);
   }
 
   function cardStats(x, y, barW, rowH) {
@@ -165,7 +165,7 @@
       x.font = "30px " + IFY.SERIF; x.fillStyle = "#8A948C";
       x.fillText("22 岁", 90, gy + 58); x.textAlign = "right"; x.fillText(end + " 岁", 990, gy + 58); x.textAlign = "left";
       x.fillStyle = "#8A948C"; x.font = "30px " + IFY.SANS;
-      x.fillText("if-that-year.pages.dev", 90, H - 96);
+      x.fillText("if-that-year.sommeatlas.com", 90, H - 96);
       return c;
     }
     cardBase(x, W, H);

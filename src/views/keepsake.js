@@ -422,7 +422,7 @@ const lines = [];
 if (d.eraLabel || d.birthYear) lines.push(`出生：${d.eraLabel || ""}${d.eraLabel && d.birthYear? " · ": ""}${d.birthYear? d.birthYear + " 年": ""}`);
 if (d.birthYear) lines.push(`这一生：${d.birthYear} 年 — ${d.birthYear + d.finalAge} 年`);
 lines.push(`种子：${d.seed}`);
-lines.push("《如果那年》 · if-that-year.pages.dev");
+lines.push("《如果那年》 · if-that-year.sommeatlas.com");
 return lines;
 }
 
@@ -791,7 +791,7 @@ x.beginPath(); x.moveTo(MX, y); x.lineTo(MX + CW, y); x.stroke();
 x.fillStyle = KS_GREY; x.font = "22px Menlo, Consolas, monospace";
 x.fillText(`种子 ${d.seed}`, MX, y + 42);
 x.font = "22px " + IFY.SANS; x.textAlign = "right";
-x.fillText("if-that-year.pages.dev", MX + CW, y + 42);
+x.fillText("if-that-year.sommeatlas.com", MX + CW, y + 42);
 x.textAlign = "left";
 x.fillStyle = KS_PINE; x.font = "28px " + IFY.SERIF; x.textAlign = "center";
 x.fillText("同样的运气，你会怎么选？", MX + CW / 2, y + 42 + 50);
@@ -971,7 +971,7 @@ const colo = `<section class="book-colophon"><div class="book-colobox">
 ${!sh.available && sh.compareMain? `<p>${esc(sh.compareMain)}</p>`: ""}
 ${sh.compareOthers.map((o) => `<p>${esc(o)}</p>`).join("")}
 <p class="book-seed">种子 ${esc(d.seed)}</p>
-<p class="book-url">if-that-year.pages.dev</p>
+<p class="book-url">if-that-year.sommeatlas.com</p>
 <p class="book-closing">同样的运气，你会怎么选？</p>
 </div></section>
 ${seedPage}
@@ -1157,7 +1157,7 @@ if (res.status === 503 && data && data.reason === "unconfigured") return done({ 
 return done({ ok: false, reason: (data && data.reason) || "unavailable"});
 }
 function giftShareText(shown) {
-return `我在《如果那年》里过完了一生，把典藏送你一份。打开 if-that-year.pages.dev 玩一局，到结算页展开「支持作者 · 把这一生留成纪念」，输这个码：${shown}，就能把你那一局的长图和纪录册导出来。`;
+return `我在《如果那年》里过完了一生，把典藏送你一份。打开 if-that-year.sommeatlas.com 玩一局，到结算页展开「支持作者 · 把这一生留成纪念」，输这个码：${shown}，就能把你那一局的长图和纪录册导出来。`;
 }
 function wireGift() {
 const btn = IFY.el("ks-gift");

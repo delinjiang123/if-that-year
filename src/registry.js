@@ -1944,8 +1944,9 @@ window.GAME_REGISTRY.milestones = {
   },
   "traj_fortune_builder": {
    "setters": [
+    "r_builder_firm"
    ],
-   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记）：本线尾巴坐实拍未施工（后续 W 片），setters 先空集占位，照 trial_done 先例以本注记为准。消费者先行：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence——旗未落时两处恒不命中，不改变存量行为。"
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记，CL-117 转实登）：坐实拍＝r_builder_firm（require 本链做大旗 traj_scale_builder2；稿面钱门经 CL-117 实测与中年 money 水位相抵、已摘除，钱的刻度由结算层承接）。消费者：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence。"
   },
   "traj_fortune_consult": {
    "setters": [
@@ -2001,8 +2002,9 @@ window.GAME_REGISTRY.milestones = {
   },
   "traj_fortune_sea": {
    "setters": [
+    "r_sea_shore"
    ],
-   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记）：本线尾巴坐实拍未施工（后续 W 片），setters 先空集占位，照 trial_done 先例以本注记为准。消费者先行：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence——旗未落时两处恒不命中，不改变存量行为。"
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记，CL-117 转实登）：坐实拍＝r_sea_shore（require 本链做大旗 traj_scale_sea2；稿面钱门经 CL-117 实测与中年 money 水位相抵、已摘除，钱的刻度由结算层承接）。消费者：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence。"
   },
   "traj_fortune_shop": {
    "setters": [
@@ -2030,6 +2032,30 @@ window.GAME_REGISTRY.milestones = {
     "r_oldhouse"
    ],
    "note": "拆迁链中间旗（CL-112 新立）：r_oldhouse 落点环选钱/选房两选项同落此旗，供坐实环 r_oldhouse_move 的 chain+require 双门消费；本身不进结算与结局口径。"
+  },
+  "traj_scale_builder": {
+   "setters": [
+    "r_builder_register"
+   ],
+   "note": "建筑富贵尾巴链内旗（CL-117）：起势 r_builder_register 的转正选项落——标记「摊子注册成自己的公司」，做大环 r_builder_threesites 以此为 require。挂靠到底的不落此旗，链可日后重掷再上。"
+  },
+  "traj_scale_builder2": {
+   "setters": [
+    "r_builder_threesites"
+   ],
+   "note": "建筑富贵尾巴链内旗（CL-117）：做大 r_builder_threesites 呈现即落（条目本体 set，照 r_school1 先例）——标记「三个工地同时转的盘子铺开」，坐实环 r_builder_firm 以此为 require；选项只分顶住/收着的代价、不分盘子有无。"
+  },
+  "traj_scale_sea": {
+   "setters": [
+    "r_sea_ownboat"
+   ],
+   "note": "出海富贵尾巴链内旗（CL-117）：起势 r_sea_ownboat 的买船选项落——标记「有了第一条自己的船」，做大环 r_sea_twoboats 以此为 require。再跟两年船的不落此旗，链可日后重掷再上。"
+  },
+  "traj_scale_sea2": {
+   "setters": [
+    "r_sea_twoboats"
+   ],
+   "note": "出海富贵尾巴链内旗（CL-117）：做大 r_sea_twoboats 呈现即落（条目本体 set，照 r_school1 先例）——标记「两条船错开汛口」，坐实环 r_sea_shore 以此为 require；选项只分上第二条/守一条的代价、不分船队有无。"
   },
   "traj_scale_farm": {
    "setters": [

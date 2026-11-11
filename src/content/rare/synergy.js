@@ -139,6 +139,47 @@ window.GAME_SYNERGY = {
         { label: "你跑销路。账让村会计记，你在外头跑", effects: { money: 6, relation: 2, freedom: 1 }, set: "traj_scale_farm2", echo: "你一年大半在外头跑市场，粮卖出去的价格一茬比一茬稳。村里人说，你这张嘴，比账本管用。" },
       ] },
     { id: "r_farm_estate", label: "家庭农场挂牌", clue: "牌子钉在院门上，钉子是自己一锤一锤敲进去的人。", min: 40, max: 60, minYear: 2013, chain: "r_farm_coop", require: "traj_scale_farm2", stats: [{ k: "money", gt: 45 }], chance: 0.08, text: "农场的牌子送到那天，你找了块平整的院墙，自己一锤一锤钉上去的。来登记的人问面积、问带动了几户，你一笔一笔答。地还是那些地，粮还是那些粮。就是从这年起，村里年轻人回来说起种地，先说的是你家这个样子——种地，也能种出个名堂来。", effects: { money: 9, relation: 2, growth: 2 }, set: "traj_fortune_farm" },
+    // CL-117（CL-109 §三.2/§三.6，富贵尾巴 W2）：builder 公司做大三环＋sea 船东化三环，追加于
+    // 存量 rare 表末（r_oldhouse_move 之后；表序纪律：新链不抢存量链的掷骰序，链内靠
+    // chain+require 串行）。chance 经本片定向普查调参（基线 0.05/0.055/0.055 实测漏斗：
+    // 表尾掷骰竞争＋人格选项分流使单环转化远低于 §二.3 的孤立测算，故起势 0.09／做大 0.10／
+    // 坐实 0.10、窗各放宽 2–3 年；二批实测坐实环跑道太短（链内旗落点晚），二轮调为起势
+    // 0.13／做大 0.10／坐实 0.16；三轮经归因实验（同种子摘门对照：坐实呈条 0→14）确认
+    // 坐实钱门与中年 money 实际水位（买房育儿低谷、终局才回升）系统性相抵——呈现门摘除，
+    // 钱的刻度改由结算层按终局 money 分富贵/散财承接（CL-112 口径）；四轮 builder 单线
+    // 微调坐实 0.16→0.11（其新代际转化近饱和），sea 维持 0.16——最终普查 builder 7.40%／
+    // sea 7.14%，均进 3–8% 接受带，详见 CL-117 REPORT 调参记账）。做大环的链内旗落条目本体
+    // （呈现即立旗，照 r_school1 先例）：盘子铺开是事实、选项只分「顶住／收着」的代价；
+    // 起势环仍选项落旗（注册不注册、买不买，是那一环的岔路口本体）。
+    // builder 起势前置的落法调整（与稿 §三.2 的 seen 门不同，证据在 CL-117 REPORT）：稿定
+    // 「seen pack108 公司形任一」经两轮定向猎拍实测不可达（CL-96 猎拍 204 局：121 中 2 局、
+    // 122–124 零命中；本片 onlyTrade 60 局：入行 21 局零命中）——该 4 条自身即近不可呈，
+    // 拿它当前置等于整链饿死。故照 §二.4 的回落原则（无可用前置旗时以 tenureIn＋stats
+    // 双门代替）改落：在行旗＋主线工龄≥12＋公历 1995，公司形办事面退为正文背景。链内旗 traj_scale_builder→
+    // traj_scale_builder2、traj_scale_sea→traj_scale_sea2，坐实落 traj_fortune_builder／
+    // traj_fortune_sea（registry 本片转实登）。富只写成一种活法事实：不报数、不炫。
+    { id: "r_builder_register", label: "把摊子注册成公司", clue: "在登记窗口排了两回队、把新刻的章放在抽屉最里层的人。", min: 33, max: 53, minYear: 1995, ctx: { flag: "builder_work", tenureIn: [12, 999] }, chance: 0.13, text: "挂靠的牌子用了这些年，投标、对公、结算审计，该走的规矩你都走过一遍了。这一年你动了心思：把摊子注册成自己的公司。登记窗口跑了两趟，名字想了三个，最后定下来的还是最土的那个。章刻回来那天，你先在白纸上盖了一个，看了半天。",
+      choices: [
+        { label: "注册。摊子转正，往后用自己的名义接活", effects: { money: -4, growth: 3, freedom: 2 }, set: "traj_scale_builder", echo: "营业执照挂上墙那天，你站在下面看了会儿。墙还是那面墙，上面的字不一样了。" },
+        { label: "再挂靠两年，稳一点再说", effects: { money: 2, wisdom: 2 }, echo: "注册的事先放下了。活照接，牌子照借，只是再去投标的时候，心里还是矮那么一截。" },
+      ] },
+    { id: "r_builder_threesites", label: "三个工地同时转", clue: "手机里存着三个工地的进度照片、半夜被回款电话吵醒的人。", min: 37, max: 58, chain: "r_builder_register", require: "traj_scale_builder", ctx: { flag: "builder_work", tenureIn: [12, 999] }, chance: 0.10, set: "traj_scale_builder2", text: "公司的活排开了：一个工地在打地基，一个在封顶，一个在收尾，三个摊子同时转。垫资压在里头，班组要盯，甲方的款一笔拖过一笔。你的手机一天到晚响，晚上躺下了，脑子里还在过明天的料单。摊子大了，觉先不够睡了。",
+      choices: [
+        { label: "顶住。三个摊子都转起来", effects: { money: 8, health: -3, growth: 2 }, echo: "那半年你瘦了一圈。三个工地的塔吊在天上慢慢转，远远看着，都是你接下的活。" },
+        { label: "撤掉一个。盘子铺太大，人先垮了", effects: { money: 2, health: 2, wisdom: 2 }, echo: "你把最远的那个工地转给了同行。觉睡踏实了，就是开车路过那片地的时候，心里有点空。" },
+      ] },
+    { id: "r_builder_firm", label: "公司养着几十号人", clue: "发工资那天到得比谁都早、年终坐在主桌却没怎么动筷子的人。", min: 42, max: 60, chain: "r_builder_threesites", require: "traj_scale_builder2", ctx: { flag: "builder_work" }, chance: 0.11, text: "公司算是站住了：几十号人跟着你吃饭，活已经排到明年。你上架子的时间越来越少，更多时候在工地之间转，看进度、签字、盯着把工资按时发出去。发工资那天你到得比谁都早——几十个家等着这笔钱开伙，这件事比你自己挣多少更压秤。", effects: { money: 16, growth: 2, relation: 2 }, set: "traj_fortune_builder" },
+    { id: "r_sea_ownboat", label: "第一条自己的船", clue: "手在船舷上摸了半天、把船名念了两遍才下船的人。", min: 38, max: 56, minYear: 1998, ctx: { flag: "sea_work", tenureIn: [12, 999] }, chance: 0.13, text: "跟船十几年，老船东要换大船，手里这条旧船想出让，先问的你。价钱谈了大半年，家里也商量了大半年：买下来，油钱、网具、船员的工钱，挣多挣少就都是自己的账了。你去看船那天，手在船舷上摸了半天。这条船你跟过七年，哪儿响、哪儿漏，心里都有数。",
+      choices: [
+        { label: "买。雇主变船东，账从此是自己的", effects: { money: -7, freedom: 3, growth: 2 }, set: "traj_scale_sea", echo: "出第一趟海那天你起得最早。海还是那片海，脚下这条船，是你自己的了。" },
+        { label: "再跟两年船，攒够了再说", effects: { money: 3, wisdom: 2 }, echo: "买船的事先搁下了。工钱照拿，只是每次看那条船出海，心里有个地方痒一下。" },
+      ] },
+    { id: "r_sea_twoboats", label: "两条船错开汛口", clue: "岸上雇了个看账的、自己半夜还忍不住去码头转一圈的人。", min: 40, max: 59, chain: "r_sea_ownboat", require: "traj_scale_sea", ctx: { flag: "sea_work", tenureIn: [14, 999] }, chance: 0.10, set: "traj_scale_sea2", text: "第二条船也下了水：一条跑近海，一条赶远汛，两个汛口错开，一年里歇不下几个月。岸上雇了人看账、收货，你不再趟趟跟船，开始在码头上调度。两条船的油钱人钱压着，天气一变坏，你比船上的人先睡不着。",
+      choices: [
+        { label: "上第二条。两条船错开汛口", effects: { money: 8, health: -2, growth: 2 }, echo: "两条船一前一后出港那天，你站在码头上没上船。岸上，从这一年起也成了你的岗位。" },
+        { label: "一条船守住，不贪大", effects: { money: 3, health: 1, wisdom: 2 }, echo: "你把一条船的日子过瓷实了。汛期忙，休渔期就修船补网，日子有它自己的钟点。" },
+      ] },
+    { id: "r_sea_shore", label: "岸上有了产业", clue: "冷库的钥匙挂在腰间、码头上收鱼的人先喊你名字的人。", min: 44, max: 60, chain: "r_sea_twoboats", require: "traj_scale_sea2", ctx: { flag: "sea_work" }, chance: 0.16, text: "岸上的产业置下了：一间冷库，一个收购点。自家的船回来直接进自己的库，码头上别家的鱼，也愿意往你这儿送——你给的秤准，账结得快。你上船的时候越来越少，可海上的事还是绕不开你：谁家出海缺人手、谁家的船要大修，先来问的都是你。", effects: { money: 15, relation: 2, growth: 1 }, set: "traj_fortune_sea" },
   ],
   endings: [
     { id: "end_richest", clue: "把副业干成大公司，最后站在锣声里的人。", tier: "legendary", all: ["traj_ipo"], stats: [{ k: "money", gt: 69 }], title: "世界首富", evidence: [["r_ipo"],["r_funding"]],
