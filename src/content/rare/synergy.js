@@ -180,6 +180,72 @@ window.GAME_SYNERGY = {
         { label: "一条船守住，不贪大", effects: { money: 3, health: 1, wisdom: 2 }, echo: "你把一条船的日子过瓷实了。汛期忙，休渔期就修船补网，日子有它自己的钟点。" },
       ] },
     { id: "r_sea_shore", label: "岸上有了产业", clue: "冷库的钥匙挂在腰间、码头上收鱼的人先喊你名字的人。", min: 44, max: 60, chain: "r_sea_twoboats", require: "traj_scale_sea2", ctx: { flag: "sea_work" }, chance: 0.16, text: "岸上的产业置下了：一间冷库，一个收购点。自家的船回来直接进自己的库，码头上别家的鱼，也愿意往你这儿送——你给的秤准，账结得快。你上船的时候越来越少，可海上的事还是绕不开你：谁家出海缺人手、谁家的船要大修，先来问的都是你。", effects: { money: 15, relation: 2, growth: 1 }, set: "traj_fortune_sea" },
+    // CL-124（CL-109 §三.3/§三.5/§三.10/§三.11，富贵尾巴 W3）：白领四线——dev 期权三环、
+    // consult 合伙人三环、fin 券商慢合伙人两环、acct 开所两环，追加于存量 rare 表末（CL-117 之后；
+    // 表序纪律：新链不抢存量链的掷骰序，链内靠 chain+require 或 require 旗串行）。资格与落法：
+    // dev/acct/fin 三线入行旗在 validate-state ENTRY_FLAGS 名单内，用 ctx.mainLine＋tenureIn；
+    // consult_work 不在名单，照 CL-117 改 ctx.flag（曾入行）＋tenureIn（当前主线工龄）双门。
+    // 起势环选项落旗（走不走那条路是该环的岔路口本体；dev 起势例外：期权到手是事实，两选项
+    // 同落旗、只分押年头/随它涨的姿态——首轮普查实测单落旗被人格分流吃掉 88%，照 CL-116 shop
+    // 双落旗形状改）；做大环链内旗落条目本体（呈现即立旗，照 CL-117／r_school1 先例），选项
+    // 只分代价。坐实钱门（INDEX 草案 dev/consult 60、fin 62、acct 55）不设：CL-117 归因实验
+    // 已证雇员形坐实钱门与中年 money 水位（买房育儿低谷）系统性相抵，本片四线全是雇员形、
+    // 照摘；钱的刻度由结算层按终局 money 分富贵档/散财变体承接（CL-112 口径）。
+    // 反作者影子（§九）：dev 只写消费互联网/电商公司的期权，不写制造业软件；consult 只写
+    // 通用所务（客户盘/项目/分账），不点名客户行业、不写制造业与 IT 咨询；参数与他线同格。
+    { id: "r_dev_options", label: "期权归属表", clue: "把归属表打印出来、压在键盘底下的人。", min: 30, max: 45, minYear: 2005, eraIn: ["c1995", "c2000"], ctx: { mainLine: "dev_work", tenureIn: [8, 999] }, stats: [{ k: "growth", gt: 60 }], chance: 0.05, text: "公司做电商平台，这两年涨得快。人力把期权归属表发到你邮箱：四年归属，一年悬崖，你的名字后面跟着一串数字。同事在茶水间说，这就是纸，先别当钱。你把表存进文件夹，存的时候手停了一下——往后这几年，是留在这儿把年头熬满，还是外头有更好的去处?",
+      choices: [
+        { label: "留下来，把年头熬满", effects: { growth: 3, freedom: -1 }, set: "traj_scale_dev", echo: "表打印了一张，压在键盘底下。日子还是一天一天写代码，只是心里多了一本账，按月往上添。" },
+        { label: "表先收着，不为它改主意", effects: { wisdom: 2, freedom: 1 }, set: "traj_scale_dev", echo: "你把表收进抽屉，该干嘛干嘛。只是每年到归属的日子，你会想起来看一眼——那个数，在慢慢往上走。" },
+      ] },
+    { id: "r_dev_exercise", label: "行权那笔钱", clue: "拿着测算表在家算了三个晚上的人。", min: 33, max: 52, chain: "r_dev_options", require: "traj_scale_dev", ctx: { mainLine: "dev_work" }, chance: 0.055, set: "traj_scale_dev2", text: "公司开放行权窗口了。你的期权大半已经归属，行权要自己先掏一笔钱，税紧跟着就要算。财务给的测算表密密麻麻，你拿回家算了三个晚上：掏，家里的存款要动大半；不掏，前头几年熬的年头，就还只是一张纸。算到最后，你还是去了财务那儿。",
+      choices: [
+        { label: "全行权。存款动大半，税一次算清", effects: { money: -6, growth: 3 }, echo: "钱出去那天，账户余额矮了一截。换回来的确认函锁进抽屉，和那张归属表放在了一起。" },
+        { label: "只行归属完的那部分，后头的再说", effects: { money: -3, growth: 2, wisdom: 1 }, echo: "你没把宝全押上。行了的那部分锁进抽屉，没动的还挂在表上，往后的日子边走边看。" },
+      ] },
+    { id: "r_dev_ipo", label: "上市那天的账户", clue: "锣敲响时打开账户看了一眼、又关上的人。", min: 36, max: 58, chain: "r_dev_exercise", require: "traj_scale_dev2", chance: 0.055, text: "上市那天你请了假，坐在家里看直播。锣敲响的时候，你打开账户看了看——那个数字，你盯着看了半天，又把页面关上了。晚上照常去菜市场，挑了条鱼，跟摊主为了一块钱磨了半天，磨完自己先笑了。", effects: { money: 16, growth: 2, freedom: 1 }, set: "traj_fortune_dev" },
+    // consult 起势接 pack111 的 realism 拍 cr_consult_021（「做到合伙人，靠的不是活干得好，是
+    // 手里能不能带来客户」）——该拍不落旗、线内无其他可接前置旗，照 CL-117 pack108 先例不挂
+    // seen 门：realism 原话退为起势正文的前提句，门落 consult_work＋在行 12 年（证据见 REPORT）。
+    { id: "r_consult_threshold", label: "合伙人那条线", clue: "被叫进办公室、听完那句「看你自己的盘子」的人。", min: 40, max: 57, minYear: 2000, ctx: { flag: "consult_work", tenureIn: [12, 999] }, chance: 0.12, text: "所里那道门，你看过很多回了：做到合伙人，靠的不是活干得好，是手里能不能带来客户。这两年，你手上慢慢攒下几个老客户，过节的问候从没断过，有两家换了负责人，还指名找你。这天，管事的合伙人把你叫过去，话说得很白：往后三年，看你自己的盘子了。",
+      choices: [
+        { label: "接。往那道门走", effects: { growth: 3, health: -1 }, set: "traj_scale_consult", echo: "从那天起，你的日程表里多了许多饭局和电话。活还是那些活，可你看客户的眼神变了——那是你自己的盘子。" },
+        { label: "不接。资深顾问这碗饭，我吃得稳", effects: { health: 2, freedom: 1 }, echo: "话说得很客气。往后你照样带项目，挑着接，下班的时间慢慢匀回来了。那道门，你不再每天路过都想一回。" },
+      ] },
+    { id: "r_consult_book", label: "自己的客户盘", clue: "手机半夜响了也得接、客户名单能背下来的人。", min: 43, max: 58, chain: "r_consult_threshold", require: "traj_scale_consult", ctx: { flag: "consult_work" }, chance: 0.11, set: "traj_scale_consult2", text: "你的盘子立起来了：三家老客户的年单都续了，新客户里有一半是老客户介绍来的。所里开始按你的盘子给你分账，账算得比从前细，你的名字也上了所里的介绍页。代价是手机不能关机——客户的电话，半夜打来，也得接。",
+      choices: [
+        { label: "盘子再扩一扩，累就累这几年", effects: { money: 7, health: -3 }, echo: "那几年你出差比年轻时还多。家里人说，你这个岁数，比小年轻还能拼。" },
+        { label: "盘子守住，新户先不接", effects: { money: 4, health: 1, wisdom: 2 }, echo: "你把新户的邀约推了两家。盘子不大，可都是熟脸，续单的时候，不用费什么话。" },
+      ] },
+    { id: "r_consult_partner", label: "名字上墙", clue: "办公室挪到走廊尽头、签字签到最后一栏的人。", min: 46, max: 60, chain: "r_consult_book", require: "traj_scale_consult2", chance: 0.16, text: "合伙人名单更新那天，你的名字在上面。没什么仪式，就是会议室的门牌换了，你的办公室挪到走廊尽头那间。晚上回家，对方问你什么感觉。你想了想，说：还是那些活，还是那些客户——就是签字的时候，名字签在最后一栏了。", effects: { money: 14, growth: 2, relation: 1 }, set: "traj_fortune_consult" },
+    // fin 慢合伙人链（§三.10＋§七三分法开口子，仅此一条）：fin 线入行即证券营业部（p18_021／
+    // p74_008／p93_004 均为营业部门），全线无银行脸、无基金脸条目——「券商脸」是结构口径，
+    // 门落 fin_work＋在行 15 年＋45 岁，不另设脸旗。两环文案各写一处「慢」：份额是熬出来的，
+    // 不是行情给的；炒股发财/内幕/行长总监照旧全禁（pack88/93 头注已同步留账）。
+    { id: "r_fin_slowroom", label: "能进那个会", clue: "列席坐在靠门的位置、从头听到尾没发言的人。", min: 45, max: 55, minYear: 2003, ctx: { mainLine: "fin_work", tenureIn: [15, 999] }, chance: 0.03, text: "在营业部熬到这个岁数，新人叫你老师，老客户进门先找你。这天上面开合伙人层面的会，破例让你列席，听的是一摊慢账：哪块业务得养三年才见钱。你坐在靠门的位置，从头听到尾，没人让你发言。可你心里清楚，能进这间屋子，本身就是熬出来的——这一行，快的事轮不到柜台，慢的事，才留得住人。",
+      choices: [
+        { label: "那摊慢账，我来牵头", effects: { growth: 3, health: -1 }, set: "traj_scale_fin", echo: "慢账接下了。头一年没什么动静，你照常坐柜台，只是桌上多了一摞没人愿意碰的文件。" },
+        { label: "我还是守好我这一摊", effects: { health: 1, wisdom: 2 }, echo: "你没接。往后的会，你还是偶尔列席，坐在靠门的位置，听完就走。日子稳，就是慢得看不见往前走。" },
+      ] },
+    { id: "r_fin_newline", label: "带一条新业务线", clue: "在一间小办公室里、一个一个打电话攒客户名单的人。", min: 45, max: 56, minYear: 2005, ctx: { mainLine: "fin_work", tenureIn: [15, 999] }, chance: 0.03, text: "公司要开一条新业务线，负责人选来选去，落到你头上——不是你最能干，是你在这行待得最久，客户信你，规矩你都懂。这条线从零搭：招人、立规矩、跑头一批客户。你知道这活见效慢，前两年多半是往里垫的。可这行里，能让你从头带一条线的机会，一辈子也就这一回。",
+      choices: [
+        { label: "带。从零搭起来", effects: { growth: 3, money: -1 }, set: "traj_scale_fin", echo: "头一年，线里就三个人，挤在一间小办公室。新客户的名单，你一个一个打电话攒。" },
+        { label: "年纪到了，不折腾了", effects: { freedom: 2 }, echo: "线给了年轻人。你路过那间小办公室，偶尔进去指点两句，出来还是回自己的柜台。" },
+      ] },
+    { id: "r_fin_partner", label: "合伙人名单", clue: "对着份额文件上自己的名字、看了半天的人。", min: 47, max: 58, require: "traj_scale_fin", chance: 0.035, text: "合伙人的份额定下来那天，文件上写的是你的名字。份额不大，分钱也慢，一年结一回。头一回结的时候，数先到的是账上的一行字，你看了半天。这辈子在柜台里过的钱多得数不清，可那些都是别人的；这一回，慢慢分到你名下的，才是你自己的。", effects: { money: 12, growth: 2 }, set: "traj_fortune_fin" },
+    // acct 开所两环（§三.11）：起势两条同落 traj_scale_acct——挂牌单干（AC-01）与并进大所当
+    // 分所（AC-03，备选升为第二起势：形状真、年代门错开）；坐实只认旗、不设 chain（双前任）。
+    { id: "r_acct_signboard", label: "挂牌那天", clue: "在自己所门口放了串鞭炮、头一个月只有一个客户的人。", min: 35, max: 52, minYear: 1998, ctx: { mainLine: "acct_work", tenureIn: [12, 999] }, chance: 0.03, text: "给人记账记了十几年，你动了自己开所的心思。地方都看好了：写字楼底下一间，租金算过三遍。第一个客户也有着落——老东家的一个供应商听说你要单干，先把话递了过来：你开，我头一个把账交给你。牌子挂不挂，就差你点头。",
+      choices: [
+        { label: "挂。自己的牌子自己扛", effects: { money: -3, growth: 3 }, set: "traj_scale_acct", echo: "牌子挂上那天，你在门口放了串鞭炮。头一个月就一个客户，你把他的账做得比给自己做还细。" },
+        { label: "再攒两年底子", effects: { wisdom: 2 }, echo: "你没挂。还是在人家屋檐下记账，只是再给人对账的时候，心里会多想一遍：这摊子要是我的，我会怎么做。" },
+      ] },
+    { id: "r_acct_absorb", label: "并进大所", clue: "把自己的旧牌子收进柜子、换上大所牌子的人。", min: 38, max: 54, minYear: 2010, ctx: { mainLine: "acct_work", tenureIn: [12, 999] }, chance: 0.03, text: "市里的大所想在你们这边设个分所，找的人是你。条件摆在桌上：牌子用他们的，你的人、你的客户都带过去，你当分所的负责人。自己那块小牌子摘下来，你想了好几天——从此头上有人管，可接的活，一下子就不是一个量级了。",
+      choices: [
+        { label: "并过去。借他们的牌子把盘子做大", effects: { money: 2, growth: 3, freedom: -2 }, set: "traj_scale_acct", echo: "换牌子那天，你把自己的旧牌子收进了柜子。分所开张，客户名单比从前长了一截。" },
+        { label: "不并。牌子小，是我自己的", effects: { freedom: 2, relation: 1 }, echo: "你回了话。大所的人也不勉强，说往后有合作再找你。你那块小牌子还挂在门口，风吹日晒，字有点旧了。" },
+      ] },
+    { id: "r_acct_firm", label: "所里养着十来个人", clue: "坐在最里间听外头敲键盘、锁门时回头看牌子的人。", min: 40, max: 60, require: "traj_scale_acct", chance: 0.06, text: "所里养着十来个人了。月初发工资，你坐在最里头那间，听着外头打算盘和敲键盘的声音，心里很稳。客户还是那些客户，有几家从你立牌子那年就跟着，他们的厂从小作坊做成了公司，你这边的账，也跟着记了厚厚一摞。晚上锁门走的时候，你回头看了一眼牌子——灯还亮着。", effects: { money: 10, growth: 2, relation: 2 }, set: "traj_fortune_acct" },
   ],
   endings: [
     { id: "end_richest", clue: "把副业干成大公司，最后站在锣声里的人。", tier: "legendary", all: ["traj_ipo"], stats: [{ k: "money", gt: 69 }], title: "世界首富", evidence: [["r_ipo"],["r_funding"]],

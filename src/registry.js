@@ -1939,8 +1939,9 @@ window.GAME_REGISTRY.milestones = {
   },
   "traj_fortune_acct": {
    "setters": [
+    "r_acct_firm"
    ],
-   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记）：本线尾巴坐实拍未施工（后续 W 片），setters 先空集占位，照 trial_done 先例以本注记为准。消费者先行：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence——旗未落时两处恒不命中，不改变存量行为。"
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记，CL-124 转实登）：开所链坐实拍 r_acct_firm 落（require 本链起势旗 traj_scale_acct，双起势挂牌 r_acct_signboard／并进大所 r_acct_absorb 均可达）。消费者：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence。"
   },
   "traj_fortune_builder": {
    "setters": [
@@ -1950,8 +1951,9 @@ window.GAME_REGISTRY.milestones = {
   },
   "traj_fortune_consult": {
    "setters": [
+    "r_consult_partner"
    ],
-   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记）：本线尾巴坐实拍未施工（后续 W 片），setters 先空集占位，照 trial_done 先例以本注记为准。消费者先行：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence——旗未落时两处恒不命中，不改变存量行为。"
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记，CL-124 转实登）：合伙人链坐实拍 r_consult_partner 落（require 本链做大旗 traj_scale_consult2）。消费者：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence。"
   },
   "traj_fortune_craft": {
    "setters": [
@@ -1960,8 +1962,9 @@ window.GAME_REGISTRY.milestones = {
   },
   "traj_fortune_dev": {
    "setters": [
+    "r_dev_ipo"
    ],
-   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记）：本线尾巴坐实拍未施工（后续 W 片），setters 先空集占位，照 trial_done 先例以本注记为准。消费者先行：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence——旗未落时两处恒不命中，不改变存量行为。"
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记，CL-124 转实登）：期权链坐实拍 r_dev_ipo 落。元老股变体坐实拍 r_dev_acquired 未落：定向普查 900 局变体起势零呈现（dev 交易门 eraIn 仅 c2000、c1985 合格池 300 局仅 1 局），整对砍除，账在 CL-124 CUT-LEDGER。消费者：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence。"
   },
   "traj_fortune_farm": {
    "setters": [
@@ -1971,8 +1974,9 @@ window.GAME_REGISTRY.milestones = {
   },
   "traj_fortune_fin": {
    "setters": [
+    "r_fin_partner"
    ],
-   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记）：本线尾巴坐实拍未施工（后续 W 片），setters 先空集占位，照 trial_done 先例以本注记为准。消费者先行：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence——旗未落时两处恒不命中，不改变存量行为。"
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／CL-112 占位登记，CL-124 转实登）：券商慢合伙人链坐实拍 r_fin_partner 落（require 本链起势旗 traj_scale_fin）。消费者：settlement.js 钱槽富贵档（FORTUNE 旗组）与 end_selfmade 的 any/evidence。"
   },
   "traj_fortune_media": {
    "setters": [
@@ -2033,6 +2037,13 @@ window.GAME_REGISTRY.milestones = {
    ],
    "note": "拆迁链中间旗（CL-112 新立）：r_oldhouse 落点环选钱/选房两选项同落此旗，供坐实环 r_oldhouse_move 的 chain+require 双门消费；本身不进结算与结局口径。"
   },
+  "traj_scale_acct": {
+   "setters": [
+    "r_acct_signboard",
+    "r_acct_absorb"
+   ],
+   "note": "富贵尾巴链内旗（CL-124）：开所链双起势（挂牌 r_acct_signboard 的挂牌选项／并进大所 r_acct_absorb 的并入选项）同落——标记「自己的所/分所立起来」，坐实环 r_acct_firm 以此为 require；本身不进结算与结局口径。"
+  },
   "traj_scale_builder": {
    "setters": [
     "r_builder_register"
@@ -2068,6 +2079,37 @@ window.GAME_REGISTRY.milestones = {
     "r_farm_coop"
    ],
    "note": "富贵尾巴链内旗（CL-116 立）：农链做大拍 r_farm_coop 的「牵头」选项落，供坐实环 r_farm_estate 的 chain+require 双门消费；本身不进结算与结局口径。"
+  },
+  "traj_scale_consult": {
+   "setters": [
+    "r_consult_threshold"
+   ],
+   "note": "富贵尾巴链内旗（CL-124）：咨询合伙人链起势拍 r_consult_threshold 的「往那道门走」选项落——标记「客户盘交到你手上、往合伙人走」，做大环 r_consult_book 以此为 require；本身不进结算与结局口径。"
+  },
+  "traj_scale_consult2": {
+   "setters": [
+    "r_consult_book"
+   ],
+   "note": "富贵尾巴链内旗（CL-124）：咨询合伙人链做大拍 r_consult_book 条目本体落（呈现即立旗）——标记「自己的客户盘立住、所里按盘分账」，坐实环 r_consult_partner 以此为 require；本身不进结算与结局口径。"
+  },
+  "traj_scale_dev": {
+   "setters": [
+    "r_dev_options"
+   ],
+   "note": "富贵尾巴链内旗（CL-124）：期权链起势拍 r_dev_options 两选项同落（押年头／随它涨——期权到手是事实，岔路只分姿态；单落旗版经首轮普查实测被人格分流吃掉 88%，照 CL-116 shop 双落旗形状改）——标记「期权在手、年头在走」，做大环 r_dev_exercise 以此为 require；本身不进结算与结局口径。"
+  },
+  "traj_scale_dev2": {
+   "setters": [
+    "r_dev_exercise"
+   ],
+   "note": "富贵尾巴链内旗（CL-124）：期权链做大拍 r_dev_exercise 条目本体落（呈现即立旗）——标记「行权落定、份额到手」，坐实环 r_dev_ipo 以此为 require；本身不进结算与结局口径。"
+  },
+  "traj_scale_fin": {
+   "setters": [
+    "r_fin_slowroom",
+    "r_fin_newline"
+   ],
+   "note": "富贵尾巴链内旗（CL-124）：金融慢合伙人链双起势（列席牵头慢账 r_fin_slowroom／带新业务线 r_fin_newline）同落——标记「慢活交到你手上」，坐实环 r_fin_partner 以此为 require；本身不进结算与结局口径。"
   },
   "traj_scale_shop": {
    "setters": [
