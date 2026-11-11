@@ -796,7 +796,13 @@ x.textAlign = "left";
 x.fillStyle = KS_PINE; x.font = "28px " + IFY.SERIF; x.textAlign = "center";
 x.fillText("同样的运气，你会怎么选？", MX + CW / 2, y + 42 + 50);
 x.textAlign = "left";
-const H = y + 42 + 50 + 64;
+// CL-123：落款下加一行二维码（微信内链接被拦，存图后用相机扫码进浏览器再玩）：
+// 二维码靠左、引导语靠右，与分享卡共用同一对渲染函数（share.js 的 IFY.drawShareQr /
+// drawShareQrGuide，色值与本图 KS_PAPER/KS_PINE/KS_GREY 同源）；库或函数缺失时只留白，不报错。
+const qrY = y + 42 + 50 + 26;
+if (typeof IFY.drawShareQr === "function") IFY.drawShareQr(x, MX, qrY, 92);
+if (typeof IFY.drawShareQrGuide === "function") IFY.drawShareQrGuide(x, MX + 116, qrY + 38);
+const H = qrY + 92 + 40;
 x.restore();
 return H;
 }

@@ -141,9 +141,45 @@
     return [...picks].sort((a, b) => a - b).slice(0, n + 1).map((i) => entries[i]);
   }
 
+  // ---------- CL-123：分享图二维码（微信内链接被拦已成定局，分享改走「存图＋相机扫码进浏览器」） ----------
+  // 二维码只编站点根地址这一个字符串，逐字不得改。模块矩阵由 src/vendor/qrcode.js
+  // （qrcode-generator © Kazuhiko Arase, MIT；index.html 里排在 share.js 之前装载）生成；
+  // 库缺失时静默跳过二维码、图照常出（引导语还在，玩家仍可照网址手输）。
+  const QR_URL = "https://if-that-year.sommeatlas.com/";
+  // 在 (qx, qy) 处画 size 见方的二维码：纸色底＋4 模块静区＋深松绿模块，与卡面同色口径。
+  function drawShareQr(x, qx, qy, size) {
+    if (typeof qrcode !== "function") return false;
+    try {
+      const qr = qrcode(0, "M"); // typeNumber 0 = 按内容自动选最小版本；纠错级 M
+      qr.addData(QR_URL);
+      qr.make();
+      const n = qr.getModuleCount();
+      const cell = size / (n + 8); // 两侧各留 4 模块静区
+      x.fillStyle = "#FAF8F4"; x.fillRect(qx, qy, size, size);
+      x.fillStyle = "#2F4A3C";
+      for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) {
+        if (qr.isDark(r, c)) x.fillRect(qx + (c + 4) * cell, qy + (r + 4) * cell, cell + 0.7, cell + 0.7); // +0.7 防分数格缝隙露白
+      }
+      return true;
+    } catch (e) { return false; }
+  }
+  // 引导语一行拆两行排（整句一字不改）：左对齐，base 为第一行基线，行距 34。
+  function drawShareQrGuide(x, gx, base) {
+    x.fillStyle = "#8A948C"; x.font = "23px " + IFY.SANS; x.textAlign = "left";
+    x.fillText("微信里打不开，就存下这张图，", gx, base);
+    x.fillText("用手机相机扫码，在浏览器里玩", gx, base + 34);
+  }
+  // 底部条幅（高 190，只加在原图底边之外）：二维码靠右下，引导语靠左，与页脚原有文字不叠。
+  function drawQrBand(x, W, y0) {
+    drawShareQr(x, W - 90 - 92, y0 + 49, 92);
+    drawShareQrGuide(x, 90, y0 + 84);
+  }
+
   function buildCard(type, ratio) {
-    const W = 1080, H = ratio === "916" ? 1920 : 1350;
-    const big = H > 1500; // 9:16 用宽松参数，4:5 用紧凑参数防溢出
+    const W = 1080, H0 = ratio === "916" ? 1920 : 1350;
+    const BAND = 190; // CL-123：底部条幅高度——画布只加高，主体布局仍按原图高 H0 计算，一字不动
+    const H = H0 + BAND;
+    const big = H0 > 1500; // 9:16 用宽松参数，4:5 用紧凑参数防溢出
     const sh = IFY.shadowRoute(); const v = IFY.verdict();
     const end = IFY.finalAge();
     const refl = cardReflText();
@@ -152,7 +188,7 @@
 
     if (type === "mini") {
       // ===== 判词小卡（圆桌决议 F3，免费）：竖版小卡，只有判词一句 + 双轨图母题 + 游戏名与网址。
-      // 固定 4:5，不吃尺寸档；双轨图复用 drawRoad 同一画法（不标分岔点，与全产品同口径）。
+      // 主体固定 4:5，不吃尺寸档（CL-123 起画布底边外加 190 条幅放二维码，主体比例不变）；双轨图复用 drawRoad 同一画法（不标分岔点，与全产品同口径）。
       x.fillStyle = "#FAF8F4"; x.fillRect(0, 0, W, H);
       x.strokeStyle = "#DDD6C9"; x.lineWidth = 3; x.strokeRect(36, 36, W - 72, H - 72);
       x.textAlign = "left";
@@ -160,12 +196,13 @@
       x.fillText("《如果那年》", 90, 170);
       x.fillStyle = "#23211C"; x.font = "62px " + IFY.SERIF;
       const vy = wrapText(x, v.text, 90, 320, 900, 92);
-      const gy = Math.min(vy + 190, H - 420);
+      const gy = Math.min(vy + 190, H0 - 420);
       drawRoad(x, gy);
       x.font = "30px " + IFY.SERIF; x.fillStyle = "#8A948C";
       x.fillText("22 岁", 90, gy + 58); x.textAlign = "right"; x.fillText(end + " 岁", 990, gy + 58); x.textAlign = "left";
       x.fillStyle = "#8A948C"; x.font = "30px " + IFY.SANS;
-      x.fillText("if-that-year.sommeatlas.com", 90, H - 96);
+      x.fillText("if-that-year.sommeatlas.com", 90, H0 - 96);
+      drawQrBand(x, W, H0);
       return c;
     }
     cardBase(x, W, H);
@@ -231,7 +268,7 @@
     } else {
       // ===== 判词卡（模板 A），视觉元素与旧版一致 =====
       const titleY = big ? 246 : 232;
-      const tall = big ? (H - 1350) * 0.35 : 0;
+      const tall = big ? (H0 - 1350) * 0.35 : 0;
       x.fillStyle = "#23211C";
       let y;
       if (IFY.S.special) {
@@ -265,7 +302,8 @@
       if (refl) { x.fillStyle = "#2F4A3C"; x.font = "34px " + IFY.SERIF; y = wrapText(x, "「" + refl + "」", 90, y + 10, 900, 50); }
       cardStats(x, y + (big ? 26 : 14), 560, big ? 50 : 42);
     }
-    cardFooter(x, W, H);
+    cardFooter(x, W, H0);
+    drawQrBand(x, W, H0);
     return c;
   }
 
@@ -361,5 +399,5 @@
     saveCanvasImage(IFY.currentCanvas, "if-that-year-" + IFY.S.seedStr + ".png");
   }
   Object.assign(IFY, { wrapText, sameSeedUrl, cardReflText, shareCopy, fitText, cardBase, cardFooter, cardStats, drawRoad,
-    parseLog, logNodes, logHighlights, buildCard, downloadCurrent, saveCanvasImage });
+    parseLog, logNodes, logHighlights, buildCard, downloadCurrent, saveCanvasImage, drawShareQr, drawShareQrGuide });
 })(window.IFY);
