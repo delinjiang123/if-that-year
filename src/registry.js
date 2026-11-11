@@ -934,6 +934,18 @@ window.GAME_REGISTRY.milestones = {
    ],
    "note": "出身牌钩子（v0.20.1 W5）：cf_11「家里就你一个」立旗，兄弟姐妹类文本以 forbid 排除独生出身"
   },
+  "hook_oneparent": {
+   "setters": [
+    "cf_19"
+   ],
+   "note": "出身牌钩子（CL-139）：setter 为牌 id，消费事件 pack33（p33_024/025）"
+  },
+  "hook_longhaul": {
+   "setters": [
+    "cf_22"
+   ],
+   "note": "出身牌钩子（CL-139）：setter 为牌 id，消费事件 pack33（p33_026/027）"
+  },
   "hook_sporty": {
    "setters": [
     "ct_01"

@@ -30,3 +30,10 @@ window.GAME_PACKS = (window.GAME_PACKS || []).concat([
 window.GAME_PACKS=(window.GAME_PACKS||[]).concat([
 {"id":"p33_023","min":30,"max":48,"require":"promised_next_summer","text":"第二年暑假，侄子真来了。这回他抱的是一本更厚的书，先翻到结局那页，又合上了：说今年要自己一页页读完。","effects":{"relation":2}}
 ]);
+// CL-139：新家底牌钩子消费者（hook_oneparent＝cf_19 单亲、hook_longhaul＝cf_22 一方跑长途），分布口径同本包 23–48
+window.GAME_PACKS=(window.GAME_PACKS||[]).concat([
+{"id":"p33_024","min":24,"max":38,"require":"hook_oneparent","text":"你妈那台缝纫机又卡了线，你下了班绕过去修。零件拆了一桌子，她站在边上给你递剪刀、举着灯。修好时天都黑了，她非留你吃碗面，卧了两个蛋。","effects":{"relation":2}},
+{"id":"p33_025","min":30,"max":45,"require":"hook_oneparent","text":"过年包饺子，你妈照老样子多包出一碗的量，说给楼下的老邻居端去。你端着碗往下走，碗边冒着热气。回来的时候，碗里换成了人家刚蒸的年糕，还热着。","effects":{"relation":2,"wisdom":1}},
+{"id":"p33_026","min":25,"max":40,"require":"hook_longhaul","text":"同事新买了车，喊你过去帮着看看。你绕着车走了一圈，手往轮胎上一搭，又趴下去听了听底盘的动静，说了个八九不离十。同事问你在哪儿学的，你说，耳濡目染吧。","effects":{"growth":1,"wisdom":1}},
+{"id":"p33_027","min":32,"max":48,"require":"hook_longhaul","text":"家里攒钱换车，你绕着车行转了几圈，眼睛总往那辆二手厢货上瞟。对方问你图什么，你笑了笑，没说话。","choices":[{"label":"还是把厢货开回了家，休息日帮人拉拉货","effects":{"money":1,"freedom":1},"echo":"车停在楼下，你擦了半天。坐进驾驶室那一刻，你把座椅往后调了调，跟小时候看你爸调的，一模一样。"},{"label":"听家里的，买了辆小车","effects":{"relation":1},"echo":"小车开回家，家里人挨个坐进去试了试。你把手搭在方向盘上，也挺好，就是小了点。"}]}
+]);

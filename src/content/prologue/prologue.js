@@ -794,7 +794,7 @@
     // 白名单（cf_01/cf_05/cf_10）并同标 urban 保城镇口径、[3] 镇卫生院款只发农村家底且出生
     // 年 ≤2003（口径见 ORIGIN_OPEN 上方注释）。[1] 县医院无标无门、通发兜底；[4]–[7] 无标无门。
     originOpenSetting: ["urban", null, "urban", null, null, null, null, null],
-    originOpenCond: [null, null, { familyIn: ["cf_01", "cf_05", "cf_10"] }, { settingEq: "rural", birthYearMax: 2003 }, null, null, null, null],
+    originOpenCond: [null, null, { familyIn: ["cf_01", "cf_05", "cf_10", "cf_17", "cf_18"] }, { settingEq: "rural", birthYearMax: 2003 }, null, null, null, null],
     originLB: ["你爸妈去了外地打工，你跟着爷爷奶奶过。电话一礼拜打一回，声音从听筒里出来，有点远。", "你爸妈在外地打工，你跟着爷爷奶奶长大。他们的声音你最熟，是从电话里听熟的；人要等到过年，站在村口，看从车上下来的那个，才对得上号。"],
     marks: MARKS, flatsByAge: FLATS_BY_AGE, acts: ACTS, sitActs: SIT_ACTS,
     // 活力批（v0.28 候选）：c2000 本代首个序章随时池，走 poolSchedule 的 WP7 通用形（与 c1985 的 pool 同形：
