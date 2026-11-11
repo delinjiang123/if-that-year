@@ -479,8 +479,12 @@ window.GAME_REGISTRY.milestones = {
   },
   "consult_work": {
    "setters": [
+    "cr_consult_003",
+    "cr_consult_004",
+    "cr_consult_005",
+    "cr_consult_006"
    ],
-   "note": "咨询入行（CL-93 注册落地片）：行当与旗已在 trades.js／work.js FORM_OF_FLAG 登记，本条目为注册占位——现池无任何条目立此旗（setters 空集，validate-state 双向对账空集自洽），入行拍随咨询线内容片（CL-95）补入后逐条补登。形态 employee 正职层（不进 WORK_FORMAL_FLAGS／WORK_INFORMAL_FLAGS，退休落 fallback 58–63、养老金率 0.45），族籍 word 与 teach/press 同族；与销售职称的置业顾问（pack17 买房面）/销售顾问（p19_018）/早教课程顾问（p3_051）、留学顾问（pack18 留学中介面）、他线晚年返聘顾问面（p14_007/p14_008/p25_005、cr_forest_079、cr_dev_095 等⑥回响）分家——那些都不是咨询公司里的顾问，本旗只认乙方咨询公司的入行（校招直入与行业转入）"
+   "note": "咨询入行（CL-93 注册落地片）：行当与旗已在 trades.js／work.js FORM_OF_FLAG 登记，本条目为注册占位——现池无任何条目立此旗（setters 空集，validate-state 双向对账空集自洽），入行拍随咨询线内容片（CL-95）补入后逐条补登。形态 employee 正职层（不进 WORK_FORMAL_FLAGS／WORK_INFORMAL_FLAGS，退休落 fallback 58–63、养老金率 0.45），族籍 word 与 teach/press 同族；与销售职称的置业顾问（pack17 买房面）/销售顾问（p19_018）/早教课程顾问（p3_051）、留学顾问（pack18 留学中介面）、他线晚年返聘顾问面（p14_007/p14_008/p25_005、cr_forest_079、cr_dev_095 等⑥回响）分家——那些都不是咨询公司里的顾问，本旗只认乙方咨询公司的入行（校招直入与行业转入）。CL-95 补登（pack111）：四扇入行门 cr_consult_003（厂里老兵转乙方，require factory_work）/004（甲方老兵通用转入，anyFlag 七源）/005（专家型转入，anyFlag med/teach，只立一面）/006（校招直入，ctx.entry＋ctx.eduGate 严口径、eraIn 只 c1995/c2000）；种子 p111_001（宣讲会印象面，seed:consult）不立旗不在此列"
   },
   "cooking_recipe": {
    "setters": [
@@ -1832,6 +1836,8 @@ window.GAME_REGISTRY.milestones = {
     "cr_med_042",
     "cr_img_015",
     "cr_forest_051",
+    "cr_consult_023",
+    "p111_007",
    ],
    "note": "在职想走（第 2 期 P2-3 立）：后段想走拍 cr_want_cold（冷门来处）与 cr_want_seed（种子/承继来处）的「想换」选项立旗，两拍自身以 forbid 本旗关门防复读。消费者：world/career.js 的 gateSwitchDue——待业段满 1 年且想走、或在职想走（已立旗且不在待业段）两条支路开 gate_switch（框走 want；unit_gone 硬推走 fact 框）。立旗不清空：想走而没走（关口里又选了原行或推掉）旗仍在，冷却后再开（设计 §3.5，中年转行的口子留得住）。CL-49 补登（v0.60.70）：cr_dev_056 想走面立旗"
   },
