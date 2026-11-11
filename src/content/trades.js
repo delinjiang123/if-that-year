@@ -359,6 +359,16 @@ window.GAME_TRADES = {
     "seedEcho": null, "inheritEcho": null,
     "note": "林业（CL-47 开线，总指挥注册裁定）：森工/营林/林农/林站/生态护林五脸共用 forestry_work 一旗，脸靠公历门与 ctx 分；form 按单位制登 employee（森工局/国营林场/林业站是单位，命三林农与命五公益岗的脸在条目层自洽，不另立旗）；正规口径（入 WORK_FORMAL_FLAGS，退休窗 55–60，本片不写退休段）；族籍归 land 田土（山与田同族，与 farm/sea 互溢，照 sea 先例）；eraIn 六代全开（顶替脸止 1986、分配脸止 2003、选聘脸 2016 起，由条目公历门分开）；inheritFrom 空——承继（顶替）走线内入行拍 p75_015，现行出身牌无林业子弟来源"
   },
+  "rail": {
+    "flag": "rail_work", "form": "employee",
+    "family": "road",
+    "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
+    "eduGate": null, "gateDirect": true,
+    "coldOk": true, "coldKinds": ["recruit", "assign"], "coldWeight": 3,
+    "inheritFrom": [],
+    "seedEcho": null, "inheritEcho": null,
+    "note": "铁路（CL-121 开线，朋友试玩期待的新职业，总指挥注册裁定照 CL-47 forestry 镜像）：列车乘务/车站客运/餐车后勤/货运调车四脸共用 rail_work 一旗，脸靠公历门与 ctx 分；form 按单位制登 employee（铁路局/车务段/客运段是单位）；正规口径（入 WORK_FORMAL_FLAGS，退休窗 55–60）；族籍归 road 道路（与 truck/driver_taxi/courier 同族，跑线的人彼此外溢）；eraIn 六代全开（绿皮基础脸全年代、提速脸 1997 起、高铁脸 2010 起，由条目公历门分开）；inheritFrom 空——承继（铁路子弟顶替）走线内入行拍 p128_014，现行出身牌无铁路子弟来源"
+  },
   "consult": {
     "flag": "consult_work", "form": "employee",
     "family": "word",

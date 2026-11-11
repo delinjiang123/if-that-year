@@ -336,6 +336,7 @@
     teach: "去教书", acct: "做财会", fin: "去证券营业部", press: "进报社", dev: "做软件开发",
     driver_taxi: "开出租车", grad: "进课题组深造", photo: "当摄影师", builder: "上工地",
     consult: "去咨询公司", // CL-93 咨询注册片补登（与 GATE_TRADE_FX 同步）
+    rail: "进铁路", // CL-121 铁路开线补登（与 GATE_TRADE_FX 同步；forestry/sea 两表漏补是 CL-93 旧账，不在本片范围）
   };
   // 关口选项的六维效果（P1-6 激活批定实，§5.2 硬要求：影子无头轨政策 F 第 3 级
   // 靠 effects 打分，空对象会让关口选项对影子恒 0 分、政策退化到位置兜底）。
@@ -356,6 +357,7 @@
     grad: { growth: 5, wisdom: 4, money: 1, freedom: -1 },
     photo: { growth: 4, money: 2, freedom: 2 }, builder: { money: 3, health: -4, freedom: 1 },
     consult: { money: 4, growth: 4, wisdom: 2, health: -2, freedom: -2 }, // CL-93：高薪长见识、卖时间与身体（出差驻场、客户说了算），按行当真实形状分
+    rail: { money: 3, growth: 1, health: -2, freedom: -1, relation: 1 }, // CL-121：单位制稳钱、三班倒熬夜伤身费自由、铁路大院人熟关系厚，按行当真实形状分
   };
   function gateFx(trade) { return Object.assign({}, GATE_TRADE_FX[trade] || {}); }
   const GATE_KIND_SUB = {
