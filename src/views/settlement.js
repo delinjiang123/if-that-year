@@ -261,7 +261,10 @@
       [!!F.kid_abroad, "把孩子送到了国外"],
       [!!F.two_cities, "过过两地奔波的日子"],
       [!!F.long_dist, "和对方两地过"],
-      [!!(F.side_business || F.side_start || F.side_job), "正职之外干过副业"]
+      [!!(F.side_business || F.side_start || F.side_job), "正职之外干过副业"],
+      [!!F.dca, "定投过一只基金"], // CL-135（路线总账 P3）：孤旗接判词——三行均追加在表尾、最低优先，仅高于其后的爱好兜底
+      [!!F.loan_swap, "折腾过一回房贷"],
+      [!!F.badminton_captain, "张罗过一支羽毛球局"]
     ];
     let t2 = "";
     for (const [ok, label] of traj) if (ok) { t2 = label; break; }

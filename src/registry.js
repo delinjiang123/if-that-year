@@ -159,7 +159,8 @@ window.GAME_REGISTRY.milestones = {
   "ai_read_assist": {
    "setters": [
     "p21_001"
-   ]
+   ],
+   "note": "影像线事实旗：p21_001 选项落（c2000，影像科 AI 读片系统上线、复核时攒下漏标例子）。消费者：CL-135 接——pack131 晚年回响拍 cr_img_021（require 本旗）：当年攒漏标例子的人，晚年给科里的 AI 阅片做质控把关。此前无消费者（CL-134 P3 真孤旗），本片 (a) 类接上"
   },
   "asked_borrow": {
    "setters": [
@@ -200,7 +201,8 @@ window.GAME_REGISTRY.milestones = {
   "badminton_captain": {
    "setters": [
     "p10_025"
-   ]
+   ],
+   "note": "爱好身份旗：p10_025 选项落（须 hobby_badminton）——成了固定羽毛球局的组织者、订场算账的人。消费者：CL-135 接——settlement.js lifeTags 轨迹标签行「张罗过一支羽毛球局」（追加在表尾、最低优先，仅高于爱好兜底行；与兜底的「羽毛球陪了大半辈子」分工：有组织者身份时认本行）。此前无消费者（CL-134 P3），本片 (a) 类接上"
   },
   "band_member": {
    "setters": [
@@ -521,7 +523,8 @@ window.GAME_REGISTRY.milestones = {
   "dca": {
    "setters": [
     "p2_070"
-   ]
+   ],
+   "note": "理财决定旗：p2_070 选项「不卖了，改成每月定投」落（基金链 p2_068→069→070 的终环选择）。消费者：CL-135 接——settlement.js lifeTags 轨迹标签行「定投过一只基金」（追加在表尾、最低优先，与同表 stock_2008／crypto_old 的钱面履历行同类）。此前无消费者（CL-134 P3），本片 (a) 类接上"
   },
   "door_neighbor": {
    "setters": [
@@ -638,7 +641,8 @@ window.GAME_REGISTRY.milestones = {
    "setters": [
     "e65_046",
     "p22_006"
-   ]
+   ],
+   "note": "自律记号旗（两代同名同义）：p22_006（gig 线，条目级落：钱到账先划走三成存到不绑支付的卡）／e65_046（c1965，选项落：买东西先列单子再下单）——都是「给自己立了个花钱的规矩」。后果在各自条目内结清，本旗为留痕，无下游消费者属定性如此（CL-134 P3／CL-135 (b) 类处置：留痕定性，不接不退役）"
   },
   "fund_bought": {
    "setters": [
@@ -1002,7 +1006,8 @@ window.GAME_REGISTRY.milestones = {
    "setters": [
     "e78_017",
     "e85_004"
-   ]
+   ],
+   "note": "二孩决定旗：e78_017（c1978）／e85_004（c1985）同名同义，选项「要，趁老人还能搭把手」落。孩子线本体走 kids 状态域、不建模二孩的年龄，本旗是这桩决定的事实留痕（二孩在叙事层即已出生）。消费者：CL-135 接——pack131 晚年回响拍 p131_001（require 本旗）：二孩长起来的晚年日子。此前无消费者（CL-134 P3），本片 (a) 类接上"
   },
   "kid_abroad": {
    "setters": [
@@ -1528,7 +1533,8 @@ window.GAME_REGISTRY.milestones = {
   "loan_swap": {
    "setters": [
     "p2_060"
-   ]
+   ],
+   "note": "房贷决定旗：p2_060 选项「换了，利息确实低」落（须 bought_house；把房贷换成经营贷）。消费者：CL-135 接——settlement.js lifeTags 轨迹标签行「折腾过一回房贷」（追加在表尾、最低优先）。此前无消费者（CL-134 P3），本片 (a) 类接上"
   },
   "long_dist": {
    "setters": [
@@ -1687,7 +1693,8 @@ window.GAME_REGISTRY.milestones = {
   "promise_grandkid": {
    "setters": [
     "e65_054"
-   ]
+   ],
+   "note": "立约式承诺旗（c1965）：e65_054 选项「应下来，先把小房间收拾出来」落——电话里答应将来帮孩子带娃、丑话说前头有个章程。消费者：CL-135 接——pack131 晚年回响拍 p131_002（require 本旗）：孙辈真出生后，照当年说好的章程搭把手。此前无消费者（CL-134 P3），本片 (a) 类接上"
   },
   "rehire": {
    "setters": [
@@ -2335,7 +2342,8 @@ window.GAME_REGISTRY.milestones = {
   "video_quit": {
    "setters": [
     "p10_046"
-   ]
+   ],
+   "note": "行为改变留痕旗：p10_046 两选项同落（戒短视频，两种戒法都落）——决定的后果已在选项 effects 与 echo 里结清（「戒算是戒成了」），本旗是这段履历的留痕，无下游消费者属定性如此（CL-134 P3／CL-135 (b) 类处置：留痕定性，不接不退役）"
   },
   "visit_home_more": {
    "setters": [
@@ -2902,7 +2910,7 @@ window.GAME_REGISTRY.familyFacts = {
   "migrantExam": { "beat": "L95-考/L00-考", "note": "随迁升学议题已立：回原籍考还是留当地考，墙在升学端" },
   "famTight78": { "beat": "L78-家", "note": "家里的钱先紧起来（c1978）：父母下海/开店或下岗，紧的那一样落到孩子身上" },
   "famLaidOff85": { "beat": "L85-岗", "note": "你爸下岗（c1985，14–15 岁变体：厂子买断工龄）：家里的钱紧了，先紧孩子的哪一样" },
-  "famArrears85": { "beat": "L85-岗", "note": "你爸的厂子发不出工资（c1985，11–13 岁变体）：停发、找零活，家里的钱紧了" },
+  "famArrears85": { "beat": "L85-岗", "note": "你爸的厂子发不出工资（c1985，11–13 岁变体）：停发、找零活，家里的钱紧了。来源：prologue-c1985 的 pool_laidoff85 弱档变体（band 11–13、familyFact 发放；强档 14–15 岁买断变体立 famLaidOff85，两档分立不得共用，AN-5 R5(b)）。消费者：era1985 回响拍 echo_laidoff85（any 本旗／famLaidOff85）、settlement.js 家庭事实句、影子出生按本表拷贝（E8 清单）。本旗与 famLaidOff85 同形在册（CL-134 P5 称未登记与主树实况不符，CL-135 对核后仅补注来源段与消费者）" },
   "famRestructure95": { "beat": "L95-婚", "note": "父母离异后的日常安排（c1995）：跟谁住的日常尺寸事实，克制写事不写惨" },
   "famCare00": { "beat": "L00-护", "note": "看护翻转预告（c2000）：祖辈住院，孩子第一次在病房跑腿" },
   "famSentdownEcho": { "beat": "L65-衔", "note": "兄姐下乡/返城的衔接记号（c1965，只作记号不立新线）：饭桌上少一副/多一副碗筷" },
