@@ -340,6 +340,7 @@
     recycle: "收废品", // CL-120 回收开线补登（与 GATE_TRADE_FX 同步）
     post: "进邮局", // CL-119 邮政开线补登（与 GATE_TRADE_FX 同步；forestry/sea 两行当年漏登此表是 CL-93 点名的存量缺口，本行不照漏）
     sea: "出海", forestry: "进林场", // CL-129 补登（CL-93 点名的存量缺口在此销账：两线当年注册时漏登此表与 GATE_TRADE_FX，菜单里曾直出英文键）
+    geo: "进地质队", // CL-133 地质开线补登（与 GATE_TRADE_FX 同步；不照 sea/forestry 当年的漏）
   };
   // 关口选项的六维效果（P1-6 激活批定实，§5.2 硬要求：影子无头轨政策 F 第 3 级
   // 靠 effects 打分，空对象会让关口选项对影子恒 0 分、政策退化到位置兜底）。
@@ -365,6 +366,7 @@
     post: { money: 2, relation: 3, health: -2, freedom: -1 }, // CL-119：单位稳、钱不多；一条邮路走下来全是熟人（relation 厚），风雨邮路伤身，单位管着自由低
     sea: { money: 3, health: -3, freedom: 2, relation: -1 }, // CL-129：海上的钱靠天靠力气，自家船自己说了算自由些，代价是风浪伤身、出海一走十天半月家里顾不上，按行当真实形状分
     forestry: { money: 2, health: -2, freedom: -1, relation: 1 }, // CL-129：单位制的稳当但钱不多，山里的活风吹日晒伤身、单位管着自由低，林场院里人熟关系厚，按行当真实形状分
+    geo: { money: 3, growth: 2, health: -2, freedom: -1, relation: -1 }, // CL-133：野外补助与找矿奖金使钱不差、认石头认地层是真技术成长；代价写在明处——风餐露宿伤身、驻外半年自由低、两地分居伤关系（与 rail 的大院 relation +1 分家，地质队的招牌代价就是一年见不了几回家里人），按行当真实形状分
   };
   function gateFx(trade) { return Object.assign({}, GATE_TRADE_FX[trade] || {}); }
   const GATE_KIND_SUB = {

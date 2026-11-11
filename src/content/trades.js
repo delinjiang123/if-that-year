@@ -399,6 +399,16 @@ window.GAME_TRADES = {
     "seedEcho": null, "inheritEcho": null,
     "note": "回收（CL-120 开线，职业地图候选 A4，总指挥注册裁定）：废品回收五脸共用 recycle_work 一旗——走街串巷个体回收/收购站坐商（全年代）、分拣场（1995 起密）、再生资源公司与规范回收点（2003 起）、电子废弃物拆解（2005 起，只写日常劳作与行规），脸靠公历门与 ctx 分；form 按个体/自营形态登 self（这行的落点是自己的摊/站/场，受雇只是入行前段）；族籍归 market 市集（与 shop/gig/courier 同族互溢，入行脸可挂 gig 冷门外溢，本线另有直达种子 p127_010–017 与六扇入行门 p127_001–006，不靠外溢兜底）；非正规口径（不入 WORK_FORMAL_FLAGS、入 WORK_INFORMAL_FLAGS，退休窗 63–68、养老金率 0.3 随 wage.js informal 口径，与 sea 同例）；eraIn 六代全开（回收行当自 1950 年代起不断线，c1955 出生者青年正赶上供销社收购站与走街串巷并行的年代，胶片/电子只是换货，行当本身不换）；coldKinds/coldWeight 与同族 gig 同档（招工/跟人/离家近/给钱是这行的原生进人渠道）；inheritFrom 空——承继走线内入行拍 p127_003（接家里长辈的收购摊），现行出身牌无回收子弟来源"
   },
+  "geo": {
+    "flag": "geo_work", "form": "employee",
+    "family": "land",
+    "eraIn": ["c1955", "c1965", "c1978", "c1985", "c1995", "c2000"],
+    "eduGate": null, "gateDirect": true,
+    "coldOk": true, "coldKinds": ["recruit", "assign"], "coldWeight": 3,
+    "inheritFrom": [],
+    "seedEcho": null, "inheritEcho": null,
+    "note": "地质勘探（CL-133 开线，职业地图候选 A5，总指挥注册裁定）：野外填图/钻探/物探测量/室内化验图件四脸共用 geo_work 一旗，脸靠公历门与 ctx 分（改制脸 1998–2005 窗、矿业回暖脸 2003–2013 窗、GPS 2005 起、无人机 2016 起）；form 按单位制登 employee（地质队是事业单位/国营单位，属地化与改制后的勘查公司是同一单位形态的后段换皮，不另立旗，照 rail/post 判例）；正规口径（入 WORK_FORMAL_FLAGS，退休窗 55–60）；族籍归 land 田土（这行的工作面是山与土、驻地在山脚，与 forestry『山与田同族』同判，与 miner 分家——矿是把山挖开，地质是先把山看懂）；eraIn 六代全开，密度分档照 MAP『c1955–c1995 密、之后转薄』由入行门公历窗承担：c2000 代只剩转业/招工/院校/临时工四扇门（顶替止 1996、中专分配止 2003 两扇老门已关），行当本身不断线；eduGate 登 null——六扇门里五扇无学历门，院校门 p130_017 单独在条目上挂 ctx eduGate 严口径，照 dev 等混合线先例注册表只记全线实况；coldKinds/coldWeight 与 rail/forestry 同档（单位招工常规渠道，assign 在 COLD_KIND_ERA 表里 c1985 起自动关闭）；inheritFrom 空——承继（子弟顶替）走线内入行拍 p130_013，现行出身牌无地质队子弟来源"
+  },
 };
 
 // 冷门类型 × 年代可用表（COLD_KIND_ERA，§4.3）：机制只查表，格子内容是登记事实。

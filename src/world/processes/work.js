@@ -14,7 +14,7 @@
   // （变体选择只能在本函数做：呈现时 applyState 已先行流转，textState 无可分辨的域——口径见 sim-v0201/logs/w2-retire.md）。
   // 无当前单位事实者（买断离厂 laid_off 后再无入行/返聘事实）走条目声明的 textNoUnit/echoNoUnit 不点名单位变体。
   // 钱进程接口：未来养老金标定读 S.state.workPhase、S.retiredAt（退休落点年龄）与 S.retirePlan.form（退休前活计形态），定义见 docs/WORK-PHASE.md。
-  const WORK_FORMAL_FLAGS = ["factory_work", "fab_work", "craft_work", "heavy_work", "miner_work", "truck_work", "med_hosp", "teach_work", "acct_work", "fin_work", "press_work", "dev_work", "forestry_work", "rail_work", "post_work"]; // rail_work：CL-121 铁路开线新增（总指挥裁定 form=employee、单位制，退休窗随 formal 55–60）；post_work：CL-119 邮政开线新增（邮电／邮政单位制，退休窗 55–60）
+  const WORK_FORMAL_FLAGS = ["factory_work", "fab_work", "craft_work", "heavy_work", "miner_work", "truck_work", "med_hosp", "teach_work", "acct_work", "fin_work", "press_work", "dev_work", "forestry_work", "rail_work", "post_work", "geo_work"]; // rail_work：CL-121 铁路开线新增（总指挥裁定 form=employee、单位制，退休窗随 formal 55–60）；post_work：CL-119 邮政开线新增（邮电／邮政单位制，退休窗 55–60）；geo_work：CL-133 地质开线新增（地质队事业单位制，退休窗 55–60）
   const WORK_INFORMAL_FLAGS = ["shop_work", "gig_work", "farm_work", "courier_work", "care_work", "write_work", "sea_work", "photo_work", "recycle_work"]; // photo_work：CL-78 注册落地定 flex 机会层，退休窗随 informal 63–68；recycle_work：CL-120 回收开线新增（总指挥裁定 form=self、退休窗 63–68、养老金率 0.3 随 informal 口径）
 
   function workForm() {
@@ -59,7 +59,7 @@
     miner_work: "employee", truck_work: "employee", med_hosp: "employee", med_work: "employee",
     nurse_work: "employee", img_work: "employee", teach_work: "employee", acct_work: "employee",
     fin_work: "employee", press_work: "employee", dev_work: "employee", driver_taxi: "employee",
-    grad_work: "employee", builder_work: "employee", sea_work: "self", forestry_work: "employee", consult_work: "employee", rail_work: "employee", recycle_work: "self", post_work: "employee", // 第 2 期注册片新增行当（建筑工人＋CL-27 出海，与 trades.js 双向对应，validate-state 守）；forestry_work 为 CL-47 林业开线新增（总指挥裁定 form=employee）；rail_work 为 CL-121 铁路开线新增（同裁定 form=employee）；photo_work 的 form 已由 CL-78 注册落地片改定 flex（见上行 flex 组与 trades.js photo 注）；consult_work 为 CL-93 咨询注册片新增（总指挥裁定 form=employee；不进 WORK_FORMAL_FLAGS/WORK_INFORMAL_FLAGS，退休落 fallback 58–63、养老金率 0.45）；recycle_work 为 CL-120 回收开线新增（总指挥裁定 form=self；入 WORK_INFORMAL_FLAGS，退休窗 63–68、养老金率 0.3）；post_work 为 CL-119 邮政开线新增（同 rail 裁定 form=employee、入 WORK_FORMAL_FLAGS）
+    grad_work: "employee", builder_work: "employee", sea_work: "self", forestry_work: "employee", consult_work: "employee", rail_work: "employee", recycle_work: "self", post_work: "employee", geo_work: "employee", // 第 2 期注册片新增行当（建筑工人＋CL-27 出海，与 trades.js 双向对应，validate-state 守）；forestry_work 为 CL-47 林业开线新增（总指挥裁定 form=employee）；rail_work 为 CL-121 铁路开线新增（同裁定 form=employee）；photo_work 的 form 已由 CL-78 注册落地片改定 flex（见上行 flex 组与 trades.js photo 注）；consult_work 为 CL-93 咨询注册片新增（总指挥裁定 form=employee；不进 WORK_FORMAL_FLAGS/WORK_INFORMAL_FLAGS，退休落 fallback 58–63、养老金率 0.45）；recycle_work 为 CL-120 回收开线新增（总指挥裁定 form=self；入 WORK_INFORMAL_FLAGS，退休窗 63–68、养老金率 0.3）；post_work 为 CL-119 邮政开线新增（同 rail 裁定 form=employee、入 WORK_FORMAL_FLAGS）；geo_work 为 CL-133 地质开线新增（同 rail 裁定 form=employee、入 WORK_FORMAL_FLAGS）
   };
   const FORM_SIDE_FLAGS = ["side_job", "xiahai"];
   const FORM_TIE_ORDER = ["farm", "public", "self", "flex", "employee"]; // R1 同龄同序时的表序
