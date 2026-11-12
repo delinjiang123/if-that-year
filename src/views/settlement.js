@@ -2004,6 +2004,36 @@
       if (k === "另一条路" && shadowFirst && t.startsWith(shadowFirst)) return [k, t.slice(shadowFirst.length)];
       return [k, t];
     }).filter(([k, t]) => !(k === "另一条路" && shadowFirst && !t));
+    // CL-150：年表里的工资年结同流水账口径降为附加信息——不再独立成段，按连续同龄段
+    // 归并后作小字附注（.wageattach）挂到同年最后一段正文之下；该年只有年结行时以
+    // 弱化小字段（.wagenote）垫底，不丢行。tlLog 存储与 SYS 前缀识别一字未动。
+    const tlHtml = (() => {
+      const ent = (tlLog || []).map((l) => {
+        const m = typeof l === "string" && l.match(/^(\d+) 岁 · ([\s\S]*)$/);
+        return { raw: l, age: m ? +m[1] : null, txt: m ? m[2] : l, wage: !!(m && m[2].startsWith("工资年结")) };
+      });
+      const groups = [];
+      for (const e of ent) {
+        const g = groups[groups.length - 1];
+        if (g && e.age != null && g.age === e.age) g.items.push(e); else groups.push({ age: e.age, items: [e] });
+      }
+      const out = [];
+      for (const g of groups) {
+        const mains = g.items.filter((e) => !e.wage), wages = g.items.filter((e) => e.wage);
+        mains.forEach((e, k) => {
+          const m = typeof e.raw === "string" && e.raw.match(/^(\d+) 岁 · /);
+          const yr = m && IFY.S.birthYear ? `${IFY.S.birthYear + (+m[1])} 年 · ` : "";
+          const notes = k === mains.length - 1 ? wages : [];
+          out.push(`<p>${IFY.esc(yr + e.raw)}${notes.map((w) => `<span class="wageattach">${IFY.esc(w.txt)}</span>`).join("")}</p>`);
+        });
+        if (!mains.length) for (const w of wages) {
+          const m = typeof w.raw === "string" && w.raw.match(/^(\d+) 岁 · /);
+          const yr = m && IFY.S.birthYear ? `${IFY.S.birthYear + (+m[1])} 年 · ` : "";
+          out.push(`<p class="wagenote">${IFY.esc(yr + w.raw)}</p>`);
+        }
+      }
+      return out.join("");
+    })();
     IFY.app().innerHTML = `<section class="card">${IFY.head(null, true)}
       <div class="rev" style="--d:0s">
       <h2>${IFY.finalAge()} 岁 · 这一局走完了</h2>
@@ -2031,7 +2061,7 @@
       ${settlementMapHtml()}
       <div class="rev" style="--d:.55s">
       <h3>这一生，年表<button type="button" class="newhint" id="tlhint" hidden>到最新一年 ↓</button></h3>
-      <div class="timeline" id="timeline">${tlLog.map((l) => { const m = l.match(/^(\d+) 岁 · ([\s\S]*)$/); const yr = m && IFY.S.birthYear ? `${IFY.S.birthYear + (+m[1])} 年 · ` : ""; return `<p>${IFY.esc(yr + l)}</p>`; }).join("")}</div>
+      <div class="timeline" id="timeline">${tlHtml}</div>
       </div>
       ${lifelineHtml(tlView)}
       <div class="sharedesk">

@@ -241,17 +241,41 @@
     return `${roadSvg()}${statsBar()}<p class="meta">${IFY.S.age} 岁${yr} · ${IFY.esc(IFY.S.route.name)} · 种子 ${IFY.esc(IFY.S.seedStr)}${mark}${note ? " · " + note : ""}</p>${bare ? "" : `<div class="autorow" id="autorow">${autoRowHtml()}</div><div class="autoline"><i id="autolinefill"></i></div>${autoPanelHtml()}`}`;
   }
 
+  // CL-150：工资年结降为附加信息（用户裁定「不作为主要事件」）——流水账里年结行不再
+  // 与事件行同格独立成行：按年龄组归并后作小字附注（.wageattach）挂到同年最后一行
+  // 非年结行之下；该年若只有年结行，垫底一条弱化附注行（.wageonly），不丢行。
+  // 存储（S.log 原行）与识别口径（行首「工资年结」前缀）一字未动，旧存档同读同认；
+  // 归并只动呈现，零 rng、零状态写。结算年表同口径（settlement.js 年表段）。
   function streamHtml() {
     if (!IFY.S || !IFY.S.log.length) return "";
     const unread = !IFY.streamFollow && IFY.S.log.length > IFY.streamSeen;
-    const rows = IFY.S.log.map((l, i) => {
-      const m = l.match(/^(\d+) 岁 · ([\s\S]*)$/);
-      const age = m ? +m[1] : IFY.S.age, txt = m ? m[2] : l;
-      const yr = IFY.S.birthYear ? `${IFY.S.birthYear + age} · ` : "";
-      const cls = i === IFY.S.log.length - 1 ? " last" : (!IFY.streamFollow && i >= IFY.streamSeen ? " new" : "");
-      return `<div class="srow${cls}"><span class="sage">${yr}${age} 岁</span><span>${IFY.esc(txt)}</span></div>`;
-    }).join("");
-    return `<div class="streamwrap"><p class="streamtitle">这一生 · 流水账<button type="button" class="newhint" id="newhint"${unread ? "" : " hidden"}>有新的一年 ↓</button></p><div class="stream" id="stream">${rows}</div></div>`;
+    const log = IFY.S.log;
+    const ent = log.map((l, i) => {
+      const m = typeof l === "string" && l.match(/^(\d+) 岁 · ([\s\S]*)$/);
+      return { i, age: m ? +m[1] : IFY.S.age, txt: m ? m[2] : l, wage: !!(m && m[2].startsWith("工资年结")) };
+    });
+    // 同龄行在流水账里天然相邻（逐年追加），按连续同龄段归并
+    const groups = [];
+    for (const e of ent) {
+      const g = groups[groups.length - 1];
+      if (g && g.age === e.age) g.items.push(e); else groups.push({ age: e.age, items: [e] });
+    }
+    const rowCls = (idxs) => idxs.includes(log.length - 1) ? " last" : (!IFY.streamFollow && idxs.some((i) => i >= IFY.streamSeen) ? " new" : "");
+    const rows = [];
+    for (const g of groups) {
+      const mains = g.items.filter((e) => !e.wage), wages = g.items.filter((e) => e.wage);
+      mains.forEach((e, k) => {
+        const yr = IFY.S.birthYear ? `${IFY.S.birthYear + e.age} · ` : "";
+        const notes = k === mains.length - 1 ? wages : []; // 年结附注只挂该年最后一行正文
+        const idxs = [e.i].concat(notes.map((w) => w.i));
+        rows.push(`<div class="srow${rowCls(idxs)}"><span class="sage">${yr}${e.age} 岁</span><span>${IFY.esc(e.txt)}${notes.map((w) => `<span class="wageattach">${IFY.esc(w.txt)}</span>`).join("")}</span></div>`);
+      });
+      if (!mains.length) for (const w of wages) {
+        const yr = IFY.S.birthYear ? `${IFY.S.birthYear + w.age} · ` : "";
+        rows.push(`<div class="srow wageonly${rowCls([w.i])}"><span class="sage">${yr}${w.age} 岁</span><span>${IFY.esc(w.txt)}</span></div>`);
+      }
+    }
+    return `<div class="streamwrap"><p class="streamtitle">这一生 · 流水账<button type="button" class="newhint" id="newhint"${unread ? "" : " hidden"}>有新的一年 ↓</button></p><div class="stream" id="stream">${rows.join("")}</div></div>`;
   }
 
   function mountStream() {
