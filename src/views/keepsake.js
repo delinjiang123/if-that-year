@@ -17,6 +17,13 @@ const LS_KEY = "ify-keepsake-v1"; // 本机解锁记录：{unlocked:true, code, 
 const PENDING_KEY = "ify-keepsake-pending"; // 领码页带回的码（sessionStorage，自动解锁失败时的预填兜底）
 const PENDING_LS_KEY = "ify-keepsake-pending-code"; // 同一枚待用码的 localStorage 备份（{code, at}）：sessionStorage 只活一次会话，微信切后台回收页面后就没了，备份让预填跨会话还在；解锁成功即随 saveUnlock 一并清掉
 const BUY_PENDING_KEY = "ify-buy-pending-v1"; // 订购未完标记（父亲事故热修）：点过购买（典藏台「去订一册」或订购页付款按钮）即落，输码解锁即清；未清前结算页常驻「继续订购」入口
+// CL-143：反馈改道目标——Somme 共用反馈库 somme-commons（Supabase 独立项目，各小项目
+// 一个自己的 schema：本站写 if_that_year_cn.feedback，RLS 只插不读；投稿时以
+// Content-Profile 头点名 schema，schema 本身就是项目身份，提交体不带 project 字段）。
+// FEEDBACK_KEY 是 publishable 公钥：设计上公开、各站前端明文用，不是秘密；写权限由
+// 表上的 RLS 插入策略把着（只能投、读不回）。
+const FEEDBACK_API = "https://wzikzrunjfideycabajc.supabase.co/rest/v1/feedback";
+const FEEDBACK_KEY = "sb_publishable_NLlQz1wbGZKOOq0uX8ooYg_o_m8aiYf";
 function markBuyPending() {
 try { localStorage.setItem(BUY_PENDING_KEY, JSON.stringify({ at: new Date().toISOString()}));} catch (e) {}
 }
@@ -1210,10 +1217,12 @@ if (hint) hint.textContent = done? "复制好了，粘贴发给他就行。": "�
 });
 }
 
-// CL-141：反馈入口——mailto 直达运营邮箱（与 buy.html 特商法表记同址）。不做留言墙、
-// 不上服务器表单：点开用玩家自己的邮箱发信，本站不经手。版本号不写死，从页脚版本
-// 小字里读（页脚是全站唯一版本出处，升版改 index.html 时邮件里的版本自动跟着走）。
-// 本局信息取自 buildKeepsakeData 的同一份 d，只读、不落账、不耗随机流。
+// CL-141：反馈入口初版——mailto 直达运营邮箱（与 buy.html 特商法表记同址），点开用
+// 玩家自己的邮箱发信。版本号不写死，从页脚版本小字里读（页脚是全站唯一版本出处，
+// 升版改 index.html 时邮件里的版本自动跟着走）。本局信息取自 buildKeepsakeData 的
+// 同一份 d，只读、不落账、不耗随机流。
+// CL-143：主路改道为站内表单直投 somme-commons（见文件顶部 FEEDBACK_API）；mailto
+// 整套（FEEDBACK_MAIL/feedbackHref）保留，只作表单投递失败时的兜底，不删。
 const FEEDBACK_MAIL = "contact.somme.app@gmail.com";
 function gameVersion() {
 try { const f = document.querySelector(".foot"); const m = f && f.textContent.match(/v\d+\.\d+\.\d+/); return m? m[0]: "";} catch (e) { return ""; }
@@ -1233,6 +1242,39 @@ else if (d.verdictText) lines.push("判词：" + d.verdictText.split("。")[0] +
 }
 if (ver) lines.push("版本：" + ver);
 return "mailto:" + FEEDBACK_MAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(lines.join("\n"));
+}
+
+// CL-143：本局信息转 jsonb——与 feedbackHref 邮件正文同一套取数、同一套缺席口径
+// （取不到的件整件不放），只装对局信息，不放任何能认人的东西：表里也没有身份列。
+function feedbackContext(d) {
+const ctx = {};
+if (!d) return ctx;
+if (d.seed) ctx.seed = d.seed;
+try { if (IFY.S && IFY.S.era) ctx.eraId = IFY.S.era; } catch (e) {}
+if (d.eraLabel) ctx.eraLabel = d.eraLabel;
+if (d.birthYear) ctx.birthYear = d.birthYear;
+if (d.routeName) ctx.route = d.routeName;
+if (typeof d.finalAge === "number") ctx.age = d.finalAge;
+if (d.special && d.special.title) ctx.ending = (d.special.tierLabel? d.special.tierLabel + " · ": "") + d.special.title;
+else if (d.verdictText) ctx.ending = d.verdictText.split("。")[0] + "。";
+return ctx;
+}
+
+// CL-143：往共用反馈库投一条。成败只回布尔、绝不抛给页面：8 秒超时（AbortController），
+// 断网/超时/非 2xx 一律算没递出去，调用方走兜底。只插不读，Prefer 要求不回正文。
+async function postFeedback(bodyText, d) {
+const ctl = typeof AbortController !== "undefined"? new AbortController(): null;
+const timer = ctl? setTimeout(() => { try { ctl.abort(); } catch (e) {} }, 8000): null;
+try {
+const res = await fetch(FEEDBACK_API, {
+method: "POST",
+headers: { apikey: FEEDBACK_KEY, Authorization: "Bearer " + FEEDBACK_KEY, "Content-Type": "application/json", "Content-Profile": "if_that_year_cn", Prefer: "return=minimal" },
+body: JSON.stringify({ body: bodyText, page: "settlement", version: gameVersion(), context: feedbackContext(d) }),
+signal: ctl? ctl.signal: undefined,
+});
+return !!(res && res.ok);
+} catch (e) { return false; }
+finally { if (timer) clearTimeout(timer); }
 }
 
 function renderPanel() {
@@ -1258,7 +1300,14 @@ ${factHtml}
 <div class="row">
 <a class="ghost ks-support" href="${esc(CFG.buyPage || "buy.html")}" target="_blank" rel="noopener">去支持页</a>
 </div>
-<p class="hint">这一局要是有什么想说的，<a class="textlink" href="${esc(feedbackHref(d))}">给作者留句话</a>——点开用你自己的邮箱发封信过来，信里会带上这一局的信息。</p>
+<p class="hint">这一局要是有什么想说的，<a class="textlink" id="ks-fb-open" href="#">给作者留句话</a>——不用发邮件，写在这儿，递出去就行。会带上这一局的信息，作者对得上号。</p>
+<div id="ks-fb-box" hidden>
+<textarea class="ks-gifttext" id="ks-fb-text" rows="4" maxlength="4000" placeholder="这一局哪儿不对、哪儿没讲清，或者就想说一句——都写在这儿。"></textarea>
+<div class="row"><button type="button" class="ghost" id="ks-fb-send" disabled>递出去</button></div>
+<p class="hint" id="ks-fb-note" hidden></p>
+<p class="hint" id="ks-fb-fallback" hidden><a class="textlink" href="${esc(feedbackHref(d))}">也可以给作者发封信</a>，信里会带上这一局的信息。</p>
+</div>
+<p class="hint" id="ks-fb-done" hidden>递出去了，谢谢。</p>
 </div>`;
 const img = renderKeepsakeImage(d, { scale: 1});
 img.className = "card-img";
@@ -1275,6 +1324,36 @@ exportImg = c2;
 });
 });
 IFY.el("ks-book").addEventListener("click", () => { openBook(false); anaTrack("keepsake_export", { kind: "booklet" }); });
+// CL-143：反馈表单接线。展开只在本面板内，不跳页；投递走 postFeedback，失败不丢字、
+// 亮邮件兜底（feedbackHref 现拼，与 CL-141 基线同口径）。
+const fbOpen = IFY.el("ks-fb-open"), fbBox = IFY.el("ks-fb-box"), fbText = IFY.el("ks-fb-text"),
+fbSend = IFY.el("ks-fb-send"), fbNote = IFY.el("ks-fb-note"), fbFallback = IFY.el("ks-fb-fallback"),
+fbDone = IFY.el("ks-fb-done");
+if (fbOpen && fbBox) fbOpen.addEventListener("click", (e) => {
+e.preventDefault();
+fbBox.hidden = false;
+if (fbText) fbText.focus();
+});
+const fbSync = () => { if (fbSend && fbText) fbSend.disabled = !fbText.value.trim(); };
+if (fbText) fbText.addEventListener("input", fbSync);
+if (fbSend) fbSend.addEventListener("click", async () => {
+const text = fbText? fbText.value.trim(): "";
+if (!text) return;
+fbSend.disabled = true;
+fbSend.textContent = "正在递出去……";
+if (fbNote) fbNote.hidden = true;
+if (fbFallback) fbFallback.hidden = true;
+const ok = await postFeedback(text, d);
+if (ok) {
+fbBox.hidden = true;
+if (fbDone) fbDone.hidden = false;
+} else {
+fbSend.textContent = "递出去";
+fbSync();
+if (fbNote) { fbNote.textContent = "没递出去——网络或者服务这会儿不通"; fbNote.hidden = false; }
+if (fbFallback) fbFallback.hidden = false;
+}
+});
 }
 
 function refreshDesk() {
