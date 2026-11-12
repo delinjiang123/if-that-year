@@ -1210,6 +1210,31 @@ if (hint) hint.textContent = done? "复制好了，粘贴发给他就行。": "�
 });
 }
 
+// CL-141：反馈入口——mailto 直达运营邮箱（与 buy.html 特商法表记同址）。不做留言墙、
+// 不上服务器表单：点开用玩家自己的邮箱发信，本站不经手。版本号不写死，从页脚版本
+// 小字里读（页脚是全站唯一版本出处，升版改 index.html 时邮件里的版本自动跟着走）。
+// 本局信息取自 buildKeepsakeData 的同一份 d，只读、不落账、不耗随机流。
+const FEEDBACK_MAIL = "contact.somme.app@gmail.com";
+function gameVersion() {
+try { const f = document.querySelector(".foot"); const m = f && f.textContent.match(/v\d+\.\d+\.\d+/); return m? m[0]: "";} catch (e) { return ""; }
+}
+function feedbackHref(d) {
+const ver = gameVersion();
+const subject = "《如果那年》反馈" + (ver? " · " + ver: "");
+const lines = ["想说什么都行：哪儿不对、哪儿好玩、想要什么职业，都写在这儿。", "", ""];
+if (d) {
+lines.push("—— 这一局的信息（留着能帮作者对上号，不想带，删掉就行）——");
+if (d.seed) lines.push("种子：" + d.seed);
+if (d.eraLabel || d.birthYear) lines.push("出生：" + (d.eraLabel || "") + (d.eraLabel && d.birthYear? " · ": "") + (d.birthYear? d.birthYear + " 年": ""));
+if (d.routeName) lines.push("路线：" + d.routeName);
+if (typeof d.finalAge === "number") lines.push("活到：" + d.finalAge + " 岁");
+if (d.special && d.special.title) lines.push("结局：" + (d.special.tierLabel? d.special.tierLabel + " · ": "") + d.special.title);
+else if (d.verdictText) lines.push("判词：" + d.verdictText.split("。")[0] + "。");
+}
+if (ver) lines.push("版本：" + ver);
+return "mailto:" + FEEDBACK_MAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(lines.join("\n"));
+}
+
 function renderPanel() {
 const panel = IFY.el("keepsake-panel");
 if (!panel) return;
@@ -1233,6 +1258,7 @@ ${factHtml}
 <div class="row">
 <a class="ghost ks-support" href="${esc(CFG.buyPage || "buy.html")}" target="_blank" rel="noopener">去支持页</a>
 </div>
+<p class="hint">这一局要是有什么想说的，<a class="textlink" href="${esc(feedbackHref(d))}">给作者留句话</a>——点开用你自己的邮箱发封信过来，信里会带上这一局的信息。</p>
 </div>`;
 const img = renderKeepsakeImage(d, { scale: 1});
 img.className = "card-img";
