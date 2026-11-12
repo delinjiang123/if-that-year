@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>支持作者 · 人生RESTART：如果那年</title>
+<meta name="description" content="《如果那年》全程免费，玩完一局的长图和纪录册导出也免费。这一页是自愿支持：金额自选，不换取任何商品或功能。">
+<style>
+:root{--paper:#FAF8F4;--card:#FFFDF8;--ink:#23211C;--pine:#2F4A3C;--line:#DDD6C9;--mut:#6E6A5E}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Hiragino Sans","Noto Sans SC",system-ui,sans-serif;line-height:1.8}
+.wrap{max-width:600px;margin:0 auto;padding:28px 18px 60px}
+.prodcredit{font-size:10px;letter-spacing:.24em;color:var(--mut);text-align:center;margin-top:14px}
+.eyebrow{font-size:12px;letter-spacing:.34em;color:var(--pine);text-align:center;margin-top:16px}
+h1{font-family:Georgia,"Songti SC","Noto Serif SC",serif;text-align:center;font-size:30px;margin:8px 0 4px}
+.sub{text-align:center;color:var(--mut);font-size:14px;margin:0 0 22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 22px;box-shadow:0 4px 14px rgba(35,33,28,.05);margin-bottom:18px}
+.card h2{font-family:Georgia,"Songti SC","Noto Serif SC",serif;font-size:19px;margin:2px 0 10px}
+.card p{margin:6px 0;font-size:15px}
+.buybtn{display:block;text-align:center;background:var(--pine);color:#fff;text-decoration:none;border-radius:999px;padding:15px 20px;font-size:16.5px;margin:12px 0 6px;border:none;width:100%;cursor:pointer;font-family:inherit}
+.buybtn.disabled{background:#B9B2A2;cursor:not-allowed}
+.tierrow{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 6px}
+.tierrow .buybtn{flex:1 1 40%;margin:0}
+.tierrow .buybtn small{display:block;font-size:12px;opacity:.85;margin-top:2px}
+.pricenote{text-align:center;color:var(--mut);font-size:13px;margin:0 0 4px}
+.qr{text-align:center}
+.qr img{width:180px;height:180px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:8px}
+.qr figcaption{font-size:13px;color:var(--mut);margin-top:6px}
+ul{margin:6px 0;padding-left:20px}
+li{font-size:14.5px;margin:4px 0}
+.hint{font-size:13px;color:var(--mut)}
+.backlink{display:block;text-align:center;margin-top:20px;color:var(--pine)}
+.legal{font-size:13px;color:var(--mut)}
+.legal dt{font-weight:700;margin-top:8px}
+.legal dd{margin:2px 0 0}
+.todo{border:1.5px dashed #B3573F;color:#8C3A2B;border-radius:10px;padding:10px 14px;font-size:13.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="prodcredit">A TAKAE PRODUCTION</p>
+<p class="eyebrow">人生RESTART</p>
+<h1>支持作者</h1>
+<p class="sub">《如果那年》 · 游戏和导出都免费</p>
+
+<section class="card">
+<h2>先说清：游戏和导出，都是免费的</h2>
+<p>《如果那年》从头到尾免费。玩完一局，在结算页就能把这一生导出成一张长图和一本能打印的纪录册，直接拿走，不用付钱，不用输码。</p>
+<p>这一页只做一件事：自愿支持。觉得这一局值，就支持一点；不付，也能把这一生完整带走，功能一个不少。不改命，不卖好结局，这一条不变。</p>
+<p>支持不换任何商品和功能。付完，Stripe 会显示一页「谢谢」，就完了，不用回游戏做任何事。</p>
+</section>
+
+<section class="card">
+<h2>自愿支持</h2>
+<div class="tierrow">
+<a class="buybtn" data-tier="300" href="#" target="_blank" rel="noopener">¥300<small>约合人民币 ¥14</small></a>
+<a class="buybtn" data-tier="500" href="#" target="_blank" rel="noopener">¥500<small>约合人民币 ¥23</small></a>
+<a class="buybtn" data-tier="1000" href="#" target="_blank" rel="noopener">¥1,000<small>约合人民币 ¥46</small></a>
+<a class="buybtn" data-tier="10000" href="#" target="_blank" rel="noopener">¥10,000<small>约合人民币 ¥460</small></a>
+</div>
+<a class="buybtn" id="support-btn" href="#" target="_blank" rel="noopener">其他金额（自选）</a>
+<p class="pricenote">信用卡等（Stripe 结账页）；四档点开直接付，「其他金额」在结账页自己填，¥100 起、上限 ¥10,000。人民币金额按当前汇率约算，实际以结账页为准。</p>
+<p class="hint">给国内的朋友多说一句：游戏和导出都是免费的，支持纯粹是心意。现在的支持通道只有银行卡，国内的卡多半刷不了——付不了真的没关系。来玩了，把这一生带走了，就够了。</p>
+<p class="hint">付错了、付完反悔了，都能退：凭 Stripe 发到邮箱的收据，写信到 contact.somme.app@gmail.com，全额退回。</p>
+<p class="hint" id="pay-note"></p>
+<p class="hint">微信里打不开本站的链接，请把本站网址复制到手机浏览器里打开。这一页只是支持用，游戏和导出都不经过这一页，在游戏里直接完成。</p>
+</section>
+
+<section class="card">
+<h2>顺带一句：统计的事</h2>
+<p>这站会记一点匿名统计——多少人来玩、开了多少局、多少人玩完一局。认人的东西一概不记；只有一个随机编号用来数人数，认不出你是谁，也不会和你的支持记录对上号。数据不给第三方，不拿去打广告。不想被记，在浏览器里清掉本站的数据，编号就作废了。</p>
+</section>
+
+<figure class="card qr">
+<img src="buy-qr.png" alt="支持页二维码" width="180" height="180">
+<figcaption>在电脑上看到这一页的话，扫这个码，用手机打开这一页，支持起来顺手些。</figcaption>
+</figure>
+
+<section class="card legal">
+<h2>特定商取引法に基づく表記</h2>
+<dl>
+<dt>販売事業者</dt><dd>「如果那年」運営事務局</dd>
+<dt>運営責任者</dt><dd>Takae</dd>
+<dt>所在地</dt><dd>埼玉県（詳細な所在地は、請求があった場合に遅滞なく開示します）</dd>
+<dt>連絡先</dt><dd>メールアドレス：contact.somme.app@gmail.com（電話番号は、請求があった場合に遅滞なく開示します）</dd>
+<dt>支援金の位置づけ</dt><dd>本ページにおける支払いは任意の支援金であり、商品・サービスの対価ではありません。ゲーム本体およびエクスポート機能（長図・記録冊）は、すべて無料で提供されています。</dd>
+<dt>支払方法・支払時期</dt><dd>Stripe によるクレジットカード決済。支援の確定時に決済されます。金額は定額（¥300／¥500／¥1,000／¥10,000）または任意設定（¥100～¥10,000）からお選びいただけます。</dd>
+<dt>返金について</dt><dd>誤って支払った場合や気が変わった場合は、Stripe から送付される領収書をもって上記連絡先までご連絡ください。全額返金します。</dd>
+</dl>
+</section>
+
+<a class="backlink" href="./">← 回游戏</a>
+</div>
+<script>window.IFY_ANALYTICS = { enabled: true, endpoint: "/api/collect" };</script>
+<script src="src/analytics.js"></script>
+<script src="src/keepsake-config.js"></script>
+<script>
+(function () {
+var cfg = window.IFY_KEEPSAKE || {};
+var btn = document.getElementById("support-btn");
+var note = document.getElementById("pay-note");
+var tiers = cfg.supportTiers || {};
+document.querySelectorAll("[data-tier]").forEach(function (b) {
+var url = tiers[b.getAttribute("data-tier")];
+if (url) { b.href = url; } else { b.removeAttribute("href"); b.classList.add("disabled"); b.setAttribute("aria-disabled", "true"); b.addEventListener("click", function (e) { e.preventDefault(); }); }
+});
+if (cfg.supportLink) {
+btn.href = cfg.supportLink;
+} else {
+btn.removeAttribute("href");
+btn.classList.add("disabled");
+btn.setAttribute("aria-disabled", "true");
+btn.textContent += "（通道开通中）";
+btn.addEventListener("click", function (e) { e.preventDefault();});
+note.textContent = "支持通道正在开通中，按钮暂时点不了。游戏和导出都不受影响，照常免费。";
+}
+})();
+</script>
+</body>
+</html>

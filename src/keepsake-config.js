@@ -16,7 +16,7 @@ window.IFY_KEEPSAKE = {
     "1000": "https://buy.stripe.com/3cI00jest5VU2b1g43es008",
     "10000": "https://buy.stripe.com/fZu4gzfwx6ZYg1R3hhes009"
   },
-  buyPage: "buy.html", // 支持页（相对游戏页路径；文件名沿用 buy.html，URL 不变）
+  buyPage: "support.html", // 支持页（相对游戏页路径；CL-149 改名，旧名页只留跳转兜底老链）
   claimPath: "/api/claim", // 封存：领码页（Pages Function，付款回跳落点）
   verifyPath: "/api/verify-code", // 封存：输码核验端点（Pages Function）
   giftPath: "/api/gift", // 封存：赠予端点（Pages Function，圆桌决议 S3）

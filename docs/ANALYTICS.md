@@ -53,7 +53,7 @@
 | `retire_reached` | 本局第一次进入退休状态（`retiredAt` 落定后主推进首次观测到，本局一次） | `era`、`route`、`age`（退休落点年龄） | 退休到达率 |
 | `keepsake_open` | 典藏面板打开时 | `state`（`locked` / `unlocked`） | 典藏漏斗 1：打开 |
 | `keepsake_preview` | 带水印预览生成完成时 | 无 | 典藏漏斗 2：预览 |
-| `buy_click` | 购买按钮点击（结算页典藏面板内、buy.html 两处） | 无 | 典藏漏斗 3：点购买 |
+| `buy_click` | 购买按钮点击（结算页典藏面板内、support.html 两处） | 无 | 典藏漏斗 3：点购买 |
 | `code_verify` | 输码核验返回后（手动输码与领码页带回自动核验都算） | `ok`（布尔，**只报成败，绝不带码值**） | 典藏漏斗 4：输码成功 |
 | `keepsake_export` | 导出完成时（长图下载 / 纪录册打开） | `kind`（`image` / `booklet`） | 导出量与形态分布 |
 | `gift_claim` | 赠予领取返回后 | `ok`（布尔，**绝不带码值**） | 典藏漏斗 5：赠予成功 |

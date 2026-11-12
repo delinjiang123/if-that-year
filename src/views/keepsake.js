@@ -1,7 +1,7 @@
 // [模块]《如果那年》「人生纪录典藏」（v0.33.0 上线；2026-11-11 CL-127 改免费）：结算页的导出台。
 // 一份数据、两个壳（长图＋可打印纪录册），对所有人免费：完局后直接生成、直接下载，
 // 无解锁门、无水印预览、无输码。支持作者是另一件事——自愿、金额自选、不换任何东西，
-// 入口只在面板里安静摆一行，链到支持页（buy.html）。不卖改命、不卖好结局、不插广告。
+// 入口只在面板里安静摆一行，链到支持页（support.html）。不卖改命、不卖好结局、不插广告。
 // 结算页原有的一切一字不动，本模块只在分享台之后加一行入口和一个导出面板；游戏内画面
 // 与现有分享卡一概不动。导出全程只读结算数据（与结算页/分享卡同一批函数取数），不碰
 // 落账、不消耗随机流。
@@ -1217,7 +1217,7 @@ if (hint) hint.textContent = done? "复制好了，粘贴发给他就行。": "�
 });
 }
 
-// CL-141：反馈入口初版——mailto 直达运营邮箱（与 buy.html 特商法表记同址），点开用
+// CL-141：反馈入口初版——mailto 直达运营邮箱（与 support.html 特商法表记同址），点开用
 // 玩家自己的邮箱发信。版本号不写死，从页脚版本小字里读（页脚是全站唯一版本出处，
 // 升版改 index.html 时邮件里的版本自动跟着走）。本局信息取自 buildKeepsakeData 的
 // 同一份 d，只读、不落账、不耗随机流。
@@ -1298,7 +1298,7 @@ ${factHtml}
 <p class="picklab">支持作者（自愿）</p>
 <p class="hint">游戏和导出都不收钱。这一局要是让你觉得值，可以自愿支持一点，金额自己定，不换任何东西。</p>
 <div class="row">
-<a class="ghost ks-support" href="${esc(CFG.buyPage || "buy.html")}" target="_blank" rel="noopener">去支持页</a>
+<a class="ghost ks-support" href="${esc(CFG.buyPage || "support.html")}" target="_blank" rel="noopener">去支持页</a>
 </div>
 <p class="hint">这一局要是有什么想说的，<a class="textlink" id="ks-fb-open" href="#">给作者留句话</a>——不用发邮件，写在这儿，递出去就行。会带上这一局的信息，作者对得上号。</p>
 <div id="ks-fb-box" hidden>
