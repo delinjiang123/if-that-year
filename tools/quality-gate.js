@@ -59,6 +59,14 @@ const tail = (out, n) => out.trim().split("\n").slice(-n).join(" / ");
   record("settle-choice-check（立约对账）", r.code === 0 && m && m[6] === "0" ? "PASS" : "FAIL",
     m ? `runs=${m[1]} fork45=${m[2]} try=${m[3]} settle=${m[4]} covSoloDue=${m[5]} conflicts=${m[6]}` : tail(r.out, 2), "（控制台）", r.ms);
 }
+{
+  // v0.21 常设项（WP5）：主线冻结集 416 局与 WP0 基线逐局逐字 parity + 瞥视事实来源清单双抄全等。
+  // harness 与基线经 IFY_SIM_DIR 定位（与本编排器的模拟侧同源，环境变量随 run 继承）。
+  const r = run("node", ["tools/parity-shadow.js"], ROOT);
+  const m = r.out.match(/parity-shadow: PASS（(\d+)\/(\d+) 局逐字全等）/);
+  record("parity-shadow（主线 parity + 来源双抄）", r.code === 0 && m ? "PASS" : "FAIL",
+    m ? `冻结集 ${m[1]}/${m[2]} 局逐字全等，事实来源清单双抄全等` : tail(r.out, 2), "（控制台）", r.ms);
+}
 
 // ---------- 模拟侧 ----------
 {

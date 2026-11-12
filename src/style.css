@@ -5,19 +5,28 @@ body{margin:0;color:var(--ink);font-family:"Hiragino Sans","Noto Sans SC",system
 h1{font-family:var(--serif);font-weight:600;font-size:29px;line-height:1.4;margin:2px 0 10px}
 h2{font-family:var(--serif);font-weight:600;font-size:22px;line-height:1.5;margin:4px 0 8px}
 h3{font-family:var(--serif);font-size:17px;margin:20px 0 6px}
+/* 片头（全称《人生RESTART：如果那年》）：制作小字＋眉题＋主标题三行一组置于开始页最上方；原场景句降为标题下引言行 */
+.masthead{margin:0 0 16px}
+.prodcredit{font-size:11px;letter-spacing:.38em;color:var(--mut);margin:0 0 12px}
+.eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.3em;color:var(--accent);margin:0 0 4px}
+.gametitle{font-size:38px;line-height:1.2;margin:0 0 8px}
+.leadline{font-family:var(--serif);font-size:18px;font-weight:700;margin:0}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px 24px 20px;margin-top:14px;box-shadow:0 4px 14px rgba(35,33,28,.05);animation:rise .2s ease both}
 @keyframes rise{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 @keyframes fadein{from{opacity:0}to{opacity:1}}
 .road{display:block;margin:0 0 6px}
 .stats{margin:8px 0 2px}
 .stat{display:flex;align-items:center;gap:8px;font-size:13px;margin:3px 0}
-.stat span{width:34px;color:var(--mut)}
+.stat span{width:3.4em;color:var(--mut)}
 .stat .bar{flex:1;height:6px;background:#EAE5D8;border-radius:3px;overflow:hidden}
 .stat .bar i{display:block;height:100%;background:var(--accent);border-radius:3px;transition:width .6s ease}
-.stat b{width:28px;text-align:right;font-weight:400;font-family:Menlo,Consolas,monospace;font-size:12.5px}
+.stat b{width:3.4em;text-align:right;font-weight:400;font-family:Menlo,Consolas,monospace;font-size:12.5px}
 .meta{font-size:12.5px;color:var(--mut);border-bottom:1px solid var(--line);padding-bottom:9px;margin:6px 0 12px}
 .body{font-size:16.5px;margin:6px 0 10px}
 .choices{display:grid;gap:10px;margin-top:14px}
+.gate-group{margin:6px 0 -2px;font-size:15px;color:var(--ink)}
+.choice-sub{display:block;font-size:13px;opacity:.72;line-height:1.5}
+.gate-note{margin-top:12px;font-size:14px;opacity:.85;line-height:1.6}
 .choice{text-align:left;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--line);border-radius:11px;padding:14px 16px;font-size:15px;cursor:pointer;color:var(--ink);transition:border-color .15s,transform .15s,box-shadow .15s;line-height:1.6}
 @media (hover:hover){.choice:hover{border-color:var(--accent);border-left-color:var(--accent);transform:translateX(3px);box-shadow:0 6px 16px rgba(47,74,60,.10)}}
 .choice.dailymark{border-color:var(--accent);border-left-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
@@ -28,24 +37,57 @@ h3{font-family:var(--serif);font-size:17px;margin:20px 0 6px}
 button.big{width:100%;margin-bottom:14px}
 .ghost{background:none;border:1px solid var(--line);border-radius:999px;padding:12px 18px;font-size:14px;cursor:pointer;margin-top:12px;color:var(--ink)}
 @media (hover:hover){.ghost:hover{border-color:var(--accent);color:var(--accent)}}
+.textlink{background:none;border:none;padding:6px 2px;font-size:13px;color:var(--mut);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+@media (hover:hover){.textlink:hover{color:var(--accent)}}
 .hint{font-size:13px;color:var(--mut)}
 .delta{color:var(--accent);font-size:13px;margin:6px 0 0;font-family:Menlo,Consolas,monospace}
 .echo{border-left:3px solid var(--accent);background:#F6F3EC;border-radius:0 8px 8px 0;padding:10px 14px;color:#4A463C;font-size:15px}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.seedrow{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+.seedrow{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
 .seedrow input{flex:1;min-width:180px;font-size:16px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;font-family:Menlo,Consolas,monospace}
-.seedrow .ghost{margin-top:0}
-.setblock{border-top:1.5px dashed var(--line);margin-top:22px;padding-top:14px}
-.setlab{font-size:12px;letter-spacing:.18em;color:var(--mut);margin:10px 0 8px;font-weight:700}
+.setblock{border-top:1.5px dashed var(--line);margin-top:24px;padding-top:16px}
+.setlab{font-size:12px;letter-spacing:.18em;color:var(--mut);margin:0 0 8px;font-weight:700}
+.picklab{font-size:12px;color:var(--mut);margin:16px 0 8px;font-weight:600}
+.setlab + .picklab{margin-top:0}
 .segpicks{display:flex;gap:8px;flex-wrap:wrap}
-.segbtn{background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-size:14px;cursor:pointer;color:var(--ink);text-align:left;line-height:1.45}
+.segbtn{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:14px;cursor:pointer;color:var(--ink);text-align:left;line-height:1.45;min-height:44px}
 .segbtn b{display:block;font-size:14.5px}
 .segbtn small{display:block;color:var(--mut);font-size:12px}
-.segbtn.sel{border-color:var(--accent);background:#EAF0EA;box-shadow:inset 0 0 0 1px var(--accent)}
+.segbtn.sel{border-color:var(--accent);background:var(--accent);color:#fff;box-shadow:inset 0 0 0 1px var(--accent)}
+.segbtn.sel b{color:#fff}
+.segbtn.sel small{color:rgba(255,255,255,.82)}
+.segbtn.sel:active{background:var(--accent)}
+/* 自动推进＝开关形态：全圆角轨道＋圆角滑块，与分段控件 .segbtn 轮廓明显不同 */
+.switchpicks{display:inline-flex;gap:4px;flex-wrap:wrap;background:#EAE5D8;border-radius:999px;padding:4px}
+.switchbtn{border:none;background:transparent;color:var(--mut);border-radius:999px;padding:10px 18px;font-size:14px;cursor:pointer;line-height:1.4;min-height:40px}
+.switchbtn b{font-weight:600}
+.switchbtn.sel{background:var(--accent);color:#fff;box-shadow:0 1px 4px rgba(47,74,60,.25)}
+.switchbtn:active{background:#DED8C8}
+.switchbtn.sel:active{background:var(--accent)}
+/* 对局区：每日独占一行；明日预告是纯文本（灰字、无边框无底色，不像按钮） */
+.dailyrow{margin-top:16px}
+.dailyrow .ghost{margin-top:0}
+.tomorrow-note{color:var(--mut);background:none;border:none}
+/* 行动区（v0.24.0 首页重做）：置于卡外、#app 层级吸底常驻——包含块是整个页面列，滚动全程够得着；
+   底部内边距吃 iOS 安全区，按钮不与手势条重叠；有存档时续玩为全宽主按钮、重开降为 ghost */
+.actions{position:sticky;bottom:0;background:var(--paper);border-top:1px solid var(--line);padding:16px 0 max(8px, env(safe-area-inset-bottom));margin-top:24px;display:grid;gap:8px;z-index:5}
+/* 折叠区「设置与对局」（v0.24.0）：独立一张卡，标题行可点开合；子区沿 .setblock 分隔规范，首个子区不重复分隔线 */
+.foldcard{padding-top:14px}
+.foldhead{display:flex;align-items:baseline;gap:10px;width:100%;background:none;border:none;padding:6px 0 2px;cursor:pointer;color:var(--ink);font:inherit;text-align:left}
+.foldtitle{font-size:15px;font-weight:700;letter-spacing:.06em}
+.foldhead small{color:var(--mut);font-size:12.5px}
+.foldchev{margin-left:auto;color:var(--mut);transition:transform .15s}
+.foldblock.open .foldchev{transform:rotate(180deg)}
+#foldbody .setblock:first-of-type,#foldbody2 .setblock:first-of-type{border-top:none;margin-top:10px;padding-top:0}
+.foldguide{margin:10px 0 0}
+.actions .primary,.actions .ghost{width:100%;margin-top:0}
+.foldstartrow{margin:14px 0 2px}
+.foldstartrow .primary,.foldstartrow .ghost{width:100%}
+.foldstartrow .primary{min-height:52px;padding:13px 22px;font-size:16px;font-weight:700;letter-spacing:.03em;box-shadow:0 8px 22px rgba(47,74,60,.30)}
 /* 出身牌（v0.13.0）：三行九张、每行预选第一张；静态呈现，无翻牌动效；窄屏纵列 */
 .carddeck{margin-top:16px}
 .cardrow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:6px 0 4px}
-.cardpick{background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-size:13.5px;cursor:pointer;color:var(--ink);text-align:left;line-height:1.55;min-height:44px}
+.cardpick{background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-size:13.5px;cursor:pointer;color:var(--ink);text-align:left;line-height:1.7;min-height:44px}
 .cardpick b{display:block;font-size:14.5px;margin-bottom:2px}
 .cardpick span{display:block}
 .cardpick small{display:block;color:var(--mut);font-size:12px;margin-top:4px}
@@ -72,16 +114,22 @@ button.big{width:100%;margin-bottom:14px}
 .slotk{display:inline-block;min-width:5.2em;color:var(--pine,#2F4A3C);font-size:12.5px;letter-spacing:1px;margin-right:.6em}
 .timeline{margin-top:12px;border-top:1px solid var(--line);padding-top:10px;font-size:13.5px;display:grid;gap:5px;max-height:480px;overflow:auto}
 .timeline p{margin:0;padding:3px 0;border-bottom:1px solid #EFEAE0}
+.timeline .wageattach{display:block;font-size:12px;color:var(--mut);line-height:1.55;margin-top:2px}
+.timeline p.wagenote{font-size:12px;color:var(--mut)}
 .streamwrap{border-top:1.5px dashed var(--line);margin-top:22px;padding-top:10px}
 .streamtitle{font-size:12px;letter-spacing:.22em;color:var(--mut);margin:0 0 6px;font-weight:700}
 .stream{max-height:280px;overflow-y:auto;padding-right:4px;scrollbar-width:thin}
-.srow{display:grid;grid-template-columns:118px 1fr;gap:10px;padding:5px 4px;border-bottom:1px solid #EFEAE0;font-size:13.5px;line-height:1.6}
+.srow{display:grid;grid-template-columns:minmax(118px,auto) 1fr;gap:10px;padding:5px 4px;border-bottom:1px solid #EFEAE0;font-size:13.5px;line-height:1.6}
 .srow .sage{font-family:Menlo,Consolas,monospace;font-size:12px;color:var(--accent);padding-top:3px;white-space:nowrap}
 .srow.last{background:#F1ECDD;border-radius:7px;border-bottom-color:transparent;animation:fadein .2s ease both}
+.srow .wageattach{display:block;font-size:12px;color:var(--mut);line-height:1.55;margin-top:2px}
+.srow.wageonly{font-size:12px;color:var(--mut)}
+.srow.wageonly .sage{color:var(--mut)}
 canvas.card-img{max-width:100%;height:auto}
 .foot{max-width:660px;margin:0 auto;text-align:center;font-size:12px;color:var(--mut);padding:0 18px 30px}
 .foot a{color:var(--accent)}
-@media (max-width:560px){.card{padding:19px 16px 16px}h1{font-size:25px}.srow{grid-template-columns:96px 1fr}}
+.foottag{font-family:var(--serif);font-size:13.5px;color:var(--ink);display:inline-block;margin-bottom:6px}
+@media (max-width:560px){.card{padding:19px 16px 16px}h1{font-size:25px}.srow{grid-template-columns:minmax(96px,auto) 1fr}}
 
 /* 分享台 (share desk) */
 .sharedesk{border-top:1.5px dashed var(--line);margin-top:22px;padding-top:4px}
@@ -103,10 +151,16 @@ canvas.card-img{max-width:100%;height:auto}
 @keyframes autoblink{0%,100%{opacity:.25}50%{opacity:1}}
 .autolive{color:var(--accent)}
 
-.hint.ver { text-align: right; margin-bottom: 2px; }
+/* v0.20.4：局内推进设置面板——meta 下一行小字入口，展开是开局页同款分段/开关控件 */
+.autopanelwrap{margin:-2px 0 10px}
+.autopanelrow{margin:0;font-size:12px;letter-spacing:.04em}
+.setlink{background:none;border:none;padding:2px 3px;font:inherit;color:var(--mut);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.setlink:active{color:var(--accent)}
+.autopanel{border-top:1.5px dashed var(--line);margin-top:8px;padding:2px 0 4px}
+.autopanel .picklab{margin:10px 0 6px}
+.autopanel .picklab:first-child{margin-top:6px}
 
 /* v0.7.0：续玩降级、自动推进三态与自动选留痕 */
-.resume-link{display:inline-block;margin:14px 0 2px;padding:7px 13px;font-size:13px}
 .autorow{flex-wrap:wrap;gap:4px 10px}
 .autorow .automode.on{color:var(--accent);font-weight:700}
 .autonote{color:var(--accent);font-size:13px;margin:8px 0 0}
@@ -132,7 +186,14 @@ button:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{o
 /* §3.2 选择留一拍：选中态（借 .segbtn.sel 的视觉语言）与未选变淡 */
 .choice.picked{background:#EAF0EA;border-color:var(--accent);border-left-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .choice.faded{opacity:.45}
+.glimpse #look.picked{box-shadow:inset 0 0 0 2px var(--accent)}
+.glimpse #skip.faded{opacity:.45}
 .pickednote{color:var(--accent);font-size:13px;margin:8px 0 0}
+/* 最近活过的人生（父亲事故热修）：开局屏历史行，一行一局，整行可点回看结算 */
+.histrow{display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:11px;padding:10px 14px;margin:6px 0;font:inherit;font-size:14px;cursor:pointer;color:var(--ink);line-height:1.55}
+.histrow:active{background:#F6F3EC;border-color:var(--accent)}
+.histrow b{margin-right:8px}
+.histrow small{display:block;color:var(--mut);font-size:13px}
 /* §1.3 回响与瞥视细节统一淡入（新插入的子元素自动播放） */
 #echo>*,#detail>*{animation:fadein .2s ease both}
 /* §1.1 分级入场：同类画面卡壳不动，只正文区淡入 */
@@ -173,3 +234,175 @@ button:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{o
   *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .autodot{animation:none!important;opacity:1}
 }
+
+/* v0.33.0 人生纪录典藏：结算页一行安静入口＋导出面板（无横幅、无弹窗，呈现纪律见 paid-spec/SPEC.md） */
+.keepsake-line{margin:14px 0 0;font-size:13px}
+.keepsake-panel{margin-top:6px}
+.ks-block{border-top:1.5px dashed var(--line);margin-top:10px;padding-top:12px}
+.ks-intro{font-size:14.5px;margin:4px 0 6px}
+.ks-fact{font-size:15.5px;font-family:var(--serif);color:var(--accent);margin:2px 0 8px;line-height:1.6}
+.ks-giftcode{font-family:Menlo,Consolas,monospace;font-size:22px;letter-spacing:.06em;text-align:center;color:var(--accent);border:1.5px dashed var(--accent);border-radius:10px;padding:10px 6px;margin:8px 0;word-break:break-all}
+.ks-gifttext{width:100%;box-sizing:border-box;font:inherit;font-size:13.5px;line-height:1.7;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:inherit;resize:vertical}
+.ks-buy{text-decoration:none;display:inline-block}
+.keepsake-panel .cardpreview canvas{max-width:min(100%,330px)}
+/* 典藏预览仪式（定稿 §六采 B 一条）：游戏内看长图预览时缓缓展开，约 1 秒，呈现层动效 */
+.keepsake-panel .cardpreview canvas{animation:ks-unfold 1.1s ease both}
+@keyframes ks-unfold{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0% 0)}}
+@media (prefers-reduced-motion:reduce){.keepsake-panel .cardpreview canvas{animation:none}}
+/* 纪录册（和式 L2）：屏上是整页浮层，内文字阶以 .book-page 字号为基（em 制），
+   打印时字号切到 10.5pt、边距全走 @page，白底自立。间距先于内容：节距靠空，不靠色块。 */
+.ify-book{position:fixed;inset:0;overflow:auto;background:var(--paper);z-index:40;padding:22px 16px 60px}
+.ify-imgview{position:fixed;inset:0;overflow:auto;background:var(--paper);z-index:50;padding:22px 16px 60px}
+.ify-imgview .imgview-inner{max-width:660px;margin:0 auto}
+.ify-imgview .imgview-note{font-size:15px;color:var(--ink);line-height:1.7;margin:0 0 14px}
+.ify-imgview .imgview-appnav{font-size:14px;color:var(--ink);line-height:1.7;margin:-6px 0 14px}
+.ify-imgview .imgview-fallback{font-size:13.5px;color:var(--mut);line-height:1.7;margin:-6px 0 14px}
+.ify-imgview .imgview-img{display:block;width:100%;height:auto;background:var(--card);border:1px solid var(--line);border-radius:14px}
+.ify-imgview .imgview-tools{margin-top:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.ify-imgview .imgview-dl{background:none;border:1px solid var(--line);border-radius:999px;padding:12px 18px;font-size:14px;color:var(--ink);text-decoration:none;cursor:pointer}
+.ify-imgview .imgview-close{background:var(--accent);color:#fff;border:none;border-radius:999px;padding:12px 24px;font-size:15px;cursor:pointer}
+.ify-book .book-tools{max-width:660px;margin:0 auto 12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.ify-book .book-page{max-width:660px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:40px 38px;box-shadow:0 4px 14px rgba(35,33,28,.05);font-size:15px;color:#26241F}
+.ify-book .book-cover{padding-top:1.4em}
+.ify-book .cov-mast{text-align:center}
+.ify-book .cov-prod{font-size:.73em;letter-spacing:.32em;color:var(--accent);font-weight:700;margin:0 0 1em}
+.ify-book .cov-brand{font-family:var(--serif);font-size:.95em;letter-spacing:.18em;margin:0 0 .5em}
+.ify-book .cov-title{font-family:var(--serif);font-size:2.3em;line-height:1.3;margin:0 0 .55em}
+.ify-book .cov-rule{width:2.7em;border-top:2px solid var(--accent);margin:0 auto 1em;height:0}
+.ify-book .cov-meta{font-size:.81em;color:#8A8B85;font-family:Menlo,Consolas,monospace;margin:0}
+.ify-book .cov-verdict{font-family:var(--serif);font-size:1.2em;line-height:1.95;margin:2.6em 0 0}
+.ify-book .cov-rare{border:1px solid var(--line);padding:1.5em 1.6em 1.3em;margin-top:2.8em}
+.ify-book .cov-rtag{font-size:.73em;letter-spacing:.3em;color:var(--accent);font-weight:700;margin:0 0 .8em}
+.ify-book .cov-rtitle{font-family:var(--serif);font-size:1.55em;margin:0 0 .6em}
+.ify-book .cov-rtext{font-size:.95em;line-height:1.85;margin:0}
+.ify-book .cov-plain{margin:2.8em 0 0;font-size:1em;color:var(--mut)}
+.ify-book .cov-plain span{color:var(--accent);font-weight:700;margin-right:.8em}
+.ify-book .cov-tags{font-size:.78em;color:#8A8B85;line-height:1.85;margin:2em 0 0}
+.ify-book .cov-death{font-size:.92em;line-height:1.9;margin:.6em 0 0}
+.ify-book .book-sec{margin-top:3em}
+.ify-book .book-h{font-family:var(--serif);font-size:1.24em;color:var(--accent);display:flex;align-items:center;gap:1em;margin:0 0 1.1em;font-weight:600}
+.ify-book .book-h::after{content:"";flex:1;border-top:1px solid var(--line)}
+.ify-book .book-group + .book-group{margin-top:2em}
+.ify-book .book-gname{font-size:.85em;letter-spacing:.24em;color:#8A8B85;font-weight:700;margin:0 0 .5em}
+.ify-book .book-ev{margin:0 0 1.5em}
+.ify-book .book-ya{font-size:.81em;color:#8A8B85;font-family:Menlo,Consolas,monospace;margin:0 0 .3em}
+.ify-book .book-et{font-family:var(--serif);font-size:1.05em;line-height:1.75;margin:0}
+.ify-book .book-choice{font-size:.85em;color:var(--mut);margin:.35em 0 0}
+.ify-book .book-tl{margin:.45em 0;line-height:1.8;font-size:1em}
+.ify-book .book-ya2{display:inline-block;min-width:9.5em;color:#8A8B85;font-size:.81em;font-family:Menlo,Consolas,monospace;margin-right:.6em}
+.ify-book .book-stats{display:grid;grid-template-columns:1fr 1fr;gap:.55em 2.2em;margin-bottom:1.2em}
+.ify-book .book-stat{display:flex;align-items:center;gap:.6em;font-size:.95em}
+.ify-book .book-stat span{width:2.4em;color:var(--mut)}
+.ify-book .book-bar{flex:1;height:.8em;background:#E7E1D3}
+.ify-book .book-bar i{display:block;height:100%;background:var(--accent)}
+.ify-book .book-stat b{width:2em;text-align:right;font-family:Menlo,Consolas,monospace;font-weight:700}
+.ify-book .book-fact{display:flex;gap:1.2em;margin:.9em 0}
+.ify-book .book-flab{flex:0 0 4.5em;color:var(--accent);font-weight:700;font-size:.9em;letter-spacing:.1em;padding-top:.18em}
+.ify-book .book-fact p{margin:0;line-height:1.8;font-size:1em}
+.ify-book .book-sub{font-size:.85em;letter-spacing:.24em;color:#8A8B85;font-weight:700;margin:2em 0 .5em}
+.ify-book .book-common{line-height:1.85;color:#4A463C;margin:0 0 1em}
+.ify-book .book-lead{font-family:var(--serif);font-size:1.3em;line-height:1.85;margin:1em 0 1.2em}
+.ify-book .book-arc{margin:0 0 1.6em}
+.ify-book .book-arc-svg{width:100%;height:auto;display:block}
+.ify-book .book-shape{text-align:center;margin:2em 0 0}
+.ify-book .book-shape-svg{width:50%;max-width:280px;height:auto}
+.ify-book .book-shapecap{font-size:.85em;letter-spacing:.2em;color:#8A8B85;margin:.4em 0 0}
+.ify-book .book-twin{display:flex;margin-top:2.2em}
+.ify-book .book-twin-col{flex:1}
+.ify-book .book-twin-col:first-child{padding-right:1.6em}
+.ify-book .book-twin-col:last-child{border-left:1px solid var(--line);padding-left:1.6em}
+.ify-book .book-twin-head{font-family:var(--serif);font-weight:700;font-size:1.1em;color:var(--accent);margin:0 0 .8em}
+.ify-book .book-twin-ev{margin:.5em 0;line-height:1.6}
+.ify-book .book-abs{color:var(--mut);font-size:.92em;margin:1em 0 0;line-height:1.7}
+.ify-book .book-colobox{border:1px solid var(--line);padding:2.2em}
+.ify-book .book-colobox p{line-height:1.85}
+.ify-book .book-seed{font-family:Menlo,Consolas,monospace;color:#8A8B85;font-size:.85em;margin-top:2em}
+.ify-book .book-url{color:#8A8B85;font-size:.85em}
+.ify-book .book-closing{font-family:var(--serif);font-size:1.25em;color:var(--accent);text-align:center;margin:2.2em 0 .6em}
+.ify-book .book-notebox{border:1px solid var(--line);padding:2.2em;min-height:56vh}
+.ify-book .book-seedbox{padding:2.2em 0 0}
+.ify-book .book-seedpage p{color:#6E6A5E;font-size:.92em;line-height:1.9;margin:.4em 0}
+.ify-book .book-dateline{text-align:right;color:#8A8B85;font-size:.9em}
+.ify-book .book-wm{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:41}
+.ify-book .book-wm span{position:absolute;left:50%;font-size:44px;font-weight:700;color:rgba(47,74,60,.10);transform:translateX(-50%) rotate(-24deg);white-space:nowrap}
+.ify-book .book-wm span:nth-child(1){top:8%}.ify-book .book-wm span:nth-child(2){top:26%}.ify-book .book-wm span:nth-child(3){top:44%}
+.ify-book .book-wm span:nth-child(4){top:62%}.ify-book .book-wm span:nth-child(5){top:80%}.ify-book .book-wm span:nth-child(6){top:98%}
+/* @page 边距写死（定稿 §二）：上下左右 18/16/20/16mm，装订侧在 .book-page 上再让 4mm；
+   页脚种子＋页码的 @page 页边盒规则随册子内容生成时写入（种子要写死进规则，见 buildKeepsakeBook） */
+@page{size:A4;margin:18mm 16mm 20mm 16mm}
+@media print{
+  body.has-book{background:#fff}
+  body.has-book .foot{display:none!important}
+  body.has-book #app{max-width:none;display:block;padding:0}
+  body.has-book #app>*:not(.ify-book){display:none!important}
+  body.has-book .ify-book{position:static;overflow:visible;padding:0;background:#fff}
+  body.has-book .ify-book .book-page{border:none;border-radius:0;box-shadow:none;max-width:none;padding:0 0 0 4mm;font-size:10.5pt;background:#fff}
+  body.has-book .ify-book .book-tools{display:none!important}
+  body.has-book .ify-book .book-cover{break-after:page;padding-top:30mm}
+  body.has-book .ify-book .book-h{break-after:avoid}
+  body.has-book .ify-book .book-group,body.has-book .ify-book .book-ev,body.has-book .ify-book .book-fact,body.has-book .ify-book .book-arc,body.has-book .ify-book .book-shape,body.has-book .ify-book .book-twin,body.has-book .ify-book .book-stats,body.has-book .ify-book .book-endblock{break-inside:avoid}
+  body.has-book .ify-book .book-colophon{break-before:page}
+  body.has-book .ify-book .book-seedpage{break-before:page}
+  body.has-book .ify-book .book-seedbox{padding:10mm 0 0}
+  body.has-book .ify-book .book-colobox{padding:10mm}
+  body.has-book .ify-book .book-note{break-before:page}
+  body.has-book .ify-book .book-notebox{padding:10mm;min-height:224mm}
+  body.has-book-preview .ify-book{display:none!important}
+}
+/* 纪录册：屏上是整页浮层（暖纸同体系），打印时只出册子本身 */
+.ify-book .book-page{max-width:660px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:28px 26px;box-shadow:0 4px 14px rgba(35,33,28,.05)}
+.ify-book .book-meta{font-size:13px;color:var(--mut)}
+.ify-book .book-ya{display:inline-block;min-width:9.5em;color:var(--mut);font-size:12.5px;font-family:Menlo,Consolas,monospace;margin-right:.6em}
+.ify-book .book-ev,.ify-book .book-tl{margin:3px 0;line-height:1.75;font-size:14.5px}
+.ify-book .book-foot{margin-top:26px;border-top:1px solid var(--line);padding-top:12px;font-size:13px;color:var(--mut)}
+  body.has-book .ify-book .book-page{border:none;border-radius:0;box-shadow:none;max-width:none;padding:0}
+  body.has-book .ify-book h3{break-before:page}
+  body.has-book .ify-book h3:first-of-type{break-before:auto}
+
+/* ================= [homepage-build 开始屏一单 · 独立块] =================
+   本块为首页单的全部 CSS 改动：只许在本块内改，勿动上方既有规则行（与典藏单分块合并）。
+   1) 开始屏主按钮强化：.actions 只被开始屏使用（已核），其 .primary 即「开始这一生」/「继续上次的人生」。
+      与年代段选钮 .segbtn.sel 同为主题色填充，靠尺寸（≥58px）/字号 17/字重 700/投影拉开主次，
+      让主按钮不用找。续玩态主按钮是 #resume（同 .primary），重开降为 .ghost，层级不变。
+   2) 出生年行：年代块内的明示行＋手动步进钮（窗口宽为 1 的年代步进钮隐藏，只剩明示与说明）。 */
+.actions .primary{min-height:58px;padding:15px 24px;font-size:17px;font-weight:700;letter-spacing:.03em;box-shadow:0 8px 22px rgba(47,74,60,.30)}
+@media (hover:hover){.actions .primary:hover{opacity:.95;transform:translateY(-1px)}}
+.actions .primary:active{opacity:.88}
+.birthyear-row{display:flex;align-items:center;gap:10px;margin-top:12px}
+.birthyear-lab{color:var(--mut);font-size:13px}
+.birthyear-val{font-family:var(--serif);font-size:19px;font-weight:700;color:var(--ink);min-width:76px;text-align:center}
+.birthstep{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:17px;line-height:1;cursor:pointer;padding:0}
+.birthstep:disabled{opacity:.35;cursor:default}
+.birthstep:active:not(:disabled){border-color:var(--accent);color:var(--accent)}
+/* v0.47.0 开始屏改版：眉题行／大字年份／年代卡网格／十年条；v0.47.1 版式照设计稿两版（网页 6 横、手机 3×2、场景与生年并排、年份尺） */
+.masthead{display:flex;flex-wrap:wrap;align-items:baseline}
+.masthead .prodcredit{flex:1 1 auto}
+.masthead .eyebrow,.masthead .gametitle,.masthead .leadline{flex-basis:100%}
+.eyebrow2{font-family:var(--serif);font-size:13px;letter-spacing:.3em;color:var(--mut);margin:0}
+.erahead{font-family:var(--serif);font-size:19px;font-weight:700;color:var(--ink);margin:12px 0 10px;text-align:center}
+.bighero{font-family:var(--serif);font-size:72px;font-weight:700;line-height:1.05;text-align:center;color:var(--ink);margin:8px 0 0;letter-spacing:.02em}
+.eragrid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.eracard{text-align:center;border-radius:16px;padding:14px 6px 12px}
+.eracard b{font-size:16.5px}
+.eracard span{display:block;color:var(--mut);font-size:12px;margin-top:4px;line-height:1.5}
+.eracard.sel span{color:rgba(255,255,255,.85)}
+.scenerow{display:flex;gap:16px;align-items:stretch;margin-top:16px}
+.scenecard{flex:1.15;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 20px;display:flex;flex-direction:column;justify-content:center}
+.scenecard .eradesc-lab{margin:0 0 6px}
+#eradesc{font-family:var(--serif);font-size:17px;line-height:1.65;color:var(--ink);margin:0}
+.birthcol{flex:1;display:flex;flex-direction:column;justify-content:center}
+.birthcol .birthyear-row{margin-top:0;justify-content:center}
+.birthcol .birthyear-val{font-size:32px;min-width:0}
+.birthcol #birthhint{text-align:center}
+.yearstrip{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;margin-top:10px;border-bottom:1px solid var(--line);padding-bottom:9px}
+.yearbtn{position:relative;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 0 8px;font-size:13px;cursor:pointer;color:var(--mut);text-align:center;line-height:1.2}
+.yearbtn::after{content:"";position:absolute;left:50%;bottom:-9px;width:2px;height:8px;background:#B9B09A;transform:translateX(-50%)}
+.yearbtn:active{background:#E9EFE9}
+.yearbtn.sel{color:var(--accent);font-weight:700;border-color:var(--accent);background:#EDF2ED;box-shadow:inset 0 0 0 1px var(--accent)}
+.yearbtn.sel::after{background:var(--accent);height:10px}
+.actions #startgo{border-radius:999px;box-shadow:0 8px 20px rgba(47,74,60,.22)}
+@media (max-width:640px){.eragrid{grid-template-columns:repeat(3,1fr)}.eracard span{font-size:11.5px}.bighero{font-size:56px}.scenerow{flex-direction:column}.birthcol .birthyear-val{font-size:28px}.masthead .eyebrow2{flex-basis:100%}}
+/* ================= [/homepage-build 开始屏一单 · 独立块] ================= */
+
+/* P0 小页批 · F2 种子正式入口：开始屏折叠卡之后的一张安静小卡，权重低于选年代与主按钮；
+   输入框沿 .seedrow input 既有样式，按钮只去掉 .ghost 的上边距与行内对齐 */

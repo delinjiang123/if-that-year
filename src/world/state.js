@@ -1,8 +1,12 @@
 /* 《如果那年》状态矩阵注册表·状态域（domains）——自 v0.20.0 起由原 src/registry.js 拆出：
    本文件只含 version 与 domains（域/边/进程标定）；里程碑（milestones）在 src/registry.js，加载顺序须在本文件之后。
-   以下注册表正文与拆分前一字未动。 */
+   以下注册表正文与拆分前一字未动。
+   v0.23 WP1 口径补注（E6/E11）：schoolingDepth 不新开状态域——它是 schooling 域的伴随枚举事实
+   （full/cut/none），登记在 src/registry.js 的 GAME_REGISTRY.enumFacts、持久化挂 S.facts 伴随容器、
+   validate-state 按枚举值集校验；schooling 域本身的状态集与边一字不动。同理 examBand/sentdownForm/
+   quotaHolder/studyForm 都是挂在宿主域旁的枚举事实（host 标注见 enumFacts），不进 domains。 */
 window.GAME_REGISTRY = {
- "version": "0.20.1",
+ "version": "0.23.7",
  "domains": {
   "spouse": {
    "label": "配偶",
@@ -100,7 +104,7 @@ window.GAME_REGISTRY = {
      "from": "undecided",
      "to": "has",
       "by": [
-       "fork38",
+       "fork_kid",
        "e_kid_settle",
        "e_kid_final",
        "lk_born"
@@ -110,10 +114,9 @@ window.GAME_REGISTRY = {
       "from": "undecided",
       "to": "none",
       "by": [
-       "fork38",
+       "fork_kid",
        "e_kid_settle",
        "e_kid_final",
-       "fork45",
        "cov_solo_due",
        "lk_none",
        "lk_fade"
@@ -262,16 +265,21 @@ window.GAME_REGISTRY = {
      "from": "half",
      "to": "left",
      "by": [
-      "pr_half2"
+      "pr_half2",
+      "pr_examfork",
+      "pr_examfork2"
      ],
-     "note": "读了又离开（v0.18.0 开放）：half 线 14 岁拍的选择——读到这儿就回家帮工"
+     "note": "读了又离开（v0.18.0 开放）：half 线 14 岁拍的选择——读到这儿就回家帮工。CL-41 补登岔口两幕：half 处境又走学业轨的人（14 岁没走、16 岁选了念书）落榜后在岔口选打工/学手艺/当兵，同样自 half 落 left"
     },
     {
      "from": "school",
      "to": "left",
-     "by": [],
-     "reserved": true,
-     "note": "school 直转 left 未开放：现行口径下流失统一走 half 线（处境在发放时已按帮工+流失小格标定）"
+     "by": [
+      "pr_examfork",
+      "pr_examfork2",
+      "pr_half2"
+     ],
+     "note": "school 直转 left 由落榜岔口开放（CL-41）：学业轨的人在 19 岁落榜岔口（复读再落榜者在 20 岁岔口）选打工/学手艺/当兵时离校。此前未开放的口径不变——少年段流失仍统一走 half 线（处境在发放时已按帮工+流失小格标定）。by 含 pr_half2 是 validate-state 实扫口径（setState 写入不分 from 一律列名）：pr_half2 运行期只对 half 处境呈现、实际只产生 half>left，school>left 的真载体只有岔口两幕"
     }
    ]
   },
@@ -313,9 +321,16 @@ window.GAME_REGISTRY = {
      "by": [
       "pr_fork16"
      ]
+    },
+    {
+     "from": "craft",
+     "to": "study",
+     "by": [
+      "pr_y18"
+     ]
     }
    ],
-   "note": "16 岁分岔写入（v0.17.0）；成年段五路线是另一层选择，track 不锁 route。未走序章的年代暂留 pre"
+   "note": "16 岁分岔写入（v0.17.0）；成年段五路线是另一层选择，track 不锁 route。未走序章的年代暂留 pre；craft→study 为 v0.23 WP7 P4 对口升学边（c1985 pr_y18 出口选项，18 岁）"
   },
   "abroadKind": {
    "label": "出国去向（国家原型）",
