@@ -1902,6 +1902,7 @@
     const sp = specialEnding();
     IFY.S.special = sp;
     if (!endRerun) IFY.ANA.track("game_complete", { era: IFY.S.era, route: IFY.S.route.id, endAge: IFY.finalAge(), death: !!IFY.S.death, ending: sp ? sp.id : "none", tier: sp ? sp.tier : "none" });
+    if (!endRerun && typeof window !== "undefined" && window.IFY_MONITOR) IFY_MONITOR.runEnd(); // CL-144：数据监视新路（events 表 run_end），与 game_complete 同刻同守卫；失败静默、模块缺席即跳过
     const livesNew = endRerun ? (endInfo || { newEnding: false, newRare: false }) : IFY.recordLives(sp ? sp.id : null, IFY.S.usedRare || []); // 活过记录：落盘 + 本局新纪录（§B3）；回放按快照 endInfo 还原，不重复落盘
     if (!endRerun) {
       IFY.recordDayAndLife(); // 留存记录（v0.15.0）：日子表 + 最近一局回看，与活过记录同一落点、互不相干
