@@ -1246,8 +1246,11 @@ return "mailto:" + FEEDBACK_MAIL + "?subject=" + encodeURIComponent(subject) + "
 
 // CL-143：本局信息转 jsonb——与 feedbackHref 邮件正文同一套取数、同一套缺席口径
 // （取不到的件整件不放），只装对局信息，不放任何能认人的东西：表里也没有身份列。
-function feedbackContext(d) {
+// CL-148：page 由调用方点名时一并记进 context（开始页无对局、d 为 null，context
+// 就只剩这一件）；结算页不传 page，载荷与 CL-143 逐字不变。
+function feedbackContext(d, page) {
 const ctx = {};
+if (page) ctx.page = page;
 if (!d) return ctx;
 if (d.seed) ctx.seed = d.seed;
 try { if (IFY.S && IFY.S.era) ctx.eraId = IFY.S.era; } catch (e) {}
@@ -1262,14 +1265,16 @@ return ctx;
 
 // CL-143：往共用反馈库投一条。成败只回布尔、绝不抛给页面：8 秒超时（AbortController），
 // 断网/超时/非 2xx 一律算没递出去，调用方走兜底。只插不读，Prefer 要求不回正文。
-async function postFeedback(bodyText, d) {
+// CL-148：page 可由调用方点名（开始页传 "start"），不传时仍记 "settlement"，
+// 结算页现有调用与载荷一字不变——同一函数、同一对常量的单一出处。
+async function postFeedback(bodyText, d, page) {
 const ctl = typeof AbortController !== "undefined"? new AbortController(): null;
 const timer = ctl? setTimeout(() => { try { ctl.abort(); } catch (e) {} }, 8000): null;
 try {
 const res = await fetch(FEEDBACK_API, {
 method: "POST",
 headers: { apikey: FEEDBACK_KEY, Authorization: "Bearer " + FEEDBACK_KEY, "Content-Type": "application/json", "Content-Profile": "if_that_year_cn", Prefer: "return=minimal" },
-body: JSON.stringify({ body: bodyText, page: "settlement", version: gameVersion(), context: feedbackContext(d) }),
+body: JSON.stringify({ body: bodyText, page: page || "settlement", version: gameVersion(), context: feedbackContext(d, page) }),
 signal: ctl? ctl.signal: undefined,
 });
 return !!(res && res.ok);
@@ -1356,6 +1361,46 @@ if (fbFallback) fbFallback.hidden = false;
 });
 }
 
+// CL-148：开始页页脚的反馈入口——国内玩家看不到 GitHub、手机上 mailto 又点不开，
+// 页脚旧链（Issues＋发封信）撤掉，改与结算页同款的站内表单：同端点同公钥
+// （postFeedback/FEEDBACK_API/FEEDBACK_KEY 单一出处）、同三态文案、同 8 秒超时
+// 静默失败。没开局不编棋谱：d 传 null，记录 page 记 start、context 只带 page。
+// 失败兜底也不再挂 mailto，改把运营邮箱摆成可复制的纯文字（foot-fb-fallback）。
+// 页脚是 index.html 里的静态元素、脚本加载时已在 DOM 里，就地挂载；元素不在
+// （别的页面）就静默跳过。接线口径与结算页表单逐项对齐（空置灰、递出中禁钮）。
+function mountFooterFeedback() {
+const fbOpen = IFY.el("foot-fb-open"), fbBox = IFY.el("foot-fb-box");
+if (!fbOpen || !fbBox) return;
+const fbText = IFY.el("foot-fb-text"), fbSend = IFY.el("foot-fb-send"),
+fbNote = IFY.el("foot-fb-note"), fbFallback = IFY.el("foot-fb-fallback"),
+fbDone = IFY.el("foot-fb-done");
+fbOpen.addEventListener("click", (e) => {
+e.preventDefault();
+fbBox.hidden = false;
+if (fbText) fbText.focus();
+});
+const fbSync = () => { if (fbSend && fbText) fbSend.disabled = !fbText.value.trim(); };
+if (fbText) fbText.addEventListener("input", fbSync);
+if (fbSend) fbSend.addEventListener("click", async () => {
+const text = fbText? fbText.value.trim(): "";
+if (!text) return;
+fbSend.disabled = true;
+fbSend.textContent = "正在递出去……";
+if (fbNote) fbNote.hidden = true;
+if (fbFallback) fbFallback.hidden = true;
+const ok = await postFeedback(text, null, "start");
+if (ok) {
+fbBox.hidden = true;
+if (fbDone) fbDone.hidden = false;
+} else {
+fbSend.textContent = "递出去";
+fbSync();
+if (fbNote) { fbNote.textContent = "没递出去——网络或者服务这会儿不通"; fbNote.hidden = false; }
+if (fbFallback) fbFallback.hidden = false;
+}
+});
+}
+
 function refreshDesk() {
 const line = IFY.el("keepsake-open");
 if (!line) return;
@@ -1391,6 +1436,9 @@ try {
 window.addEventListener("storage", (e) => { if (e && e.key === LS_KEY) refreshDesk();});
 document.addEventListener("visibilitychange", () => { if (!document.hidden) refreshDesk();});
 } catch (e) {}
+
+// CL-148：页脚反馈入口在脚本加载时就地挂载（页脚静态元素此时已在 DOM 里）
+try { mountFooterFeedback(); } catch (e) {}
 
 Object.assign(IFY, { buildKeepsakeData, renderKeepsakeImage, buildKeepsakeBook, mountKeepsakeDesk, keepsakeUnlocked, verifyCode, seedArchive, panelFact});
 })(window.IFY);
