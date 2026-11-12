@@ -232,6 +232,12 @@
   // 无稀有度、无档位；不复述特殊结局名；纯函数（不耗 rng），同局在结算页与分享卡恒一致。
   function lifeTags() {
     const F = IFY.S.flags, used = IFY.S.usedEvents, out = [];
+    // CL-140b：富贵深面孔轨迹签——与钱槽深面孔同门（(D) 门：持 traj_fortune_*/traj_ipo、
+    // 终局 money≥55 且坐实年龄 ≤47；坐实年龄取 IFY.S.flagAges 里富贵旗的最早落点，口径见钱槽注）。
+    const FD_FA = IFY.S.flagAges || {};
+    let fdFirmAge = null;
+    for (const k of Object.keys(F)) if (F[k] && (k.indexOf("traj_fortune_") === 0 || k === "traj_ipo") && typeof FD_FA[k] === "number") fdFirmAge = fdFirmAge === null ? FD_FA[k] : Math.min(fdFirmAge, FD_FA[k]);
+    const fortuneDeep = fdFirmAge !== null && fdFirmAge <= 47 && ((IFY.S.stats || {}).money || 0) >= 55;
     const trail = typeof IFY.settledOf === "function" ? IFY.settledOf(IFY.S) : IFY.residenceTrail(); // v0.18.0：形状段改读实际居所轨迹（账本里的路线起点与迁徙记录），不再只凭路线与旗标
     // v0.24.4（AN-2）：形状只认轨迹终点与段长，旧版的裸旗回落段整段删除——back_home_stay 这类
     // 只增不减的旗会把「回老家住一阵」读成终局形状，与落脚槽（读轨迹）在同一屏打架（B85-04 实锤）。
@@ -262,6 +268,7 @@
       [!!F.two_cities, "过过两地奔波的日子"],
       [!!F.long_dist, "和对方两地过"],
       [!!(F.side_business || F.side_start || F.side_job), "正职之外干过副业"],
+      [fortuneDeep, "钱攒到后来，成了个数字"], // CL-140：深面孔签——位置在副业之后、CL-135 三行之前（钱的大事重于理财小节）
       [!!F.dca, "定投过一只基金"], // CL-135（路线总账 P3）：孤旗接判词——三行均追加在表尾、最低优先，仅高于其后的爱好兜底
       [!!F.loan_swap, "折腾过一回房贷"],
       [!!F.badminton_captain, "张罗过一支羽毛球局"],
@@ -1465,8 +1472,23 @@
     // money≥55 走富贵档（覆盖住房支文案，住房形态在措辞里分三形带过）；money<40 走散财变体
     // （挣到过、没守住，也给一句体面的话）；40–55 不覆盖、回落下方住房支（旗是年轻时的事，
     // 日子回到了常态）。判词 moneyMain 只读数字轨迹，与此互不干涉，本次不动。
+    // 深面孔（CL-140 立形、CL-140b 改门）：富贵档内部再分一副面孔——走深面孔三形（与
+    // 普通富贵同住房分形、同层并列，不设更高档、不给头衔）。只在档内分流，富贵档总命中
+    // （≥55）与散财/回落口径一字不动；轨迹行 lifeTags 同步一签（同门）。
+    // 【改门注记，CL-140b】初版门 money≥85 经 1800 局双遍同种子亲验作废：富贵链坐实钱效
+    // 使档内 money 普遍饱和（档内中位 96、=100 者占 48.3%、≥85 者占 82.8%），money 单轴
+    // 切不出「一至两成半」的薄片。改切 (D)：FORTUNE ∧ money≥55 ∧ 坐实年龄 ≤47——坐实
+    // 年龄 = IFY.S.flagAges 里本局富贵旗（traj_fortune_*/traj_ipo）的最早落点（flagAges
+    // 是 record.js 的落旗岁账，首落即记；31 持旗种子三方对账：账本首落＝末落＝flagAges
+    // 逐旗全等，富贵旗每局只落一次）。实测覆盖：富贵档 29 局中 5 局（17.2%，全人口
+    // 0.28%），在「一至两成半」带内，语义为「坐实得早且守到终局」。flagAges 查不到落点
+    // （无账本老档等）→ 不走深面孔，回落普通富贵面孔，不冒充。
     const FORTUNE = Object.keys(F).some((k) => F[k] && k.indexOf("traj_fortune_") === 0) || !!F.traj_ipo;
-    if (FORTUNE && m >= 55) s3 = (houseTier === "R" || housing.unit || housing.owned === "reform" || housing.form === "reform") ? "住的还是这套老房，没换。手里的钱够，后半程没为钱发过愁。老邻居问你图啥，你说，住惯了。" : housing.owned ? "房子早供完了。钱这一辈子，算是挣出来了——后半程没再为钱发过愁。账还是自己记，菜还是自己买，就是买什么不用再算三遍了。" : "没买房，钱倒是真攒下了。这一辈子钱上没受过憋屈，租房住着也自在，房东涨租，你搬走就是。";
+    const FD_FA2 = IFY.S.flagAges || {};
+    let fortuneFirmAge = null;
+    for (const k of Object.keys(F)) if (F[k] && (k.indexOf("traj_fortune_") === 0 || k === "traj_ipo") && typeof FD_FA2[k] === "number") fortuneFirmAge = fortuneFirmAge === null ? FD_FA2[k] : Math.min(fortuneFirmAge, FD_FA2[k]);
+    if (FORTUNE && m >= 55 && fortuneFirmAge !== null && fortuneFirmAge <= 47) s3 = (houseTier === "R" || housing.unit || housing.owned === "reform" || housing.form === "reform") ? "住的还是这套老房，没换。钱到了这个数，花起来反倒没了声响——儿女差一截，你补上；老伙计张口，你应下。问你图啥，你说，住惯了。" : housing.owned ? "房子早供完了。钱到后来，成了账上的一个数：买东西先看喜不喜欢，价签是顺带瞥见的。家里谁遇上过不去的事，电话先打到你这儿，你应得下来。账还是自己记，就是记着记着，数目大得没了实感。" : "没买房，钱倒是真攒下了，攒到后来成了一个数。租房住着，房东涨租你就搬，搬哪儿都行。儿女置办东西差钱，你随手就给添上，从没让他们开第二回口。";
+    else if (FORTUNE && m >= 55) s3 = (houseTier === "R" || housing.unit || housing.owned === "reform" || housing.form === "reform") ? "住的还是这套老房，没换。手里的钱够，后半程没为钱发过愁。老邻居问你图啥，你说，住惯了。" : housing.owned ? "房子早供完了。钱这一辈子，算是挣出来了——后半程没再为钱发过愁。账还是自己记，菜还是自己买，就是买什么不用再算三遍了。" : "没买房，钱倒是真攒下了。这一辈子钱上没受过憋屈，租房住着也自在，房东涨租，你搬走就是。";
     else if (FORTUNE && m < 40) s3 = "钱是真挣到过。后来散了大半，剩下的够过日子。说起那几年，你还是会笑一下——风光过，就不算白过。";
     else if (houseTier === "R" || housing.owned === "reform") s3 = m >= 60 ? "房改那会儿把住着的单位房买下来了，手里还留着余钱，够花。" : "房改时把住着的单位房买了下来，钱多半填进了这套房里，日子紧巴巴地过。";
     else if (housing.owned === "selfbuilt") s3 = m >= 40 ? "自己动手盖起来的房，没欠下月月要还的钱。地是村里的，房是自家的，手里还留着余钱，够花。" : "自己动手盖起来的房，没欠下月月要还的钱。地是村里的，房是自家的，日子紧巴巴地过。"; // 自建房支（农民路线）：无月供、无变现，只按手头宽紧分说
