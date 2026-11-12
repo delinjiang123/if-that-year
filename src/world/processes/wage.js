@@ -113,6 +113,65 @@
     return Math.min(0.45, Math.max(0.15, base * rate)); // 稿 §四.3：钳 [0.15, 0.45]，从没入行按 0.15 兜底
   }
 
+  // —— 年结流水账行的文案（CL-146 修 F1「刷屏」：纯呈现，零随机、零数值影响）——
+  // 病根：年净额零头结转后落账几乎恒为 +1，旧模板写死「工资年结：金钱 +1」，
+  // 一局里逐字重播二十多次。修法：行首「工资年结」不动（结算/典藏按此前缀认
+  // 系统行），其后按当年真实构成（工资/养老金/副业/住房行）选来源短语，再轮换
+  // 一条当年成立的事实（工龄、退休年数、手里钱数、月供状态、里程碑），最后对
+  // 本局已落账的年结正文做查重——撞了就换下一组组合，结构上保证同局正文不重。
+  // 取材全是既有派生状态（账本/旗/相位/六维），不读任何 rng 流，漂移为零。
+  function wageLogLine(S, c) {
+    const amt = `金钱 ${c.actual > 0 ? "+" : ""}${c.actual}`;
+    const led = ledgerOf(S);
+    const prior = led.slice(0, -1); // 本年条目已在 wageDue 内先行入账
+    const priorPaid = prior.filter((e) => e.actual !== 0).length;
+    const firstPension = c.pension > 0 && !prior.some((e) => e.pension > 0 && e.actual !== 0);
+    const F = S.flags || {};
+    // 来源短语池（按当年构成）
+    let pool;
+    if (priorPaid === 0 && c.wage > 0) pool = ["头一回年结，工钱结清了", "第一回赶上年结，工钱到手"];
+    else if (priorPaid === 0 && c.pension > 0) pool = ["头一回年结，领的是养老金"];
+    else if (c.pension > 0 && c.wage > 0) pool = ["工资和养老金一块结", "一边养老金，一边还有份工钱，合着结", "工钱加上养老金，一块结清"];
+    else if (c.pension > 0) pool = ["养老金按年结", "这一年结的是养老金", "养老金结清，一年一回", "退下来了，年结就是养老金"];
+    else if (c.wage > 0 && c.side > 0) pool = ["工资和副业一块结", "正职副业，两头的钱合着结", "工资之外副业也添了一份，一块结", "工钱加副业，一年结这一回"];
+    else if (c.wage > 0 && c.phase === "part") pool = ["半退了，工钱减着结", "活干一半，工钱也结一半", "半退的工钱，按年结"];
+    else if (c.wage > 0) pool = ["一年的工钱结清了", "工资结到年底，清了", "这一年的工钱，结了", "工钱按年结清"];
+    else if (c.side > 0 && c.laidOff) pool = ["工资断了，靠副业结了一份", "没了工资，副业的账结了", "正份工钱没了，零碎活结了账"];
+    else if (c.side > 0) pool = ["这一年靠副业结的账", "工钱没成份，副业结了一份", "没工资进项，手边活计结了账"];
+    else if (c.actual < 0) pool = ["没别的进项，房贷月供照结", "这一年光房贷在往外走"];
+    else pool = ["房子供完了，省下的结成一笔", "这一年结的是房子省下的"];
+    // 里程碑事实（优先于轮换事实，一次只挂一条）
+    let prio = null;
+    if (firstPension && priorPaid > 0) prio = "头一年领养老金";
+    else if (c.tenure != null && c.wage > 0 && c.tenure + 1 >= 10 && (c.tenure + 1) % 10 === 0) prio = `这一行干满 ${c.tenure + 1} 年了`;
+    else if (priorPaid + 1 >= 10 && (priorPaid + 1) % 10 === 0) prio = `年结这是第 ${priorPaid + 1} 回了`;
+    // 轮换事实（只收当年成立的，按固定序）
+    const facts = [];
+    if (c.tenure != null && c.wage > 0) facts.push(`干这一行第 ${c.tenure + 1} 年`);
+    if (c.pension > 0 && typeof S.retiredAt === "number") facts.push(`退下来第 ${S.age - S.retiredAt + 1} 年`);
+    facts.push(c.actual > 0 ? `手里攒到 ${S.stats.money}` : `手里还剩 ${S.stats.money}`);
+    facts.push(S.stats.money >= 70 ? "手里宽裕些了" : S.stats.money >= 45 ? "手里稳当些了" : S.stats.money >= 25 ? "手里不紧不松" : "手里还是紧");
+    if (c.housing < 0) facts.push("月供还扣着");
+    else if (c.housing > 0 && S.houseTier !== "R") facts.push("房贷供完了");
+    if (c.side > 0 && c.wage > 0 && F.side_start && !F.side_job && !F.xiahai) facts.push("副业才起头");
+    // 本局已用过的年结正文（查重集）
+    const used = new Set();
+    for (const l of S.log || []) { const m = typeof l === "string" && l.match(/^\d+ 岁 · (工资年结[\s\S]*)$/); if (m) used.add(m[1]); }
+    const combos = pool.length * (facts.length + 1);
+    for (let o = 0; o < combos; o++) {
+      const src = pool[(priorPaid + o) % pool.length];
+      let fact = prio;
+      if (!fact) {
+        const fi = (priorPaid + o) % (facts.length + 1);
+        fact = fi < facts.length ? facts[fi] : null;
+        if (!fact && o > 0 && facts.length) fact = facts[(priorPaid + o) % facts.length];
+      }
+      const body = `工资年结：${src}${fact ? `，${fact}` : ""}，${amt}`;
+      if (!used.has(body)) return body;
+    }
+    return `工资年结：${pool[priorPaid % pool.length]}，${S.age} 岁这一年，${amt}`; // 兜底：带年龄事实，同局不可能重
+  }
+
   function wageDue() {
     const S = IFY.S;
     if (!S || !S.route || S.phase === "prologue") return;
@@ -177,7 +236,13 @@
     if (actual !== 0) {
       const ses = IFY.session;
       const ctl = ses && ses.tracks ? ses.tracks[ses.controlTrack || "A"] : null;
-      if (!ctl || ctl.state === S) S.log.push(`${S.age} 岁 · 工资年结：金钱 ${actual > 0 ? "+" : ""}${actual}`);
+      if (!ctl || ctl.state === S) {
+        // 文案取材的任期与工资结算同口径（有入行旗走 tenureYears、无旗走兜底起算），纯派生
+        const tenureDisp = entryFlag
+          ? (typeof IFY.tenureYears === "function" ? IFY.tenureYears() : null)
+          : (tierKey ? Math.max(0, S.age - fallbackStartAge(S)) : null);
+        S.log.push(`${S.age} 岁 · ${wageLogLine(S, { actual, wage, pension, side, housing: housingLine, phase, laidOff, rehired, tenure: tenureDisp })}`);
+      }
     }
   }
 
