@@ -2033,6 +2033,18 @@ window.GAME_REGISTRY.milestones = {
    ],
    "note": "富贵尾巴坐实旗（CL-109 §二.2／§四，CL-126 新登记实登）：林业薄尾巴坐实拍 r_forestry_nursery 落（require 本链起势旗 traj_scale_forestry；forestry 在 WORK_FORMAL_FLAGS、退休节点 55–60，坐实窗上限压 58 不越节点）。消费者：settlement.js 钱槽富贵档（FORTUNE 旗组按 traj_fortune_ 前缀动态认，自动命中）；end_selfmade 的 any/evidence 是 CL-112 枚举名单、未含本线，是否补入待总指挥裁定。"
   },
+  "traj_fortune_geo": {
+   "setters": [
+    "r_geo_firm"
+   ],
+   "note": "富贵尾巴坐实旗（CL-109 §二.2／§四，CL-137 新登记实登，形状照 CL-133 LINE-DESIGN §四）：地质薄尾巴坐实拍 r_geo_firm 落（require 本链起势旗 traj_scale_geo；坐实钱门照总账默认摘门，定向实测与对照数在 CL-137 REPORT；geo 在 WORK_FORMAL_FLAGS、退休节点 55–60，坐实窗上限压 58 不越节点）。消费者：settlement.js 钱槽富贵档（FORTUNE 旗组按 traj_fortune_ 前缀动态认，自动命中）；end_selfmade 的 any/evidence 名单已于 CL-137 同步补登本旗（照 .137 六线补登成例）。"
+  },
+  "traj_scale_geo": {
+   "setters": [
+    "r_geo_service"
+   ],
+   "note": "富贵尾巴链内旗（CL-137）：地质薄尾巴起势拍 r_geo_service 的「带队单干」选项落——标记「改制后技术骨干带队做勘查/钻探服务起步」，坐实环 r_geo_firm 以此为 require；本身不进结算与结局口径。"
+  },
   "traj_fortune_med": {
    "setters": [
     "r_med_signboard"
@@ -2478,6 +2490,7 @@ window.GAME_REGISTRY.milestones = {
     "cr_shop_098",
     "cr_truck_063",
     "cr_recycle_062",
+    "cr_geo_096",
    ],
    "note": "技工入行（v0.19.0）：钳/焊/机修/家电维修学徒拍立旗，技工簇以此为门"
   },
@@ -2547,7 +2560,8 @@ window.GAME_REGISTRY.milestones = {
     "p41_012",
     "p41_013",
     "p41_014",
-    "p41_015"
+    "p41_015",
+    "cr_geo_095"
    ],
    "note": "矿工入行（v0.19.0）：矿上招工签约选项立旗，井下簇以此为门。CL-05（v0.60.25）补登 pack41 五条入行拍 p41_011–015（矿务局招工/子女顶替/农民轮换工/乡镇煤矿招工/劳务派遣）"
   },
@@ -2570,7 +2584,8 @@ window.GAME_REGISTRY.milestones = {
     "cr_driver_taxi_038",
     "cr_sea_081",
     "cr_recycle_057",
-    "cr_post_048"
+    "cr_post_048",
+    "cr_geo_099"
    ],
    "note": "店主入行（v0.19.0）：批发学徒/接手家店/开网店拍立旗，商户簇以此为门。CL-119 补登 cr_post_048（邮局对面盘下小店）"
   },
@@ -2701,7 +2716,8 @@ window.GAME_REGISTRY.milestones = {
   "township_work": {
    "setters": [
     "farm_township",
-    "cr_farm_114"
+    "cr_farm_114",
+    "cr_geo_097"
    ],
    "note": "乡镇企业入行（立项新增）：农民路线混合层——FORM_OF_FLAG 映射 employee、工资走 C 档；farm_work 旗不清，土地池保持开门；厂散回落由 farm_township_back 立 farm_returned 接回"
   },
@@ -2716,7 +2732,8 @@ window.GAME_REGISTRY.milestones = {
     "cr_craft_086",
     "cr_press_097",
     "cr_med_041",
-    "cr_sea_086"
+    "cr_sea_086",
+    "cr_geo_098"
    ],
    "note": "教师入行（v0.19.0）：r_school1 分配到校呈现即立（两选项均为教书），教师簇以此为门；traj_school 仍为轨迹旗。v0.60.20 补登 pack37 五条入行拍（代课/接班/考编/特岗/临聘，均 ctx entry 立 teach_work）"
   },

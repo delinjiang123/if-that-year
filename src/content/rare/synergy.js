@@ -348,6 +348,16 @@ window.GAME_SYNERGY = {
         { label: "不扩。活推掉些，手艺守精细", effects: { wisdom: 2, money: -1 }, echo: "你把订单本合上，加塞的一个没接。活还是一个人做，慢是慢点，可出去的东西，件件经得起看。" },
       ] },
     { id: "r_craft_factory", label: "小厂的牌子", clue: "厂门口的牌子还是自己写的那块、发货单摞起来比字典厚的人。", min: 38, max: 58, chain: "r_craft_orders", require: "traj_scale_craft", ctx: { mainLine: "craft_work" }, chance: 0.04, text: "作坊扩起来这些年，慢慢有了小厂的样子：十几号人，机器活和手工活分着做，大单走流水，小单还是你亲手把关。外地的大客户也找上门了，先看样品，再看厂子，最后看你这个人。发货单一摞一摞往外走，厂门口那块牌子，还是你当年自己写的那块，字有点旧，你舍不得换。", effects: { money: 11, growth: 2, relation: 1 }, set: "traj_fortune_craft" },
+    // CL-137（CL-133 LINE-DESIGN §四）：地质薄尾巴两环，追加于尾巴组表末（表序纪律同前）。
+    // 起势：改制后（1999 起）技术骨干带队单干勘查/钻探服务——接小矿山与工程勘察的活；
+    // 资格 tenure≥15 且龄≤55（定向合格池口径：入行≤45 且 60 岁前满 15 年，照 CL-124）。
+    // 坐实钱门照 CHRONICLE 总账默认摘门（先测后定，对照数在 CL-137 REPORT）。
+    { id: "r_geo_service", label: "带队单干", clue: "把队里的工具清册抄了一份、跟老伙计在饭桌上把账算到半夜的人。", min: 40, max: 55, minYear: 1999, ctx: { flag: "geo_work", tenureIn: [15, 999] }, chance: 0.08, text: "改制之后，活开始按项目走：小矿山要补勘、工程公司缺勘察队，正规队伍排不过来，活就漏到了外头。你在队里是技术骨干，认地层、带队伍、跟甲方打交道，样样拿得起来。几个老伙计撺掇你：咱们几个搭个服务队，勘查、钻探的活自己接，干好干坏，自己担着。这一步迈出去，就没有单位兜底了。",
+      choices: [
+        { label: "出来干。带几个人，活自己接、账自己算", effects: { money: -3, growth: 3 }, set: "traj_scale_geo", echo: "服务队挂牌那天，没有仪式，你们在租来的院子里支了张桌子，把接的头一个活的图纸摊开。老伙计说，往后咱们就是给自己的队伍打工了。" },
+        { label: "不出来。队里再难，也是个安稳的根", effects: { freedom: 1, growth: -1 }, echo: "你没动。老伙计们自己搭起了摊子，你逢年过节去坐坐，帮着看看图，分文不取。有回他们接了个难活，半夜打电话来问你，你在电话里讲了半个钟头。" },
+      ] },
+    { id: "r_geo_firm", label: "服务队站稳了", clue: "院子里停着自家的钻机、工资表上排着十几个名字的人。", min: 43, max: 58, chain: "r_geo_service", require: "traj_scale_geo", ctx: { flag: "geo_work" }, chance: 0.045, text: "服务队干了这些年，算是站稳了：添了两台自己的钻机，雇上了十来个人，常年有项目排着队——小矿山的补勘、县里工程的地勘、打井找水，活不断。账面上，你每个月开工资的日子，比在队里领钱的时候还准时。这一片要找勘查钻探的队伍，人先想起的是你们。", effects: { money: 10, growth: 2, relation: 1 }, set: "traj_fortune_geo" },
     // CL-128（CL-109 §五 W6 拆迁内容组）：城市选房坐实环＋农村变体三拍，追加表末（表序纪律同前）。
     // 城市选房档：chain r_oldhouse＋require oldhouse_home 与选钱档（r_oldhouse_move）分流；回迁要等几年，
     // 窗比选钱档晚开、宽收（42–68）；钱只给 +1 过渡量级，房的去向在正文交代（搬回老地方、新楼有电梯），
@@ -399,7 +409,7 @@ window.GAME_SYNERGY = {
     // 钱门 gt 64；evidence 两点制：一点认旗（hasFact 并读口径，旗落即认）、一点认钱数字。
     // traj_fortune_* 的坐实拍由后续 W 片施工，在此之前本条仅 traj_ipo 一路可达（与 end_richest 分工：
     // 那条是 legendary 且要 money>69，本条 epic 收 65–69 的上市局与各线本业做大局）。
-    { id: "end_selfmade", clue: "起家时手里没几个钱，后来这一片办事先想起他家的人。", tier: "epic", any: ["traj_fortune_acct", "traj_fortune_builder", "traj_fortune_care", "traj_fortune_consult", "traj_fortune_courier", "traj_fortune_craft", "traj_fortune_dev", "traj_fortune_farm", "traj_fortune_fin", "traj_fortune_forestry", "traj_fortune_med", "traj_fortune_media", "traj_fortune_photo", "traj_fortune_sea", "traj_fortune_shop", "traj_fortune_taxi", "traj_fortune_truck", "traj_fortune_write", "traj_ipo"], stats: [{ k: "money", gt: 64 }], title: "白手起家", evidence: [["traj_fortune_acct", "traj_fortune_builder", "traj_fortune_care", "traj_fortune_consult", "traj_fortune_courier", "traj_fortune_craft", "traj_fortune_dev", "traj_fortune_farm", "traj_fortune_fin", "traj_fortune_forestry", "traj_fortune_med", "traj_fortune_media", "traj_fortune_photo", "traj_fortune_sea", "traj_fortune_shop", "traj_fortune_taxi", "traj_fortune_truck", "traj_fortune_write", "traj_ipo"], [{ "stat": { "k": "money", "gt": 64 } }]],
+    { id: "end_selfmade", clue: "起家时手里没几个钱，后来这一片办事先想起他家的人。", tier: "epic", any: ["traj_fortune_acct", "traj_fortune_builder", "traj_fortune_care", "traj_fortune_consult", "traj_fortune_courier", "traj_fortune_craft", "traj_fortune_dev", "traj_fortune_farm", "traj_fortune_fin", "traj_fortune_forestry", "traj_fortune_geo", "traj_fortune_med", "traj_fortune_media", "traj_fortune_photo", "traj_fortune_sea", "traj_fortune_shop", "traj_fortune_taxi", "traj_fortune_truck", "traj_fortune_write", "traj_ipo"], stats: [{ k: "money", gt: 64 }], title: "白手起家", evidence: [["traj_fortune_acct", "traj_fortune_builder", "traj_fortune_care", "traj_fortune_consult", "traj_fortune_courier", "traj_fortune_craft", "traj_fortune_dev", "traj_fortune_farm", "traj_fortune_fin", "traj_fortune_forestry", "traj_fortune_geo", "traj_fortune_med", "traj_fortune_media", "traj_fortune_photo", "traj_fortune_sea", "traj_fortune_shop", "traj_fortune_taxi", "traj_fortune_truck", "traj_fortune_write", "traj_ipo"], [{ "stat": { "k": "money", "gt": 64 } }]],
       text: "你起家的时候，手里没几个钱。后来那摊事一点点做大，做成了这一片绕不开的名字。钱是挣到了，日子还是照常过：菜自己买，账自己记。有人问你这算不算白手起家，你笑笑说，算吧，就是慢了点。" },
     { id: "end_lottery", clue: "每年那一天还去买一注，还是那组生日号码的人。", tier: "rare", all: ["traj_lottery"], title: "天选之人", evidence: [["r_lottery"],[{"stat":{"k":"money","gt":59}}]],
       text: "中奖的事你没跟几个人说。钱一部分存了定期，一部分给家里添了几样大件，日子还是照常过。只是每年那一天，你会去楼下那家彩票站买一注，还是那组生日号码。店主问你图啥，你说：图个念想。" },
