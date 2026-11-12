@@ -396,7 +396,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{o
 .yearbtn.sel{color:var(--accent);font-weight:700;border-color:var(--accent);background:#EDF2ED;box-shadow:inset 0 0 0 1px var(--accent)}
 .yearbtn.sel::after{background:var(--accent);height:10px}
 .actions #startgo{border-radius:999px;box-shadow:0 8px 20px rgba(47,74,60,.22)}
-@media (max-width:640px){.eragrid{grid-template-columns:repeat(3,1fr)}.eracard span{font-size:11.5px}.bighero{font-size:56px}.scenerow{flex-direction:column}.birthcol .birthyear-val{font-size:28px}}
+@media (max-width:640px){.eragrid{grid-template-columns:repeat(3,1fr)}.eracard span{font-size:11.5px}.bighero{font-size:56px}.scenerow{flex-direction:column}.birthcol .birthyear-val{font-size:28px}.masthead .eyebrow2{flex-basis:100%}}
 /* ================= [/homepage-build 开始屏一单 · 独立块] ================= */
 
 /* P0 小页批 · F2 种子正式入口：开始屏折叠卡之后的一张安静小卡，权重低于选年代与主按钮；
