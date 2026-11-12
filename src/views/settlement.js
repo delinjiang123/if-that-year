@@ -264,7 +264,40 @@
       [!!(F.side_business || F.side_start || F.side_job), "正职之外干过副业"],
       [!!F.dca, "定投过一只基金"], // CL-135（路线总账 P3）：孤旗接判词——三行均追加在表尾、最低优先，仅高于其后的爱好兜底
       [!!F.loan_swap, "折腾过一回房贷"],
-      [!!F.badminton_captain, "张罗过一支羽毛球局"]
+      [!!F.badminton_captain, "张罗过一支羽毛球局"],
+      [!!F.stayed_put, "守着老地方，没挪窝"], // CL-145（路线总账 P4）：晚年结果旗 32 面接判词——追加在 CL-135 三行之后、同为表尾低优先；另 5 旗（shop_grew/grandkid_kept/kin_far_visit/skill_passed/moved_near_kid）走 pack135 回响拍，不在此表
+      [!!F.kin_far_video, "在视频里看着孙辈长大"],
+      [!!F.kin_topup, "住到儿女家顶过班"],
+      [!!F.grandkid_rest, "放下带娃，歇个清静"],
+      [!!F.grandkid_help, "接送孙辈、管晚饭"],
+      [!!F.grandkid_paid, "出钱请人带孙辈"],
+      [!!F.shop_regulars, "修椅子修出了熟客"],
+      [!!F.shop_begun, "退休后开过一间小店"],
+      [!!F.stall_begun, "退休后支过一个小摊"],
+      [!!F.stream_craft, "开直播讲过老本行"],
+      [!!F.stream_cook, "直播里教过做饭"],
+      [!!F.stream_chat, "直播里陪人聊老事"],
+      [!!F.stream_fun, "拒了带货，只陪人聊天"],
+      [!!F.travel_group, "退休后跟团走过几趟"],
+      [!!F.travel_pair, "两个人，慢慢走过些地方"],
+      [!!F.travel_near, "近处的好地方没少去"],
+      [!!F.cruise_near, "坐船出去走过一趟"],
+      [!!F.cruise_train, "没坐船，改坐了慢火车"],
+      [!!F.winter_again, "去暖和地方过过两个冬"],
+      [!!F.winter_home, "冬天就守在自己这边"],
+      [!!F.class_photo, "在老年大学学过摄影"],
+      [!!F.class_write, "在老年大学练过书法"],
+      [!!F.class_sing, "在老年大学唱过合唱"],
+      [!!F.class_kept, "老了还在老年大学上课"],
+      [!!F.class_paused, "老年大学先歇了一学期"],
+      [!!F.unit_visit, "老同事的聚会场场到"],
+      [!!F.garden_shared, "种的菜常分给邻居"],
+      [!!F.garden_small, "种了一小畦自己吃的菜"],
+      [!!F.house_kept, "老屋没大修，自己鼓捣"],
+      [!!F.old_friends_met, "八十岁还赴老朋友的约"],
+      [!!F.exercise_kept, "晨练坚持了好几年"],
+      [!!F.pet_old_friend && !!(IFY.S.state && IFY.S.state.cat && IFY.S.state.cat !== "none"), "陪一只老猫一起变老"],
+      [!!F.pet_old_friend && !!(IFY.S.state && IFY.S.state.dog && IFY.S.state.dog !== "none"), "陪一条老狗一起变老"]
     ];
     let t2 = "";
     for (const [ok, label] of traj) if (ok) { t2 = label; break; }
