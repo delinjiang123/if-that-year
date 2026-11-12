@@ -49,17 +49,19 @@
       "你上头有个姐姐，差你六岁。你出生那天她上小学，回来趴在小床边看了你半天，说要去跟同学讲。你的小名是她起的，一喊就是一辈子。",
       "你出生那年，你爸刚把街口的小铺子盘下来，卖针头线脑。你妈在铺子后头支了张床，你睡在床上，听着前头拨算盘、招呼客人的动静，倒也睡得安稳。",
       "你出生在县医院，你妈就是在那儿当护士的。你爸说，那天她下了夜班没回家，直接住进了产房。你睁开眼头一个看见的，就是一屋子的白大褂。",
+      "你爸在乡里的砖瓦厂上班，你妈在家种地、喂猪。你出生那年，家里刚把三间瓦房的地基打起来，钱紧，你的小被是拿你爸的旧工装改的，袖子拆下来，正好做襁褓的带子。你爸下了班，先去地基上看一眼，再进屋看你，说一样，都是自家置办的。那地基打起来没两年，房就盖上了，搬家那天，你爸先把你的小床搬进去，摆在朝南的那间。",
+      "你出生那年，你爸在南边打工。你妈在老家生的你，满月酒办完，你爸寄回的钱和信一块儿到了，信里说，等站稳了，接你们过去看看。",
     ],
     // fix3 B1（子类 1a/1b）：开场白场景标签与手足断言登记（与 originOpen 同序）——第 4 款断言姐姐。
-    originOpenSetting: ["urban", "rural", null, null, null, null],
-    originOpenAssert: [null, null, null, { siblings: "elderSister" }, null, null],
+    originOpenSetting: ["urban", "rural", null, null, null, null, null, null],
+    originOpenAssert: [null, null, null, { siblings: "elderSister" }, null, null, null, null],
     // 彩电句文本门（opt-in，读者 present 来历幕，选中后拼屏前判）：[2] 彩电款的首句分句
     // 「，是全巷子头一台」只在被判不稳的一格不发——出生年 ≥1988 且家底处境为城市
     // （setting=factory，厂区大院，互斥表注「厂区本就在城里」）；其余格（1980–87 任意
     // 处境、1988–89 的 rural/town/无标家底）照原句发。v0.60.7 曾整句删去，本门按
     // 「该修的是门，不是话」挂回：门内＝删句前原文逐字，门外＝删后形逐字。门只摘字、
     // 不改抽取概率与流位（口径推导见 tv-line-build 报告）。
-    originOpenTextGate: [null, null, { seg: "，是全巷子头一台", dropWhen: { birthYearMin: 1988, settingIn: ["factory"] } }, null, null, null],
+    originOpenTextGate: [null, null, { seg: "，是全巷子头一台", dropWhen: { birthYearMin: 1988, settingIn: ["factory"] } }, null, null, null, null, null],
     originLB: ["你爸妈去了外地打工，你跟着爷爷奶奶过。想说话要去镇上打公用电话，排着队，一分钟不便宜，说上两句就得挂，剩下的事等过年回家再说。", "你爸妈过完年就走，箱子头天晚上就收好了。你妈给你买了身新衣裳，大了两号，说你长得快，明年穿正好。你站在门口看车走远，那衣裳后来穿了好几年。"],
     marks: {
       mark_case85: { shadow: "两条路上都一样的是，同桌那个铁皮文具盒摆在桌上，铅笔削得整整齐齐，他分了你一支。" },
@@ -220,6 +222,8 @@
             text: "十强赛那张赛程表，你一直夹在作业本里。作业本后来不用了，你也没舍得扔。搬了几回家，它还在箱子底下压着，划过的比分，一笔一笔都还在。" },
           { key: "shopbook", log: "小本子没了", set: "mark_shop85", mark: "mark_shop85",
             text: "后来那家小卖部换了新老板，赊账的小本子没了，买什么都得先掏钱。你站在柜台前头，忽然想起记账的那个老太太，想起自己还过她五毛钱。" },
+          { key: "motor", log: "马达烧了", set: "mark_car85", mark: "mark_car85",
+            text: "你的四驱车跑着跑着不动了，拆开一看，马达烧了。攒的零花钱不够换新的，你跟同学换了个旧马达，装上一试，又能跑，就是慢了半拍。你说，慢就慢吧，能跑完就行。" },
         ] },
       // WP7 补修（序章补修线）：teen 两拍补 never/left 分文——never 写没进校门后的日常质地、left 写放下书本后的日子，
       // 均不预设在读/备考；school/half 续读原文逐字不动。teen1 走 eraText 变体级 textBySchooling（与 c1995 teen1 同形，
