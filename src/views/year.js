@@ -199,22 +199,28 @@
     for (const [fn, variants] of Object.entries(map)) { const cur = ((IFY.S && IFY.S.facts) || {})[fn]; const v = variants && variants[cur == null ? "absent" : cur]; if (v != null) return v; }
     return fallback;
   }
-  // 离世走法领起（CL-152 二期，规格 2.4）：父母走法为短病/突然时，把离世拍解析文本的死亡宣告
-  // 换成走法领起句——走法只决定「怎么走的」，丧事正文与年代/存亡变体一字不动，缓降走原文。
-  // 共 8 条（爸/妈 × 短病/突然 × 首位/第二位离世），长短错开；突然形不写「毫无征兆」
+  // 离世走法领起（CL-152 二期立、CL-153 二期扩，规格 2.4）：父母走法非缓降时，把离世拍解析文本
+  // 的死亡宣告换成走法领起句——走法只决定「怎么走的」，丧事正文与年代/存亡变体一字不动，缓降走原文。
+  // 共 16 条（爸/妈 × 短病/突然/反复/病后安然 × 首位/第二位离世），长短错开；突然形不写「毫无征兆」
   // （signal 伏笔可能已发过），写急、没受罪、前一天还好好的这类不与伏笔打架的话；
   // 基调（用户 2026-11-13 亲定）：不要太悲伤——落笔在安稳、平静、没受罪、家里人都在这一面，
   // 悲伤点到为止，不煽情、不写哭喊场面；与现行离世正文「走得还算安稳」同温。
-  // 短病形落在病来得急、没拖长，与其临终前一年的住院拍呼应。第二位形与 textState 同判
+  // 短病形落在病来得急、没拖长，与其临终前一年的住院拍呼应。反复形只写这几年住过两回院、
+  // 中间好过一阵，不写苦难。病后安然形回望当年那场扛过来的病——是福气面不是伤感面，与其
+  // 早年住院拍（textEarly）的病因对位（爸心脏手术、妈胯骨手术）。第二位形与 textState 同判
   // （另一位已离世）。走法读 S.parents 的冻结 route；解析时 S 指向当前 Track，主线与影子同链同口径。
   const DEAD_ROUTE_LEADS = {
     dad: {
       short: ["你爸这场病来得急。打住进医院那回起，家里人就轮着守在跟前。走的那天，你也在，人很安稳，没遭什么罪。", "你爸也走了。这场病来得急，从住院到走，前后没拖多长。"],
       sudden: ["你爸是夜里走的。前一天，他还自己下楼买了菜。", "你爸也走了。晌午人还好好的，午后睡过去，就没再醒。没受什么罪，家里人都在跟前。"],
+      repeat: ["你爸走了。这几年，他住过两回院，中间好过一阵，还能下楼遛弯。最后一回住进去，没再出来。走时很安稳，家里人都在跟前。", "你爸也走了。这几年进进出出医院，住院的日子多半是你陪着。这一回住进去，没再出来。"],
+      recovered: ["你爸走了。当年那台手术都扛过来了，又稳稳当当过了这么些年。走得安安静静，没受罪。", "你爸也走了。当年那场大手术扛过来，又过了这么些年的安生日子。走时家里人都在跟前。"],
     },
     mom: {
       short: ["你妈这场病来得急。打摔了那一跤住进医院，病房里就没断过人。走的那天，你守在床边，她走得很安稳。", "你妈也走了。这场病没拖长——住了一回院，就没缓过来。"],
       sudden: ["你妈是夜里睡过去的，就没再醒过来。走得安安静静，没遭罪。", "你妈也走了，走得突然。前阵子她还张罗着要给你爸扫墓，隔了没几天，人就没了。这样的走法，没受罪，是她的福气。"],
+      repeat: ["你妈走了。这几年，她住过两回院，中间缓过来，还能自己下厨。最后一回，没再出来。走得很安稳。", "你妈也走了。这几年住过两回院，你爸不在了，都是你陪着。最后一回，没再出来。"],
+      recovered: ["你妈走了。当年摔的那一跤、做的那台手术，她都扛过来了，又自己下厨、串门地过了好些年。走得安稳，没遭罪。", "你妈也走了。当年那场手术扛过来，她又过了好些年寻常日子。没受罪，是她的福气。"],
     },
   };
   const DEAD_HEADS = ["你爸走了。走得还算安稳。", "你爸也走了。先是你妈，这回是你爸。", "你妈走了。走得还算安稳。", "你妈也走了。先是你爸，这回是你妈。"]; // 离世拍全部变体的宣告形（text/textState/textEra 逐一核过，只有这四种）
@@ -224,14 +230,39 @@
     if (!S || !S.parents) return text;
     const who = item.id === "proc_dad_dead" ? "dad" : "mom";
     const P = S.parents[who];
-    if (!P || (P.route !== "short" && P.route !== "sudden")) return text;
+    if (!P) return text;
+    const leads = DEAD_ROUTE_LEADS[who][P.route];
+    if (!leads) return text;
     const other = who === "dad" ? "mom" : "dad";
-    const lead = DEAD_ROUTE_LEADS[who][P.route][S.state && S.state[other] === "dead" ? 1 : 0];
+    const lead = leads[S.state && S.state[other] === "dead" ? 1 : 0];
     for (const h of DEAD_HEADS) if (text.startsWith(h)) return lead + text.slice(h.length);
     const i = text.indexOf("。"); // 未知宣告形兜底：只换首句（现行四种宣告均为两句，此路为防将来新变体漏网）
     return i >= 0 ? lead + text.slice(i + 1) : lead + text;
   }
-  function procText(item) { return deadRouteLead(item, factVariant(item, formText(item))); }
+  // 住院拍的走法面孔（CL-153 二期，与 deadRouteLead 同位同法）：病后安然的早年住院整段换
+  // textEarly（住院与临终脱钩：现行 hosp 正文是临终口径，直接用会把插曲写成前奏；recovered
+  // 的住院呈现只有早年这一次，凭 route 即可判定）；反复型的第二次住院只换首句为「又」字头
+  // 领起——呈现序上 advanceParentStage 已先行记账，本次呈现的住院计数≥2 即第二住（首住计数
+  // 为 1、不换）。住院拍首句的全部变体形在此枚举（长形在前，防短形前缀误命中），余正文不动。
+  const HOSP_HEADS = ["你爸住院了，住的是县医院，是心脏供血不足，得挂几天水慢慢查。", "你爸住院了，是心脏的事。", "你妈住院了，住的是县医院。", "你妈住院了。"];
+  const HOSP_AGAIN_LEADS = { dad: "你爸又住院了，还是心脏的事。", mom: "你妈又住院了。" };
+  function hospModeText(item, text) {
+    if (!item || (item.id !== "proc_dad_hosp" && item.id !== "proc_mom_hosp") || typeof text !== "string") return text;
+    const S = IFY.S;
+    if (!S || !S.parents) return text;
+    const who = item.id === "proc_dad_hosp" ? "dad" : "mom";
+    const P = S.parents[who];
+    if (!P) return text;
+    if (P.route === "recovered" && typeof item.textEarly === "string") return item.textEarly;
+    if (P.route === "repeat" && typeof IFY.hospCountOf === "function" && IFY.hospCountOf(P) >= 2) {
+      const lead = HOSP_AGAIN_LEADS[who];
+      for (const h of HOSP_HEADS) if (text.startsWith(h)) return lead + text.slice(h.length);
+      const i = text.indexOf("。"); // 未知首句形兜底：只换首句
+      return i >= 0 ? lead + text.slice(i + 1) : lead + text;
+    }
+    return text;
+  }
+  function procText(item) { return deadRouteLead(item, factVariant(item, hospModeText(item, formText(item)))); }
 
   function renderFork(fork) {
     IFY.curKind = "fork";

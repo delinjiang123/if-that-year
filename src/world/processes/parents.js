@@ -34,17 +34,46 @@
     return a < P.careAge ? a : P.careAge - 1;
   }
 
-  // 离世走法派生（CL-152 二期，用户 2026-11-13 点题「不要父亲病了过几年走了，母亲过几年再走同样路线」）：
-  // 父母不再共用同一条衰亡管线——每位父母按已掷出的三个数派生走法：缓降 slow（现行全管线）/
-  // 短病 short（无照护拍、住院改在临终前一年）/ 突然 sudden（无照护、无住院，signal 仍作唯一伏笔）。
+  // 离世走法派生（CL-152 二期五样化于 CL-153 二期，用户 2026-11-13 点题「不要父亲病了过几年走了，
+  // 母亲过几年再走同样路线」「样式可以再多一些」）：每位父母按已掷出的三个数派生走法——
+  // 缓降 slow（全管线）/ 短病 short（无照护拍、住院改在临终前一年）/ 突然 sudden（无照护、无住院，
+  // signal 作唯一伏笔）/ 反复 repeat（照护段内住两回院，首住 careAge+1、二住临终前一年，中间有
+  // 好起来的日子）/ 病后安然 recovered（早年大病一场住院扛过来、又活好些年，终局按 sudden 形收尾）。
   // 纯函数、零抽数：只读 age0/deathAge/careAge，掷序与死亡分布逐位不动。走法在掷命瞬间冻结；
   // 延寿只移 deathAge、不重算（parentsDue 与结算侧只读 P.route，不许拿现行 deathAge 反复重派生）。
-  // 老存档缺 route 字段：initParents／parentsDue 入口按载入时数值现算写回、一次冻死（同 signalAge 口径）。
+  // 切片（CL-153 一期 Monte Carlo 定案，96,000 人实测 45.9/20.2/11.9/12.6/9.3）：k<42 slow /
+  // 42–61 short / 62–73 sudden / 74–90 repeat / ≥91 recovered；改判两条——repeat 但照护间隙
+  // gap<3（两住装不下回暖间隔）改判 slow、recovered 但早年窗口 span<4 改判 sudden（实测零触发，
+  // 只防将来标定重调）。老存档缺 route 字段：initParents／parentsDue 入口按载入时数值现算写回、
+  // 一次冻死（同 signalAge 口径）；已存 route 字段的档冻死不重派生，新切片只及新局与无字段补齐。
   function routeOf(P) {
     const k = (P.deathAge * 31 + P.careAge * 17 + P.age0 * 7) % 100;
-    return k < 60 ? "slow" : k < 85 ? "short" : "sudden";
+    if (k < 42) return "slow";
+    if (k < 62) return "short";
+    if (k < 74) return "sudden";
+    if (k < 91) return P.deathAge - P.careAge < 3 ? "slow" : "repeat";
+    return earlySpanOf(P) < 4 ? "sudden" : "recovered";
   }
   function ensureRoute(P) { if (P && !P.route) P.route = routeOf(P); return P; }
+
+  // 病后安然型的早年住院窗口（CL-153 二期）：主角年龄 lo=22（住院拍本体下限、陪护选项要主角成年）
+  // 到 hi=careAge−5（与照护段至少隔 5 年，插曲才不与前奏混）；落点由已掷三数派生、零抽数。
+  // signalAge≥careAge−4 恒在窗口关闭之后，时序由构造保证不打架。
+  function earlySpanOf(P) { return (P.careAge - 5) - 22 + 1; }
+  function earlyHospAtOf(P) {
+    const span = earlySpanOf(P);
+    if (span < 1) return null;
+    return 22 + ((P.age0 * 13 + P.deathAge * 7 + P.careAge * 3) % span);
+  }
+
+  // 住院呈现次数（呈现层记账，与 signalShown/bdayShown 同类、非掷数）：advanceParentStage 每呈现
+  // 一次住院拍累加；字段缺失（老档）时按 stage 读时推定（已在 hosp 段＝住过 1 次、余 0 次）——
+  // 只供反复型二住判定消费，对 slow/short/sudden/recovered 恒不参与判定。
+  function hospCountOf(P) {
+    if (!P) return 0;
+    if (typeof P.hospCount === "number") return P.hospCount;
+    return P.stage === "hosp" ? 1 : 0;
+  }
 
   // v0.21 WP1（蓝图裁定三）：掷点函数 one() 改为可注入流抽取函数——Track_A 传 rngW、Track_B 传它自己的
   // #shadow#world 流包装；公式与 PARENT_CAL 一字不动，缺省抽取即现行 rngW，主线消费顺序与数值逐位不变。
@@ -93,10 +122,13 @@
       const stage = fork52Done && P.stage === "well" ? "care" : P.stage; // fork52 已落账时 well 视同 care（仅本函数判定用，不写回）
       const page = IFY.S.age + P.age0; // 父母今年的实岁
       const bday = [60, 70, 80, 90].includes(page) && !(P.bdayShown || []).includes(page) ? page : 0; // 整十寿辰（CL-42）：恰满该岁数、当年未呈现过才发
-      // 住院发作岁按走法分流（CL-152 二期）：缓降照旧读 hospAge；短病改在临终前一年（按现行
-      // deathAge 算——延寿移动 deathAge 时病程整体后移）；突然无住院拍（null 关门）。
-      const hospAt = P.route === "sudden" ? null : P.route === "short" ? P.deathAge - 1 : P.hospAge;
+      // 住院发作岁按走法分流（CL-152 二期、CL-153 二期扩）：缓降照旧读 hospAge；短病改在临终前一年
+      // （按现行 deathAge 算——延寿移动 deathAge 时病程整体后移）；反复首住在照护段开年 careAge+1
+      // （原掷 hospAge 就此闲置，与短病/突然闲置同例）；突然与病后安然无终局住院拍（null 关门，
+      // 病后安然的住院走下方早年分支、与临终脱钩）。
+      const hospAt = P.route === "sudden" || P.route === "recovered" ? null : P.route === "short" ? P.deathAge - 1 : P.route === "repeat" ? P.careAge + 1 : P.hospAge;
       if (IFY.S.age >= P.deathAge) due.push({ pr: 0, item: "proc_" + who + "_dead", who, beat: "dead" });
+      else if (P.route === "repeat" && stage === "hosp" && hospCountOf(P) === 1 && IFY.S.age >= P.deathAge - 1) due.push({ pr: 1, item: "proc_" + who + "_hosp", who, beat: "hosp" }); // 反复型二住（CL-153 二期）：临终前一年再住一回；必须插在下方续查分支之前——否则二住年份被寿辰/百岁续查吞掉。二住与寿辰同年时靠同年重入在二住呈现后由续查补发
       else if (hospAt !== null && IFY.S.age >= hospAt && stage === "hosp") {
         // 住院拍已呈现：衰老段本年无新拍，但喜事拍不被这一档吞没——百岁/寿辰在此续查（同为 pr 4 档，
         // 排在衰老拍之后；不续查的话，住过院的父母将永远等不到寿辰与百岁拍）。
@@ -104,7 +136,8 @@
         else if (bday) due.push({ pr: 4, item: "proc_" + who + "_bday" + bday, who, beat: "bday" + bday });
       }
       else if (hospAt !== null && IFY.S.age >= hospAt && (stage === "care" || (P.route === "short" && stage === "well"))) due.push({ pr: 1, item: "proc_" + who + "_hosp", who, beat: "hosp" }); // 短病无照护段：住院凭 well 段直发（fork52 后 stage 视同 care 亦同路）
-      else if (IFY.S.age >= P.careAge && stage === "well" && P.route === "slow") due.push({ pr: 2, item: "proc_" + who + "_care", who, beat: "care" }); // 照护拍只属缓降（CL-152 二期）：短病/突然不发，链条自然落到信号/喜事分支
+      else if (IFY.S.age >= P.careAge && stage === "well" && (P.route === "slow" || P.route === "repeat")) due.push({ pr: 2, item: "proc_" + who + "_care", who, beat: "care" }); // 照护拍属缓降与反复（CL-152 二期立、CL-153 二期扩）：短病/突然/病后安然不发，链条自然落到信号/喜事分支
+      else if (P.route === "recovered" && !P.earlyHospShown && P.stage === "well" && earlyHospAtOf(P) !== null && IFY.S.age >= earlyHospAtOf(P) && IFY.S.age <= P.careAge - 5) due.push({ pr: 1, item: "proc_" + who + "_hosp", who, beat: "hosp" }); // 病后安然的早年住院（CL-153 二期）：读原始 stage——fork52 落账后 well 在本函数口径视同 care，那顶的是照护段、不是这场病，按视同值判会误吞；窗口上限（careAge−5）兼作老档补齐的关门线，过窗未发即不再补发
       else if (stage === "well" && !P.signalShown && IFY.S.age >= signalAgeOf(P) && IFY.S.age < P.careAge) due.push({ pr: 3, item: "proc_" + who + "_signal", who, beat: "signal" }); // 预警信号：care 之前、每位父母至多一次，优先级最低
       else if (!P.centuryShown && page >= 100) due.push({ pr: 4, item: "proc_" + who + "_century", who, beat: "century" }); // 百岁彩蛋拍：父母年满一百且在世时发作一次（能活着到这一年，本身就是长寿抽命中的人）；排在一切衰老拍之后，喜事不抢丧事的位
       else if (bday) due.push({ pr: 4, item: "proc_" + who + "_bday" + bday, who, beat: "bday" + bday }); // 整十寿辰拍（CL-42，用户亲定）：60/70/80/90 恰满当年发作一次，与百岁同档、排在衰老拍之后；呈现完回到本年，当年分岔/事件照常
@@ -122,8 +155,14 @@
       if (beat === "signal") { IFY.S.parents[who].signalShown = true; } // 信号拍只记呈现过：不推进段位、不立 care_stage 旗
       else if (beat === "century") { IFY.S.parents[who].centuryShown = true; } // 百岁拍同 signal 口径：只记呈现过，不推进段位
       else if (typeof beat === "string" && beat.indexOf("bday") === 0) { const P = IFY.S.parents[who]; const arr = P.bdayShown || (P.bdayShown = []); const n = Number(beat.slice(4)); if (!arr.includes(n)) arr.push(n); } // 寿辰拍（CL-42）同 signal 口径：只记该岁数已呈现，不推进段位
+      else if (beat === "hosp" && IFY.S.parents[who].route === "recovered" && IFY.S.parents[who].stage === "well" && IFY.S.age <= IFY.S.parents[who].careAge - 5) {
+        IFY.S.parents[who].earlyHospShown = true; // 病后安然的早年住院（CL-153 二期）：只是中年插曲——判据与 parentsDue 早年分支同口径（原始 stage 仍在 well、未入照护窗口）；只记呈现过，不推进段位、不立任何旗，此后终局段按 sudden 门走
+      }
       else {
-        IFY.S.parents[who].stage = beat === "dead" ? "dead" : beat === "hosp" ? "hosp" : "care";
+        const P = IFY.S.parents[who];
+        const nextHospCount = beat === "hosp" ? hospCountOf(P) + 1 : null; // 住院呈现记账（CL-153 二期）：反复型二住判定读它；累加值必须按呈现前段位推定——先改段位再推定，缺字段时会被新段位污染（首住即误记 2 次、二住永不发作）
+        P.stage = beat === "dead" ? "dead" : beat === "hosp" ? "hosp" : "care";
+        if (nextHospCount !== null) P.hospCount = nextHospCount;
         if (beat === "care") IFY.S.flags.care_stage = true;
       }
     }
@@ -215,5 +254,5 @@
       IFY.autoPhase2 = setTimeout(() => { IFY.autoPhase2 = null; chooseProcChoice(visChoices[p][0], true); }, 400);
     }, "choice");
   }
-  Object.assign(IFY, { PARENT_CAL, triW, signalAgeOf, routeOf, initParents, parentsDue, renderProcItem, advanceParentStage, parentOne: one, parentFate, parentCareExtend });
+  Object.assign(IFY, { PARENT_CAL, triW, signalAgeOf, routeOf, earlyHospAtOf, hospCountOf, initParents, parentsDue, renderProcItem, advanceParentStage, parentOne: one, parentFate, parentCareExtend });
 })(window.IFY);
