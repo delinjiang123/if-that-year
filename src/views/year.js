@@ -268,19 +268,54 @@
   // 来源形分工：一级兜底路（l1By=backstop）走 textBackstop 例行形、二级大病后形（l2By=post）
   // 走 textPost 出院回望形、跟进拍按 rcShape 走查清/长期盯着两形；都没命中回落 formText 原文。
   // textFace/textBackstop/textPost 的键即加厚批的扩展位：往面/年代组/来源下加文本，不动判定。
+  // CL-155 加厚取文（判定不动，只扩取文层）：年代组立 mid 档（c1978/c1985 独立文，回落链
+  // grp→early→late，旧条目无 mid 键时行为与 CL-154 一致）；优先级钉死——信号2 大病后形
+  // （textPost 按 post-hosp/post-crisis 子键分，旧值 post 回落 post-hosp）＞身体系统面
+  // textSrc（IFY.selfSrcOf 推代谢/心脑，src＞face 为工单口径）＞家人提醒面 textFamily
+  // （事实门：伴侣在场 partnered 优先，否则子女已能看出事——kids=has 且孩子 ≥12 岁，
+  // 出生年口径 kidsBornAt ?? kidsAt，与 spouse.js 同源；呈现时点读现成状态、不另抽数）
+  // ＞一级兜底例行形（grp=mid 先 textBackstopMid）＞面×年代组 textFace。跟进拍按 rcShape
+  // 全形取键（managed-cardio→managedCardio 等，旧值 clear/managed 键名不变），grp=mid
+  // 先查面内 mid 子对象、回落同面同键。
+  // 收尾修正（裁定一）：家人面的取文资格收窄——只对二级与一级兜底路取用（见下方条件），
+  // 一级走势/事实路直接回 face；其余优先级（post＞src＞…）一字未动。
   function selfSignalText(item, text) {
     if (!item || (item.id !== "proc_self_signal1" && item.id !== "proc_self_signal2" && item.id !== "proc_self_recheck")) return text;
     const S = IFY.S;
     if (!S || !S.selfSignal || typeof IFY.selfFaceOf !== "function") return text;
     const face = IFY.selfFaceOf();
-    const grp = S.era === "c1995" || S.era === "c2000" ? "late" : "early";
+    const grp = S.era === "c1995" || S.era === "c2000" ? "late" : (S.era === "c1978" || S.era === "c1985") ? "mid" : "early";
     const ss = S.selfSignal;
+    const pick = (o) => (o && (o[grp] || o.early || o.late)) || null;
     if (item.id === "proc_self_recheck") {
       const f = item.textFace && item.textFace[face];
-      return (f && f[ss.rcShape === "managed" ? "managed" : "clear"]) || text;
+      if (!f) return text;
+      const key = { "managed-cardio": "managedCardio", "managed-metabolic": "managedMetabolic" }[ss.rcShape] || ss.rcShape || "clear";
+      if (grp === "mid" && f.mid && f.mid[key]) return f.mid[key];
+      return f[key] || f.clear || text;
     }
-    if (item.id === "proc_self_signal1" && ss.l1By === "backstop" && item.textBackstop && item.textBackstop[face]) return item.textBackstop[face];
-    if (item.id === "proc_self_signal2" && ss.l2By === "post" && item.textPost && item.textPost[face]) return item.textPost[face];
+    const isL2 = item.id === "proc_self_signal2";
+    if (isL2 && (ss.l2By === "post" || ss.l2By === "post-hosp" || ss.l2By === "post-crisis") && item.textPost && item.textPost[face]) {
+      const pf = item.textPost[face];
+      if (typeof pf === "string") return pf; // 防御：他包若仍给旧字符串形，照旧直用
+      return (ss.l2By === "post-crisis" ? pf["post-crisis"] : pf["post-hosp"]) || pf["post-hosp"] || pf["post-crisis"] || text;
+    }
+    const src = typeof IFY.selfSrcOf === "function" ? IFY.selfSrcOf(isL2 ? 2 : 1) : null;
+    if (src && item.textSrc && item.textSrc[src] && item.textSrc[src][face]) { const t = pick(item.textSrc[src][face]); if (t) return t; }
+    // CL-155 收尾（裁定一·家人面降序）：家人面只对二级与一级兜底路取用——一级走势/事实路
+    // 不再查家人面、回落三面文（face）；兜底路里家人面仍排在例行形之前（兜底例行文可被
+    // 家人提醒的质感替换）。判定、落账、状态一字不动，动的只有这一处取文资格。
+    if (item.textFamily && (isL2 || ss.l1By === "backstop")) {
+      const st = S.state || {};
+      let fam = null;
+      if (st.spouse === "partnered") fam = item.textFamily.spouse;
+      else if (st.kids === "has") { const kb = S.kidsBornAt != null ? S.kidsBornAt : S.kidsAt; if (kb != null && S.age - kb >= 12) fam = item.textFamily.child; }
+      if (fam) { const t = pick(fam); if (t) return t; }
+    }
+    if (!isL2 && ss.l1By === "backstop") {
+      if (grp === "mid" && item.textBackstopMid && item.textBackstopMid[face]) return item.textBackstopMid[face];
+      if (item.textBackstop && item.textBackstop[face]) return item.textBackstop[face];
+    }
     const f = item.textFace && item.textFace[face];
     return (f && (f[grp] || f.early || f.late)) || text;
   }

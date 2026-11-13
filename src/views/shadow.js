@@ -152,7 +152,9 @@ return last
 // 「出过警报、后来没再听说」的后半句全池无登记的康复落账来源，永不带（宁缺不编）。
 // CL-154 二期扩：主角身体报警层的进程信号拍 proc_self_signal1/2（影子轨只落账本标记、
 // 主线轨为真呈现）——「身体出过警报」自此也认信号层响过的局，跟进拍 proc_self_recheck 是
-// 回应不是警报，不登记。
+// 回应不是警报，不登记为警报来源。
+// CL-155 补：proc_self_recheck 仍不入警报来源表，但 glimpseFactLines 的健康行按账本标记
+// 分级时读它作「跟进过账」标记（见该函数内登记注）。
 const HEALTH_ALERT_IDS = ["proc_self_signal1", "proc_self_signal2", "e_body", "r_health_operation", "p12_002", "p10_009", "p16_043", "e78_045",
 "p15_013", "p15_054", "p21_013", "p21_032", "p22_017", "e65_050", "e55_047", "p24_007", "p23_023",
 "p26_015", "p14_043", "p20_061", "p4_045", "p33_016", "p6_039",
@@ -172,6 +174,8 @@ houseOwned: "有自己的房子",
 houseUnit: "住着单位分的房",
 houseRenting: "租着房子住",
 healthAlert: "身体出过警报",
+healthAlertL2: "身体出过警报，后来又重了一回", // CL-155 分级：账本有 proc_self_signal2（二级响过）
+healthAlertFollowed: "身体出过警报，后来去复查过", // CL-155 分级：账本有 proc_self_recheck（跟进过账）——只说账面事实，不冒领在管/受控
 healthNone: "没听说身体有什么异常", // 否定形以「没听说」收口：那是瞥视者的信息边界，不是体检结论
 residenceHomeAlways: "还在老家",
 residenceHomeBack: "回了老家",
@@ -233,7 +237,12 @@ out.push({ slot: "parents", text: dadAlive && momAlive? FACT_WORDS.parentsBoth: 
 out.push({ slot: "work", text: FACT_WORDS.workForm[typeof IFY.formOf === "function"? IFY.formOf(B): "employee"] || FACT_WORDS.workForm.employee});
 if (FACT_WORDS.phase[st.workPhase]) out.push({ slot: "phase", text: FACT_WORDS.phase[st.workPhase]});
 const alert = inLed((e) => (e.kind === "crisis" && e.id === "health") || (e.kind === "death" && e.id === "health") || HEALTH_ALERT_IDS.includes(e.id));
-out.push({ slot: "health", text: alert? FACT_WORDS.healthAlert: FACT_WORDS.healthNone});
+// CL-155 健康行分级（只读账本标记说话）：跟进过账（proc_self_recheck 在账）＞二级响过
+// （proc_self_signal2 在账）＞出过警报＞没听说。影子轨无回应记录——跟进句只断言到
+// 「去复查过」为止，不给影子编在管/受控的下文（与 CL-154 口径一致）。
+const sigFollowed = inLed((e) => e.id === "proc_self_recheck");
+const sigL2 = inLed((e) => e.id === "proc_self_signal2");
+out.push({ slot: "health", text: sigFollowed? FACT_WORDS.healthAlertFollowed: sigL2? FACT_WORDS.healthAlertL2: alert? FACT_WORDS.healthAlert: FACT_WORDS.healthNone});
 return out;
 }
 
