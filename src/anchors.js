@@ -57,6 +57,9 @@
     { id: "proc_retire_full", kind: "retire" },
     { id: "proc_retire_auto", kind: "retire" },
     { id: "proc_abroad_kind", kind: "abroad" },
+    { id: "proc_self_signal1", kind: "selfSignal" },
+    { id: "proc_self_signal2", kind: "selfSignal" },
+    { id: "proc_self_recheck", kind: "selfSignal" },
   ];
   // 序章分岔锚点（v0.23 WP1 E9 扩表骨架）：按代登记每代 fork16 的形态锚——c2000 是现行实存条目；
   // 其余五代先立骨架行（status:"skeleton"，锚点 id 与 c2000 同名 pr_fork16，各代包以同 id 在本代

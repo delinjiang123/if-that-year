@@ -262,7 +262,29 @@
     }
     return text;
   }
-  function procText(item) { return deadRouteLead(item, factVariant(item, hospModeText(item, formText(item)))); }
+  // 主角身体报警拍取文（CL-154 二期，与 hospModeText 同位同法）：信号拍不用 textForm/textEra
+  // 那套——面（单位/乡土/个体）按入行旗派生（IFY.selfFaceOf）、年代组 early/late 按 era 派生
+  // （中年代 c1978/c1985 回落 early：厂医院/卫生室在那个年代仍成立、无穿越；晚年代另写）。
+  // 来源形分工：一级兜底路（l1By=backstop）走 textBackstop 例行形、二级大病后形（l2By=post）
+  // 走 textPost 出院回望形、跟进拍按 rcShape 走查清/长期盯着两形；都没命中回落 formText 原文。
+  // textFace/textBackstop/textPost 的键即加厚批的扩展位：往面/年代组/来源下加文本，不动判定。
+  function selfSignalText(item, text) {
+    if (!item || (item.id !== "proc_self_signal1" && item.id !== "proc_self_signal2" && item.id !== "proc_self_recheck")) return text;
+    const S = IFY.S;
+    if (!S || !S.selfSignal || typeof IFY.selfFaceOf !== "function") return text;
+    const face = IFY.selfFaceOf();
+    const grp = S.era === "c1995" || S.era === "c2000" ? "late" : "early";
+    const ss = S.selfSignal;
+    if (item.id === "proc_self_recheck") {
+      const f = item.textFace && item.textFace[face];
+      return (f && f[ss.rcShape === "managed" ? "managed" : "clear"]) || text;
+    }
+    if (item.id === "proc_self_signal1" && ss.l1By === "backstop" && item.textBackstop && item.textBackstop[face]) return item.textBackstop[face];
+    if (item.id === "proc_self_signal2" && ss.l2By === "post" && item.textPost && item.textPost[face]) return item.textPost[face];
+    const f = item.textFace && item.textFace[face];
+    return (f && (f[grp] || f.early || f.late)) || text;
+  }
+  function procText(item) { return deadRouteLead(item, factVariant(item, hospModeText(item, selfSignalText(item, formText(item))))); }
 
   function renderFork(fork) {
     IFY.curKind = "fork";

@@ -254,5 +254,94 @@
       IFY.autoPhase2 = setTimeout(() => { IFY.autoPhase2 = null; chooseProcChoice(visChoices[p][0], true); }, 400);
     }, "choice");
   }
-  Object.assign(IFY, { PARENT_CAL, triW, signalAgeOf, routeOf, earlyHospAtOf, hospCountOf, initParents, parentsDue, renderProcItem, advanceParentStage, parentOne: one, parentFate, parentCareExtend });
+  // ================= CL-154 二期：主角身体报警层（selfSignal，与 parentsDue 同槽位） =================
+  // 只读派生层：只读已有状态（事实落点/健康轨/旗账）确定性判定，不消费任何随机流，
+  // 不改死亡公式与 diseaseState 判定表（死线）。呈现标记存 S.selfSignal；回应账不另存——
+  // 全走选项立的旗（self_check_l1/l2、self_l1_habit、self_l2_rest、self_l1/l2_ignored），
+  // 死亡文案分流在 health.js 的 deathSignals 里加读同一批旗（事实口径只有那一份正本，
+  // 本层只借它的事实集派生触发与落点年龄，不许另抄一份事实定义——让位⑤）。
+  // 标记在 due 返回时先落账：renderProcItem 的 continue 回调同年重入 step()，先落账防重发。
+  const SELF_FOLLOWUP_IDS = ["p21_074", "p21_075", "p22_074", "p26_082", "p26_083"]; // 旧散发跟进链（让位④的优先方）
+  function ensureSelfSignal() {
+    const S = IFY.S;
+    if (!S.selfSignal) S.selfSignal = { l1Age: null, l1By: null, l2Age: null, l2By: null, rc1Age: null, rc2Age: null, rcShape: null };
+    return S.selfSignal;
+  }
+  function selfLedgerAgeOf(id) { // 账本首落点年龄（呈现过的条目）
+    let best = null;
+    for (const e of IFY.S.ledger || []) if (e && e.id === id) best = best == null ? e.age : Math.min(best, e.age);
+    return best;
+  }
+  function selfFactAges() { // 与 deathSignals 同表的事实落点年龄（代谢/心脑/复查旗/指标异常/住院/危机）
+    const S = IFY.S, FA = S.flagAges || {};
+    const minOf = (...xs) => { const v = xs.filter((x) => x != null); return v.length ? Math.min(...v) : null; };
+    let crisis = null;
+    for (const e of S.ledger || []) if (e && e.kind === "crisis" && e.id === "health") { crisis = e.age; break; }
+    return {
+      metabolic: minOf(FA.retired_checkup_done, selfLedgerAgeOf("p15_013"), selfLedgerAgeOf("p21_032")),
+      cardio: selfLedgerAgeOf("p22_027"),
+      recheckF: minOf(FA.recheck_partial, FA.recheck_full),
+      p26: selfLedgerAgeOf("p26_015"),
+      hosp: FA.self_hosp_done != null ? FA.self_hosp_done : selfLedgerAgeOf("p25_011"), // flagAges 记最近一次住院（work.js 同步口径）；旗不在时退 p25_011 账本首落点
+      crisis,
+    };
+  }
+  // 三面取文（textFace 的面）：formOf 只有五值、与活法面对不齐（林业注册 employee、海员
+  // 注册 self、手艺人注册 employee），故按入行旗派生：乡土旗→rural、个体/灵活旗→self、
+  // 单位与公职→unit；无主入行旗时回落 formOf（farm→rural、self/flex→self、余→unit）。
+  const SELF_FACE_RURAL = ["farm_work", "farm_returned", "forestry_work", "sea_work"];
+  const SELF_FACE_SELF = ["shop_work", "craft_work", "recycle_work", "gig_work", "courier_work", "care_work", "write_work", "photo_work"];
+  function selfFaceOf() {
+    const F = (IFY.S && IFY.S.flags) || {};
+    if (SELF_FACE_RURAL.some((f) => F[f])) return "rural";
+    if (SELF_FACE_SELF.some((f) => F[f])) return "self";
+    if (typeof IFY.formOf === "function") { const f = IFY.formOf(); if (f === "farm") return "rural"; if (f === "self" || f === "flex") return "self"; }
+    return "unit";
+  }
+  function selfSignalDue() {
+    const S = IFY.S;
+    if (!S || S.death || !S.stats) return null;
+    const ss = ensureSelfSignal();
+    const age = S.age;
+    if (age < 40) return null; // 一级最早 40 岁起判（事实落点本就 ≥43，此门只兜危机早发）
+    const fa = selfFactAges();
+    // 静默结算·事实路（让位①）：事实自带呈现拍那年信号层不发同级拍——一级记已呈现、不补发
+    if (ss.l1Age == null) {
+      const lf = [fa.metabolic, fa.cardio, fa.recheckF, fa.p26].filter((x) => x != null);
+      if (lf.length) { ss.l1Age = Math.min(...lf); ss.l1By = "fact"; }
+    }
+    const strictAges = [fa.metabolic, fa.cardio, fa.hosp, fa.crisis].filter((x) => x != null);
+    const postHit = (fa.hosp != null && fa.hosp === age - 1) || (fa.crisis != null && fa.crisis === age - 1); // 大病后：住院/危机次年
+    const fact2Hit = strictAges.length >= 2; // 事实加重：第二个不同类严格事实在账
+    const trend2Hit = S.stats.health < 40; // 走势加重：年初健康首破 40（due 在本年事件之前判，读到的即年初值）
+    if (ss.l2Age == null && (postHit || fact2Hit || trend2Hit)) {
+      if (ss.l1Age == null) { // 一级还没落账而二级条件已成立：先把一级静默落账（让位②③——住院/危机拍本体即一级呈现，不双响）
+        if (fa.hosp != null || fa.crisis != null) { ss.l1Age = Math.min(...[fa.hosp, fa.crisis].filter((x) => x != null)); ss.l1By = "post"; }
+        else if (strictAges.length >= 2) { const sorted = strictAges.slice().sort((a, b) => a - b); ss.l1Age = sorted[1]; ss.l1By = "fact"; }
+      }
+      if (ss.l1Age != null && ss.l1Age < age) { // 同年两级不连发：一级落点必须早于今年
+        ss.l2Age = age; ss.l2By = postHit ? "post" : fact2Hit ? "fact" : "trend";
+        return { item: "proc_self_signal2" };
+      }
+    }
+    // 回应跟进：查/复查预约的次年发（每约至多一次）；旧散发跟进链同年可发时顺延一年（让位④，顺延只让一年）
+    const F = S.flags || {}, FA = S.flagAges || {};
+    for (const [slot, flag] of [["rc1Age", "self_check_l1"], ["rc2Age", "self_check_l2"]]) {
+      if (ss[slot] != null || !F[flag] || FA[flag] == null || age < FA[flag] + 1) continue;
+      if (age === FA[flag] + 1 && SELF_FOLLOWUP_IDS.some((id) => !(S.usedEvents || []).includes(id) && (IFY.D.events || []).some((x) => x.id === id) && typeof IFY.met === "function" && IFY.met((IFY.D.events || []).find((x) => x.id === id)))) continue;
+      const managed = flag === "self_check_l2" || strictAges.length > 0; // 二级预约或已有严格事实→「要长期盯着」；仅一级预约且无严格事实→「查清了」
+      ss[slot] = age; ss.rcShape = managed ? "managed" : "clear";
+      const base = (IFY.D.events || []).find((x) => x.id === "proc_self_recheck");
+      if (!base) return null;
+      return { item: "proc_self_recheck", view: Object.assign({}, base, { effects: managed ? { health: 1, money: -1 } : { health: 2 } }) };
+    }
+    // 一级拍：走势路（40 岁后年初健康首次跌破 60）／兜底路（53＋出生年%5，落在 53–57 岁，人人必发）
+    if (ss.l1Age == null) {
+      if (S.stats.health < 60) { ss.l1Age = age; ss.l1By = "trend"; return { item: "proc_self_signal1" }; }
+      if (age >= 53 + ((S.birthYear || 2000) % 5)) { ss.l1Age = age; ss.l1By = "backstop"; return { item: "proc_self_signal1" }; }
+    }
+    return null;
+  }
+
+  Object.assign(IFY, { PARENT_CAL, triW, signalAgeOf, routeOf, earlyHospAtOf, hospCountOf, initParents, parentsDue, renderProcItem, advanceParentStage, parentOne: one, parentFate, parentCareExtend, ensureSelfSignal, selfSignalDue, selfFaceOf });
 })(window.IFY);

@@ -1772,6 +1772,18 @@ window.GAME_REGISTRY.milestones = {
     "fork28"
    ]
   },
+  "self_check_l1": {
+   "setters": [
+    "proc_self_signal1"
+   ],
+   "note": "身体报警层一级回应「抽空去查清楚」（CL-154 二期立）：选项立旗、跟进拍预约读它（flagAges 落点次年发 proc_self_recheck）；死亡文案分流（health.js deathSignals）认它作回应过——拖延形 H2/H6 不再发给回应过的局，在管形 H1c 的门"
+  },
+  "self_check_l2": {
+   "setters": [
+    "proc_self_signal2"
+   ],
+   "note": "身体报警层二级回应「正经复查，往后听医生的」（CL-154 二期立）：跟进拍预约与在管呈现标记同源——跟进拍结果形凭它直接走「要长期盯着」；deathSignals 加读同 self_check_l1"
+  },
   "self_hosp_done": {
    "setters": [
     "p21_039",
@@ -1779,6 +1791,30 @@ window.GAME_REGISTRY.milestones = {
     "p27_007"
    ],
    "note": "主角本人住过院（时序回响修复段立）：此前「出院/病后恢复期」类文本（p25_028）没有任何住院事实可依，既能在从没住过院的局里凭空出院、也能在住院六年后还写近时态恢复期。设置者：p21_039（膝盖手术）、p23_022（县医院）、p27_007（胆结石）条目级自立；p26_003（白内障住院四天）的条目 set 位归 cataract_done 族占用，故另由 work.js 的 syncSelfHosp 扫账本四条 id 补立（含旧存档自愈）。注意 flagAges 口径与全仓不同：本旗记最近一次住院年龄（sync 每年按账本最近一条重算）——p25_028 的恢复期语义要读近时窗（require＋flagAgeWithin 2），首次口径会让它在第二次住院后仍被早年记录误挡，分析报告已登记此取舍。急诊不算住院：p3_030（半夜发烧急诊输液）不在名单"
+  },
+  "self_l1_habit": {
+   "setters": [
+    "proc_self_signal1"
+   ],
+   "note": "身体报警层一级回应「先改改过法」（CL-154 二期立）：当场 health +2 的行为层回应；deathSignals 认它作回应过（拖延形关门、在管形 H1c 开门），无跟进拍预约"
+  },
+  "self_l1_ignored": {
+   "setters": [
+    "proc_self_signal1"
+   ],
+   "note": "身体报警层一级回应「知道了，先放着」（CL-154 二期立）：拖延形死亡文案（H2/H6）的正向凭据之一——信号响过且选了放着的局才许走拖延形（另一路是信号层从没响过）"
+  },
+  "self_l2_ignored": {
+   "setters": [
+    "proc_self_signal2"
+   ],
+   "note": "身体报警层二级回应「放着，就这样吧」（CL-154 二期立）：同 self_l1_ignored 的拖延形凭据，二级版"
+  },
+  "self_l2_rest": {
+   "setters": [
+    "proc_self_signal2"
+   ],
+   "note": "身体报警层二级回应「治是治，日子还得过」（CL-154 二期立）：调养形回应，当场 health +3；deathSignals 认它作回应过，无跟进拍预约"
   },
   "shop_closed": {
    "setters": [
