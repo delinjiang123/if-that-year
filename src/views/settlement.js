@@ -1554,8 +1554,28 @@
     // 父母槽：交换局 dad/mom 取 domainEnd 的见证终局、照护三旗按见证口径；未交换局读终局身体与本局旗（原读法）。
     const dadD = view ? view.domainEnd("dad") === "dead" : ST.dad === "dead", momD = view ? view.domainEnd("mom") === "dead" : ST.mom === "dead";
     const careSelf = view ? view.flagWitnessed("care_self") : !!F.care_self, careHired = view ? view.flagWitnessed("care_hired") : !!F.care_hired, careRotate = view ? view.flagWitnessed("care_rotate") : !!F.care_rotate;
+    // CL-152 二期（规格 2.5 口径毛刺）：双亲走法都是短病/突然时，病程不到一年，「需要人那几年」
+    // 不贴——但只许在账本把胜出照护旗的出处核明「仅来自临终住院拍」时才换「最后那一程」向：
+    // 双亲（含交换局各段）走法齐且无一缓降、无 fork52、无照护拍呈现、且该旗的每一条立旗账
+    // 都是住院拍选项。出核不明（老档无账本、旗另有来路）一律回落原句；槽位结构不动。
+    const briefRouteForm = (winFlag) => {
+      const routeSets = [];
+      if (view) { for (const seg of view.segments) if (seg.state && seg.state.parents) routeSets.push(seg.state.parents); }
+      else if (IFY.S && IFY.S.parents) routeSets.push(IFY.S.parents);
+      if (!routeSets.length) return false;
+      for (const ps of routeSets) {
+        if (!ps.dad || !ps.mom || !ps.dad.route || !ps.mom.route) return false;
+        if (ps.dad.route === "slow" || ps.mom.route === "slow") return false;
+      }
+      const led = view ? view.mergedLedger : (Array.isArray(IFY.S.ledger) ? IFY.S.ledger : []);
+      if (led.some((e) => e && e.id === "fork52")) return false;
+      if (led.some((e) => e && e.kind === "proc" && (e.id === "proc_dad_care" || e.id === "proc_mom_care"))) return false;
+      const src = led.filter((e) => e && e.set === winFlag);
+      if (!src.length) return false;
+      return src.every((e) => e.kind === "proc" && (e.id === "proc_dad_hosp" || e.id === "proc_mom_hosp"));
+    };
     let s6;
-    if (dadD && momD) s6 = careSelf ? "爸妈都送走了。需要人那几年，你回去陪过一阵。" : careHired ? "爸妈都送走了。走之前请了人照护，你管钱，也管事。" : careRotate ? "爸妈都送走了。需要人那几年，兄妹几个排着班，一人陪一段。" : "爸妈都送走了。最后那一程，赶上了。";
+    if (dadD && momD) s6 = careSelf ? (briefRouteForm("care_self") ? "爸妈都送走了。最后那一程，你回去陪着走完了。" : "爸妈都送走了。需要人那几年，你回去陪过一阵。") : careHired ? (briefRouteForm("care_hired") ? "爸妈都送走了。最后那一程，请了人照护，你管钱，也管事。" : "爸妈都送走了。走之前请了人照护，你管钱，也管事。") : careRotate ? "爸妈都送走了。需要人那几年，兄妹几个排着班，一人陪一段。" : "爸妈都送走了。最后那一程，赶上了。";
     else if (dadD) s6 = "爸先走了，妈还在。逢年过节，先给妈打电话。";
     else if (momD) s6 = "妈先走了，爸还在。老两口剩一个，屋里空了一半。";
     else s6 = "到这一生走完，爸妈都还健在。这一辈子，你没送走过他们。";

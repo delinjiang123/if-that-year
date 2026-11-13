@@ -199,7 +199,39 @@
     for (const [fn, variants] of Object.entries(map)) { const cur = ((IFY.S && IFY.S.facts) || {})[fn]; const v = variants && variants[cur == null ? "absent" : cur]; if (v != null) return v; }
     return fallback;
   }
-  function procText(item) { return factVariant(item, formText(item)); }
+  // 离世走法领起（CL-152 二期，规格 2.4）：父母走法为短病/突然时，把离世拍解析文本的死亡宣告
+  // 换成走法领起句——走法只决定「怎么走的」，丧事正文与年代/存亡变体一字不动，缓降走原文。
+  // 共 8 条（爸/妈 × 短病/突然 × 首位/第二位离世），长短错开；突然形不写「毫无征兆」
+  // （signal 伏笔可能已发过），写急、没受罪、前一天还好好的这类不与伏笔打架的话；
+  // 基调（用户 2026-11-13 亲定）：不要太悲伤——落笔在安稳、平静、没受罪、家里人都在这一面，
+  // 悲伤点到为止，不煽情、不写哭喊场面；与现行离世正文「走得还算安稳」同温。
+  // 短病形落在病来得急、没拖长，与其临终前一年的住院拍呼应。第二位形与 textState 同判
+  // （另一位已离世）。走法读 S.parents 的冻结 route；解析时 S 指向当前 Track，主线与影子同链同口径。
+  const DEAD_ROUTE_LEADS = {
+    dad: {
+      short: ["你爸这场病来得急。打住进医院那回起，家里人就轮着守在跟前。走的那天，你也在，人很安稳，没遭什么罪。", "你爸也走了。这场病来得急，从住院到走，前后没拖多长。"],
+      sudden: ["你爸是夜里走的。前一天，他还自己下楼买了菜。", "你爸也走了。晌午人还好好的，午后睡过去，就没再醒。没受什么罪，家里人都在跟前。"],
+    },
+    mom: {
+      short: ["你妈这场病来得急。打摔了那一跤住进医院，病房里就没断过人。走的那天，你守在床边，她走得很安稳。", "你妈也走了。这场病没拖长——住了一回院，就没缓过来。"],
+      sudden: ["你妈是夜里睡过去的，就没再醒过来。走得安安静静，没遭罪。", "你妈也走了，走得突然。前阵子她还张罗着要给你爸扫墓，隔了没几天，人就没了。这样的走法，没受罪，是她的福气。"],
+    },
+  };
+  const DEAD_HEADS = ["你爸走了。走得还算安稳。", "你爸也走了。先是你妈，这回是你爸。", "你妈走了。走得还算安稳。", "你妈也走了。先是你爸，这回是你妈。"]; // 离世拍全部变体的宣告形（text/textState/textEra 逐一核过，只有这四种）
+  function deadRouteLead(item, text) {
+    if (!item || (item.id !== "proc_dad_dead" && item.id !== "proc_mom_dead") || typeof text !== "string") return text;
+    const S = IFY.S;
+    if (!S || !S.parents) return text;
+    const who = item.id === "proc_dad_dead" ? "dad" : "mom";
+    const P = S.parents[who];
+    if (!P || (P.route !== "short" && P.route !== "sudden")) return text;
+    const other = who === "dad" ? "mom" : "dad";
+    const lead = DEAD_ROUTE_LEADS[who][P.route][S.state && S.state[other] === "dead" ? 1 : 0];
+    for (const h of DEAD_HEADS) if (text.startsWith(h)) return lead + text.slice(h.length);
+    const i = text.indexOf("。"); // 未知宣告形兜底：只换首句（现行四种宣告均为两句，此路为防将来新变体漏网）
+    return i >= 0 ? lead + text.slice(i + 1) : lead + text;
+  }
+  function procText(item) { return deadRouteLead(item, factVariant(item, formText(item))); }
 
   function renderFork(fork) {
     IFY.curKind = "fork";

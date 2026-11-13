@@ -34,6 +34,18 @@
     return a < P.careAge ? a : P.careAge - 1;
   }
 
+  // 离世走法派生（CL-152 二期，用户 2026-11-13 点题「不要父亲病了过几年走了，母亲过几年再走同样路线」）：
+  // 父母不再共用同一条衰亡管线——每位父母按已掷出的三个数派生走法：缓降 slow（现行全管线）/
+  // 短病 short（无照护拍、住院改在临终前一年）/ 突然 sudden（无照护、无住院，signal 仍作唯一伏笔）。
+  // 纯函数、零抽数：只读 age0/deathAge/careAge，掷序与死亡分布逐位不动。走法在掷命瞬间冻结；
+  // 延寿只移 deathAge、不重算（parentsDue 与结算侧只读 P.route，不许拿现行 deathAge 反复重派生）。
+  // 老存档缺 route 字段：initParents／parentsDue 入口按载入时数值现算写回、一次冻死（同 signalAge 口径）。
+  function routeOf(P) {
+    const k = (P.deathAge * 31 + P.careAge * 17 + P.age0 * 7) % 100;
+    return k < 60 ? "slow" : k < 85 ? "short" : "sudden";
+  }
+  function ensureRoute(P) { if (P && !P.route) P.route = routeOf(P); return P; }
+
   // v0.21 WP1（蓝图裁定三）：掷点函数 one() 改为可注入流抽取函数——Track_A 传 rngW、Track_B 传它自己的
   // #shadow#world 流包装；公式与 PARENT_CAL 一字不动，缺省抽取即现行 rngW，主线消费顺序与数值逐位不变。
   // parentFate 是 one() 去掉 age0 掷点后的同一条公式：影子出生时 age0 拷自主线（出身共享），只在影子
@@ -49,7 +61,7 @@
     const deathAge = Math.max(26, life - age0); // 换算成主角年龄口径的离世点；下限保证此事不出在童年段（序章不处理）
     const careAge = Math.max(24, deathAge - (2 + Math.floor(d() * 4))); // 需照护段起点：离世前 2–5 年
     const hospAge = deathAge - careAge >= 2 ? careAge + 1 + Math.floor(d() * (deathAge - careAge - 1)) : null;
-    return { age0, deathAge, careAge, hospAge, stage: "well", signalAge: signalAgeOf({ careAge, deathAge }), signalShown: false, centuryShown: false, bdayShown: [] }; // stage: well → care → hosp → dead；signal 为 care 前的呈现层前置标记（进程内部状态，不进存档状态域、不改 care/hosp/dead 时点）；centuryShown 为百岁拍已呈现标记、bdayShown 为已呈现过的整十寿辰岁数数组（CL-42，同 signal 口径，老档缺字段读时按未呈现）
+    return { age0, deathAge, careAge, hospAge, route: routeOf({ age0, deathAge, careAge }), stage: "well", signalAge: signalAgeOf({ careAge, deathAge }), signalShown: false, centuryShown: false, bdayShown: [] }; // stage: well → care → hosp → dead；route 为离世走法（CL-152 二期，掷命瞬间冻结，见 routeOf）；signal 为 care 前的呈现层前置标记（进程内部状态，不进存档状态域、不改 care/hosp/dead 时点）；centuryShown 为百岁拍已呈现标记、bdayShown 为已呈现过的整十寿辰岁数数组（CL-42，同 signal 口径，老档缺字段读时按未呈现）
   }
 
   function one(ageBand, lifeBand, draw) {
@@ -59,7 +71,8 @@
   }
 
   function initParents(draw) {
-    if (IFY.S.parents || !IFY.S.route) return;
+    if (IFY.S.parents) { ensureRoute(IFY.S.parents.dad); ensureRoute(IFY.S.parents.mom); return; } // 老档补齐（CL-152 二期）：父母对象已在档时只补走法——按载入时数值现算写回、一次冻死，掷命不重跑
+    if (!IFY.S.route) return;
     const cal = PARENT_CAL[IFY.S.era] || PARENT_CAL.c2000;
     IFY.S.parents = { dad: one(cal.dadAge, cal.dadLife, draw), mom: one(cal.momAge, cal.momLife, draw) };
   }
@@ -76,18 +89,22 @@
     for (const who of ["dad", "mom"]) {
       const P = IFY.S.parents[who];
       if (!P || IFY.S.state[who] !== "alive") continue;
+      ensureRoute(P); // CL-152 二期：走法补齐兜底（直调本函数的路径——含影子无头侧——同口径冻死）
       const stage = fork52Done && P.stage === "well" ? "care" : P.stage; // fork52 已落账时 well 视同 care（仅本函数判定用，不写回）
       const page = IFY.S.age + P.age0; // 父母今年的实岁
       const bday = [60, 70, 80, 90].includes(page) && !(P.bdayShown || []).includes(page) ? page : 0; // 整十寿辰（CL-42）：恰满该岁数、当年未呈现过才发
+      // 住院发作岁按走法分流（CL-152 二期）：缓降照旧读 hospAge；短病改在临终前一年（按现行
+      // deathAge 算——延寿移动 deathAge 时病程整体后移）；突然无住院拍（null 关门）。
+      const hospAt = P.route === "sudden" ? null : P.route === "short" ? P.deathAge - 1 : P.hospAge;
       if (IFY.S.age >= P.deathAge) due.push({ pr: 0, item: "proc_" + who + "_dead", who, beat: "dead" });
-      else if (P.hospAge !== null && IFY.S.age >= P.hospAge && stage === "hosp") {
+      else if (hospAt !== null && IFY.S.age >= hospAt && stage === "hosp") {
         // 住院拍已呈现：衰老段本年无新拍，但喜事拍不被这一档吞没——百岁/寿辰在此续查（同为 pr 4 档，
         // 排在衰老拍之后；不续查的话，住过院的父母将永远等不到寿辰与百岁拍）。
         if (!P.centuryShown && page >= 100) due.push({ pr: 4, item: "proc_" + who + "_century", who, beat: "century" });
         else if (bday) due.push({ pr: 4, item: "proc_" + who + "_bday" + bday, who, beat: "bday" + bday });
       }
-      else if (P.hospAge !== null && IFY.S.age >= P.hospAge && stage === "care") due.push({ pr: 1, item: "proc_" + who + "_hosp", who, beat: "hosp" });
-      else if (IFY.S.age >= P.careAge && stage === "well") due.push({ pr: 2, item: "proc_" + who + "_care", who, beat: "care" });
+      else if (hospAt !== null && IFY.S.age >= hospAt && (stage === "care" || (P.route === "short" && stage === "well"))) due.push({ pr: 1, item: "proc_" + who + "_hosp", who, beat: "hosp" }); // 短病无照护段：住院凭 well 段直发（fork52 后 stage 视同 care 亦同路）
+      else if (IFY.S.age >= P.careAge && stage === "well" && P.route === "slow") due.push({ pr: 2, item: "proc_" + who + "_care", who, beat: "care" }); // 照护拍只属缓降（CL-152 二期）：短病/突然不发，链条自然落到信号/喜事分支
       else if (stage === "well" && !P.signalShown && IFY.S.age >= signalAgeOf(P) && IFY.S.age < P.careAge) due.push({ pr: 3, item: "proc_" + who + "_signal", who, beat: "signal" }); // 预警信号：care 之前、每位父母至多一次，优先级最低
       else if (!P.centuryShown && page >= 100) due.push({ pr: 4, item: "proc_" + who + "_century", who, beat: "century" }); // 百岁彩蛋拍：父母年满一百且在世时发作一次（能活着到这一年，本身就是长寿抽命中的人）；排在一切衰老拍之后，喜事不抢丧事的位
       else if (bday) due.push({ pr: 4, item: "proc_" + who + "_bday" + bday, who, beat: "bday" + bday }); // 整十寿辰拍（CL-42，用户亲定）：60/70/80/90 恰满当年发作一次，与百岁同档、排在衰老拍之后；呈现完回到本年，当年分岔/事件照常
@@ -198,5 +215,5 @@
       IFY.autoPhase2 = setTimeout(() => { IFY.autoPhase2 = null; chooseProcChoice(visChoices[p][0], true); }, 400);
     }, "choice");
   }
-  Object.assign(IFY, { PARENT_CAL, triW, signalAgeOf, initParents, parentsDue, renderProcItem, advanceParentStage, parentOne: one, parentFate, parentCareExtend });
+  Object.assign(IFY, { PARENT_CAL, triW, signalAgeOf, routeOf, initParents, parentsDue, renderProcItem, advanceParentStage, parentOne: one, parentFate, parentCareExtend });
 })(window.IFY);
