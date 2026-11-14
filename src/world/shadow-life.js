@@ -403,6 +403,12 @@
     if (!S || !S.route) return;
     const pdue = IFY.parentsDue();
     if (pdue) { const pit = D.events.find((e) => e.id === pdue.item); if (pit) resolveProcHeadless(pit, pdue.who, pdue.beat); }
+    // 身体报警层（CL-154 二期）：与受控 step() 同位——只判定与落账本标记，不解决选项、
+    // 不走 resolveProcHeadless、不消费影子随机流；影子轨无回应概念，标记只供结算健康行
+    // 回指（shadow.js 警报来源扩读）与死亡文案门加读（deathSignals 读账本拍 id）。
+    // 判定与标记落账都在 selfSignalDue 内（读本轨自己的健康轨与事实），呈现拍本体不解决。
+    const sdue = typeof IFY.selfSignalDue === "function" ? IFY.selfSignalDue() : null;
+    if (sdue) IFY.rec("proc", sdue.item);
     // 出生保送（孩子线批次 S1）：与受控 step() 同位同规——立约「要」次年必达 p3_046，排在 dating 摊牌之前；
     // 无头进程解决同样不推 usedEvents（池路 resolvePlanHeadless 才推），在此补记防池抽二次呈现。
     if (IFY.bornDue()) { const bit = D.events.find((e) => e.id === "p3_046"); if (bit) { if (!S.usedEvents.includes(bit.id)) S.usedEvents.push(bit.id); resolveProcHeadless(bit); } }

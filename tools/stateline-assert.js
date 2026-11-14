@@ -545,9 +545,9 @@ function deathS(mutate) {
 }
 const noFamily11 = (S) => { S.state.dad = "dead"; S.state.mom = "dead"; S.state.spouse = "none"; S.state.kids = "none"; };
 { // 数据：原六段逐字保留、新段追加在 6 起、编号表对位、accident 池不动
-  ok(DC11.health.length === 15 && DC11.accident.length === 6, "⑪ 数据: health 池 15 段（原 6＋新 9）、accident 池 6 段");
+  ok(DC11.health.length === 16 && DC11.accident.length === 6, "⑪ 数据: health 池 16 段（原 6＋新 9＋CL-154 在管形 H1c 追加于下标 15）、accident 池 6 段");
   ok(DC11.health[0] === "身体早几年就给过信儿。那天夜里胸口闷得睡不着，送到医院时已经晚了。" && DC11.health[3] === "冬天那次感冒拖成了肺炎。输液的第三天夜里，监护仪先响，人没能再睁开眼。" && DC11.health[4] === "血压的药断过几天。早上洗脸时眼前一黑，摔在卫生间，送到医院时已经没有自主呼吸。", "⑪ 数据: H1/H4/H5 原文逐字未动（下标 0/3/4）");
-  ok(DCI11.health.join(",") === "H1,H2,H3,H4,H5,H6,H1m,H1z,H5b,H4e,H2p,N1,N2,N3,N4" && DCI11.accident.join(",") === "A1,A2,A3,A4,A5,A6", "⑪ 数据: DEATH_CAUSE_IDS 编号表与下标对位");
+  ok(DCI11.health.join(",") === "H1,H2,H3,H4,H5,H6,H1m,H1z,H5b,H4e,H2p,N1,N2,N3,N4,H1c" && DCI11.accident.join(",") === "A1,A2,A3,A4,A5,A6", "⑪ 数据: DEATH_CAUSE_IDS 编号表与下标对位");
   deathS(); ok(P.deathCausePool("accident").length === 6, "⑪ 数据: accident 池不挂门、全 6 段照出");
 }
 { // 断言 1：第 15 局形状复刻——无任何信号＋终局健康 61＋无电梯

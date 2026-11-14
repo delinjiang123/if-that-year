@@ -32,6 +32,7 @@
       "那天下午在阳台上晒太阳，靠在椅子里睡了过去，就没再醒来。",
       "吃过晚饭，在藤椅上歇着，歇着歇着睡了过去，就没再醒来。",
       "清早醒过一次，翻了个身又睡回去——这一睡，就没再醒来。",
+      "夜里睡下，就没再醒来。这些年身体给过的信儿，你一回没含糊——该查的查了，该盯的一直盯着。走得安安静静的，家里人说，这也算福气。",
     ],
     accident: [
       "雨天路滑，路口一辆车失控撞过来。救护车赶到时，已经晚了。",
@@ -54,7 +55,7 @@
   // 编号沿 death-text-check 的 H/A 口径（下标 0–5 为原六段，6 起为本片新段），
   // 门表与验收登记见 docs/MORTALITY-MODEL.md「死因变体片」节。
   const DEATH_CAUSE_IDS = {
-    health: ["H1", "H2", "H3", "H4", "H5", "H6", "H1m", "H1z", "H5b", "H4e", "H2p", "N1", "N2", "N3", "N4"],
+    health: ["H1", "H2", "H3", "H4", "H5", "H6", "H1m", "H1z", "H5b", "H4e", "H2p", "N1", "N2", "N3", "N4", "H1c"],
     accident: ["A1", "A2", "A3", "A4", "A5", "A6"],
   };
   const ELEVATOR_EVENT_IDS = ["p11_027", "p16_061", "p14_052", "e55_049", "p24_023"];
@@ -66,8 +67,16 @@
     const hospEver = !!F.self_hosp_done || has("p25_011");
     const crisis = !!(S.crisisUsed && S.crisisUsed.health);
     const frail = !!F.hook_frail;
+    // CL-154 身体报警层加读（只读账，不新造判定）：回应账全走选项立的旗——
+    // 查/复查=self_check_l1/l2、改过法=self_l1_habit、调养=self_l2_rest、放着=self_l1/l2_ignored；
+    // 信号呈现过没有读账本里的进程拍（proc_self_signal1/2），与 S.selfSignal 的静默标记分工：
+    // 静默标记（事实自带呈现拍时落）不算「信号层响过」，拖延形的口径以玩家真见过信号拍为准。
+    const sigResponded = !!F.self_check_l1 || !!F.self_check_l2 || !!F.self_l1_habit || !!F.self_l2_rest;
+    const sigIgnored = !!F.self_l1_ignored || !!F.self_l2_ignored;
+    const sigProcShown = (S.ledger || []).some((e) => e && e.kind === "proc" && (e.id === "proc_self_signal1" || e.id === "proc_self_signal2"));
     return {
       metabolicWarn, cardioManaged, hospEver, crisis, frail,
+      sigResponded, sigIgnored, sigProcShown,
       strict: metabolicWarn || cardioManaged || hospEver || crisis || frail, // 严格口径（与 diseaseState 同组）
       warnFacts: metabolicWarn || has("p26_015") || !!F.recheck_partial || !!F.recheck_full, // 预警类发现（H2/H6 门）
       medsGate: cardioManaged || !!F.meds_checked, // 用药在管（H5 族门：降压药日常 ∨ 用药记录经复查整理）
@@ -80,7 +89,10 @@
   }
   // health 池门表（下标与 DEATH_CAUSES.health / DEATH_CAUSE_IDS.health 对位）：
   //   0 H1 信儿：住院史/危机/体弱/心脑在管任一（夜里急症送医的局）；仅代谢预警者走 6 号
-  //   1 H2 拖延复查 / 5 H6 体检拖延：预警类事实在账（旧终局健康代理门已删）
+  //   1 H2 拖延复查 / 5 H6 体检拖延：预警类事实在账，且没回应过信号——CL-154 起加读报警层
+  //     回应账：回应过的局（查了/改了过法/调养）不再走拖延形；拖延形只给「选过放着」或
+  //     「信号层从没响过（账本无进程信号拍）」的局。影子轨无回应概念：响过标记即不再走拖延形
+  //   15 H1c 在管安详（CL-154 新增，追加在池末不挪既有下标）：回应过信号（查/改过法/调养任一）
   //   2 H3 楼梯：未装电梯（旧门 (a) 保留；文本本身与其家人预设本片不动，归家族事实族辖区）
   //   3 H4 肺炎：体弱/住院史/危机/终局健康 <60 任一。高龄单独不作门：验收硬线格
   //     （终局健康 ≥75 且无体弱/住院/危机）里实测年龄跨 66–90 岁（盘点 17+19 例），
@@ -96,7 +108,7 @@
   function deathHealthOk(idx, sig) {
     switch (idx) {
       case 0: return sig.hospEver || sig.crisis || sig.frail || sig.cardioManaged;
-      case 1: case 5: return sig.warnFacts;
+      case 1: case 5: return sig.warnFacts && !sig.sigResponded && (sig.sigIgnored || !sig.sigProcShown);
       case 2: return !sig.elevator;
       case 3: return sig.frail || sig.hospEver || sig.crisis || sig.finalHealth < 60;
       case 4: case 8: return sig.medsGate;
@@ -107,6 +119,7 @@
       case 11: return sig.familyAlive;
       case 12: return sig.age < 80;
       case 13: case 14: return sig.age >= 80;
+      case 15: return sig.sigResponded;
       default: return true;
     }
   }
@@ -225,5 +238,5 @@
     if (IFY.S.death) return false;
     return writeDeath("health", true);
   }
-  Object.assign(IFY, { MORTALITY, MORTALITY_BY_ERA, DEATH_CAUSES, DEATH_CAUSE_IDS, rollDeath, deathCausePool, DEATH_CAL, diseaseState, forceFuseDeath, eraMulOf });
+  Object.assign(IFY, { MORTALITY, MORTALITY_BY_ERA, DEATH_CAUSES, DEATH_CAUSE_IDS, rollDeath, deathCausePool, DEATH_CAL, diseaseState, forceFuseDeath, eraMulOf, deathSignals });
 })(window.IFY);

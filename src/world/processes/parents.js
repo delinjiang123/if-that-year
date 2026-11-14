@@ -34,6 +34,47 @@
     return a < P.careAge ? a : P.careAge - 1;
   }
 
+  // 离世走法派生（CL-152 二期五样化于 CL-153 二期，用户 2026-11-13 点题「不要父亲病了过几年走了，
+  // 母亲过几年再走同样路线」「样式可以再多一些」）：每位父母按已掷出的三个数派生走法——
+  // 缓降 slow（全管线）/ 短病 short（无照护拍、住院改在临终前一年）/ 突然 sudden（无照护、无住院，
+  // signal 作唯一伏笔）/ 反复 repeat（照护段内住两回院，首住 careAge+1、二住临终前一年，中间有
+  // 好起来的日子）/ 病后安然 recovered（早年大病一场住院扛过来、又活好些年，终局按 sudden 形收尾）。
+  // 纯函数、零抽数：只读 age0/deathAge/careAge，掷序与死亡分布逐位不动。走法在掷命瞬间冻结；
+  // 延寿只移 deathAge、不重算（parentsDue 与结算侧只读 P.route，不许拿现行 deathAge 反复重派生）。
+  // 切片（CL-153 一期 Monte Carlo 定案，96,000 人实测 45.9/20.2/11.9/12.6/9.3）：k<42 slow /
+  // 42–61 short / 62–73 sudden / 74–90 repeat / ≥91 recovered；改判两条——repeat 但照护间隙
+  // gap<3（两住装不下回暖间隔）改判 slow、recovered 但早年窗口 span<4 改判 sudden（实测零触发，
+  // 只防将来标定重调）。老存档缺 route 字段：initParents／parentsDue 入口按载入时数值现算写回、
+  // 一次冻死（同 signalAge 口径）；已存 route 字段的档冻死不重派生，新切片只及新局与无字段补齐。
+  function routeOf(P) {
+    const k = (P.deathAge * 31 + P.careAge * 17 + P.age0 * 7) % 100;
+    if (k < 42) return "slow";
+    if (k < 62) return "short";
+    if (k < 74) return "sudden";
+    if (k < 91) return P.deathAge - P.careAge < 3 ? "slow" : "repeat";
+    return earlySpanOf(P) < 4 ? "sudden" : "recovered";
+  }
+  function ensureRoute(P) { if (P && !P.route) P.route = routeOf(P); return P; }
+
+  // 病后安然型的早年住院窗口（CL-153 二期）：主角年龄 lo=22（住院拍本体下限、陪护选项要主角成年）
+  // 到 hi=careAge−5（与照护段至少隔 5 年，插曲才不与前奏混）；落点由已掷三数派生、零抽数。
+  // signalAge≥careAge−4 恒在窗口关闭之后，时序由构造保证不打架。
+  function earlySpanOf(P) { return (P.careAge - 5) - 22 + 1; }
+  function earlyHospAtOf(P) {
+    const span = earlySpanOf(P);
+    if (span < 1) return null;
+    return 22 + ((P.age0 * 13 + P.deathAge * 7 + P.careAge * 3) % span);
+  }
+
+  // 住院呈现次数（呈现层记账，与 signalShown/bdayShown 同类、非掷数）：advanceParentStage 每呈现
+  // 一次住院拍累加；字段缺失（老档）时按 stage 读时推定（已在 hosp 段＝住过 1 次、余 0 次）——
+  // 只供反复型二住判定消费，对 slow/short/sudden/recovered 恒不参与判定。
+  function hospCountOf(P) {
+    if (!P) return 0;
+    if (typeof P.hospCount === "number") return P.hospCount;
+    return P.stage === "hosp" ? 1 : 0;
+  }
+
   // v0.21 WP1（蓝图裁定三）：掷点函数 one() 改为可注入流抽取函数——Track_A 传 rngW、Track_B 传它自己的
   // #shadow#world 流包装；公式与 PARENT_CAL 一字不动，缺省抽取即现行 rngW，主线消费顺序与数值逐位不变。
   // parentFate 是 one() 去掉 age0 掷点后的同一条公式：影子出生时 age0 拷自主线（出身共享），只在影子
@@ -49,7 +90,7 @@
     const deathAge = Math.max(26, life - age0); // 换算成主角年龄口径的离世点；下限保证此事不出在童年段（序章不处理）
     const careAge = Math.max(24, deathAge - (2 + Math.floor(d() * 4))); // 需照护段起点：离世前 2–5 年
     const hospAge = deathAge - careAge >= 2 ? careAge + 1 + Math.floor(d() * (deathAge - careAge - 1)) : null;
-    return { age0, deathAge, careAge, hospAge, stage: "well", signalAge: signalAgeOf({ careAge, deathAge }), signalShown: false, centuryShown: false, bdayShown: [] }; // stage: well → care → hosp → dead；signal 为 care 前的呈现层前置标记（进程内部状态，不进存档状态域、不改 care/hosp/dead 时点）；centuryShown 为百岁拍已呈现标记、bdayShown 为已呈现过的整十寿辰岁数数组（CL-42，同 signal 口径，老档缺字段读时按未呈现）
+    return { age0, deathAge, careAge, hospAge, route: routeOf({ age0, deathAge, careAge }), stage: "well", signalAge: signalAgeOf({ careAge, deathAge }), signalShown: false, centuryShown: false, bdayShown: [] }; // stage: well → care → hosp → dead；route 为离世走法（CL-152 二期，掷命瞬间冻结，见 routeOf）；signal 为 care 前的呈现层前置标记（进程内部状态，不进存档状态域、不改 care/hosp/dead 时点）；centuryShown 为百岁拍已呈现标记、bdayShown 为已呈现过的整十寿辰岁数数组（CL-42，同 signal 口径，老档缺字段读时按未呈现）
   }
 
   function one(ageBand, lifeBand, draw) {
@@ -59,7 +100,8 @@
   }
 
   function initParents(draw) {
-    if (IFY.S.parents || !IFY.S.route) return;
+    if (IFY.S.parents) { ensureRoute(IFY.S.parents.dad); ensureRoute(IFY.S.parents.mom); return; } // 老档补齐（CL-152 二期）：父母对象已在档时只补走法——按载入时数值现算写回、一次冻死，掷命不重跑
+    if (!IFY.S.route) return;
     const cal = PARENT_CAL[IFY.S.era] || PARENT_CAL.c2000;
     IFY.S.parents = { dad: one(cal.dadAge, cal.dadLife, draw), mom: one(cal.momAge, cal.momLife, draw) };
   }
@@ -76,18 +118,26 @@
     for (const who of ["dad", "mom"]) {
       const P = IFY.S.parents[who];
       if (!P || IFY.S.state[who] !== "alive") continue;
+      ensureRoute(P); // CL-152 二期：走法补齐兜底（直调本函数的路径——含影子无头侧——同口径冻死）
       const stage = fork52Done && P.stage === "well" ? "care" : P.stage; // fork52 已落账时 well 视同 care（仅本函数判定用，不写回）
       const page = IFY.S.age + P.age0; // 父母今年的实岁
       const bday = [60, 70, 80, 90].includes(page) && !(P.bdayShown || []).includes(page) ? page : 0; // 整十寿辰（CL-42）：恰满该岁数、当年未呈现过才发
+      // 住院发作岁按走法分流（CL-152 二期、CL-153 二期扩）：缓降照旧读 hospAge；短病改在临终前一年
+      // （按现行 deathAge 算——延寿移动 deathAge 时病程整体后移）；反复首住在照护段开年 careAge+1
+      // （原掷 hospAge 就此闲置，与短病/突然闲置同例）；突然与病后安然无终局住院拍（null 关门，
+      // 病后安然的住院走下方早年分支、与临终脱钩）。
+      const hospAt = P.route === "sudden" || P.route === "recovered" ? null : P.route === "short" ? P.deathAge - 1 : P.route === "repeat" ? P.careAge + 1 : P.hospAge;
       if (IFY.S.age >= P.deathAge) due.push({ pr: 0, item: "proc_" + who + "_dead", who, beat: "dead" });
-      else if (P.hospAge !== null && IFY.S.age >= P.hospAge && stage === "hosp") {
+      else if (P.route === "repeat" && stage === "hosp" && hospCountOf(P) === 1 && IFY.S.age >= P.deathAge - 1) due.push({ pr: 1, item: "proc_" + who + "_hosp", who, beat: "hosp" }); // 反复型二住（CL-153 二期）：临终前一年再住一回；必须插在下方续查分支之前——否则二住年份被寿辰/百岁续查吞掉。二住与寿辰同年时靠同年重入在二住呈现后由续查补发
+      else if (hospAt !== null && IFY.S.age >= hospAt && stage === "hosp") {
         // 住院拍已呈现：衰老段本年无新拍，但喜事拍不被这一档吞没——百岁/寿辰在此续查（同为 pr 4 档，
         // 排在衰老拍之后；不续查的话，住过院的父母将永远等不到寿辰与百岁拍）。
         if (!P.centuryShown && page >= 100) due.push({ pr: 4, item: "proc_" + who + "_century", who, beat: "century" });
         else if (bday) due.push({ pr: 4, item: "proc_" + who + "_bday" + bday, who, beat: "bday" + bday });
       }
-      else if (P.hospAge !== null && IFY.S.age >= P.hospAge && stage === "care") due.push({ pr: 1, item: "proc_" + who + "_hosp", who, beat: "hosp" });
-      else if (IFY.S.age >= P.careAge && stage === "well") due.push({ pr: 2, item: "proc_" + who + "_care", who, beat: "care" });
+      else if (hospAt !== null && IFY.S.age >= hospAt && (stage === "care" || (P.route === "short" && stage === "well"))) due.push({ pr: 1, item: "proc_" + who + "_hosp", who, beat: "hosp" }); // 短病无照护段：住院凭 well 段直发（fork52 后 stage 视同 care 亦同路）
+      else if (IFY.S.age >= P.careAge && stage === "well" && (P.route === "slow" || P.route === "repeat")) due.push({ pr: 2, item: "proc_" + who + "_care", who, beat: "care" }); // 照护拍属缓降与反复（CL-152 二期立、CL-153 二期扩）：短病/突然/病后安然不发，链条自然落到信号/喜事分支
+      else if (P.route === "recovered" && !P.earlyHospShown && P.stage === "well" && earlyHospAtOf(P) !== null && IFY.S.age >= earlyHospAtOf(P) && IFY.S.age <= P.careAge - 5) due.push({ pr: 1, item: "proc_" + who + "_hosp", who, beat: "hosp" }); // 病后安然的早年住院（CL-153 二期）：读原始 stage——fork52 落账后 well 在本函数口径视同 care，那顶的是照护段、不是这场病，按视同值判会误吞；窗口上限（careAge−5）兼作老档补齐的关门线，过窗未发即不再补发
       else if (stage === "well" && !P.signalShown && IFY.S.age >= signalAgeOf(P) && IFY.S.age < P.careAge) due.push({ pr: 3, item: "proc_" + who + "_signal", who, beat: "signal" }); // 预警信号：care 之前、每位父母至多一次，优先级最低
       else if (!P.centuryShown && page >= 100) due.push({ pr: 4, item: "proc_" + who + "_century", who, beat: "century" }); // 百岁彩蛋拍：父母年满一百且在世时发作一次（能活着到这一年，本身就是长寿抽命中的人）；排在一切衰老拍之后，喜事不抢丧事的位
       else if (bday) due.push({ pr: 4, item: "proc_" + who + "_bday" + bday, who, beat: "bday" + bday }); // 整十寿辰拍（CL-42，用户亲定）：60/70/80/90 恰满当年发作一次，与百岁同档、排在衰老拍之后；呈现完回到本年，当年分岔/事件照常
@@ -105,8 +155,14 @@
       if (beat === "signal") { IFY.S.parents[who].signalShown = true; } // 信号拍只记呈现过：不推进段位、不立 care_stage 旗
       else if (beat === "century") { IFY.S.parents[who].centuryShown = true; } // 百岁拍同 signal 口径：只记呈现过，不推进段位
       else if (typeof beat === "string" && beat.indexOf("bday") === 0) { const P = IFY.S.parents[who]; const arr = P.bdayShown || (P.bdayShown = []); const n = Number(beat.slice(4)); if (!arr.includes(n)) arr.push(n); } // 寿辰拍（CL-42）同 signal 口径：只记该岁数已呈现，不推进段位
+      else if (beat === "hosp" && IFY.S.parents[who].route === "recovered" && IFY.S.parents[who].stage === "well" && IFY.S.age <= IFY.S.parents[who].careAge - 5) {
+        IFY.S.parents[who].earlyHospShown = true; // 病后安然的早年住院（CL-153 二期）：只是中年插曲——判据与 parentsDue 早年分支同口径（原始 stage 仍在 well、未入照护窗口）；只记呈现过，不推进段位、不立任何旗，此后终局段按 sudden 门走
+      }
       else {
-        IFY.S.parents[who].stage = beat === "dead" ? "dead" : beat === "hosp" ? "hosp" : "care";
+        const P = IFY.S.parents[who];
+        const nextHospCount = beat === "hosp" ? hospCountOf(P) + 1 : null; // 住院呈现记账（CL-153 二期）：反复型二住判定读它；累加值必须按呈现前段位推定——先改段位再推定，缺字段时会被新段位污染（首住即误记 2 次、二住永不发作）
+        P.stage = beat === "dead" ? "dead" : beat === "hosp" ? "hosp" : "care";
+        if (nextHospCount !== null) P.hospCount = nextHospCount;
         if (beat === "care") IFY.S.flags.care_stage = true;
       }
     }
@@ -198,5 +254,162 @@
       IFY.autoPhase2 = setTimeout(() => { IFY.autoPhase2 = null; chooseProcChoice(visChoices[p][0], true); }, 400);
     }, "choice");
   }
-  Object.assign(IFY, { PARENT_CAL, triW, signalAgeOf, initParents, parentsDue, renderProcItem, advanceParentStage, parentOne: one, parentFate, parentCareExtend });
+  // ================= CL-154 二期：主角身体报警层（selfSignal，与 parentsDue 同槽位） =================
+  // 只读派生层：只读已有状态（事实落点/健康轨/旗账）确定性判定，不消费任何随机流，
+  // 不改死亡公式与 diseaseState 判定表（死线）。呈现标记存 S.selfSignal；回应账不另存——
+  // 全走选项立的旗（self_check_l1/l2、self_l1_habit、self_l2_rest、self_l1/l2_ignored），
+  // 死亡文案分流在 health.js 的 deathSignals 里加读同一批旗（事实口径只有那一份正本，
+  // 本层只借它的事实集派生触发与落点年龄，不许另抄一份事实定义——让位⑤）。
+  // 标记在 due 返回时先落账：renderProcItem 的 continue 回调同年重入 step()，先落账防重发。
+  const SELF_FOLLOWUP_IDS = ["p21_074", "p21_075", "p22_074", "p26_082", "p26_083"]; // 旧散发跟进链（让位④的优先方）
+  function ensureSelfSignal() {
+    const S = IFY.S;
+    if (!S.selfSignal) S.selfSignal = { l1Age: null, l1By: null, l2Age: null, l2By: null, rc1Age: null, rc2Age: null, rcShape: null };
+    return S.selfSignal;
+  }
+  function selfLedgerAgeOf(id) { // 账本首落点年龄（呈现过的条目）
+    let best = null;
+    for (const e of IFY.S.ledger || []) if (e && e.id === id) best = best == null ? e.age : Math.min(best, e.age);
+    return best;
+  }
+  function selfFactAges() { // 与 deathSignals 同表的事实落点年龄（代谢/心脑/复查旗/指标异常/住院/危机）
+    const S = IFY.S, FA = S.flagAges || {};
+    const minOf = (...xs) => { const v = xs.filter((x) => x != null); return v.length ? Math.min(...v) : null; };
+    let crisis = null;
+    for (const e of S.ledger || []) if (e && e.kind === "crisis" && e.id === "health") { crisis = e.age; break; }
+    return {
+      metabolic: minOf(FA.retired_checkup_done, selfLedgerAgeOf("p15_013"), selfLedgerAgeOf("p21_032")),
+      cardio: selfLedgerAgeOf("p22_027"),
+      recheckF: minOf(FA.recheck_partial, FA.recheck_full),
+      p26: selfLedgerAgeOf("p26_015"),
+      hosp: FA.self_hosp_done != null ? FA.self_hosp_done : selfLedgerAgeOf("p25_011"), // flagAges 记最近一次住院（work.js 同步口径）；旗不在时退 p25_011 账本首落点
+      crisis,
+    };
+  }
+  // 三面取文（textFace 的面）：formOf 只有五值、与活法面对不齐（林业注册 employee、海员
+  // 注册 self、手艺人注册 employee），故按入行旗派生：乡土旗→rural、个体/灵活旗→self、
+  // 单位与公职→unit；无主入行旗时回落 formOf（farm→rural、self/flex→self、余→unit）。
+  const SELF_FACE_RURAL = ["farm_work", "farm_returned", "forestry_work", "sea_work"];
+  const SELF_FACE_SELF = ["shop_work", "craft_work", "recycle_work", "gig_work", "courier_work", "care_work", "write_work", "photo_work"];
+  function selfFaceOf() {
+    const F = (IFY.S && IFY.S.flags) || {};
+    if (SELF_FACE_RURAL.some((f) => F[f])) return "rural";
+    if (SELF_FACE_SELF.some((f) => F[f])) return "self";
+    if (typeof IFY.formOf === "function") { const f = IFY.formOf(); if (f === "farm") return "rural"; if (f === "self" || f === "flex") return "self"; }
+    return "unit";
+  }
+  // CL-155 取文层共用：该级呈现对应的身体系统面（"metabolic"/"cardio"/null），与 due 的判定
+  // 同一份事实表（selfFactAges），取文层不另抄口径。先认 l*By 的 fact-* 细分后缀；无后缀时
+  // 按「事实在账」推：一级取最早落账的事实类别，二级事实加重取第二个严格事实的类别、
+  // 走势/大病后路取在账事实（心脑优先——在管事实更重）。纯只读派生，不落账、不抽数。
+  function selfSrcOf(level) {
+    const S = IFY.S;
+    if (!S || !S.selfSignal) return null;
+    const by = level === 2 ? S.selfSignal.l2By : S.selfSignal.l1By;
+    if (by === "fact-metabolic") return "metabolic";
+    if (by === "fact-cardio") return "cardio";
+    const fa = selfFactAges();
+    const cls = (tag) => tag === "metabolic" || tag === "cardio" ? tag : null;
+    if (level === 2) {
+      if (by === "fact") {
+        const st = [["metabolic", fa.metabolic], ["cardio", fa.cardio], ["hosp", fa.hosp], ["crisis", fa.crisis]].filter(([, a]) => a != null).sort((x, y) => x[1] - y[1]);
+        if (st.length >= 2) { const c = cls(st[1][0]); if (c) return c; }
+      }
+      if (fa.cardio != null) return "cardio";
+      if (fa.metabolic != null) return "metabolic";
+      return null;
+    }
+    const lf = [["metabolic", fa.metabolic], ["cardio", fa.cardio], ["recheck", fa.recheckF], ["p26", fa.p26]].filter(([, a]) => a != null).sort((x, y) => x[1] - y[1]);
+    return lf.length ? cls(lf[0][0]) : null;
+  }
+  function selfSignalDue() {
+    const S = IFY.S;
+    if (!S || S.death || !S.stats) return null;
+    const ss = ensureSelfSignal();
+    const age = S.age;
+    if (age < 40) return null; // 一级最早 40 岁起判（事实落点本就 ≥43，此门只兜危机早发）
+    const fa = selfFactAges();
+    // CL-155 收尾（裁定二·回收闩）：rc 落账之后、任一 due 读到年初健康 ≥60（走势回过 60 线）
+    // → 闩落。闩不落新字段（状态形状不动）：借 rcShape 空值记——rcShape 在上次跟进呈现之后、
+    // 下一回跟进落账之前无读者（year.js 只在跟进呈现时读、due 返回前已先覆写），其空值即
+    // 「已见回收」的记号；跟进/补发落账时照常覆写为本形，存档往返不丢（空值本就在值域内）。
+    { const rcL = [ss.rc1Age, ss.rc2Age].filter((x) => x != null); if (rcL.length && age > Math.max(...rcL) && S.stats.health >= 60) ss.rcShape = null; }
+    // 静默结算·事实路（让位①）：事实自带呈现拍那年信号层不发同级拍——一级记已呈现、不补发。
+    // CL-155 细分：l1By 按领衔事实的类别记 fact-metabolic/fact-cardio（复查旗/指标拍领衔仍记 fact）——
+    // 只扩字符串值域，落点年龄与判定一字不变（同龄并列按代谢＞心脑＞其余的登记序，sort 稳定排序保序）。
+    if (ss.l1Age == null) {
+      const lf = [["fact-metabolic", fa.metabolic], ["fact-cardio", fa.cardio], ["fact", fa.recheckF], ["fact", fa.p26]].filter(([, a]) => a != null).sort((x, y) => x[1] - y[1]);
+      if (lf.length) { ss.l1Age = lf[0][1]; ss.l1By = lf[0][0]; }
+    }
+    const strictTagged = [["metabolic", fa.metabolic], ["cardio", fa.cardio], ["hosp", fa.hosp], ["crisis", fa.crisis]].filter(([, a]) => a != null);
+    const strictAges = strictTagged.map(([, a]) => a);
+    const strictClass = (tag) => tag === "metabolic" ? "fact-metabolic" : tag === "cardio" ? "fact-cardio" : "fact"; // 严格事实类别→l*By 细分值
+    const secondStrict = strictTagged.length >= 2 ? strictTagged.slice().sort((x, y) => x[1] - y[1])[1] : null; // 事实加重的领衔事实（第二个落账者）
+    const postHit = (fa.hosp != null && fa.hosp === age - 1) || (fa.crisis != null && fa.crisis === age - 1); // 大病后：住院/危机次年
+    const fact2Hit = strictAges.length >= 2; // 事实加重：第二个不同类严格事实在账
+    const trend2Hit = S.stats.health < 40; // 走势加重：年初健康首破 40（due 在本年事件之前判，读到的即年初值）
+    if (ss.l2Age == null && (postHit || fact2Hit || trend2Hit)) {
+      if (ss.l1Age == null) { // 一级还没落账而二级条件已成立：先把一级静默落账（让位②③——住院/危机拍本体即一级呈现，不双响）
+        if (fa.hosp != null || fa.crisis != null) { ss.l1Age = Math.min(...[fa.hosp, fa.crisis].filter((x) => x != null)); ss.l1By = "post"; }
+        else if (secondStrict) { ss.l1Age = secondStrict[1]; ss.l1By = strictClass(secondStrict[0]); } // CL-155：按第二严格事实的类别细分
+      }
+      if (ss.l1Age != null && ss.l1Age < age) { // 同年两级不连发：一级落点必须早于今年
+        ss.l2Age = age; // CL-155 细分：大病后按触发源记 post-hosp/post-crisis（同年双中取住院，与 postHit 同序）；事实加重按领衔事实类别记
+        ss.l2By = postHit ? (fa.crisis === age - 1 && fa.hosp !== age - 1 ? "post-crisis" : "post-hosp") : fact2Hit && secondStrict ? strictClass(secondStrict[0]) : "trend";
+        return { item: "proc_self_signal2" };
+      }
+    }
+    // 回应跟进：查/复查预约的次年发（每约至多一次）；旧散发跟进链同年可发时顺延一年（让位④，顺延只让一年）
+    const F = S.flags || {}, FA = S.flagAges || {};
+    for (const [slot, flag] of [["rc1Age", "self_check_l1"], ["rc2Age", "self_check_l2"]]) {
+      if (ss[slot] != null || !F[flag] || FA[flag] == null || age < FA[flag] + 1) continue;
+      if (age === FA[flag] + 1 && SELF_FOLLOWUP_IDS.some((id) => !(S.usedEvents || []).includes(id) && (IFY.D.events || []).some((x) => x.id === id) && typeof IFY.met === "function" && IFY.met((IFY.D.events || []).find((x) => x.id === id)))) continue;
+      // CL-155 跟进结果形再分岔（判定零抽数、实效仍只走数值件）：surgery 查出要动手术（心脑事实在账
+      // 且预约之后尚无住院落账——往后住院真落账时账本自成信号→复查→手术→恢复一线）＞relapse 数值
+      // 反复（第二次跟进、上形为 managed 类、年初健康仍 <55）＞managed 类（旧条件：二级预约∨严格
+      // 事实在账；按事实类分 managed-cardio/managed-metabolic/无类 managed）＞clear（旧条件）。
+      const prevShape = ss.rcShape;
+      let shape, fx;
+      if (fa.cardio != null && !(fa.hosp != null && fa.hosp > FA[flag])) { shape = "surgery"; fx = { health: 2, money: -2 }; }
+      else if (slot === "rc2Age" && prevShape != null && prevShape.indexOf("managed") === 0 && S.stats.health < 55) { shape = "relapse"; fx = { health: 1, money: -1 }; }
+      else if (flag === "self_check_l2" || strictAges.length > 0) { shape = fa.cardio != null ? "managed-cardio" : fa.metabolic != null ? "managed-metabolic" : "managed"; fx = { health: 1, money: -1 }; }
+      else { shape = "clear"; fx = { health: 2 }; }
+      ss[slot] = age; ss.rcShape = shape;
+      const base = (IFY.D.events || []).find((x) => x.id === "proc_self_recheck");
+      if (!base) return null;
+      return { item: "proc_self_recheck", view: Object.assign({}, base, { effects: fx }) };
+    }
+    // CL-155 收尾（裁定二·跟进补发，只发一次）：rc 已落账、二级未落账、距上次跟进已过年——
+    // (F) rc 之后才落账的代谢/心脑事实在当年账面（回查事实的时点后移到补发 DUE 当年「读当年
+    //     账面状态」，裁定二(1)）：按当年账面分流——心脑在账优先 managed-cardio、余 managed-
+    //     metabolic；(R) 无新事实且走势回收后又跌破 60（闩已落＝rcShape 空值、今年初健康 <60）
+    //     → relapse 形补发（裁定二(2)）。两路共用一次闸：账本 proc_self_recheck 呈现数 −
+    //     已落 rc 槽数 > 0 即已补发（呈现侧 renderProcItem 与影子无头侧都对每次 due 返回落
+    //     一条 proc 账，两侧口径一致）。surgery 不在此点火：手术轨迹由跟进本体（rc 槽）的
+    //     判定查出（真实轨迹里手术必由住院拍先行、与跟进时序错开，本路不硬造），维持探针验证。
+    //     全程只读派生、零抽数；实效走既有数值件（managed 类/relapse 同档 +1/−1）。
+    { const rcA = [ss.rc1Age, ss.rc2Age].filter((x) => x != null);
+      if (rcA.length && ss.l2Age == null) {
+        const lastRc = Math.max(...rcA);
+        const presented = (S.ledger || []).filter((e) => e && e.kind === "proc" && e.id === "proc_self_recheck").length;
+        if (age > lastRc && presented <= rcA.length) {
+          let shape = null;
+          if ((fa.cardio != null && fa.cardio > lastRc) || (fa.metabolic != null && fa.metabolic > lastRc)) shape = fa.cardio != null ? "managed-cardio" : "managed-metabolic"; // (F) 当年账面分流：心脑在账优先
+          else if (ss.rcShape === null && S.stats.health < 60) shape = "relapse"; // (R) 回收后又跌破
+          if (shape) {
+            ss.rcShape = shape;
+            const base = (IFY.D.events || []).find((x) => x.id === "proc_self_recheck");
+            if (base) return { item: "proc_self_recheck", view: Object.assign({}, base, { effects: { health: 1, money: -1 } }) };
+          }
+        }
+      } }
+    // 一级拍：走势路（40 岁后年初健康首次跌破 60）／兜底路（53＋出生年%5，落在 53–57 岁，人人必发）
+    if (ss.l1Age == null) {
+      if (S.stats.health < 60) { ss.l1Age = age; ss.l1By = "trend"; return { item: "proc_self_signal1" }; }
+      if (age >= 53 + ((S.birthYear || 2000) % 5)) { ss.l1Age = age; ss.l1By = "backstop"; return { item: "proc_self_signal1" }; }
+    }
+    return null;
+  }
+
+  Object.assign(IFY, { PARENT_CAL, triW, signalAgeOf, routeOf, earlyHospAtOf, hospCountOf, initParents, parentsDue, renderProcItem, advanceParentStage, parentOne: one, parentFate, parentCareExtend, ensureSelfSignal, selfSignalDue, selfFaceOf, selfSrcOf, selfFactAges });
 })(window.IFY);
